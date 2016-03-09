@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "Cui_DrawDepth.h"
-
+#if _MSC_VER
+#pragma warning(disable: 4101)
+#endif
 /*----------------------------------------------------------------*/
 /**
 *¹¹Ôìº¯Êý\n

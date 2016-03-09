@@ -12,7 +12,9 @@
 
 using namespace std;
 //#define UINT32_MAX 0xffffffff
-
+#if _MSC_VER
+#pragma warning(disable: 4101)
+#endif
 /*----------------------------------------------------------------------------------------------------------------*/
 /** 
 *构造函数

@@ -13,6 +13,9 @@
 #ifdef _MSC_VER
 #pragma warning (error: 4482)
 #endif 
+#if _MSC_VER
+#pragma warning(disable: 4101)
+#endif
 /***********************************************************/
  int TrainImgUseSvm::CategoryFeature=0;
  double TrainImgUseSvm:: winwidth=48;

@@ -3,6 +3,9 @@
 #include "SGVcode/Harr/CuiHarrTransformLet.h"
 #include "SGVcode/cui_GeneralImgProcess.h"
 typedef signed int INT32;
+#if _MSC_VER
+#pragma warning(disable: 4101)
+#endif
 /*-----------------------------------------------------------------------------*/
 /**
 *≥ı ºªØ
