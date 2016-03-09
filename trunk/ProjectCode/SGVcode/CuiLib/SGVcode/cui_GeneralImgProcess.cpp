@@ -1917,11 +1917,11 @@ int cui_GeneralImgProcess::GetMinValue(int* Data, long DataNum)
 *@return 数组中均值
 */
 /*----------------------------------------------------------------*/
- double cui_GeneralImgProcess::GetAverageValue(double* Data, int DataNum)
+ double cui_GeneralImgProcess::GetAverageValue(double* Data, size_t DataNum)
  {
 	 double sum=0;
 	 ASSERT(DataNum>0);
-	 for (int i=0;i<DataNum;i++){
+	 for (size_t i=0;i<DataNum;i++){
 		 sum+=Data[i];
 	 }
 	 sum/=DataNum;
@@ -1936,11 +1936,11 @@ int cui_GeneralImgProcess::GetMinValue(int* Data, long DataNum)
 *@return 数组中均值
 */
 /*----------------------------------------------------------------*/
-double cui_GeneralImgProcess::GetAverageValue(float* Data, int DataNum)
+double cui_GeneralImgProcess::GetAverageValue(float* Data, size_t DataNum)
 {
 	 double sum=0;
 	 ASSERT(DataNum>0);
-	 for (int i=0;i<DataNum;i++){
+	 for (size_t i=0;i<DataNum;i++){
 		 sum+=Data[i];
 	 }
 	 sum/=DataNum;

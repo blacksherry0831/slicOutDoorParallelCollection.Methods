@@ -269,7 +269,7 @@ bool SceneDetermine::IsManhattanPeak(double pos_weight,HistData hist_data)
 		 }
 
 	}
-
+	return false;
 	
 }
 /*----------------------------------------------------------------*/
@@ -818,6 +818,7 @@ bool SceneDetermine::IsManhattan(ManhattanHistogram hist)
 		}
 	}else{
 		ASSERT(0);
+		return false;
 	}
 	
 	

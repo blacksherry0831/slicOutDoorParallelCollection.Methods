@@ -3,6 +3,13 @@
 #include <assert.h>	
 #include "../SceneDetermine.h"
 /*------------------------------------------------------------------------------------------------------------*/
+#ifdef  _MSC_VER
+#pragma warning (disable : 4244)
+#pragma warning (disable : 4101)
+#endif // _DEBUG
+
+/*------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------------------------------------*/
 /**
 param1
 第一个方法相关的参数:
@@ -1318,7 +1325,7 @@ void CuiHough3::DrawVPonImg(int GNDSegline)
 /*------------------------------------------------------------------------------------------------------------*/
 int CuiHough3::SelectVPLineLeftorRight(void)
  {
-	int LorR=0,LlineNum=0,RightLineNum=0;
+	size_t LorR=0,LlineNum=0,RightLineNum=0;
 
 	for (register int ci=0;ci<2;ci++){
 	  LlineNum+=VP_V_L_UP[ci].PrepareLine.size();
