@@ -3,7 +3,18 @@
 #include <string>
 #include <iostream>
 #include "ManhattanHistogram.h"
+/*----------------------------------------------------------------*/
+/*----------------------------------------------------------------*/
 using namespace std;
+/*----------------------------------------------------------------*/
+/**
+*
+*/
+/*----------------------------------------------------------------*/
+
+#ifdef _MSC_VER
+#pragma warning (error: 4482)
+#endif 
 /*----------------------------------------------------------------*/
 /**
 *本类包含了图像处理算法中一些通用的数据结构\n
@@ -19,22 +30,22 @@ public:
 		string filesavepath,
 		int spcount,
 		double compactness,
-		float horizontal_line_pos);
+		double horizontal_line_pos);
 	ImageMemData(
 		IplImage* img,
 		string filesavepath="",
 		int spcount=800,
 		double compactness=8,
-		float horizontal_line_pos=0.5);
+		double horizontal_line_pos=0.5);
 	~ImageMemData(void);
 	void ReleaseMemory(void);
 private:
 	 bool is_allcoate_mem;/**<是否已分批内存的标志位*/
 public:
 int   Seg_HorizontalLinePos;/**<设置视平线位置*/
-float Seg_HorizontalLinePosScale;/**<*/
-float PgOffset;/**<*/
-float PsOffset;/**<*/
+double Seg_HorizontalLinePosScale;/**<*/
+double PgOffset;/**<*/
+double PsOffset;/**<*/
 SP_PROPERTY *p_SpProperty;/**<代表超像素属性的数据结构*/
 
 /*----------------------------------------*/
@@ -57,11 +68,11 @@ SP_PROPERTY *p_SpProperty;/**<代表超像素属性的数据结构*/
 	std::shared_ptr<double> Matrix_D_InDoor;/**<D矩阵*/
 	std::shared_ptr<double> Matrix_W_InDoor;/**<D矩阵*/
 	std::shared_ptr<double> Matrix_L_InDoor;/**<L拉普拉斯矩阵*/
-	std::shared_ptr<float>  MatrixEigenVector_L_InDoor;
+	std::shared_ptr<double>  MatrixEigenVector_L_InDoor;
 	std::shared_ptr<double> MatrixEigenValue_L_InDoor;
 	std::shared_ptr<INT32>  Matrix_Category_Lable;
     std::shared_ptr<INT32>  Matrix_Category_Lable_InDoor;
-	std::shared_ptr<float>  Matrix_Category_Simple_InDoor;
+	std::shared_ptr<double>  Matrix_Category_Simple_InDoor;
 	std::shared_ptr<HistData180> Histogram180;
 
 	std::shared_ptr<UINT32> Matrix_Visit;
@@ -121,8 +132,8 @@ public:
 public:
     void ImportMemData(int slic_num,INT32 *p_ImgLables);
 	void DrawContours(void);
-	float GetHorizontalThresholdLength(void);
-	float GetSuperPixelDefaultEdgeLength(void);
+	double GetHorizontalThresholdLength(void);
+	double GetSuperPixelDefaultEdgeLength(void);
 	unsigned long GetSpSizeAvg(void);
 	void InitSPLabProperty(void);
 	void SaveLabProperty(string path,string filename);

@@ -14,16 +14,16 @@ using namespace std;
 class PointData
 {
 public:
-	float Xscale;
-	float Yscale;
+	double Xscale;
+	double Yscale;
 
-	float Head_Angle_H;
-	float Head_Angule_V;
-	float dst_direct;
-	float YunTaiAngle;
-	float dst_laser;
+	double Head_Angle_H;
+	double Head_Angule_V;
+	double dst_direct;
+	double YunTaiAngle;
+	double dst_laser;
 
-	float horizontal_pos;
+	double horizontal_pos;
 	CvPoint img_optic_center;
 	int img_height;
 	int img_focus;
@@ -44,7 +44,7 @@ public:
 	*/
 	/*---------------------------------------------------*/
 public:
-	float CalculateHorLinePos(void){
+	double CalculateHorLinePos(void){
 		double delta=img_focus*tan(ChangeDegree2Radian(Head_Angule_V));
 		horizontal_pos=img_optic_center.y+delta;
 		horizontal_pos/=img_height;
@@ -57,7 +57,7 @@ public:
 	*
 	*/
 	/*---------------------------------------------------*/
-	float ChangeDegree2Radian(float angule)
+	double ChangeDegree2Radian(double angule)
 	{
 		return angule*CV_PI/180.0;
 	}

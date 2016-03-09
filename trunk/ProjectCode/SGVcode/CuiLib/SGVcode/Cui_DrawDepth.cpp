@@ -221,7 +221,7 @@ void Cui_DrawDepth::SetCameraParameter(
 	double focus,
 	double height_over_ground,
 	double film_height,
-	float horizontal_pos)
+	double horizontal_pos)
 {
    this->camera_data.Camera_focus=focus;
    this->camera_data.Camera_film_height=film_height;

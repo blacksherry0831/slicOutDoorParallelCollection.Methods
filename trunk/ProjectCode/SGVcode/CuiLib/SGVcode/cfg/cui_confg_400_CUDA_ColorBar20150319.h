@@ -38,7 +38,7 @@
 //迭代完成最后组合阈值
 #define  Iteration_Complete_Combine_Threshold (0)
 /**************************************************/
-#define  Sky_Energy_UP ((float)5.0)
+#define  Sky_Energy_UP ((double)5.0)
 #define  Sky_Energy_DOWN (3.5)
 //#define  Sky_Energy_UP (7)
 //#define  Sky_Energy_DOWN (4)

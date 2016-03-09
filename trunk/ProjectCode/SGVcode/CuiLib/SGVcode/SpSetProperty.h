@@ -27,7 +27,7 @@ struct SpPoint{
 	int y;
 #if  DEBUG_CUI
 	int   Blue,G,R,Alpha;
-	float	L,A,B;
+	double	L,A,B;
 	double  Light，M，Theta;//角度，亮度，模长
 #endif
 };

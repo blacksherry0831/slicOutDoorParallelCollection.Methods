@@ -330,15 +330,15 @@ UINT CSLICSuperpixelsDlg::THreadSuperPixel_CUDA(LPVOID lpParam)
 
 	vector <double>  Super_Pixel_num_f;
 	vector <double>  Do_Time_f;	
-	int numPics( picvec.size() );
+	size_t numPics( picvec.size() );
 	/****************************************/
 	cui_Button.EnableWindow(FALSE);
 	/****************************************/
-	//float datafai[]={0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9};
-	//int datasize=sizeof(datafai)/sizeof(float);
+	//double datafai[]={0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9};
+	//int datasize=sizeof(datafai)/sizeof(double);
 
 #if 1
-//for (int i=0;i<sizeof(datafai)/sizeof(float);i++)
+//for (int i=0;i<sizeof(datafai)/sizeof(double);i++)
 #else
 int i=6;
 #endif	
@@ -469,14 +469,14 @@ UINT CSLICSuperpixelsDlg::Do400OutDoorIMG(LPVOID lpParam)
 {
 	vector <double>  Super_Pixel_num_f;
 	vector <double>  Do_Time_f;	
-	int numPics( picvec.size() );
+	size_t numPics( picvec.size() );
 	/****************************************/
 	cui_Button.EnableWindow(FALSE);
 	/****************************************/
-	for( int k = 0; k < numPics; k++ ){
+	for( size_t k = 0; k < numPics; k++ ){
 		/*获得水平线位置*/
 
-		float HorizontalLine=0.5; 
+		double HorizontalLine=0.5; 
 #if (TRUE)				
 		/*计算用的中间变量*/
 		ImageMemData MemData(picvec[k],saveLocation,m_spcount,m_compactness,HorizontalLine);
@@ -568,19 +568,19 @@ UINT CSLICSuperpixelsDlg::Do400OutDoorIMGBuildingOrTree(LPVOID lpParam)
 
 	vector <double>  Super_Pixel_num_f;
 	vector <double>  Do_Time_f;	
-	int numPics( picvec.size() );
+	size_t numPics( picvec.size() );
 	/****************************************/
 	cui_Button.EnableWindow(FALSE);
 	/****************************************/
-	for( int k = 0; k < numPics; k++ ){
+	for( size_t k = 0; k < numPics; k++ ){
 		/*获得水平线位置*/
 #if GetHorLineFromFile
 		PointWithDistance  pwd;
 		pwd.Parse(CString(picvec[k].c_str()));				
-		float HorizontalLine=pwd.point.CalculateHorLinePos();
+		double HorizontalLine=pwd.point.CalculateHorLinePos();
 		pwd.point.SaveImgandParam(CString(saveLocation.c_str()),pwd.XmlFileName);
 #else
-		float HorizontalLine=0.5; 
+		double HorizontalLine=0.5; 
 #endif
 
 #if (TRUE)				
@@ -728,14 +728,14 @@ UINT CSLICSuperpixelsDlg::Do120InDoorIMG(LPVOID lpParam)
 {
 	vector <double>  Super_Pixel_num_f;
 	vector <double>  Do_Time_f;	
-	int numPics( picvec.size() );
+	size_t numPics( picvec.size() );
 	/****************************************/
 	cui_Button.EnableWindow(FALSE);
 	/****************************************/
-	for( int k = 0; k < numPics; k++ ){
+	for( size_t k = 0; k < numPics; k++ ){
 		/*获得水平线位置*/
 
-		float HorizontalLine=0.5; 
+		double HorizontalLine=0.5; 
 #if (TRUE)
 		/*计算用的中间变量*/
 		ImageMemData MemData(picvec[k],saveLocation,m_spcount,m_compactness,HorizontalLine);
@@ -817,11 +817,11 @@ UINT CSLICSuperpixelsDlg::THreadSuperPixel_400withLabColor(LPVOID lpParam)
 
 	vector <double>  Super_Pixel_num_f;
 	vector <double>  Do_Time_f;	
-	int numPics( picvec.size() );
+	size_t numPics( picvec.size() );
 	/****************************************/
 	cui_Button.EnableWindow(FALSE);
 	/****************************************/
-			for( int k = 0; k < numPics; k++ ){
+			for( size_t k = 0; k < numPics; k++ ){
 
 				ImageMemData MemData(picvec[k],saveLocation,m_spcount,m_compactness,HORIZONTAL_LINE_POS);
 
@@ -893,11 +893,11 @@ UINT CSLICSuperpixelsDlg::THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpParam
 	
 	vector <double>  Super_Pixel_num_f;
 	vector <double>  Do_Time_f;	
-	int numPics( picvec.size() );
+	size_t numPics( picvec.size() );
 	/****************************************/
 	cui_Button.EnableWindow(FALSE);
 	/****************************************/
-		for(int k = 0; k < numPics; k++ ){	
+		for(size_t k = 0; k < numPics; k++ ){	
 			LARGE_INTEGER litmp;
 			LONGLONG QPart1,QPart2;
 			double dfMinus, dfFreq, dfTim;

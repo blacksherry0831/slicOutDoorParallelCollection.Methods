@@ -192,13 +192,13 @@ while (surface){
 					tinyxml2::XMLElement *FileSize_svmData=surface->FirstChildElement("FSize");
 					xmlError=FileSize_svmData->QueryIntText(&filesize);
                     Dim=filesize;
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==TINYXML2_LIB::XML_SUCCESS);
 					////////////////////////////////////////////////////////////////////////////
 					float categoryfeature=0;
 					tinyxml2::XMLElement *Category_svmData=surface->FirstChildElement("Category");
 					xmlError=Category_svmData->QueryFloatText(&categoryfeature);
 					res.push_back(categoryfeature);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==TINYXML2_LIB::XML_SUCCESS);
 					/////////////////////////////////////////////////////////////////////////////
 					tinyxml2::XMLElement *Feature_svmData=surface->FirstChildElement("Feature");
 					ASSERT(Dim!=0);
@@ -209,7 +209,7 @@ while (surface){
 						ASSERT(F_One!=NULL);
 						float F_One_data;
 						xmlError=F_One->QueryFloatText(&F_One_data);
-						ASSERT(xmlError==XMLError::XML_SUCCESS);
+						ASSERT(xmlError==TINYXML2_LIB::XML_SUCCESS);
 						data.push_back(F_One_data);
 					}
 					/////////////////////////////////////////////////////////////////////////////
@@ -292,13 +292,13 @@ while (surface){
 					tinyxml2::XMLElement *FileSize_svmData=surface->FirstChildElement("FSize");
 					xmlError=FileSize_svmData->QueryIntText(&filesize);
                     Dim=filesize;
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==TINYXML2_LIB::XML_SUCCESS);
 					////////////////////////////////////////////////////////////////////////////
 					float categoryfeature=0;
 					tinyxml2::XMLElement *Category_svmData=surface->FirstChildElement("Category");
 					xmlError=Category_svmData->QueryFloatText(&categoryfeature);
 					res.push_back(categoryfeature);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==TINYXML2_LIB::XML_SUCCESS);
 					/////////////////////////////////////////////////////////////////////////////
 					tinyxml2::XMLElement *Feature_svmData=surface->FirstChildElement("Feature");
 					ASSERT(Dim!=0);
@@ -309,7 +309,7 @@ while (surface){
 						ASSERT(F_One!=NULL);
 						float F_One_data;
 						xmlError=F_One->QueryFloatText(&F_One_data);
-						ASSERT(xmlError==XMLError::XML_SUCCESS);
+						ASSERT(xmlError==TINYXML2_LIB::XML_SUCCESS);
 						data.push_back(F_One_data);
 					}
 					/////////////////////////////////////////////////////////////////////////////

@@ -1625,10 +1625,10 @@ int CuiHarrTransformLet::CalculateBoderContours(int width,int height)
 *
 */
 /*---------------------------------------------------*/
-int CuiHarrTransformLet::CalculateBoderContoursSC(float S,float C)
+int CuiHarrTransformLet::CalculateBoderContoursSC(double S,double C)
 {
-	float Thinkness=0;
-	float P=0.3;
+	double Thinkness=0;
+	double P=0.3;
 	Thinkness=2*S*P/C;
 	return (int)(Thinkness+1);
 }
@@ -1638,9 +1638,9 @@ int CuiHarrTransformLet::CalculateBoderContoursSC(float S,float C)
 *
 */
 /*---------------------------------------------------*/
-float   CuiHarrTransformLet::CalculateImgArea(IplImage *contour_img_quarter)
+double   CuiHarrTransformLet::CalculateImgArea(IplImage *contour_img_quarter)
 {
-	float  area=0;
+	double  area=0;
 	UINT32 color=0x00ffffff;
 	CvScalar WhiteColor=cvScalar(color&0xff,(color>>8)&0xff,(color>>16)&0xff,(color>>24)&0xff);
 	for (int x=0;x<contour_img_quarter->width;x++){
@@ -1674,7 +1674,7 @@ int CuiHarrTransformLet::CalculateBoderContoursThinkness(CvSeq * pcontour,int wi
 	CvScalar externalColor;
 	CvScalar holeColor;
     CvSeq*	 pcontourH=pcontour;
-	float areaAll,areaReduce,RemovePer;
+	double areaAll,areaReduce,RemovePer;
 	do {
 		ContoursThickness+=4;
 		areaAll=0;
@@ -1761,8 +1761,8 @@ void CuiHarrTransformLet::CalculateBoderImg(int scale)
 				UINT32 color_B=0x00000000;
 				holeColor=cvScalar(color_B&0xff,(color_B>>8)&0xff,(color_B>>16)&0xff,(color_B>>24)&0xff);
 				externalColor= WhiteColor;
-				float S=cvContourArea(pcontour);
-				float C=cvArcLength(pcontour);
+				double S=cvContourArea(pcontour);
+				double C=cvArcLength(pcontour);
 				int ContoursThickness=CalculateBoderContoursSC(fabs(S),C);
 				cvDrawContours(contour_img_quarter,pcontour,externalColor,holeColor,1,ContoursThickness);
 			}
@@ -1770,7 +1770,7 @@ void CuiHarrTransformLet::CalculateBoderImg(int scale)
 		}
 #endif
 #if 0
-		float S=0,C=0;
+		double S=0,C=0;
 		CvSeq *headcontour=pcontour;
 		for (;pcontour!=0;pcontour=pcontour->h_next)
 		{	

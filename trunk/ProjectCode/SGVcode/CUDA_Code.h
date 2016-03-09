@@ -9,10 +9,10 @@ extern "C" {
 #endif 
 /*-------------------------------------------------------------*/
 void  PerformSuperpixelSLIC_cuda(
-	float alpha,
-	float betta,
-	float gama,
-	float fai,
+	double alpha,
+	double betta,
+	double gama,
+	double fai,
 	const int kseedsSize,
 	const int m_width,
 	const int m_height,
@@ -29,10 +29,10 @@ void  PerformSuperpixelSLIC_cuda(
 	double*				edgemag,
 	const double		M);
 void  PerformSuperpixelSLIC_ThetaMLXY_cuda(
-	float alpha,
-	float betta,
-	float gama,
-	float fai,
+	double alpha,
+	double betta,
+	double gama,
+	double fai,
 	const int kseedsSize,
 	const int m_width,
 	const int m_height,

@@ -18,7 +18,7 @@ ImageMemData::ImageMemData(
 	string filesavepath,
 	int spcount,
 	double compactness,
-	float horizontal_line_pos)
+	double horizontal_line_pos)
 {
 	//IplImage* a=cvCreateImage(cvSize(100,100),IPL_DEPTH_8U,3);
 //	new int[10];
@@ -41,7 +41,7 @@ ImageMemData::ImageMemData(
 	string filesavepath,
 	int spcount,
 	double compactness,
-	float horizontal_line_pos)
+	double horizontal_line_pos)
 {
 	string filename="MemoryIMG";
 	this->initParam();
@@ -195,12 +195,12 @@ void ImageMemData::ReleaseMemory(void)
 *@return 水平线的最小长度
 */
 /*----------------------------------------------------------------*/
-float ImageMemData::GetHorizontalThresholdLength(void)
+double ImageMemData::GetHorizontalThresholdLength(void)
  {
 	 ASSERT(ImgWidth==0);
 	 ASSERT(ImgHeight==0);
 	 ASSERT(slic_spcount==0);
- float line_len=sqrt(1.0*ImgWidth*ImgHeight/slic_spcount);
+ double line_len=sqrt(1.0*ImgWidth*ImgHeight/slic_spcount);
 	 line_len=0.3*line_len;
 	 return line_len;	
  }
@@ -211,13 +211,13 @@ float ImageMemData::GetHorizontalThresholdLength(void)
 *@return 水平线的最小长度
 */
 /*----------------------------------------------------------------*/
-float ImageMemData::GetSuperPixelDefaultEdgeLength(void)
+double ImageMemData::GetSuperPixelDefaultEdgeLength(void)
 {
 
 	ASSERT(ImgWidth!=0);
 	ASSERT(ImgHeight!=0);
 	ASSERT(slic_spcount!=0);
-	float line_len=sqrt(1.0*ImgWidth*ImgHeight/slic_spcount);
+	double line_len=sqrt(1.0*ImgWidth*ImgHeight/slic_spcount);
 	return line_len;
 
 
@@ -362,10 +362,10 @@ float ImageMemData::GetSuperPixelDefaultEdgeLength(void)
 	 Matrix_D_InDoor=std::shared_ptr<double>(new double[MatrixDims]);
 	 Matrix_W_InDoor=std::shared_ptr<double>(new double[MatrixDims]);
 	 Matrix_L_InDoor=std::shared_ptr<double>(new double[MatrixDims]);
-	 MatrixEigenVector_L_InDoor=std::shared_ptr<float>(new float[MatrixDims]);
+	 MatrixEigenVector_L_InDoor=std::shared_ptr<double>(new double[MatrixDims]);
 	 MatrixEigenValue_L_InDoor=std::shared_ptr<double>(new double[slic_num]);
 	 Matrix_Category_Lable_InDoor=std::shared_ptr<INT32>(new INT32[slic_num]);
-	 Matrix_Category_Simple_InDoor=std::shared_ptr<float>(new float[MatrixDims]);
+	 Matrix_Category_Simple_InDoor=std::shared_ptr<double>(new double[MatrixDims]);
 	 this->DrawContours();
  }
 /*------------------------------------------------------------------------------------------------------------*/

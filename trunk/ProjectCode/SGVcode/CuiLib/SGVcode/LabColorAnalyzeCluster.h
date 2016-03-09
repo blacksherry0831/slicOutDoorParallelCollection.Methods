@@ -48,8 +48,8 @@ public:
 	double Find_MaxSimilar(void);
 public:
 	static bool ColorNearWhiteBlack(LabColor c);
-	static float LabDistanceAB(LabColor ci,LabColor cj);
-	static float LabDistanceLAB(LabColor ci,LabColor cj);
+	static double LabDistanceAB(LabColor ci,LabColor cj);
+	static double LabDistanceLAB(LabColor ci,LabColor cj);
 	
 
 	static bool LabIsSameColorIn(LabColor ci,LabColor cj,bool Enable);
@@ -59,11 +59,11 @@ public:
 	static bool LabIsSameColor(LabColor ci,LabColor cj);
 	
 
-	static float LabDistanceABangleIn(LabColor ci,LabColor cj);
-	static float LabDistanceABangleOut(LabColor ci,LabColor cj);
-	static float LabDistanceABangleInOut(LabColor ci,LabColor cj);
+	static double LabDistanceABangleIn(LabColor ci,LabColor cj);
+	static double LabDistanceABangleOut(LabColor ci,LabColor cj);
+	static double LabDistanceABangleInOut(LabColor ci,LabColor cj);
 
-	static float LabDistanceLABangle(LabColor ci,LabColor cj);
+	static double LabDistanceLABangle(LabColor ci,LabColor cj);
 };
 /*-------------------------------------------------------------------------------------------*/
 /**

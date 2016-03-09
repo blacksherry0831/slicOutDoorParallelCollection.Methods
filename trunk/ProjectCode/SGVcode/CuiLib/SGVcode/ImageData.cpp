@@ -17,7 +17,7 @@ ImageData::ImageData(
 	string filesavepath,
 	int spcount,
 	double compactness,
-	float horizontal_line_pos)
+	double horizontal_line_pos)
 {
 	this->initParam();
 	ASSERT(filename!="");
@@ -37,7 +37,7 @@ ImageData::ImageData(
 	string filesavepath,
 	int spcount,
 	double compactness,
-	float horizontal_line_pos)
+	double horizontal_line_pos)
 {
 	string filename="MemoryIMG";
 	this->initParam();
@@ -56,7 +56,7 @@ ImageData::ImageData(
 	string filename,
 	string filesavepath,
 	int spcount,
-	float horizontal_line_pos)
+	double horizontal_line_pos)
 {
 	this->initParam();
 	ASSERT(filename!="");
@@ -453,7 +453,7 @@ void ImageData::Combine2SPto1(void)
 //===========================================================================
 ///	DoRGBtoLABConversion
 ///
-///	For whole image: overlaoded floating point version
+///	For whole image: overlaoded doubleing point version
 //===========================================================================
 void ImageData::DoRGBtoLABConversion(
 	unsigned int*		ubuff,
@@ -629,8 +629,8 @@ void ImageData::GetThetaMLXYSeeds_ForGivenStepSize_Rectangle(
 	const bool&					perturbseeds,
 	const vector<double>&		edgemag)
 {
-	float xStep;
-	float yStep;
+	double xStep;
+	double yStep;
 	const bool hexgrid = false;
 	int numseeds(0);
 	int n(0);
@@ -639,9 +639,9 @@ void ImageData::GetThetaMLXYSeeds_ForGivenStepSize_Rectangle(
 #if FALSE
 	int max_wh=(ImgWidth>ImgHeight)?ImgWidth:ImgHeight; 
 	int min_wh=(ImgWidth<ImgHeight)?ImgWidth:ImgHeight;
-	float scale_wh=1.0*min_wh/max_wh;
+	double scale_wh=1.0*min_wh/max_wh;
 	unsigned int wh_gcd=GetGCD(ImgWidth,ImgHeight);
-	float scale_3_2=1.0*2/3;
+	double scale_3_2=1.0*2/3;
 	if (scale_wh==scale_3_2){
 		int K_new=(K/12+0.5)*12;
 		if (ImgWidth>ImgHeight){
@@ -671,8 +671,8 @@ void ImageData::GetThetaMLXYSeeds_ForGivenStepSize_Rectangle(
 	}
 #endif	
 
-	float xstrips_test = (double(ImgWidth)/double(xStep));
-	float ystrips_test = (double(ImgHeight)/double(yStep));
+	double xstrips_test = (double(ImgWidth)/double(xStep));
+	double ystrips_test = (double(ImgHeight)/double(yStep));
 	int xstrips = (double(ImgWidth)/double(xStep));
 	int ystrips = (double(ImgHeight)/double(yStep));
 	ASSERT(xstrips==ystrips);
@@ -1351,7 +1351,7 @@ void ImageData::CalculateSpBlockEnergy2(int sp)
 	QPart2 = litmp.QuadPart;
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;
-	float mstime=dfTim*1000;	
+	double mstime=dfTim*1000;	
 }
 /*----------------------------------------------------------------*/
 /**
@@ -1363,11 +1363,11 @@ void ImageData::CalculateSpBlockEnergy2(int sp)
 void ImageData::CalculateAllSpBlockEnergyRank(int RankNum)
 {
 #if 0
-float* EnergyHighsigmaArray=new float[slic_current_num];
+double* EnergyHighsigmaArray=new double[slic_current_num];
 	for(int i=0;i<slic_current_num;i++){	
 		EnergyHighsigmaArray[i]=SpSet.SpPropertySet[i].harr_energy.EnergyHighsigma;
 	}
-	float MaxEnergyHighsigma=cui_GeneralImgProcess::GetMaxValue(EnergyHighsigmaArray,slic_current_num);
+	double MaxEnergyHighsigma=cui_GeneralImgProcess::GetMaxValue(EnergyHighsigmaArray,slic_current_num);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	for(int i=0;i<slic_current_num;i++){	
 		SpSet.SpPropertySet[i].harr_energy.EnergyGrade=SpSet.SpPropertySet[i].harr_energy.EnergyHighsigma/MaxEnergyHighsigma*RankNum;
@@ -1383,7 +1383,7 @@ float* EnergyHighsigmaArray=new float[slic_current_num];
 	int MaxSort[2];
 	cui_GeneralImgProcess::GetMaxValueIndex(EnergyHighsigmaArray.data(),slic_current_num, MaxSort,sizeof( MaxSort)/sizeof(int));
 
-	float MaxEnergyHighsigma=EnergyHighsigmaArray[MaxSort[0]];
+	double MaxEnergyHighsigma=EnergyHighsigmaArray[MaxSort[0]];
 	if (MaxEnergyHighsigma<0.5){
 		MaxEnergyHighsigma=1;
 	}
@@ -1623,3 +1623,37 @@ void ImageData::DrawS_V_G_Lables_BorderLine(IplImage *img,UINT32 category)
 #endif
 
 }
+/*----------------------------------------------------------------*/
+/**
+*BGRA 4¸öÍ¨µÀ
+*
+*
+*/
+/*----------------------------------------------------------------*/
+void ImageData::SaveSuperpixelLabels(
+	INT32*					labels,
+	const int				width,
+	const int				height,
+	const string			filename,
+	const string			path) 
+{ 
+	ASSERT(width==this->ImgWidth);
+	ASSERT(height==this->ImgHeight);
+	ASSERT(sizeof(INT32)==4);
+	
+	IplImage *img_t=cvCreateImage(cvSize(this->ImgWidth,this->ImgHeight),IPL_DEPTH_8U,4);
+
+	memcpy(img_t->imageData,labels,img_t->imageSize);
+
+	cvSaveImage(filename.c_str(),img_t);
+
+	cvReleaseImage(&img_t);
+		
+}
+/*----------------------------------------------------------------*/
+/**
+*
+*
+*
+*/
+/*----------------------------------------------------------------*/

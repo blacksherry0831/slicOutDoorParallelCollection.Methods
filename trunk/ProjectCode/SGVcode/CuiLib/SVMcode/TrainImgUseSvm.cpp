@@ -9,6 +9,11 @@
 #include <cstdio> 
 #include<stdio.h>
 #include<string.h>
+/***********************************************************/
+#ifdef _MSC_VER
+#pragma warning (error: 4482)
+#endif 
+/***********************************************************/
  int TrainImgUseSvm::CategoryFeature=0;
  double TrainImgUseSvm:: winwidth=48;
  double TrainImgUseSvm:: winheight=96;
@@ -1066,13 +1071,13 @@ void TrainImgUseSvm::Read2MemFromXML(
 					tinyxml2::XMLElement *FileSize_svmData=surface->FirstChildElement("FSize");
 					xmlError=FileSize_svmData->QueryIntText(&filesize);
                     Dim=filesize;
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					////////////////////////////////////////////////////////////////////////////
 					float categoryfeature=0;
 					tinyxml2::XMLElement *Category_svmData=surface->FirstChildElement("Category");
 					xmlError=Category_svmData->QueryFloatText(&categoryfeature);
 					res.push_back(categoryfeature);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					/////////////////////////////////////////////////////////////////////////////
 					tinyxml2::XMLElement *Feature_svmData=surface->FirstChildElement("Feature");
 					ASSERT(Dim!=0);
@@ -1083,7 +1088,7 @@ void TrainImgUseSvm::Read2MemFromXML(
 						ASSERT(F_One!=NULL);
 						float F_One_data;
 						xmlError=F_One->QueryFloatText(&F_One_data);
-						ASSERT(xmlError==XMLError::XML_SUCCESS);
+						ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 						data.push_back(F_One_data);
 					}
 					/////////////////////////////////////////////////////////////////////////////
@@ -1311,26 +1316,26 @@ void TrainImgUseSvm::Read2MemFromXML_SCountD(
 					tinyxml2::XMLElement *Category_svmData=surface->FirstChildElement("Category");
 					xmlError=Category_svmData->QueryFloatText(&categoryfeature);
 					res.push_back(categoryfeature);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					/////////////////////////////////////////////////////////////////////////////
 					ASSERT(Dim!=0);
 					tinyxml2::XMLElement *Feature_SumData=surface->FirstChildElement("SumManhattan");
 					ASSERT(Feature_SumData!=NULL);
 					float F_One_data=0;
 					xmlError=Feature_SumData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back(F_One_data/(180*100));
 					/////////////////////////////////////////////////////////////////////////////
 					tinyxml2::XMLElement *Feature_CountData=surface->FirstChildElement("ZeroCount");
 					ASSERT(Feature_CountData!=NULL);
 					xmlError=Feature_CountData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back(F_One_data/180);
 					/////////////////////////////////////////////////////////////////////////////
 					tinyxml2::XMLElement *Feature_DensityData=surface->FirstChildElement("LineNumDensity");
 					ASSERT(Feature_DensityData!=NULL);
 					xmlError=Feature_DensityData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back(F_One_data/300);
 					/////////////////////////////////////////////////////////////////////////////
 					surface=surface->NextSiblingElement();  
@@ -1373,20 +1378,20 @@ void TrainImgUseSvm::Read2MemFromXML_SCount(
 					tinyxml2::XMLElement *Category_svmData=surface->FirstChildElement("Category");
 					xmlError=Category_svmData->QueryFloatText(&categoryfeature);
 					res.push_back(categoryfeature);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					/////////////////////////////////////////////////////////////////////////////
 					ASSERT(Dim!=0);
 					tinyxml2::XMLElement *Feature_SumData=surface->FirstChildElement("SumManhattan");
 					ASSERT(Feature_SumData!=NULL);
 					float F_One_data=0;
 					xmlError=Feature_SumData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back(F_One_data/(180*100));
 					/////////////////////////////////////////////////////////////////////////////
 					tinyxml2::XMLElement *Feature_CountData=surface->FirstChildElement("ZeroCount");
 					ASSERT(Feature_CountData!=NULL);
 					xmlError=Feature_CountData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back(F_One_data/180);
 					/////////////////////////////////////////////////////////////////////////////
 					surface=surface->NextSiblingElement();
@@ -1429,26 +1434,26 @@ void TrainImgUseSvm::Read2MemFromXML_SDensityC(
 					tinyxml2::XMLElement *Category_svmData=surface->FirstChildElement("Category");
 					xmlError=Category_svmData->QueryFloatText(&categoryfeature);
 					res.push_back(categoryfeature);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					/////////////////////////////////////////////////////////////////////////////
 					ASSERT(Dim!=0);
 					tinyxml2::XMLElement *Feature_SumData=surface->FirstChildElement("SumManhattan");
 					ASSERT(Feature_SumData!=NULL);
 					float F_One_data=0;
 					xmlError=Feature_SumData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back(F_One_data/(180*100));
 					/////////////////////////////////////////////////////////////////////////////
 					tinyxml2::XMLElement *Feature_CountData=surface->FirstChildElement("LineNumDensity");
 					ASSERT(Feature_CountData!=NULL);
 					xmlError=Feature_CountData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back(F_One_data/300);
 					/////////////////////////////////////////////////////////////////////////////
 					tinyxml2::XMLElement *Feature_DensityData=surface->FirstChildElement("Color");
 					ASSERT(Feature_DensityData!=NULL);
 					xmlError=Feature_DensityData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back((F_One_data+180.0)/360);
 					/////////////////////////////////////////////////////////////////////////////
 					surface=surface->NextSiblingElement();  
@@ -1491,20 +1496,20 @@ void TrainImgUseSvm::Read2MemFromXML_SDensity(
 					tinyxml2::XMLElement *Category_svmData=surface->FirstChildElement("Category");
 					xmlError=Category_svmData->QueryFloatText(&categoryfeature);
 					res.push_back(categoryfeature);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					/////////////////////////////////////////////////////////////////////////////
 					ASSERT(Dim!=0);
 					tinyxml2::XMLElement *Feature_SumData=surface->FirstChildElement("SumManhattan");
 					ASSERT(Feature_SumData!=NULL);
 					float F_One_data=0;
 					xmlError=Feature_SumData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back(F_One_data/(180*100));
 					/////////////////////////////////////////////////////////////////////////////
 					tinyxml2::XMLElement *Feature_CountData=surface->FirstChildElement("LineNumDensity");
 					ASSERT(Feature_CountData!=NULL);
 					xmlError=Feature_CountData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back(F_One_data/300);
 					/////////////////////////////////////////////////////////////////////////////
 					surface=surface->NextSiblingElement();  
@@ -1547,26 +1552,26 @@ void TrainImgUseSvm::Read2MemFromXML_SCountColor(
 					tinyxml2::XMLElement *Category_svmData=surface->FirstChildElement("Category");
 					xmlError=Category_svmData->QueryFloatText(&categoryfeature);
 					res.push_back(categoryfeature);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					/////////////////////////////////////////////////////////////////////////////
 					ASSERT(Dim!=0);
 					tinyxml2::XMLElement *Feature_SumData=surface->FirstChildElement("SumManhattan");
 					ASSERT(Feature_SumData!=NULL);
 					float F_One_data=0;
 					xmlError=Feature_SumData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back(F_One_data/(180*100));
 					/////////////////////////////////////////////////////////////////////////////
 					tinyxml2::XMLElement *Feature_CountData=surface->FirstChildElement("ZeroCount");
 					ASSERT(Feature_CountData!=NULL);
 					xmlError=Feature_CountData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back(F_One_data/180);
 					/////////////////////////////////////////////////////////////////////////////
 					tinyxml2::XMLElement *Feature_DensityData=surface->FirstChildElement("Color");
 					ASSERT(Feature_DensityData!=NULL);
 					xmlError=Feature_DensityData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back((F_One_data+180.0)/360.0);
 					/////////////////////////////////////////////////////////////////////////////
 					surface=surface->NextSiblingElement();  
@@ -1609,26 +1614,26 @@ void TrainImgUseSvm::Read2MemFromXML_CountDColor(
 					tinyxml2::XMLElement *Category_svmData=surface->FirstChildElement("Category");
 					xmlError=Category_svmData->QueryFloatText(&categoryfeature);
 					res.push_back(categoryfeature);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					/////////////////////////////////////////////////////////////////////////////
 					ASSERT(Dim!=0);
 					tinyxml2::XMLElement *Feature_SumData=surface->FirstChildElement("ZeroCount");
 					ASSERT(Feature_SumData!=NULL);
 					float F_One_data=0;
 					xmlError=Feature_SumData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back(F_One_data/180);
 					/////////////////////////////////////////////////////////////////////////////
 					tinyxml2::XMLElement *Feature_CountData=surface->FirstChildElement("LineNumDensity");
 					ASSERT(Feature_CountData!=NULL);
 					xmlError=Feature_CountData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back(F_One_data/300);
 					/////////////////////////////////////////////////////////////////////////////
 					tinyxml2::XMLElement *Feature_DensityData=surface->FirstChildElement("Color");
 					ASSERT(Feature_DensityData!=NULL);
 					xmlError=Feature_DensityData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back((F_One_data+180.0)/360);
 					/////////////////////////////////////////////////////////////////////////////
 					surface=surface->NextSiblingElement();  
@@ -1672,32 +1677,32 @@ void TrainImgUseSvm::Read2MemFromXML_Sum_Count_Density_Color(
 		tinyxml2::XMLElement *Category_svmData=surface->FirstChildElement("Category");
 		xmlError=Category_svmData->QueryFloatText(&categoryfeature);
 		res.push_back(categoryfeature);
-		ASSERT(xmlError==XMLError::XML_SUCCESS);
+		ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 		/////////////////////////////////////////////////////////////////////////////
 		ASSERT(Dim!=0);
 		tinyxml2::XMLElement *Feature_SumData=surface->FirstChildElement("SumManhattan");
 		ASSERT(Feature_SumData!=NULL);
 		float F_One_data=0;
 		xmlError=Feature_SumData->QueryFloatText(&F_One_data);
-		ASSERT(xmlError==XMLError::XML_SUCCESS);
+		ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 		data.push_back(F_One_data/(180*100));
 		/////////////////////////////////////////////////////////////////////////////
 		tinyxml2::XMLElement *Feature_CountData=surface->FirstChildElement("ZeroCount");
 		ASSERT(Feature_CountData!=NULL);
 		xmlError=Feature_CountData->QueryFloatText(&F_One_data);
-		ASSERT(xmlError==XMLError::XML_SUCCESS);
+		ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 		data.push_back(F_One_data/180);
 		/////////////////////////////////////////////////////////////////////////////
 		tinyxml2::XMLElement *Feature_DensityData=surface->FirstChildElement("LineNumDensity");
 		ASSERT(Feature_DensityData!=NULL);
 		xmlError=Feature_DensityData->QueryFloatText(&F_One_data);
-		ASSERT(xmlError==XMLError::XML_SUCCESS);
+		ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 		data.push_back(F_One_data/300);
 		/////////////////////////////////////////////////////////////////////////////
 		tinyxml2::XMLElement *Feature_Color=surface->FirstChildElement("Color");
 		ASSERT(Feature_Color!=NULL);
 		xmlError=Feature_Color->QueryFloatText(&F_One_data);
-		ASSERT(xmlError==XMLError::XML_SUCCESS);
+		ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 		data.push_back((F_One_data+180.0)/360);
 		/////////////////////////////////////////////////////////////////////////////
 		surface=surface->NextSiblingElement();  
@@ -1741,20 +1746,20 @@ void TrainImgUseSvm::Read2MemFromXML_SColor(
 					tinyxml2::XMLElement *Category_svmData=surface->FirstChildElement("Category");
 					xmlError=Category_svmData->QueryFloatText(&categoryfeature);
 					res.push_back(categoryfeature);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					/////////////////////////////////////////////////////////////////////////////
 					ASSERT(Dim!=0);
 					tinyxml2::XMLElement *Feature_SumData=surface->FirstChildElement("SumManhattan");
 					ASSERT(Feature_SumData!=NULL);
 					float F_One_data=0;
 					xmlError=Feature_SumData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back(F_One_data/(180*100));
 					/////////////////////////////////////////////////////////////////////////////
 					tinyxml2::XMLElement *Feature_CountData=surface->FirstChildElement("Color");
 					ASSERT(Feature_CountData!=NULL);
 					xmlError=Feature_CountData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back((F_One_data+180.0)/360.0);
 					/////////////////////////////////////////////////////////////////////////////
 					surface=surface->NextSiblingElement();
@@ -2145,18 +2150,18 @@ void TrainImgUseSvm::Read2MemFromXML_Count_Density(
 					tinyxml2::XMLElement *Category_svmData=surface->FirstChildElement("Category");
 					xmlError=Category_svmData->QueryFloatText(&categoryfeature);
 					res.push_back(categoryfeature);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					/////////////////////////////////////////////////////////////////////////////
 					tinyxml2::XMLElement *Feature_CountData=surface->FirstChildElement("ZeroCount");
 					ASSERT(Feature_CountData!=NULL);
 					xmlError=Feature_CountData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back(F_One_data/180);
 					/////////////////////////////////////////////////////////////////////////////
 					Feature_CountData=surface->FirstChildElement("LineNumDensity");
 					ASSERT(Feature_CountData!=NULL);
 					xmlError=Feature_CountData->QueryFloatText(&F_One_data);
-					ASSERT(xmlError==XMLError::XML_SUCCESS);
+					ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 					data.push_back(F_One_data/300);
 					/////////////////////////////////////////////////////////////////////////////
 					surface=surface->NextSiblingElement();  
@@ -2335,20 +2340,20 @@ void TrainImgUseSvm::Read2MemFromXML_Count_Color(
 		tinyxml2::XMLElement *Category_svmData=surface->FirstChildElement("Category");
 		xmlError=Category_svmData->QueryFloatText(&categoryfeature);
 		res.push_back(categoryfeature);
-		ASSERT(xmlError==XMLError::XML_SUCCESS);
+		ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 		/////////////////////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////////////////////////////////////
 		tinyxml2::XMLElement *Feature_CountData=surface->FirstChildElement("ZeroCount");
 		ASSERT(Feature_CountData!=NULL);
 		xmlError=Feature_CountData->QueryFloatText(&F_One_data);
-		ASSERT(xmlError==XMLError::XML_SUCCESS);
+		ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 		data.push_back(F_One_data/180);
 		/////////////////////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////////////////////////////////////
 		tinyxml2::XMLElement *Feature_DensityData=surface->FirstChildElement("Color");
 		ASSERT(Feature_DensityData!=NULL);
 		xmlError=Feature_DensityData->QueryFloatText(&F_One_data);
-		ASSERT(xmlError==XMLError::XML_SUCCESS);
+		ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 		data.push_back((F_One_data+180.0)/360);
 		//////////////////////////////////////////////////////////////////////////////
 		surface=surface->NextSiblingElement();  
@@ -2393,18 +2398,18 @@ void TrainImgUseSvm::Read2MemFromXML_Density_Color(
 		tinyxml2::XMLElement *Category_svmData=surface->FirstChildElement("Category");
 		xmlError=Category_svmData->QueryFloatText(&categoryfeature);
 		res.push_back(categoryfeature);
-		ASSERT(xmlError==XMLError::XML_SUCCESS);
+		ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 		/////////////////////////////////////////////////////////////////////////////
 		tinyxml2::XMLElement *Feature_CountData=surface->FirstChildElement("LineNumDensity");
 		ASSERT(Feature_CountData!=NULL);
 		xmlError=Feature_CountData->QueryFloatText(&F_One_data);
-		ASSERT(xmlError==XMLError::XML_SUCCESS);
+		ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 		data.push_back(F_One_data/300);
 		/////////////////////////////////////////////////////////////////////////////
 		tinyxml2::XMLElement *Feature_DensityData=surface->FirstChildElement("Color");
 		ASSERT(Feature_DensityData!=NULL);
 		xmlError=Feature_DensityData->QueryFloatText(&F_One_data);
-		ASSERT(xmlError==XMLError::XML_SUCCESS);
+		ASSERT(xmlError==tinyxml2::XML_SUCCESS);
 		data.push_back((F_One_data+180.0)/360);
 		//////////////////////////////////////////////////////////////////////////////
 		surface=surface->NextSiblingElement();  
@@ -2476,7 +2481,7 @@ void TrainImgUseSvm::ReadFileName2PathList(vector<string>& pathList)
 	string filename=posSamplesDir;
 	tinyxml2::XMLDocument doc;  
 	doc.LoadFile(filename.c_str());  
-	tinyxml2::XMLError xmlError;
+//	tinyxml2::XMLError xmlError;
 
 	tinyxml2::XMLElement *scene=doc.RootElement();  
 	tinyxml2::XMLElement *surface=scene->FirstChildElement("SvmData");

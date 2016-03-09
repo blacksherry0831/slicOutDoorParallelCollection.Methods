@@ -72,8 +72,8 @@ void zlm_ForceGround(void);
 void zlm_ForceVertical(void);
 void zlm_ForceVertical_SG(void);
 void CalcuateSpWeightByY();
-float GetHs_InDoor(float DeflectionAngle);
-float GetHg_InDoor(float DeflectionAngle);
+double GetHs_InDoor(double DeflectionAngle);
+double GetHg_InDoor(double DeflectionAngle);
 private:
 	double Confusion_M[3][3];/**<早期的模糊矩阵，现在不使用*/
 	Energy_Harr  harr_sp_energy[Num_Hist];/**<各个超像素块的小波能量*/
@@ -161,10 +161,10 @@ void DivideSkyV_S(
 	Energy_Harr* harr_sp_energy,
 	UINT32* E_matrix,
 	double* cui_G_V_S_Num_Category);
-void RemoveUnEffectiveSkySP(ULONGLONG sky_Effect_Index,float L_distance);
+void RemoveUnEffectiveSkySP(ULONGLONG sky_Effect_Index,double L_distance);
 static void RemoveUnEffectiveSkySP_S(
 	ULONGLONG sky_Effect_Index,
-	float L_distance,
+	double L_distance,
 	int cui_NumLabels,
 	double* cui_G_V_S_Num_Category,
 	Energy_Harr* harr_sp_energy,
@@ -176,23 +176,23 @@ void RemoveVerticalByNeighbor(void);
 /*-------------------------------*/
 bool Is_Sky_Block(
 	int spj,
-	float sky_Light_Threshold,
-	float sky_energy_Threshold,
-	float AB_distance,
-	float L_distance);
+	double sky_Light_Threshold,
+	double sky_energy_Threshold,
+	double AB_distance,
+	double L_distance);
 /*-------------------------------*/
 static bool Is_Sky_Block_S(
 	int spj,
-	float sky_Light_Threshold,
-	float sky_energy_Threshold,
-	float AB_distance,
-	float L_distance,
+	double sky_Light_Threshold,
+	double sky_energy_Threshold,
+	double AB_distance,
+	double L_distance,
 	Energy_Harr* harr_sp_energy,
 	double* cui_G_V_S_Num_Category,
 	LabColorCategory* Lab_Color_Category);
 /*-------------------------------*/
 void InitParam(void);
-void CalculateUpandDownSquarebyHor(float* UpSquare, float* DownSquare, int  sp);
+void CalculateUpandDownSquarebyHor(double* UpSquare, double* DownSquare, int  sp);
 #if TRUE
 
 void ForceSky_InDoor(void);
@@ -226,13 +226,13 @@ void RemoveSunpendVonG_MustHaveS(void);
 void VerticalMustHaveSupport_Pixel(void);
 void VerticalMustHaveSupport_SpPixel(void);
 void OverHorLineMustVertical(void);
-void DecideFloatingSkySP2V_Init(void);
-void DecideFloatingSky_InDoor_DFS(void);
-void DFS_4FloatingSky2Down(int spi);
+void DecidedoubleingSkySP2V_Init(void);
+void DecidedoubleingSky_InDoor_DFS(void);
+void DFS_4doubleingSky2Down(int spi);
 #endif
 public:	
-	double Gx_InDoor(int x,int n,float posHor,float Pg,int Height);
-	double Sx_InDoor(int x,int n,float posHor,float Ps,int Height);
+	double Gx_InDoor(int x,int n,double posHor,double Pg,int Height);
+	double Sx_InDoor(int x,int n,double posHor,double Ps,int Height);
 	static double Pow_Odd(double b,double w);//奇函数
 	static double Pow_Even(double b,double w);//偶函数
 public:

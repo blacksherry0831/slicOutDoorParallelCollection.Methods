@@ -20,18 +20,18 @@ public:
 		string filesavepath,
 		int spcount,
 		double compactness,
-		float horizontal_line_pos);
+		double horizontal_line_pos);
 	ImageData(
 		string filename,
 		string filesavepath,
 		int spcount,
-		float horizontal_line_pos);
+		double horizontal_line_pos);
 	ImageData(
 		IplImage* img,
 		string filesavepath="",
 		int spcount=800,
 		double compactness=8,
-		float horizontal_line_pos=0.5);
+		double horizontal_line_pos=0.5);
 	~ImageData(void);
 	void ReleaseMemory(void);
 	void initParam(void);
@@ -51,9 +51,9 @@ public:
 	int ImgHeight;
 public:
 	int   Seg_HorizontalLinePos;/**<设置视平线位置*/
-	float Seg_HorizontalLinePosScale;/**<*/
-	float PgOffset;/**<*/
-	float PsOffset;/**<*/
+	double Seg_HorizontalLinePosScale;/**<*/
+	double PgOffset;/**<*/
+	double PsOffset;/**<*/
 public:
 	int slic_expect_num;
 	int slic_current_num;
@@ -90,10 +90,10 @@ public:
 	vector<double> kseedsL;
 	vector<double> kseedsX;
 	vector<double> kseedsY;
-	float alpha;
-	float betta;
-	float gama;
-	float fai;
+	double alpha;
+	double betta;
+	double gama;
+	double fai;
 public:
 	int InitTimes;
 	int InitMemDataTimes;
@@ -167,5 +167,11 @@ void FillHoleOnSVGLables(
 	bool BorderSky,
 	bool BorderGnd);
 void DrawS_V_G_Lables_BorderLine(IplImage *img,UINT32 category);
+void ImageData::SaveSuperpixelLabels(
+	INT32*					labels,
+	const int					width,
+	const int					height,
+	const string				filename,
+	const string				path);
 };
 

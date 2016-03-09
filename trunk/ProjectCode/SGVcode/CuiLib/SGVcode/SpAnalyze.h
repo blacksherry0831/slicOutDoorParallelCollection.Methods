@@ -34,10 +34,13 @@ public:
 */
 /*------------------------------------------------*/
 #define  HarrDepth   (1)/**<ÎŞÒâÒådeprecated*/
-enum SpSizeAttr {
-SA_UnKnow,/*Í¼¿éÊôĞÔÎ´Öª*<*/
-FAT,/**<ÅÖÍ¼¿é*/
-THIN/**<ÊİÍ¼¿é*/
+
+class SpSizeAttr{
+public:	enum SSA {
+		SA_UnKnow,/*Í¼¿éÊôĞÔÎ´Öª*<*/
+		FAT,/**<ÅÖÍ¼¿é*/
+		THIN/**<ÊİÍ¼¿é*/
+	};
 };
 /*------------------------------------------------*/
 /**
@@ -59,7 +62,7 @@ public:
 	float EffectivePixelNum;/**<Íâ½Ó¾ØĞÎÖĞÓĞĞ§µÄÏñËØ¸öÊı*/
 	unsigned long GetEffectiveColorNumber();
 public:
-	SpSizeAttr SpSA;/**<Í¼¿éµÄÅÖÊİÊôĞÔ*/
+	SpSizeAttr::SSA SpSA;/**<Í¼¿éµÄÅÖÊİÊôĞÔ*/
 public:
 	SpAnalyze(void);
 	~SpAnalyze(void);
@@ -72,7 +75,7 @@ private:
 	double CalculateP_cs(void);
 public:	
 	void Calcuate(ImageMemData* MemData_t,bool IsSave=true);
-	SpSizeAttr IsSpFatorThin(ImageMemData* MemData_t);
+	SpSizeAttr::SSA IsSpFatorThin(ImageMemData* MemData_t);
 	void PickUp(void);
 	void SaveSpAnalyze(void);
 	void ExtractImageFeatureWithHarr(vector<float>& feature);

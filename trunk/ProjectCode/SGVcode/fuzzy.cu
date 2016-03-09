@@ -1,3 +1,7 @@
+#ifdef _MSC_VER  
+#pragma warning(disable:4101)
+#endif
+//C4101
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 #include "device_functions.h"
@@ -105,9 +109,9 @@ extern "C"  void classify_SkyVerticalGround_gpu(
 *
 */
 /*------------------------------------------------------------------------------------------*/
-//__inline__ __host__ __device__ float GetPosWeightArrayV(float horizontal_line, float n,float sigma,float i)
+//__inline__ __host__ __device__ double GetPosWeightArrayV(double horizontal_line, double n,double sigma,double i)
 //{
-//	float Weight=(1/(sqrt(2*M_PI)*sigma))*exp(-pow(i,2)/pow(sigma,2))*WeightZoom;
+//	double Weight=(1/(sqrt(2*M_PI)*sigma))*exp(-pow(i,2)/pow(sigma,2))*WeightZoom;
 //	return Weight;
 //}
 /*------------------------------------------------------------------------------------------*/
@@ -120,7 +124,7 @@ Follow us: @GPUComputing on Twitter | NVIDIA on Facebook
 *
 */
 /*------------------------------------------------------------------------------------------*/
-__global__ void	FillWeightArrayV_Kernel(double horizontal_line, double n,double* WeightArray_dev,float Height)
+__global__ void	FillWeightArrayV_Kernel(double horizontal_line, double n,double* WeightArray_dev,int Height)
 {
 	
 	int i = blockIdx.x * blockDim.x + threadIdx.x;	
@@ -138,8 +142,8 @@ __global__ void	FillWeightArrayV_Kernel(double horizontal_line, double n,double*
 	int y=0-x+horizontal_line;	
 		
 	if (y>=0&&y<Height){
-		//WeightArray_dev[y]=(1/(sqrt(2*M_PI)*sigma))*exp(-pow((float)x,2)/pow(sigma,2))*WeightZoom;
-		WeightArray_dev[y]=(1/(sqrt(2*M_PI)*sigma))*exp(-pow((float)x,2)/pow(sigma,2))*WeightZoom*2;//2015年5月22日17:31:00 立面密度乘以二;
+		//WeightArray_dev[y]=(1/(sqrt(2*M_PI)*sigma))*exp(-pow((double)x,2)/pow(sigma,2))*WeightZoom;
+		WeightArray_dev[y]=(1/(sqrt(2*M_PI)*sigma))*exp(-pow((double)x,2)/pow(sigma,2))*WeightZoom*2;//2015年5月22日17:31:00 立面密度乘以二;
 	}
 	
 }
@@ -150,7 +154,7 @@ __global__ void	FillWeightArrayV_Kernel(double horizontal_line, double n,double*
 *
 */
 /*------------------------------------------------------------------------------------------*/
-__global__ void	FillWeightArrayS_out_Kernel(double horizontal_line, double n,double* WeightArray_dev,float Height)
+__global__ void	FillWeightArrayS_out_Kernel(double horizontal_line, double n,double* WeightArray_dev,double Height)
 {
 #if 0
 int i = blockIdx.x * blockDim.x + threadIdx.x;	
@@ -208,7 +212,7 @@ int i = blockIdx.x * blockDim.x + threadIdx.x;
 *
 */
 /*------------------------------------------------------------------------------------------*/
-__global__ void	FillWeightArrayG_out_Kernel(double horizontal_line, double n,double* WeightArray_dev,float Height)
+__global__ void	FillWeightArrayG_out_Kernel(double horizontal_line, double n,double* WeightArray_dev,double Height)
 {
 
 	int i = blockIdx.x * blockDim.x + threadIdx.x;	
