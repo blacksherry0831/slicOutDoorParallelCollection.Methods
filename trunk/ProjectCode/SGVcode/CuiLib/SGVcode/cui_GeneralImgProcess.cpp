@@ -2,6 +2,9 @@
 #include "cui_GeneralImgProcess.h"
 #include "../opencv_stl.h"
 #include "Harr/CuiHarrTransformLet.h"
+#if _MSC_VER
+#pragma warning(disable: 4101)
+#endif
 /*----------------------------------------------------------------*/
 /**
 *¹¹Ôìº¯Êý\n

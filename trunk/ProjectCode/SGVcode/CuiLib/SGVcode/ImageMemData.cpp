@@ -1,6 +1,10 @@
 #include "StdAfx.h"
 #include "ImageMemData.h"
 #include "cui_GeneralImgProcess.h"
+/*-------------------------------------------------------------------*/
+#if _MSC_VER
+#pragma warning(disable: 4101)
+#endif
 /*----------------------------------------------------------------*/
 /**
 *¹¹Ôìº¯Êý\n
