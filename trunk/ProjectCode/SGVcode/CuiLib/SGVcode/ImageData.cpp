@@ -1703,7 +1703,7 @@ void ImageData::SaveSuperpixelLabelsImagePNG(
 		for (int y=0;y<height;y++){
 			int ind=x+y*width;			
 			int org=data[ind];
-			unsigned char red=org>=255?255:org;
+			unsigned char red=org>=254?254:org;
 			data[ind]|=0xff<<32;//Ìî³äalphÍ¨µÀ
 			data[ind]|=red<<24;
 			/*if (org<245){
