@@ -19,12 +19,6 @@ float SceneDetermine:: B3TemplatesInDoor[BuildTemplates][AngLeDivided180];
 *
 */
 /*----------------------------------------------------------------*/
-#if _MSC_VER
-  #pragma warning(disable: 4244)
-  #pragma warning(disable: 4101)
-  #pragma warning(disable: 4018)
-
-#endif
 SceneDetermine::SceneDetermine(void)
 {
 #if 1
@@ -179,13 +173,13 @@ void SceneDetermine::Init3PeakTemplate(void)
 	memset(B3Templates,0,sizeof(B3Templates));
 	for (int pi=0;pi<BuildTemplates;pi++){
 		
-			 for (unsigned int ti=B3Peaks[pi].Lpeak[0];ti<=B3Peaks[pi].Lpeak[1];ti++){
+			 for (int ti=B3Peaks[pi].Lpeak[0];ti<=B3Peaks[pi].Lpeak[1];ti++){
 				   B3Templates[pi][ti]=1;
 			 }
-			 for (unsigned int ti=B3Peaks[pi].Mpeak[0];ti<=B3Peaks[pi].Mpeak[1];ti++){
+			 for (int ti=B3Peaks[pi].Mpeak[0];ti<=B3Peaks[pi].Mpeak[1];ti++){
 				   B3Templates[pi][ti]=1;
 			 }
-			 for (unsigned int ti=B3Peaks[pi].Rpeak[0];ti<=B3Peaks[pi].Rpeak[1];ti++){
+			 for (int ti=B3Peaks[pi].Rpeak[0];ti<=B3Peaks[pi].Rpeak[1];ti++){
 				   B3Templates[pi][ti]=1;
 			 }
 	
@@ -204,13 +198,13 @@ double SceneDetermine::CalculatePos(float *hist)
 {
 	memset(pos,0,sizeof(pos));
 	for (int pi=0;pi<BuildTemplates;pi++){
-		for (unsigned int ti=B3Peaks[pi].Lpeak[0];ti<=B3Peaks[pi].Lpeak[1];ti++){
+		for (int ti=B3Peaks[pi].Lpeak[0];ti<=B3Peaks[pi].Lpeak[1];ti++){
 			pos[pi].Lpeak+=hist[ti];
 		}
-		for (unsigned int ti=B3Peaks[pi].Mpeak[0];ti<=B3Peaks[pi].Mpeak[1];ti++){
+		for (int ti=B3Peaks[pi].Mpeak[0];ti<=B3Peaks[pi].Mpeak[1];ti++){
 			pos[pi].Mpeak+=hist[ti];
 		}
-		for (unsigned int ti=B3Peaks[pi].Rpeak[0];ti<=B3Peaks[pi].Rpeak[1];ti++){
+		for (int ti=B3Peaks[pi].Rpeak[0];ti<=B3Peaks[pi].Rpeak[1];ti++){
 			pos[pi].Rpeak+=hist[ti];
 		}
 		pos[pi].Sumpeak=pos[pi].Lpeak+pos[pi].Mpeak+pos[pi].Rpeak;
@@ -275,7 +269,7 @@ bool SceneDetermine::IsManhattanPeak(double pos_weight,HistData hist_data)
 		 }
 
 	}
-	return false;
+
 	
 }
 /*----------------------------------------------------------------*/
@@ -290,7 +284,7 @@ bool SceneDetermine::IsManhattanPeak(double pos_weight,HistData hist_data)
 
 bool SceneDetermine::IsGndUp2HorizontalLine(INT32* cui_ImgLables_SVG)
 {
-	 int count_up=0;
+	unsigned int count_up=0;
 	 for (int x=0;x<pMD->ImgWidth;x++){
 		 for (int y=0;y<pMD->ImgHeight;y++){			 
 				if ((y<pMD->Seg_HorizontalLinePos)&&(Ground==cui_ImgLables_SVG[y*pMD->ImgWidth+x])){
@@ -377,7 +371,7 @@ bool SceneDetermine::IsPeakValueInMiddleArea(HistData histdata)
 	Energy_percent=Energy_M/Energy_ALL;
 
 	bool IsPeakInMiddle=false;
-	for (unsigned int i=B3Peaks[0].Mpeak[0];i<B3Peaks[0].Mpeak[1];i++){
+	for (int i=B3Peaks[0].Mpeak[0];i<B3Peaks[0].Mpeak[1];i++){
 
 		if ((hist[i]/hist[max_sort[0]])>=0.8)
 		{
@@ -824,7 +818,6 @@ bool SceneDetermine::IsManhattan(ManhattanHistogram hist)
 		}
 	}else{
 		ASSERT(0);
-		return false;
 	}
 	
 	

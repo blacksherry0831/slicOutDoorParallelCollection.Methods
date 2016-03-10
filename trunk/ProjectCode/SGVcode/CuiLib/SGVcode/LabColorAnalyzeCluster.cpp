@@ -219,7 +219,7 @@ double *Matrix_W=pMD->Matrix_W_Color;
 {
 	ASSERT(c.A_Color>=-127&&c.A_Color<=128);
 	ASSERT(c.B_color>=-127&&c.B_color<=128);
-	double Length2ORG=sqrtl(pow(c.A_Color,2)+pow(c.B_color,2));
+	float Length2ORG=sqrtl(pow(c.A_Color,2)+pow(c.B_color,2));
 	if (Length2ORG<=CylinderBlackWhite){
 		return true;
 	}else{
@@ -234,9 +234,9 @@ double *Matrix_W=pMD->Matrix_W_Color;
  *
  */
  /*---------------------------------------------------------------------------*/
- double LabColorAnalyzeCluster::LabDistanceAB(LabColor ci,LabColor cj)
+ float LabColorAnalyzeCluster::LabDistanceAB(LabColor ci,LabColor cj)
  {
-	 double abdst=sqrtl(pow(ci.A_Color-cj.A_Color,2)+pow(ci.B_color-cj.B_color,2));
+	 float abdst=sqrtl(pow(ci.A_Color-cj.A_Color,2)+pow(ci.B_color-cj.B_color,2));
 	 ASSERT(abdst<=361&&abdst>=0);
 	 return abdst;
  }
@@ -247,9 +247,9 @@ double *Matrix_W=pMD->Matrix_W_Color;
 *
 */
 /*---------------------------------------------------------------------------*/
- double LabColorAnalyzeCluster::LabDistanceLAB(LabColor ci,LabColor cj)
+ float LabColorAnalyzeCluster::LabDistanceLAB(LabColor ci,LabColor cj)
  {
-	 double labdst=sqrtl(pow(ci.A_Color-cj.A_Color,2)+pow(ci.B_color-cj.B_color,2)+pow(ci.L_Color-cj.L_Color,2));
+	 float labdst=sqrtl(pow(ci.A_Color-cj.A_Color,2)+pow(ci.B_color-cj.B_color,2)+pow(ci.L_Color-cj.L_Color,2));
 	 ASSERT(labdst<=442&&labdst>=0);
 	 return labdst;
  }
@@ -266,12 +266,12 @@ bool LabColorAnalyzeCluster::LabIsSameColorInOut(LabColor ci,LabColor cj,bool En
 	 if (LabDistanceLAB(ci,cj)>=8){
 	 	return false;
 	 }
-	 double DstLab=LabDistanceLAB(ci,cj);
+	 float DstLab=LabDistanceLAB(ci,cj);
 	 if (DstLab<=3){
 		 return true;
 	 }
    if (Enable){
-	   double DstAngle=LabDistanceABangleInOut(ci,cj);
+	   float DstAngle=LabDistanceABangleInOut(ci,cj);
 	   if(DstAngle<=ABInCircleDst){
 		   return true; 
 	   }
@@ -287,12 +287,12 @@ bool LabColorAnalyzeCluster::LabIsSameColorInOut(LabColor ci,LabColor cj,bool En
  /*---------------------------------------------------------------------------*/
 bool LabColorAnalyzeCluster::LabIsSameColorIn(LabColor ci,LabColor cj,bool Enable)
  {
-	 double DstLab=LabDistanceLAB(ci,cj);
+	 float DstLab=LabDistanceLAB(ci,cj);
 	 if (DstLab<=3){
 		 return true;
 	 }
     if (Enable){
-		 double DstAngle=LabDistanceABangleIn(ci,cj);
+		 float DstAngle=LabDistanceABangleIn(ci,cj);
 			 if(DstAngle<=ABInCircleDst){
 	 			return true; 
 			 }
@@ -309,12 +309,12 @@ bool LabColorAnalyzeCluster::LabIsSameColorIn(LabColor ci,LabColor cj,bool Enabl
 /*---------------------------------------------------------------------------*/
 bool LabColorAnalyzeCluster::LabIsSameColorOut(LabColor ci,LabColor cj,bool Enable)
  {
-	 double DstLab=LabDistanceLAB(ci,cj);
+	 float DstLab=LabDistanceLAB(ci,cj);
 	 if (DstLab<=3){
 		 return true;
 	 }
 	 if (Enable){
-		 double DstAngle=LabDistanceABangleOut(ci,cj);
+		 float DstAngle=LabDistanceABangleOut(ci,cj);
 		 if(DstAngle<=ABOutCircleDst){
 			 return true; 
 		 }
@@ -389,25 +389,25 @@ bool LabColorAnalyzeCluster::LabIsSameColor(LabColor ci,LabColor cj)
 *
 */
 /*-------------------------------------------------------------------------------------------*/
- double LabColorAnalyzeCluster::LabDistanceABangleIn(LabColor ci,LabColor cj)
+ float LabColorAnalyzeCluster::LabDistanceABangleIn(LabColor ci,LabColor cj)
 {
 	ASSERT(ci.A_Color>=-127&&ci.A_Color<=128);
 	ASSERT(cj.B_color>=-127&&cj.B_color<=128);
-	double I_Length=sqrtl(pow(ci.A_Color,2)+pow(ci.B_color,2));
+	float I_Length=sqrtl(pow(ci.A_Color,2)+pow(ci.B_color,2));
 	ASSERT(I_Length!=0);
-	double J_Length=sqrtl(pow(cj.A_Color,2)+pow(cj.B_color,2));
+	float J_Length=sqrtl(pow(cj.A_Color,2)+pow(cj.B_color,2));
 	ASSERT(J_Length!=0);
-	double Vlength=fabs(I_Length-J_Length);
+	float Vlength=fabs(I_Length-J_Length);
 	if (Vlength>=VectorLengthDeltaIn){
 		return 180;
 	}
-	double LDst=fabsl(ci.L_Color-cj.L_Color);
+	float LDst=fabsl(ci.L_Color-cj.L_Color);
 
 	if (LDst>= L_InLightDstDelta){
 		return 180;
 	}
-	double IJ_DotProduct=ci.A_Color*cj.A_Color+ci.B_color*cj.B_color;
-	double CosIJ=IJ_DotProduct/(I_Length*J_Length);
+	float IJ_DotProduct=ci.A_Color*cj.A_Color+ci.B_color*cj.B_color;
+	float CosIJ=IJ_DotProduct/(I_Length*J_Length);
 	if (CosIJ>1){
 		CosIJ-=1E-6F;
 	}
@@ -415,7 +415,7 @@ bool LabColorAnalyzeCluster::LabIsSameColor(LabColor ci,LabColor cj)
 		CosIJ+=1E-6F;
 	}
 	ASSERT(CosIJ>=-1&&CosIJ<=1);
-	double Angle=acos(CosIJ)*180/CV_PI;
+	float Angle=acos(CosIJ)*180/CV_PI;
 	ASSERT(Angle>=0&&Angle<=181);
 	return Angle;
 }
@@ -425,27 +425,27 @@ bool LabColorAnalyzeCluster::LabIsSameColor(LabColor ci,LabColor cj)
  *
  */
  /*-------------------------------------------------------------------------------------------*/
- double LabColorAnalyzeCluster::LabDistanceABangleOut(LabColor ci,LabColor cj)
+ float LabColorAnalyzeCluster::LabDistanceABangleOut(LabColor ci,LabColor cj)
 {
 	ASSERT(ci.A_Color>=-127&&ci.A_Color<=128);
 	ASSERT(cj.B_color>=-127&&cj.B_color<=128);
-	double I_Length=sqrtl(pow(ci.A_Color,2)+pow(ci.B_color,2));
+	float I_Length=sqrtl(pow(ci.A_Color,2)+pow(ci.B_color,2));
 	ASSERT(I_Length!=0);
-	double J_Length=sqrtl(pow(cj.A_Color,2)+pow(cj.B_color,2));
+	float J_Length=sqrtl(pow(cj.A_Color,2)+pow(cj.B_color,2));
 	ASSERT(J_Length!=0);
-	double Vlength=fabs(I_Length-J_Length);
+	float Vlength=fabs(I_Length-J_Length);
 	if (Vlength>=VectorLengthDeltaOut){
 		return 180;
 	}
-	double LDst=fabsl(ci.L_Color-cj.L_Color);
+	float LDst=fabsl(ci.L_Color-cj.L_Color);
 
 	if (LDst>= L_OutLightDstDelta){
 		return 180;
 	}
-	double IJ_DotProduct=ci.A_Color*cj.A_Color+ci.B_color*cj.B_color;
-	double CosIJ=IJ_DotProduct/(I_Length*J_Length)-1E-6F;
+	float IJ_DotProduct=ci.A_Color*cj.A_Color+ci.B_color*cj.B_color;
+	float CosIJ=IJ_DotProduct/(I_Length*J_Length)-1E-6F;
 	ASSERT(CosIJ>=-1&&CosIJ<=1);
-	double Angle=acos(CosIJ)*180/CV_PI;
+	float Angle=acos(CosIJ)*180/CV_PI;
 	ASSERT(Angle>=0&&Angle<=181);
 	return Angle;
 }
@@ -455,30 +455,30 @@ bool LabColorAnalyzeCluster::LabIsSameColor(LabColor ci,LabColor cj)
  *
  */
  /*-------------------------------------------------------------------------------------------*/
- double LabColorAnalyzeCluster::LabDistanceABangleInOut(LabColor ci,LabColor cj)
+ float LabColorAnalyzeCluster::LabDistanceABangleInOut(LabColor ci,LabColor cj)
  {
 
 	ASSERT(ci.A_Color>=-127&&ci.A_Color<=128);
 	ASSERT(cj.B_color>=-127&&cj.B_color<=128);
-	double I_Length=sqrtl(pow(ci.A_Color,2)+pow(ci.B_color,2));
+	float I_Length=sqrtl(pow(ci.A_Color,2)+pow(ci.B_color,2));
 	ASSERT(I_Length!=0);
-	double J_Length=sqrtl(pow(cj.A_Color,2)+pow(cj.B_color,2));
+	float J_Length=sqrtl(pow(cj.A_Color,2)+pow(cj.B_color,2));
 	ASSERT(J_Length!=0);
-	double Vlength=fabs(I_Length-J_Length);
+	float Vlength=fabs(I_Length-J_Length);
 	if (Vlength>=VectorLengthDeltaOut){
 		return 180;
 	}
 	
-	double LDst=fabsl(ci.L_Color-cj.L_Color);
+	float LDst=fabsl(ci.L_Color-cj.L_Color);
 	
 		if (LDst>= L_OutLightDstDelta){
 			return 180;
 		}
 	
-	double IJ_DotProduct=ci.A_Color*cj.A_Color+ci.B_color*cj.B_color;
-	double CosIJ=IJ_DotProduct/(I_Length*J_Length)-1E-6F;
+	float IJ_DotProduct=ci.A_Color*cj.A_Color+ci.B_color*cj.B_color;
+	float CosIJ=IJ_DotProduct/(I_Length*J_Length)-1E-6F;
 	ASSERT(CosIJ>=-1&&CosIJ<=1);
-	double Angle=acos(CosIJ)*180/CV_PI;
+	float Angle=acos(CosIJ)*180/CV_PI;
 	ASSERT(Angle>=0&&Angle<=181);
 	return Angle;
  }
@@ -488,19 +488,19 @@ bool LabColorAnalyzeCluster::LabIsSameColor(LabColor ci,LabColor cj)
 *
 */
 /*-------------------------------------------------------------------------------------------*/
- double LabColorAnalyzeCluster::LabDistanceLABangle(LabColor ci,LabColor cj)
+ float LabColorAnalyzeCluster::LabDistanceLABangle(LabColor ci,LabColor cj)
  {
 	ASSERT(ci.A_Color>=-127&&ci.A_Color<=128);
 	ASSERT(cj.B_color>=-127&&cj.B_color<=128);
-	double I_Length=sqrtl(pow(ci.A_Color,2)+pow(ci.B_color,2)+pow(ci.L_Color,2));
+	float I_Length=sqrtl(pow(ci.A_Color,2)+pow(ci.B_color,2)+pow(ci.L_Color,2));
 	ASSERT(I_Length!=0);
-	double J_Length=sqrtl(pow(cj.A_Color,2)+pow(cj.B_color,2)+pow(cj.L_Color,2));
+	float J_Length=sqrtl(pow(cj.A_Color,2)+pow(cj.B_color,2)+pow(cj.L_Color,2));
 	ASSERT(J_Length!=0);
 	
-	double IJ_DotProduct=ci.A_Color*cj.A_Color+ci.B_color*cj.B_color+ci.L_Color*cj.L_Color;
-	double CosIJ=IJ_DotProduct/(I_Length*J_Length);
+	float IJ_DotProduct=ci.A_Color*cj.A_Color+ci.B_color*cj.B_color+ci.L_Color*cj.L_Color;
+	float CosIJ=IJ_DotProduct/(I_Length*J_Length);
 	ASSERT(CosIJ>=-1&&CosIJ<=1);
-	double Angle=acos(CosIJ)*180/CV_PI;
+	float Angle=acos(CosIJ)*180/CV_PI;
 	return  Angle;
  }
  /*-------------------------------------------------------------------------------------------*/

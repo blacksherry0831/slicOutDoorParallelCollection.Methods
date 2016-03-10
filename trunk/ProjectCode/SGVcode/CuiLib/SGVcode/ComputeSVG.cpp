@@ -6,9 +6,6 @@
 double* ComputeSVG:: cui_pYweight_GVS=NULL;
 #define  WeightZoom (10000)
 ////////////////////////////////////////////////
-#if _MSC_VER
-#pragma warning(disable: 4101)
-#endif
 /*--------------------------------------------------------------------------------------------------------*/
 /**
 *构造函数，完成变量初始化
@@ -797,7 +794,7 @@ int ComputeSVG::CalculateMostEffectiveSky(double sky_Light_Threshold,double sky_
 {
 ULONGLONG sky_Effect_Square_Index=0, sky_Effect_vein_Index=0,sky_SquareMeter=0;
 #if 0
-	double sky_Vein=255;
+	float sky_Vein=255;
 	/**************************************************************************************/
 
 	for (register int sp=cui_NumLabels-1;sp>=0;sp--){
@@ -876,7 +873,7 @@ int ComputeSVG::CalculateMostEffectiveSky_S(
 	ULONGLONG sky_Effect_Square_Index=0, sky_Effect_vein_Index=0,sky_SquareMeter=0;
 #if 0
 
-	double sky_Vein=255;
+	float sky_Vein=255;
 	/**************************************************************************************/
 
 	for (register int sp=cui_NumLabels-1;sp>=0;sp--){
@@ -1087,7 +1084,7 @@ cui_GeneralImgProcess::CalculateAllSpPropertyRange(cui_ImgLables,pMD->ImgWidth,p
 *@param L_distance	LAB分量中L分量的距离
 */
 /*-------------------------------------------------------------------------------------------------------*/
-void ComputeSVG::RemoveUnEffectiveSkySP(ULONGLONG sky_Effect_Index,double L_distance)
+void ComputeSVG::RemoveUnEffectiveSkySP(ULONGLONG sky_Effect_Index,float L_distance)
 {
 #if 0
 //除去与候选天空差异较大的天空候选块
@@ -1117,7 +1114,7 @@ void ComputeSVG::RemoveUnEffectiveSkySP(ULONGLONG sky_Effect_Index,double L_dist
 /*-------------------------------------------------------------------------------------------------------*/
 void ComputeSVG::RemoveUnEffectiveSkySP_S(
 	ULONGLONG sky_Effect_Index,
-	double L_distance,
+	float L_distance,
 	int cui_NumLabels,
 	double* cui_G_V_S_Num_Category,
 	Energy_Harr* harr_sp_energy,
@@ -1319,7 +1316,7 @@ void ComputeSVG::zlm_ForceSkyGroundVertical_InDoor3_31(void)
 	this->ForceSky_InDoor_DFS();
 #endif
 
-	this->DecidedoubleingSky_InDoor_DFS();
+	this->DecideFloatingSky_InDoor_DFS();
 	//第一次分类的结果
 	cui_GeneralImgProcess::CuiSaveImgWithPoints(
 		pMD->Src_ImgData,
@@ -1383,7 +1380,7 @@ void ComputeSVG::zlm_ForceSkyGroundVertical_InDoor4_16(void)
 	this->ForceSky_InDoor_DFS();
 #endif
 
-	this->DecidedoubleingSky_InDoor_DFS();
+	this->DecideFloatingSky_InDoor_DFS();
 	//第一次分类的结果
 	cui_GeneralImgProcess::CuiSaveImgWithPoints(
 		pMD->Src_ImgData,
@@ -2223,7 +2220,7 @@ int ComputeSVG::ClassifyOneSPlCategory(int *lables,int width,int height,int sp)
 *@return true是天空超像素块；false不是天空超像素块
 */
 /*-------------------------------------------------------------------------------------------------------*/
-bool ComputeSVG::Is_Sky_Block(int spj,double sky_Light_Threshold,double sky_energy_Threshold,double AB_distance,double L_distance)
+bool ComputeSVG::Is_Sky_Block(int spj,float sky_Light_Threshold,float sky_energy_Threshold,float AB_distance,float L_distance)
 {
 	bool IsSkyBlock=false;
     bool light_condition=(harr_sp_energy[spj].EnergyL_LL>sky_Light_Threshold);
@@ -2261,10 +2258,10 @@ bool ComputeSVG::Is_Sky_Block(int spj,double sky_Light_Threshold,double sky_ener
 /*-------------------------------------------------------------------------------------------------------*/
 bool ComputeSVG::Is_Sky_Block_S(
 	int spj,
-	double sky_Light_Threshold,
-	double sky_energy_Threshold,
-	double AB_distance,
-	double L_distance,
+	float sky_Light_Threshold,
+	float sky_energy_Threshold,
+	float AB_distance,
+	float L_distance,
 	Energy_Harr* harr_sp_energy,
 	double* cui_G_V_S_Num_Category,
 	LabColorCategory* Lab_Color_Category)
@@ -2302,7 +2299,7 @@ bool ComputeSVG::Is_Sky_Block_S(
 *
 */
 /*-------------------------------------------------------------------------------------------------------*/
-void ComputeSVG::CalculateUpandDownSquarebyHor(double* UpSquare, double* DownSquare, int  sp)
+void ComputeSVG::CalculateUpandDownSquarebyHor(float* UpSquare, float* DownSquare, int  sp)
 {
 	*UpSquare=0;
 	*DownSquare=0;
@@ -2966,7 +2963,7 @@ void ComputeSVG::InitDFSLinkConnection_Ground(ImageMemData* pMD)
 	}
 #endif
 	ASSERT(pMD->PgOffset>=0&&pMD->PgOffset<=0.5);
-	double Hg=pMD->PgOffset*pMD->ImgHeight+pMD->Seg_HorizontalLinePos;
+	float Hg=pMD->PgOffset*pMD->ImgHeight+pMD->Seg_HorizontalLinePos;
 	cui_GeneralImgProcess::CalculateAllSpPropertyPostitonByHLine(
 		pMD->ImgLables.get(),
 		pMD->ImgWidth,
@@ -3334,7 +3331,7 @@ void ComputeSVG::CalcuateSpWeightByY(void)
 *@return x像素位置的权重
 */
 /*-------------------------------------------------------------------*/
-double ComputeSVG::Gx_InDoor(int x,int n,double posHor,double Pg,int Height)
+double ComputeSVG::Gx_InDoor(int x,int n,float posHor,float Pg,int Height)
 {
 	double Pn=1.0*(2*n+2)/(2*n+1);
 #if 0
@@ -3359,7 +3356,7 @@ double y=C_g*Pow_Odd(x-Pg,1.0/(2*n+1));
 *@return x像素位置权重
 */
 /*-------------------------------------------------------------------*/
-double ComputeSVG::Sx_InDoor(int x,int n,double posHor,double Ps,int Height)
+double ComputeSVG::Sx_InDoor(int x,int n,float posHor,float Ps,int Height)
 {
 	double Pn=1.0*(2*n+2)/(2*n+1);
 #if 0
@@ -3528,7 +3525,7 @@ void ComputeSVG::OverHorLineMustVertical(void)
 *
 */
 /*-------------------------------------------------------------------*/
-void ComputeSVG::DecidedoubleingSkySP2V_Init(void)
+void ComputeSVG::DecideFloatingSkySP2V_Init(void)
 {
 	UINT32* LinkConn=pMD->LinkConnection.get();
 	INT32 * Matrix_Category_Lable=pMD->Matrix_Category_Lable_InDoor.get();
@@ -3561,12 +3558,12 @@ void ComputeSVG::DecidedoubleingSkySP2V_Init(void)
 *由最相似天空进行天空的聚类
 */
 /*-------------------------------------------------------------------*/
-void ComputeSVG::DecidedoubleingSky_InDoor_DFS(void)
+void ComputeSVG::DecideFloatingSky_InDoor_DFS(void)
 {
 	UINT32* LinkConn=pMD->LinkConnection.get();
 	INT32 * Matrix_Category_Lable=pMD->Matrix_Category_Lable_InDoor.get();
 	UINT32* V=pMD->Matrix_Visit.get();
-	this->DecidedoubleingSkySP2V_Init();
+	this->DecideFloatingSkySP2V_Init();
 	memset(V,FALSE,sizeof(UINT32)*pMD->slic_current_num);
 #if IN_DOOR&&0	
 	for (int spi=0;spi<pMD->slic_current_num;spi++){
@@ -3574,7 +3571,7 @@ void ComputeSVG::DecidedoubleingSky_InDoor_DFS(void)
 		if ( (LinkConn[spi]==TRUE)			
 			&&(V[spi]==FALSE)){
 				TRACE("深序遍历Root=%d\n",spi);
-				this->DFS_4doubleingSky2Down(spi);
+				this->DFS_4FloatingSky2Down(spi);
 		}
 
 	}
@@ -3588,7 +3585,7 @@ void ComputeSVG::DecidedoubleingSky_InDoor_DFS(void)
 *由最相似天空进行天空的聚类
 */
 /*-------------------------------------------------------------------*/
-void ComputeSVG::DFS_4doubleingSky2Down(int spi)
+void ComputeSVG::DFS_4FloatingSky2Down(int spi)
 {
 #if TRUE
 	static UINT32 DFS_Depth=0;
@@ -3622,7 +3619,7 @@ void ComputeSVG::DFS_4doubleingSky2Down(int spi)
 				&&(TRUE))
 			{
 				Matrix_Category_Lable[spj]=Vertical;
-				DFS_4doubleingSky2Down(spj); //对访问的邻接顶点递归调用
+				DFS_4FloatingSky2Down(spj); //对访问的邻接顶点递归调用
 			}
 		}
 	}
@@ -3658,7 +3655,7 @@ void ComputeSVG::CrossEyeLineIsVertical(void)
 	for (register int sp=0;sp<SlicNum;sp++){
 		if (Matrix_Category_Lable[sp]==VERTICAL_Force){
 				{
-					double UpSquare,DownSquare;
+					float UpSquare,DownSquare;
 					this->CalculateUpandDownSquarebyHor(&UpSquare,&DownSquare,sp);
 					if ((UpSquare/(UpSquare+DownSquare)>0.1)){
 						//分割上边沿大于0.1设为立面

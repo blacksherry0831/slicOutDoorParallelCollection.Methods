@@ -46,7 +46,7 @@ double GetSkyHarrLightThreshold(void);
 double GetSkyHarrEnergyThreshold(void);
 void RemoveUnEffectiveSkySP(
 	ULONGLONG sky_Effect_Index,
-	double L_distance);
+	float L_distance);
 void DivideSkyV(
 	double sky_energy,
 	double sky_Light_Threshold,
@@ -59,10 +59,10 @@ int  CalculateMostEffectiveSky(
 ///////////////////////////////
 bool ComputeSVG2::Is_Sky_Block(
 	int spj,
-	double sky_Light_Threshold,
-	double sky_energy_Threshold,
-	double AB_distance,
-	double L_distance);
+	float sky_Light_Threshold,
+	float sky_energy_Threshold,
+	float AB_distance,
+	float L_distance);
 ///////////////////////////////
 double CalculateSpSimilar(int spi,int spj);
 double CalculateVGDifference(int spi);
@@ -72,8 +72,8 @@ void CalculateSpClassification(int* Matrix_Category_Lable_host);
 ///////////////////////////////
 void  FillWeightArrayS_InDoor20150603(double horizontal_line, double n);
 void  FillWeightArrayG_InDoor20150603(double horizontal_line, double n);
-double Gx_InDoor20150603(int y,int n,double H0,double Hg,int H);
-double Sx_InDoor20150603(int y,int n,double H0,double Hg,int H);
+double Gx_InDoor20150603(int y,int n,float H0,float Hg,int H);
+double Sx_InDoor20150603(int y,int n,float H0,float Hg,int H);
 /*---------------------------------------------------------------------------------------------------*/
 void ComputeSVG2::FillWeightArrayV_New(double horizontal_line, double n);
 void ComputeSVG2::FillWeightArrayV_Gaussian(double horizontal_line, double n,double SigmaScale,double WeightScale);

@@ -23,9 +23,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "pr_loqo.h"
-#if _MSC_VER
-#pragma warning(disable: 4101)
-#endif
+
 #define	max(A, B)	((A) > (B) ? (A) : (B))
 #define	min(A, B)	((A) < (B) ? (A) : (B))
 #define sqr(A)          ((A) * (A))

@@ -908,7 +908,6 @@ void CuiHarrTransformLet::CuiLoadImgBuffer(UINT32* ImgData,int Width,int Height)
 {
 	  this->ReleaseImgData();
 	  img_original_size_color=cvCreateImage(cvSize(Width,Height),IPL_DEPTH_8U,4);
-	  ASSERT(img_original_size_color->widthStep==sizeof(UINT32)*Width);
 	  memcpy(img_original_size_color->imageData,ImgData,sizeof(UINT32)*Width*Height);
 	  this->PreproccessImg();
 
@@ -960,7 +959,6 @@ void CuiHarrTransformLet::CuiGetImageData(
 		cvReleaseImage(&img_dst_wavelet);
 	}
 	img_t=cvCreateImage(cvSize(width,height),IPL_DEPTH_8U,4);
-	ASSERT(img_t->widthStep==width*sizeof(UINT32));
 	memcpy(img_t->imageData,imgBuffer,img_t->imageSize);
 	this->cui_proportion=proportion;
 	strcpy_s(filename_org,sizeof(filename_org),"memory");
@@ -1029,8 +1027,6 @@ void CuiHarrTransformLet::CuiWaveletTrans(int scale)
 	cvFlip(img_scr_gray);
 	this->SimpleWaveletTrans(scale);
 	if (m_pImgDataOut!=NULL){	
-
-		ASSERT(img_dst_wavelet->widthStep==img_dst_wavelet->width*sizeof(unsigned char));
 		memcpy(img_dst_wavelet->imageData,m_pImgDataOut,img_dst_wavelet->imageSize);
 		cvFlip(img_dst_wavelet);
 	}
@@ -1048,7 +1044,6 @@ void CuiHarrTransformLet::CuiWaveletReverse(void)
 	cvFlip(img_scr_gray);
 	this->SimpleWaveletReverse();
 	if (m_pImgDataOut!=NULL){	
-		ASSERT(img_dst_wavelet->widthStep==img_dst_wavelet->width*sizeof(unsigned char));
 		memcpy(img_dst_wavelet->imageData,m_pImgDataOut,img_dst_wavelet->imageSize);
 		cvFlip(img_dst_wavelet);
 	}
@@ -1100,7 +1095,6 @@ IplImage* CuiHarrTransformLet::HarrSmooth(int scale)
 	  cvFlip(&img_convert);
 /******************************************/
 	  if (m_pImgDataOut!=NULL){	
-		  ASSERT(img_dst_wavelet->widthStep==img_dst_wavelet->width*sizeof(unsigned char));
 		  memcpy(img_dst_wavelet->imageData,m_pImgDataOut,img_dst_wavelet->imageSize);
 		  cvFlip(img_dst_wavelet);
 	  }
@@ -1631,10 +1625,10 @@ int CuiHarrTransformLet::CalculateBoderContours(int width,int height)
 *
 */
 /*---------------------------------------------------*/
-int CuiHarrTransformLet::CalculateBoderContoursSC(double S,double C)
+int CuiHarrTransformLet::CalculateBoderContoursSC(float S,float C)
 {
-	double Thinkness=0;
-	double P=0.3;
+	float Thinkness=0;
+	float P=0.3;
 	Thinkness=2*S*P/C;
 	return (int)(Thinkness+1);
 }
@@ -1644,9 +1638,9 @@ int CuiHarrTransformLet::CalculateBoderContoursSC(double S,double C)
 *
 */
 /*---------------------------------------------------*/
-double   CuiHarrTransformLet::CalculateImgArea(IplImage *contour_img_quarter)
+float   CuiHarrTransformLet::CalculateImgArea(IplImage *contour_img_quarter)
 {
-	double  area=0;
+	float  area=0;
 	UINT32 color=0x00ffffff;
 	CvScalar WhiteColor=cvScalar(color&0xff,(color>>8)&0xff,(color>>16)&0xff,(color>>24)&0xff);
 	for (int x=0;x<contour_img_quarter->width;x++){
@@ -1680,7 +1674,7 @@ int CuiHarrTransformLet::CalculateBoderContoursThinkness(CvSeq * pcontour,int wi
 	CvScalar externalColor;
 	CvScalar holeColor;
     CvSeq*	 pcontourH=pcontour;
-	double areaAll,areaReduce,RemovePer;
+	float areaAll,areaReduce,RemovePer;
 	do {
 		ContoursThickness+=4;
 		areaAll=0;
@@ -1767,8 +1761,8 @@ void CuiHarrTransformLet::CalculateBoderImg(int scale)
 				UINT32 color_B=0x00000000;
 				holeColor=cvScalar(color_B&0xff,(color_B>>8)&0xff,(color_B>>16)&0xff,(color_B>>24)&0xff);
 				externalColor= WhiteColor;
-				double S=cvContourArea(pcontour);
-				double C=cvArcLength(pcontour);
+				float S=cvContourArea(pcontour);
+				float C=cvArcLength(pcontour);
 				int ContoursThickness=CalculateBoderContoursSC(fabs(S),C);
 				cvDrawContours(contour_img_quarter,pcontour,externalColor,holeColor,1,ContoursThickness);
 			}
@@ -1776,7 +1770,7 @@ void CuiHarrTransformLet::CalculateBoderImg(int scale)
 		}
 #endif
 #if 0
-		double S=0,C=0;
+		float S=0,C=0;
 		CvSeq *headcontour=pcontour;
 		for (;pcontour!=0;pcontour=pcontour->h_next)
 		{	

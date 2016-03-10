@@ -17,7 +17,7 @@ typedef struct{
 	double img_focus;/**<图像的焦距*/	
 	////////////////////
 	double Camera_H_angle;/**<相机光轴与水平面的夹角*/	
-	double horizontal_pos;/**<水平线位置*/	
+	float horizontal_pos;/**<水平线位置*/	
 }CameraData;
 /*----------------------------------------------------------------*/
 /**
@@ -51,7 +51,7 @@ public:
 	void GetImageData(
 		UINT32* ImgData,int Width,int Height,
 		int *LablesSVG);
-	void SetCameraParameter(double focus, double height_over_ground,double film_height,double horizontal_pos);
+	void SetCameraParameter(double focus, double height_over_ground,double film_height,float horizontal_pos);
 public:
 private:
 	void SetFileReadSavePath(string WritePath, string ReadPath);

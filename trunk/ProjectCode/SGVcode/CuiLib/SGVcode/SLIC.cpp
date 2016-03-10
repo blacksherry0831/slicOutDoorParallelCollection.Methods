@@ -5,16 +5,14 @@
 // Email: firstname.lastname@epfl.ch
 //////////////////////////////////////////////////////////////////////
 #include "stdafx.h"
-//#include <cdouble>
+#include <cfloat>
 #include <cmath>
 #include "SLIC.h"
 #include "cui_GeneralImgProcess.h"
 
 using namespace std;
 //#define UINT32_MAX 0xffffffff
-#if _MSC_VER
-#pragma warning(disable: 4101)
-#endif
+
 /*----------------------------------------------------------------------------------------------------------------*/
 /** 
 *构造函数
@@ -238,7 +236,7 @@ string SLIC::cuiGetCurrentTime(void)
 //===========================================================================
 ///	DoRGBtoLABConversion
 ///
-///	For whole image: overlaoded doubleing point version
+///	For whole image: overlaoded floating point version
 //===========================================================================
 void SLIC::DoRGBtoLABConversion(
 	const unsigned int*&		ubuff,
@@ -2358,8 +2356,8 @@ void SLIC::CuiFindSave_L_Eigenvalue(void)
 		delete []Cui_MatrixEigenVector_L;
 		Cui_MatrixEigenVector_L=NULL;
 	}
-	Cui_MatrixEigenVector_L=new double[pMD->slic_current_num*pMD->slic_current_num];
-	memset(Cui_MatrixEigenVector_L,0,sizeof(double)*pMD->slic_current_num*pMD->slic_current_num);
+	Cui_MatrixEigenVector_L=new float[pMD->slic_current_num*pMD->slic_current_num];
+	memset(Cui_MatrixEigenVector_L,0,sizeof(float)*pMD->slic_current_num*pMD->slic_current_num);
 	/////////////特征值///////////////////////////////////////////////////////////////////
 	if (CUi_MatrixEigenValue_L){
 		delete []CUi_MatrixEigenValue_L;
@@ -2376,7 +2374,7 @@ void SLIC::CuiFindSave_L_Eigenvalue(void)
 	cvInvert(&E_vector_t,&E_vector_t);
 	/******************************************/
 #if 0
-	cui_GeneralImgProcess::SaveMatrix_double("","Matrix_L_Vector.data",pMD->slic_current_num,Cui_MatrixEigenVector_L);
+	cui_GeneralImgProcess::SaveMatrix_Float("","Matrix_L_Vector.data",pMD->slic_current_num,Cui_MatrixEigenVector_L);
 	cui_GeneralImgProcess::SaveMatrix_W("","Matrix_L_Value.data",pMD->slic_current_num,CUi_MatrixEigenValue_L);
 #endif
 	
@@ -2397,8 +2395,8 @@ void SLIC::Cui_Kmean_Cluster(UINT EigenvectorNum, UINT ClusterNum){
 		Cui_Matrix_Category_Simple=NULL;
 		
 	}
-	Cui_Matrix_Category_Simple=new double[pMD->slic_current_num*EigenvectorNum];
-	memset(Cui_Matrix_Category_Simple,0,sizeof(double)*pMD->slic_current_num*EigenvectorNum);
+	Cui_Matrix_Category_Simple=new float[pMD->slic_current_num*EigenvectorNum];
+	memset(Cui_Matrix_Category_Simple,0,sizeof(float)*pMD->slic_current_num*EigenvectorNum);
 
 	for (register int i=0;i<pMD->slic_current_num;i++){  //row
 		for (register UINT j=0;j<EigenvectorNum;j++){	//col
@@ -2507,8 +2505,8 @@ void SLIC::Cui_B_Cluster(UINT EigenvectorNum, UINT ClusterNum,double Threshold){
 		Cui_Matrix_Category_Simple=NULL;
 
 	}
-	Cui_Matrix_Category_Simple=new double[pMD->slic_current_num*EigenvectorNum];
-	memset(Cui_Matrix_Category_Simple,0,sizeof(double)*pMD->slic_current_num*EigenvectorNum);
+	Cui_Matrix_Category_Simple=new float[pMD->slic_current_num*EigenvectorNum];
+	memset(Cui_Matrix_Category_Simple,0,sizeof(float)*pMD->slic_current_num*EigenvectorNum);
 
 	for (int i=0;i<pMD->slic_current_num;i++){  //row
 		for (UINT j=0;j<EigenvectorNum;j++){	//col
@@ -2629,8 +2627,8 @@ void SLIC::Cui_Min_Cluster(void){
 		Cui_Matrix_Category_Simple=NULL;
 
 	}
-	Cui_Matrix_Category_Simple=new double[pMD->slic_current_num];
-	memset(Cui_Matrix_Category_Simple,0,sizeof(double)*pMD->slic_current_num);
+	Cui_Matrix_Category_Simple=new float[pMD->slic_current_num];
+	memset(Cui_Matrix_Category_Simple,0,sizeof(float)*pMD->slic_current_num);
 
 	for (int i=0;i<pMD->slic_current_num;i++){  //row
 		
@@ -3321,7 +3319,7 @@ double  SLIC::CalculateNewDistance(
 	/*alpha=0.6;
 	betta=0.3;
 	gama=1-alpha-betta;*/
-	/*double fai=100;*/
+	/*float fai=100;*/
 	double dst=alpha*fabs(sita_n1-sita_n0)+betta*fabs(m_n1-m_n0)+gama*fabs(L_n1-L_n0);
 	double dst_xy=fai*sqrt(powl(X_n1-X_n0,2)+powl(Y_n1-Y_n0,2));
 	dst+=dst_xy;
@@ -3364,7 +3362,7 @@ unsigned int SLIC::GetGCD(unsigned int a, unsigned int b)
 /*---------------------------------------------------------------------------------*/
 void SLIC::showDistance(vector<double> clustersize)
 {
-	double max=0;
+	float max=0;
 	for (unsigned int i=0;i<clustersize.size();i++){
 		if (clustersize[i]>max){
 			max=clustersize[i];
@@ -3411,17 +3409,17 @@ void SLIC::GetLABXYSeeds_ForGivenStepSize_Rectangle(
 	double*  m_lvec=NULL;
 	double*  m_avec=NULL;
 	double*  m_bvec=NULL;
-	double xStep;
-	double yStep;
+	float xStep;
+	float yStep;
 	const bool hexgrid = false;
 	int numseeds(0);
 	int n(0);
 #if FALSE
 	int max_wh=(m_width>m_height)?m_width:m_height; 
 	int min_wh=(m_width<m_height)?m_width:m_height;
-	double scale_wh=1.0*min_wh/max_wh;
+	float scale_wh=1.0*min_wh/max_wh;
 	unsigned int wh_gcd=GetGCD(m_width,m_height);
-	double scale_3_2=1.0*2/3;
+	float scale_3_2=1.0*2/3;
 	if (scale_wh==scale_3_2){
 		int K_new=(K/12+0.5)*12;
 		if (m_width>m_height){
@@ -3451,8 +3449,8 @@ void SLIC::GetLABXYSeeds_ForGivenStepSize_Rectangle(
 	}
 #endif	
 
-	double xstrips_test = (double(m_width)/double(xStep));
-	double ystrips_test = (double(m_height)/double(yStep));
+	float xstrips_test = (double(m_width)/double(xStep));
+	float ystrips_test = (double(m_height)/double(yStep));
 	int xstrips = (double(m_width)/double(xStep));
 	int ystrips = (double(m_height)/double(yStep));
 	ASSERT(xstrips==ystrips);
@@ -3531,8 +3529,8 @@ void SLIC::GetLABXYSeeds_ForGivenStepSize_Rectangle2(
 	double*  m_avec,
 	double*  m_bvec)
 {	
-	double xStep;
-	double yStep;
+	float xStep;
+	float yStep;
 	const bool hexgrid = false;
 	int numseeds(0);
 	int n(0);
@@ -3540,9 +3538,9 @@ void SLIC::GetLABXYSeeds_ForGivenStepSize_Rectangle2(
 #if FALSE
 	int max_wh=(m_width>m_height)?m_width:m_height; 
 	int min_wh=(m_width<m_height)?m_width:m_height;
-	double scale_wh=1.0*min_wh/max_wh;
+	float scale_wh=1.0*min_wh/max_wh;
 	unsigned int wh_gcd=GetGCD(m_width,m_height);
-	double scale_3_2=1.0*2/3;
+	float scale_3_2=1.0*2/3;
 	if (scale_wh==scale_3_2){
 		int K_new=(K/12+0.5)*12;
 		if (m_width>m_height){
@@ -3572,8 +3570,8 @@ void SLIC::GetLABXYSeeds_ForGivenStepSize_Rectangle2(
 	}
 #endif	
 
-	double xstrips_test = (double(m_width)/double(xStep));
-	double ystrips_test = (double(m_height)/double(yStep));
+	float xstrips_test = (double(m_width)/double(xStep));
+	float ystrips_test = (double(m_height)/double(yStep));
 	int xstrips = (double(m_width)/double(xStep));
 	int ystrips = (double(m_height)/double(yStep));
 	ASSERT(xstrips==ystrips);
@@ -3753,11 +3751,11 @@ outfile.close();
 /////////////////////////////////////////////////////////////////////////////////////
 	for(int h = 0; h <h_bins; h++){
 		/** 获得直方图中的统计次数，计算显示在图像中的高度 */
-		double bin_val =hist_AB[h];
+		float bin_val =hist_AB[h];
 		int intensity =cvRound(bin_val*height/AB_count_max);
 		intensity=intensity<0?0:intensity;
 		/** 获得当前直方图代表的颜色，转换成RGB用于绘制 */
-		double sita=M_PI*(2*(h+0.5)/HistDimSPLAB-1);
+		float sita=M_PI*(2*(h+0.5)/HistDimSPLAB-1);
 		CvScalar color=cvScalar(hist_L[h]*2.55,hist_AB_length[h]*sin(sita)+127,hist_AB_length[h]*cos(sita)+127);
 		cvRectangle( hist_img, cvPoint(h*bin_w,height),cvPoint((h+1)*bin_w,height - intensity),cvScalar(0,255/2,255/2),2);
 		cvRectangle( hist_img, cvPoint(h*bin_w,height),cvPoint((h+1)*bin_w,height - intensity+1),color,-1, 8, 0 );

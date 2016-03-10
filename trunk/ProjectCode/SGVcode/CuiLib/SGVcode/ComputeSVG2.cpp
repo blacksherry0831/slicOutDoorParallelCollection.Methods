@@ -82,7 +82,7 @@ void ComputeSVG2::FillWeightArrayZlmParallel(void)
 /*-------------------------------------------------------------------------------------------------------*/
 void ComputeSVG2::FillWeightArrayZlm(void)
 {
-    double horizontal_line=pIMD->Seg_HorizontalLinePosScale*pIMD->ImgHeight;
+    float horizontal_line=pIMD->Seg_HorizontalLinePosScale*pIMD->ImgHeight;
 	this->FillWeightArrayG_InDoor20150603(horizontal_line,1);
 	this->FillWeightArrayS_InDoor20150603(horizontal_line,1);
 	this->FillWeightArrayV_New(horizontal_line,1);	
@@ -233,7 +233,6 @@ this->FillWeightArrayZlm();
 	pIMD->CombinationImgSVG();
 #if SaveContours2Disk	
 	pIMD->SaveImgSVGCompute("_BT_unknow");
-	pIMD->SaveSuperpixelLabelsImagePNG();
 #endif
 }
 /*--------------------------------------------------------------------------------------------------------*/
@@ -269,7 +268,7 @@ this->zlm_ForceGround();
 /*-------------------------------------------------------------------------------------------------------*/
 void ComputeSVG2::zlm_ForceSky(void)
 {
-	double L_Distance=65;
+	float L_Distance=65;
 	double    sky_energy_threshold=GetSkyHarrEnergyThreshold();
 	double	  sky_Light_Threshold=GetSkyHarrLightThreshold();
 	int sky_Effect_Index=CalculateMostEffectiveSky(sky_Light_Threshold,sky_energy_threshold);
@@ -386,7 +385,7 @@ int  ComputeSVG2::CalculateMostEffectiveSky(double sky_Light_Threshold,double sk
 	ULONGLONG	sky_SquareMeter=0;
 #if 1
 
-	double sky_Vein=255;
+	float sky_Vein=255;
 	/**************************************************************************************/
 
 	for (register int sp=pIMD->slic_current_num-1;sp>=0;sp--){
@@ -444,7 +443,7 @@ int  ComputeSVG2::CalculateMostEffectiveSky(double sky_Light_Threshold,double sk
 *@param L_distance	LAB分量中L分量的距离
 */
 /*-------------------------------------------------------------------------------------------------------*/
-void ComputeSVG2::RemoveUnEffectiveSkySP(ULONGLONG sky_Effect_Index,double L_distance)
+void ComputeSVG2::RemoveUnEffectiveSkySP(ULONGLONG sky_Effect_Index,float L_distance)
 {
 	if (sky_Effect_Index<0) 
 		return;
@@ -523,10 +522,10 @@ void ComputeSVG2::DivideSkyV(
 /*-------------------------------------------------------------------------------------------------------*/
 bool ComputeSVG2::Is_Sky_Block(
 	int spj,
-	double sky_Light_Threshold,
-	double sky_energy_Threshold,
-	double AB_distance,
-	double L_distance)
+	float sky_Light_Threshold,
+	float sky_energy_Threshold,
+	float AB_distance,
+	float L_distance)
 {
 	bool IsSkyBlock=false;
 #if 1
@@ -561,7 +560,7 @@ bool ComputeSVG2::Is_Sky_Block(
 double ComputeSVG2::CalculateSpSimilar(int spi,int spj)
 {
 
-	double Blike=0;
+	float Blike=0;
 	Energy_Harr  sp_1=pIMD->SpSet.SpPropertySet[spi].harr_energy;
 	Energy_Harr  sp_2=pIMD->SpSet.SpPropertySet[spj].harr_energy;
 #if 0
@@ -575,8 +574,8 @@ double ComputeSVG2::CalculateSpSimilar(int spi,int spj)
 		sqrtl(sp_1.harr_energy.Energy_HH*sp_2.harr_energy.Energy_HH))/(sum1*sum2);
 #else
 	///////////////////////////////////
-	double sum1=powl(sp_1.Energy_LL,2)+powl(sp_1.Energy_LH,2)+powl(sp_1.Energy_HL,2)+powl(sp_1.Energy_HH,2);
-	double sum2=powl(sp_2.Energy_LL,2)+powl(sp_2.Energy_LH,2)+powl(sp_2.Energy_HL,2)+powl(sp_2.Energy_HH,2);
+	float sum1=powl(sp_1.Energy_LL,2)+powl(sp_1.Energy_LH,2)+powl(sp_1.Energy_HL,2)+powl(sp_1.Energy_HH,2);
+	float sum2=powl(sp_2.Energy_LL,2)+powl(sp_2.Energy_LH,2)+powl(sp_2.Energy_HL,2)+powl(sp_2.Energy_HH,2);
 	sum1=sqrtl(sum1);
 	sum2=sqrtl(sum2);
 	///////////////////////////////////
@@ -635,8 +634,8 @@ void ComputeSVG2::RemoveSkyBySquareMeter(void)
 #if 1
 	vector<int> Category(pIMD->slic_current_num,-1);
 	vector<vector<int>>  SkyBlocks(pIMD->slic_current_num);
-	vector<double>  squareMeter(pIMD->slic_current_num,-1);
-	double ThresholdSquareMetercurrent=pIMD->ImgWidth*pIMD->ImgHeight*0.01;
+	vector<float>  squareMeter(pIMD->slic_current_num,-1);
+	float ThresholdSquareMetercurrent=pIMD->ImgWidth*pIMD->ImgHeight*0.01;
 	/////////////////////////////////////////////////////////////
 	for (register int spi=0;spi<pIMD->slic_current_num;spi++){
 		if (pIMD->SpSet.SpPropertySet[spi].ComputeCategory==Sky){
@@ -687,8 +686,8 @@ void ComputeSVG2::zlm_ForceVertical_SG(void)
 	/*************************************************************************************************/
 	/*************************************************************************************************/
 	//穿过视平线的地面即为立面 (穿越面积在一定比例之上)
-	double UpSquare=0;
-	double DownSquare=0;	
+	float UpSquare=0;
+	float DownSquare=0;	
 	for (register int sp=0;sp<pIMD->slic_current_num;sp++){
 
 			if ((pIMD->SpSet.SpPropertySet[sp].BorderCategory&spBorderCategoryTop)==spBorderCategoryTop){					
@@ -713,7 +712,7 @@ void ComputeSVG2::zlm_ForceVertical_SG(void)
 /*-------------------------------------------------------------------------------------------------------*/
 void ComputeSVG2::zlm_ForceVertical_WidthHeight(void)
 {
-	vector<double>  HeightWidthScale(pIMD->slic_current_num,-1);
+	vector<float>  HeightWidthScale(pIMD->slic_current_num,-1);
 	pIMD->CalculateAllSpPropertyRange();
 	for (int spi=0;spi<pIMD->slic_current_num;spi++){
 		if (pIMD->SpSet.SpPropertySet[spi].ComputeCategory==Ground){
@@ -736,8 +735,8 @@ void ComputeSVG2::zlm_ForceVertical_De(void)
 	/*************************************************************************************************/
 	/*************************************************************************************************/
 	//穿过视平线的地面即为立面 (穿越面积在一定比例之上)
-	double UpSquare=0;
-	double DownSquare=0;	
+	float UpSquare=0;
+	float DownSquare=0;	
 	for (register int sp=0;sp<pIMD->slic_current_num;sp++){
 
 			if(pIMD->SpSet.SpPropertySet[sp].fuzzyCategory==Ground){	
@@ -816,11 +815,11 @@ double ComputeSVG2::CalculateVGDifference(int spi)
 /*-------------------------------------------------------------------------------------------------------*/
 void  ComputeSVG2::FillWeightArrayS_InDoor20150603(double horizontal_line, double n)
 {
-	double HgPos= pIMD->Seg_HorizontalLinePos+pIMD->PgOffset*pIMD->ImgHeight;
-	double HsPos= pIMD->Seg_HorizontalLinePos-pIMD->PsOffset*pIMD->ImgHeight;
-	double Hg=HgPos-pIMD->Seg_HorizontalLinePos;
-	double H0=pIMD->Seg_HorizontalLinePos;
-	double HC=pIMD->Seg_HorizontalLinePos-HsPos;
+	float HgPos= pIMD->Seg_HorizontalLinePos+pIMD->PgOffset*pIMD->ImgHeight;
+	float HsPos= pIMD->Seg_HorizontalLinePos-pIMD->PsOffset*pIMD->ImgHeight;
+	float Hg=HgPos-pIMD->Seg_HorizontalLinePos;
+	float H0=pIMD->Seg_HorizontalLinePos;
+	float HC=pIMD->Seg_HorizontalLinePos-HsPos;
 	int   H=pIMD->ImgHeight;
 	//////////////////////////////////////////////////////////////////////
 	for (int i=0;i<H;i++){
@@ -843,11 +842,11 @@ void  ComputeSVG2::FillWeightArrayS_InDoor20150603(double horizontal_line, doubl
 void  ComputeSVG2::FillWeightArrayG_InDoor20150603(double horizontal_line, double n)
 {
 
-	double HgPos= pIMD->Seg_HorizontalLinePos+pIMD->PgOffset*pIMD->ImgHeight;
-	double HsPos= pIMD->Seg_HorizontalLinePos-pIMD->PsOffset*pIMD->ImgHeight;
-	double Hg=HgPos-pIMD->Seg_HorizontalLinePos;
-	double H0=pIMD->Seg_HorizontalLinePos;
-	double HC=pIMD->Seg_HorizontalLinePos-HsPos;
+	float HgPos= pIMD->Seg_HorizontalLinePos+pIMD->PgOffset*pIMD->ImgHeight;
+	float HsPos= pIMD->Seg_HorizontalLinePos-pIMD->PsOffset*pIMD->ImgHeight;
+	float Hg=HgPos-pIMD->Seg_HorizontalLinePos;
+	float H0=pIMD->Seg_HorizontalLinePos;
+	float HC=pIMD->Seg_HorizontalLinePos-HsPos;
 	int   H=pIMD->ImgHeight;
 
 	for (int i=0;i<H;i++){
@@ -863,7 +862,7 @@ void  ComputeSVG2::FillWeightArrayG_InDoor20150603(double horizontal_line, doubl
 *
 */
 /*--------------------------------------------------------------------*/
-double ComputeSVG2::Gx_InDoor20150603(int y,int n,double H0,double Hg,int H)
+double ComputeSVG2::Gx_InDoor20150603(int y,int n,float H0,float Hg,int H)
 {
 	double Pn=1.0*(2*n+2)/(2*n+1);
 	double Gy=0;
@@ -884,7 +883,7 @@ double ComputeSVG2::Gx_InDoor20150603(int y,int n,double H0,double Hg,int H)
 *
 */
 /*--------------------------------------------------------------------*/
-double ComputeSVG2::Sx_InDoor20150603(int y,int n,double H0,double Hc,int H)
+double ComputeSVG2::Sx_InDoor20150603(int y,int n,float H0,float Hc,int H)
 {
 	double Pn=1.0*(2*n+2)/(2*n+1);
 	double Gy=0;

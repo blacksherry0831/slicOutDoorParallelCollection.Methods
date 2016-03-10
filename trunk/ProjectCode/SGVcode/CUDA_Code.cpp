@@ -9,10 +9,10 @@
 */
 /*------------------------------------------------------------------------------------------*/
 extern "C" void PerformSuperpixelSLIC_gpu(
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	const int kseedsSize,
 	const int m_width,
 	const int m_height,
@@ -56,10 +56,10 @@ extern "C" void  GetSeedsLabxy_gpu(
 */
 /*------------------------------------------------------------------------------------------*/
 extern "C" void PerformSuperpixelSLIC_gpu_simplify(
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	const int kseedsSize,
 	const int m_width,
 	const int m_height,
@@ -76,10 +76,10 @@ extern "C" void PerformSuperpixelSLIC_gpu_simplify(
 	double*				host_edgemag,
 	const double		M);
 extern "C" void PerformSuperpixelSLIC_gpu_simplify2(
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	const int kseedsSize,
 	const int m_width,
 	const int m_height,
@@ -126,10 +126,10 @@ extern "C" void PerformSuperpixelSLIC_gpu_simplify2(
 */
 /*------------------------------------------------------------------------------------------*/
 void PerformSuperpixelSLIC_cuda(
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	const int kseedsSize,
 	const int m_width,
 	const int m_height,
@@ -207,10 +207,10 @@ void PerformSuperpixelSLIC_cuda(
 */
 /*------------------------------------------------------------------------------------------*/
 extern "C" void PerformSuperpixelSLIC_ThetaMLXY_gpu_simplify(
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	const int kseedsSize,
 	const int m_width,   
 	const int m_height,
@@ -235,10 +235,10 @@ extern "C" void PerformSuperpixelSLIC_ThetaMLXY_gpu_simplify(
 */
 /*------------------------------------------------------------------------------------------*/
 void  PerformSuperpixelSLIC_ThetaMLXY_cuda(
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	const int kseedsSize,
 	const int m_width,
 	const int m_height,

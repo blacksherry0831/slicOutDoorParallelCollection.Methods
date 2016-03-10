@@ -150,12 +150,12 @@ public:
 	void ReleaseImgData(void);
 	void CalculateBoderImg(int scale);
 	int  CalculateBoderContours(int width,int height);
-	int  CalculateBoderContoursSC(double S,double C);
+	int  CalculateBoderContoursSC(float S,float C);
 	int  CalculateBoderContoursThinkness(
 		CvSeq * pcontour,
 		int width,
 		int height);
-	double  CalculateImgArea(IplImage *contour_img_quarter);
+	float  CalculateImgArea(IplImage *contour_img_quarter);
 	void   CalculateBoderImg_Block(int scale);
 	void   SetSuperPixelLabels(int* ImgLabels,int Width,int Height);
 private:

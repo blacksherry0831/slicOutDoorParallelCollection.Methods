@@ -1,4 +1,3 @@
-//#pragma warning( disable : xxxx ) 
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 #include "device_functions.h"
@@ -13,10 +12,10 @@ typedef unsigned int UINT32;
 */
 /*------------------------------------------------------------------------------------------*/
 extern "C" void PerformSuperpixelSLIC_gpu(
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	const int kseedsSize,
 	const int m_width,
 	const int m_height,
@@ -34,10 +33,10 @@ extern "C" void PerformSuperpixelSLIC_gpu(
 	const double		M);
 /*------------------------------------------------------------------------------------------*/
 extern "C" void PerformSuperpixelSLIC_ThetaMLXY_gpu_simplify(
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	const int kseedsSize,
 	const int m_width,   
 	const int m_height,
@@ -61,10 +60,10 @@ extern "C" void PerformSuperpixelSLIC_ThetaMLXY_gpu_simplify(
 */
 /*------------------------------------------------------------------------------------------*/
 extern "C" void PerformSuperpixelSLIC_gpu_simplify(
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	const int kseedsSize,
 	const int m_width,
 	const int m_height,
@@ -81,10 +80,10 @@ extern "C" void PerformSuperpixelSLIC_gpu_simplify(
 	double*				host_edgemag,
 	const double		M);
 extern "C" void PerformSuperpixelSLIC_gpu_simplify2(
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	const int kseedsSize,
 	const int m_width,
 	const int m_height,
@@ -494,10 +493,10 @@ __inline__ __host__ __device__ void ConvertLab2oml(
 */
 /*------------------------------------------------------------------------------------------*/
 __inline__ __device__ double  CalculateNewDistance(
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	double sita_n0,
 	double m_n0,
 	double L_n0,
@@ -512,7 +511,7 @@ __inline__ __device__ double  CalculateNewDistance(
 	/*alpha=0.6;
 	betta=0.3;
 	gama=1-alpha-betta;*/
-	/*double fai=100;*/
+	/*float fai=100;*/
 	assert(sita_n0>=0-0.1&&sita_n0<=1+0.1);
 	assert(L_n0>=0-0.1&&L_n0<=1+0.1);
 	assert(X_n0>=0-0.1&&X_n0<=1+0.1);
@@ -571,10 +570,10 @@ __inline__ __device__ double  CalculateNewDistance(
 /*------------------------------------------------------------------------------------------*/
 __global__ void SetMinimumOnLab(
 	const int kseedsSize,
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	const int m_width,
 	const int m_height,
 	double* m_lvec,
@@ -688,10 +687,10 @@ __inline__ __device__  void SetPixelLables(
 	const int* x_offset,
 	const int* y_offset,
 	const int offsetSize,
-	const double alpha,
-	const double betta,
-	const double gama,
-	const double fai,
+	const float alpha,
+	const float betta,
+	const float gama,
+	const float fai,
 	const int SeedWH,
 	const int labelsX,
 	const int labelsY,
@@ -805,10 +804,10 @@ __inline__ __device__  void SetPixelLables(
 /*------------------------------------------------------------------------------------------*/
 __global__ void SetMinimumOnLab_5Seeds(
 	const int kseedsSize,
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	const int m_width,
 	const int m_height,
 	double* m_lvec,
@@ -839,7 +838,7 @@ __global__ void SetMinimumOnLab_5Seeds(
 {
 	int x =blockIdx.x*blockDim.x+threadIdx.x;
 	int y =blockIdx.y*blockDim.y+threadIdx.y;
-	int SeedWH=sqrt((double)kseedsSize);	
+	int SeedWH=sqrt((float)kseedsSize);	
 	/////////////////////////////////////////////
 	int offsetSize=sizeof(x_offset)/sizeof(int);
 	if (x>=0&&x<m_width&&y>=0&&y<m_height){
@@ -914,10 +913,10 @@ __global__ void SetMinimumOnLab_5Seeds(
 /*------------------------------------------------------------------------------------------*/
 __global__ void SetMinimumOnLab_9Seeds(
 	const int kseedsSize,
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	const int m_width,
 	const int m_height,
 	double* m_lvec,
@@ -948,7 +947,7 @@ __global__ void SetMinimumOnLab_9Seeds(
 	{
 		int x =blockIdx.x*blockDim.x+threadIdx.x;
 		int y =blockIdx.y*blockDim.y+threadIdx.y;
-		int SeedWH=sqrt((double)kseedsSize);	
+		int SeedWH=sqrt((float)kseedsSize);	
 
 		int offsetSize=sizeof(x_offset)/sizeof(int);
 		if (x>=0&&x<m_width&&y>=0&&y<m_height){
@@ -1024,10 +1023,10 @@ __global__ void SetMinimumOnLab_9Seeds(
 /*------------------------------------------------------------------------------------------*/
 __global__ void SetMinimumOnThetaMLXY_9Seeds(
 	const int kseedsSize,
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	const int m_width,
 	const int m_height,
 	double* dev_sita_n,
@@ -1050,7 +1049,7 @@ __global__ void SetMinimumOnThetaMLXY_9Seeds(
 	{
 		int x =blockIdx.x*blockDim.x+threadIdx.x;
 		int y =blockIdx.y*blockDim.y+threadIdx.y;
-		int SeedWH=sqrt((double)kseedsSize);	
+		int SeedWH=sqrt((float)kseedsSize);	
 
 		int offsetSize=sizeof(x_offset)/sizeof(int);
 		if (x>=0&&x<m_width&&y>=0&&y<m_height){
@@ -1098,10 +1097,10 @@ __global__ void SetMinimumOnThetaMLXY_9Seeds(
 /*------------------------------------------------------------------------------------------*/
 __global__ void SetMinimumOnLab_AllSeeds(
 	const int kseedsSize,
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	const int m_width,
 	const int m_height,
 	double* m_lvec,
@@ -1234,7 +1233,7 @@ __global__ void SetMinimumOnLab_AllSeeds(
 	{
 		int x =blockIdx.x*blockDim.x+threadIdx.x;
 		int y =blockIdx.y*blockDim.y+threadIdx.y;
-		int SeedWH=sqrt((double)kseedsSize);	
+		int SeedWH=sqrt((float)kseedsSize);	
 		int x_step=m_width/SeedWH;
 		int y_step=m_height/SeedWH;
 		int STEP=x_step+y_step;
@@ -1289,7 +1288,7 @@ __global__ void SetMinimumOnLab_AllSeeds(
 		}else{
 #if 1
 			{
-				int SeedWH=sqrt((double)kseedsSize);
+				int SeedWH=sqrt((float)kseedsSize);
 				int labelsX=labels_ind%SeedWH;
 				int labelsY=labels_ind/SeedWH;
 				int x_offset[]={0,1,-1,0,0};
@@ -1358,7 +1357,7 @@ __global__ void SetMinimumOnLab_AllSeeds(
 	{
 		int x =blockIdx.x*blockDim.x+threadIdx.x;
 		int y =blockIdx.y*blockDim.y+threadIdx.y;
-		int SeedWH=sqrt((double)kseedsSize);
+		int SeedWH=sqrt((float)kseedsSize);
 		int ind=x+y*m_width;
 		int x_offset[]={0,1,-1,0,0};
 		int y_offset[]={0,0,0,1,-1};
@@ -2451,7 +2450,7 @@ __global__ void StatisticsLABXY_Seed_collect_gpu_search(
 
 	while(SeedIdx<kseedsSize){
 		////////////////////////////////////////
-		int kseedWH=sqrt((double)kseedsSize);
+		int kseedWH=sqrt((float)kseedsSize);
 		int x_step=width/(kseedWH);
 		int y_step=height/(kseedWH);
 		/////////////////////////////////////////
@@ -2511,7 +2510,7 @@ __global__ void StatisticsLABXY_Seed_collect_gpu_search_AllImg(
 	int offset=blockDim.x*gridDim.x;
 	while(SeedIdx<kseedsSize){
 		/*--------------------------------------*/
-		int kseedWH=sqrt((double)kseedsSize);
+		int kseedWH=sqrt((float)kseedsSize);
 		int x_step=width/(kseedWH);
 		int y_step=height/(kseedWH);
 		/*--------------------------------------*/
@@ -2784,7 +2783,7 @@ void PerformSuperpixelSLIC_ColorConvert_gpu(
 	cudaEvent_t start,stop;
 	cudaError_t cudaStatus;
 	float costtime_ms=0;
-	double costtime_us=0;
+	float costtime_us=0;
 	cudaEventCreate(&start);
 	cudaEventCreate(&stop);
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -2842,10 +2841,10 @@ void PerformSuperpixelSLIC_ColorConvert_gpu(
 */
 /*------------------------------------------------------------------------------------------*/
 void PerformSuperpixelSLIC_gpu(
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	const int kseedsSize,
 	const int m_width,
 	const int m_height,
@@ -2946,7 +2945,7 @@ void PerformSuperpixelSLIC_gpu(
 	}
 	cudaEvent_t start,stop;
 	float costtime_ms=0;
-	double costtime_us=0;
+	float costtime_us=0;
 	cudaEventCreate(&start);
 	cudaEventCreate(&stop);
 #if 1
@@ -3280,10 +3279,10 @@ void PerformSuperpixelSLIC_gpu(
 */
 /*------------------------------------------------------------------------------------------*/
 void PerformSuperpixelSLIC_gpu_simplify(
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	const int kseedsSize,
 	const int m_width,   
 	const int m_height,
@@ -3384,7 +3383,7 @@ void PerformSuperpixelSLIC_gpu_simplify(
 	}
 	cudaEvent_t start,stop;
 	float costtime_ms=0;
-	double costtime_us=0;
+	float costtime_us=0;
 	cudaEventCreate(&start);
 	cudaEventCreate(&stop);
 #if 1
@@ -3645,10 +3644,10 @@ void PerformSuperpixelSLIC_gpu_simplify(
 */
 /*------------------------------------------------------------------------------------------*/
 void PerformSuperpixelSLIC_gpu_simplify2(
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	const int kseedsSize,
 	const int m_width,   
 	const int m_height,
@@ -3741,7 +3740,7 @@ void PerformSuperpixelSLIC_gpu_simplify2(
 	}
 	cudaEvent_t start,stop;
 	float costtime_ms=0;
-	double costtime_us=0;
+	float costtime_us=0;
 	cudaEventCreate(&start);
 	cudaEventCreate(&stop);
 #if 1
@@ -3915,10 +3914,10 @@ void PerformSuperpixelSLIC_gpu_simplify2(
 */
 /*------------------------------------------------------------------------------------------*/
 void PerformSuperpixelSLIC_ThetaMLXY_gpu_simplify(
-	double alpha,
-	double betta,
-	double gama,
-	double fai,
+	float alpha,
+	float betta,
+	float gama,
+	float fai,
 	const int kseedsSize,
 	const int m_width,   
 	const int m_height,
@@ -3983,7 +3982,7 @@ void PerformSuperpixelSLIC_ThetaMLXY_gpu_simplify(
 		cudaStatus = cudaMemcpy(dev_Y_n, host_Y_n,m_width*m_height * sizeof(double), cudaMemcpyHostToDevice);
 	cudaEvent_t start,stop;
 	float costtime_ms=0;
-	double costtime_us=0;
+	float costtime_us=0;
 	cudaEventCreate(&start);
 	cudaEventCreate(&stop);
 	for( int itr = 0; itr <10; itr++ )
@@ -4535,7 +4534,7 @@ int k =blockIdx.x*blockDim.x+threadIdx.x;
 	}
 	{
 		double  threshold;		//计算超像素面积
-		threshold=4*sqrt((double)width*height/NumLabels);	//周长
+		threshold=4*sqrt((float)width*height/NumLabels);	//周长
 		threshold=threshold/8; //8分之一周长
 
 		for(register  int i = 0; i <NumLabels; i++ ){

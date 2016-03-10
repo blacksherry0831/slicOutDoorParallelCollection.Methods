@@ -1,9 +1,5 @@
 #include "StdAfx.h"
 #include "ImageData.h"
-/*-------------------------------------------------------------------*/
-#if _MSC_VER
-#pragma warning(disable: 4101)
-#endif
 /*----------------------------------------------------------------*/
 /**
 *构造函数\n
@@ -21,14 +17,14 @@ ImageData::ImageData(
 	string filesavepath,
 	int spcount,
 	double compactness,
-	double horizontal_line_pos)
+	float horizontal_line_pos)
 {
 	this->initParam();
 	ASSERT(filename!="");
 	SetImageData(filename,filesavepath);
 	SetSlicParameter(spcount,compactness);	
 	InitMemoryData(nullptr,filename,filesavepath,spcount,compactness);
-	this->Seg_HorizontalLinePos=(int) horizontal_line_pos*this->ImgHeight;
+	this->Seg_HorizontalLinePos=horizontal_line_pos*this->ImgHeight;
 	this->Seg_HorizontalLinePosScale=horizontal_line_pos;
 }
 /*----------------------------------------------------------------*/
@@ -41,14 +37,14 @@ ImageData::ImageData(
 	string filesavepath,
 	int spcount,
 	double compactness,
-	double horizontal_line_pos)
+	float horizontal_line_pos)
 {
 	string filename="MemoryIMG";
 	this->initParam();
 	SetImageData(filename,filesavepath);
 	SetSlicParameter(spcount,compactness);	
 	InitMemoryData(img,filename,filesavepath,spcount,compactness);
-	this->Seg_HorizontalLinePos=(int)horizontal_line_pos*this->ImgHeight;
+	this->Seg_HorizontalLinePos=horizontal_line_pos*this->ImgHeight;
 	this->Seg_HorizontalLinePosScale=horizontal_line_pos;
 }
 /*----------------------------------------------------------------*/
@@ -60,14 +56,14 @@ ImageData::ImageData(
 	string filename,
 	string filesavepath,
 	int spcount,
-	double horizontal_line_pos)
+	float horizontal_line_pos)
 {
 	this->initParam();
 	ASSERT(filename!="");
 	SetImageData(filename,filesavepath);
 	SetSlicParameter(spcount,0);	
 	InitMemoryData(nullptr,filename,filesavepath,spcount,0);
-	this->Seg_HorizontalLinePos=(int)horizontal_line_pos*this->ImgHeight;
+	this->Seg_HorizontalLinePos=horizontal_line_pos*this->ImgHeight;
 	this->Seg_HorizontalLinePosScale=horizontal_line_pos;
 }
 /*----------------------------------------------------------------*/
@@ -83,7 +79,6 @@ void ImageData::initParam(void)
 	this->FileWritePath="";
 	this->ImgHeight=0;
 	this->ImgWidth=0;
-	this->_seq=1;
 	this->Seg_HorizontalLinePos=0;
 	this->Seg_HorizontalLinePosScale=0;	
 	this->slic_expect_num=0;
@@ -249,8 +244,7 @@ void ImageData::ReleaseMemory(void)
 	 ImgHeight=srcCv_ImgBGRA->height;
 	 int sz=ImgHeight*ImgWidth;
 	 /*********************************************************************/
-	   src_ImgBGRA=new UINT32[sz];
-	   ASSERT(srcCv_ImgBGRA->widthStep==sizeof(UINT32)*ImgWidth);
+	  src_ImgBGRA=new UINT32[sz];
 	   memcpy(src_ImgBGRA,srcCv_ImgBGRA->imageData,sizeof(UINT32)*sz);
 	 /*********************************************************************/
 	   src_ImgLabels=new int[sz];
@@ -459,7 +453,7 @@ void ImageData::Combine2SPto1(void)
 //===========================================================================
 ///	DoRGBtoLABConversion
 ///
-///	For whole image: overlaoded doubleing point version
+///	For whole image: overlaoded floating point version
 //===========================================================================
 void ImageData::DoRGBtoLABConversion(
 	unsigned int*		ubuff,
@@ -635,8 +629,8 @@ void ImageData::GetThetaMLXYSeeds_ForGivenStepSize_Rectangle(
 	const bool&					perturbseeds,
 	const vector<double>&		edgemag)
 {
-	double xStep;
-	double yStep;
+	float xStep;
+	float yStep;
 	const bool hexgrid = false;
 	int numseeds(0);
 	int n(0);
@@ -645,9 +639,9 @@ void ImageData::GetThetaMLXYSeeds_ForGivenStepSize_Rectangle(
 #if FALSE
 	int max_wh=(ImgWidth>ImgHeight)?ImgWidth:ImgHeight; 
 	int min_wh=(ImgWidth<ImgHeight)?ImgWidth:ImgHeight;
-	double scale_wh=1.0*min_wh/max_wh;
+	float scale_wh=1.0*min_wh/max_wh;
 	unsigned int wh_gcd=GetGCD(ImgWidth,ImgHeight);
-	double scale_3_2=1.0*2/3;
+	float scale_3_2=1.0*2/3;
 	if (scale_wh==scale_3_2){
 		int K_new=(K/12+0.5)*12;
 		if (ImgWidth>ImgHeight){
@@ -677,8 +671,8 @@ void ImageData::GetThetaMLXYSeeds_ForGivenStepSize_Rectangle(
 	}
 #endif	
 
-	double xstrips_test = (double(ImgWidth)/double(xStep));
-	double ystrips_test = (double(ImgHeight)/double(yStep));
+	float xstrips_test = (double(ImgWidth)/double(xStep));
+	float ystrips_test = (double(ImgHeight)/double(yStep));
 	int xstrips = (double(ImgWidth)/double(xStep));
 	int ystrips = (double(ImgHeight)/double(yStep));
 	ASSERT(xstrips==ystrips);
@@ -880,12 +874,6 @@ void ImageData::SaveImgWithPointsCompute(string str_add)
 	for (register int spi=0;spi<slic_current_num;spi++){
 		Matrix_Category_Lable[spi]=SpSet.SpPropertySet[spi].ComputeCategory;
 	}
-
-	if(str_add.compare("")){
-
-		str_add="__"+_seq++;
-	}
-	
 	cui_GeneralImgProcess::CuiSaveImgWithPoints(
 		this->src_ImgBGRA,	
 		this->src_ImgLabels,
@@ -937,13 +925,6 @@ void ImageData::SaveImgWithPointsFuzzy(string str_add)
 /*----------------------------------------------------------------*/
 void ImageData::SaveImgWithContours(string str_add)
 {
-	if(str_add==""){
-		str_add.append("__");
-		char buf[10];
-		sprintf(buf, "%03d", _seq++);
-		str_add.append(buf);
-		//str_add="__"+;
-	}
 	cui_GeneralImgProcess::CuiSaveImgWithContours(
 		this->src_ImgBGRA,	
 		this->src_ImgLabels,
@@ -1370,7 +1351,7 @@ void ImageData::CalculateSpBlockEnergy2(int sp)
 	QPart2 = litmp.QuadPart;
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;
-	double mstime=dfTim*1000;	
+	float mstime=dfTim*1000;	
 }
 /*----------------------------------------------------------------*/
 /**
@@ -1382,11 +1363,11 @@ void ImageData::CalculateSpBlockEnergy2(int sp)
 void ImageData::CalculateAllSpBlockEnergyRank(int RankNum)
 {
 #if 0
-double* EnergyHighsigmaArray=new double[slic_current_num];
+float* EnergyHighsigmaArray=new float[slic_current_num];
 	for(int i=0;i<slic_current_num;i++){	
 		EnergyHighsigmaArray[i]=SpSet.SpPropertySet[i].harr_energy.EnergyHighsigma;
 	}
-	double MaxEnergyHighsigma=cui_GeneralImgProcess::GetMaxValue(EnergyHighsigmaArray,slic_current_num);
+	float MaxEnergyHighsigma=cui_GeneralImgProcess::GetMaxValue(EnergyHighsigmaArray,slic_current_num);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	for(int i=0;i<slic_current_num;i++){	
 		SpSet.SpPropertySet[i].harr_energy.EnergyGrade=SpSet.SpPropertySet[i].harr_energy.EnergyHighsigma/MaxEnergyHighsigma*RankNum;
@@ -1402,7 +1383,7 @@ double* EnergyHighsigmaArray=new double[slic_current_num];
 	int MaxSort[2];
 	cui_GeneralImgProcess::GetMaxValueIndex(EnergyHighsigmaArray.data(),slic_current_num, MaxSort,sizeof( MaxSort)/sizeof(int));
 
-	double MaxEnergyHighsigma=EnergyHighsigmaArray[MaxSort[0]];
+	float MaxEnergyHighsigma=EnergyHighsigmaArray[MaxSort[0]];
 	if (MaxEnergyHighsigma<0.5){
 		MaxEnergyHighsigma=1;
 	}
@@ -1547,7 +1528,6 @@ void ImageData::FillHoleOnSVGLables(
 			DrawS_V_G_Lables_BorderLine(Lables_S_Img,Sky);
 		}
 		cui_GeneralImgProcess::GetContour2Fill(Lables_S_Img,Lables_SVG_Img,SkyCv);
-		ASSERT(Lables_SVG_Img->widthStep==sizeof(INT32)*ImgWidth);
 		memcpy(Lables_SVG,Lables_SVG_Img->imageData,Lables_SVG_Img->imageSize);
 	}
 	if (vertical==true){
@@ -1564,7 +1544,6 @@ void ImageData::FillHoleOnSVGLables(
 		}
 		
 		cui_GeneralImgProcess::GetContour2Fill(Lables_V_Img,Lables_SVG_Img,VerticalCv);
-		ASSERT(Lables_SVG_Img->widthStep==sizeof(INT32)*ImgWidth);
 		memcpy(Lables_SVG,Lables_SVG_Img->imageData,Lables_SVG_Img->imageSize);
 	}
 	if (ground==true){
@@ -1583,7 +1562,6 @@ void ImageData::FillHoleOnSVGLables(
  			DrawS_V_G_Lables_BorderLine(Lables_G_Img,Ground);
 		}
 		cui_GeneralImgProcess::GetContour2Fill(Lables_G_Img,Lables_SVG_Img,GroundCv);
-		ASSERT(Lables_SVG_Img->widthStep==sizeof(INT32)*ImgWidth);
 		memcpy(Lables_SVG,Lables_SVG_Img->imageData,Lables_SVG_Img->imageSize);
 	}
 #endif
@@ -1645,96 +1623,3 @@ void ImageData::DrawS_V_G_Lables_BorderLine(IplImage *img,UINT32 category)
 #endif
 
 }
-/*----------------------------------------------------------------*/
-/**
-*BGRA 4个通道
-*
-*
-*/
-/*----------------------------------------------------------------*/
-void ImageData::SaveSuperpixelLabelsImagePNG(
-	INT32*					labels,
-	const int				width,
-	const int				height,
-	const string			filename,
-	const string			path) 
-{ 
-	ASSERT(width==this->ImgWidth);
-	ASSERT(height==this->ImgHeight);
-	ASSERT(sizeof(INT32)==4);
-
-	//string fileFullPath=path+filename;
-
-	
-	
-	char fname[_MAX_FNAME];
-	_splitpath(filename.c_str(), NULL, NULL, fname, NULL);
-	string pathSave =path+fname+"_SuperPixel.png";
-	
-	
-	IplImage *img_t=cvCreateImage(cvSize(this->ImgWidth,this->ImgHeight),IPL_DEPTH_8U,4);
-    ASSERT(width*height*sizeof(INT32)==img_t->imageSize);
-
-	/*
-	OPENCV  4字节对齐问题
-	*/
-
-	ASSERT(img_t->widthStep==width*sizeof(INT32));  
-
-
-	memcpy(img_t->imageData,labels,img_t->imageSize);
-  //unsigned char red=254;
-	for (int x=0;x<width;x++){
-		for (int y=0;y<height;y++){
-			int ind=x+y*width;
-			int org=img_t->imageData[ind];
-			unsigned char red=org>255?255:org;
-			img_t->imageData[ind]|=0xff<<32;//填充alph通道
-			img_t->imageData[ind]|=red<<24;
-			/*if (org<245){
-				labels[ind]=org|(org<<8)|(org<<16)|(0xff000000);
-			}		*/
-		}
-	}
-	cvSaveImage(pathSave.c_str(),img_t);
-
-	cvReleaseImage(&img_t);
-		
-}
-/*----------------------------------------------------------------*/
-/**
-*
-*
-*
-*/
-/*----------------------------------------------------------------*/
-void ImageData::SaveSuperpixelLabelsImagePNG() 
-{
-	ASSERT(sizeof(UINT32)==sizeof(int));
-	
-	
-	
-	
-	this->SaveSuperpixelLabelsImagePNG(
-		this->src_ImgLabels,
-		this->ImgWidth,
-		this->ImgHeight,
-		this->FileReadFullPath,
-		this->FileWritePath);
-   /* cui_GeneralImgProcess::CuiSaveImageData(
-		this->src_ImgLabels,
-		this->ImgWidth,
-		this->ImgHeight,
-		"superPixel.png",
-		this->FileWritePath,
-		1,
-		"");*/
-
-}
-/*----------------------------------------------------------------*/
-/**
-*
-*
-*
-*/
-/*----------------------------------------------------------------*/

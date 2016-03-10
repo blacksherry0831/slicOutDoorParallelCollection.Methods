@@ -161,8 +161,8 @@ static float  GetMinValue(double* Data,long DataNum);
 static int    GetMinValue(int* Data, long DataNum);
 
 static double P2PointDiatance(CvPoint point1, CvPoint point2);
-static double GetAverageValue(double* Data, size_t DataNum);
-static double GetAverageValue(float* Data, size_t DataNum);
+static double GetAverageValue(double* Data, int DataNum);
+static double GetAverageValue(float* Data, int DataNum);
 static double GetSumValue(double* Data, int DataNum);
 static double GetSumValue(float* Data, int DataNum);
 static double GetVarianceValue(double* Data, int DataNum,double *avg,double *variance);

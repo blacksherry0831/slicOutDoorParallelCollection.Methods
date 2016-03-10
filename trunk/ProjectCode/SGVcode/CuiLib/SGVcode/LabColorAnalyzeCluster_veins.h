@@ -54,16 +54,16 @@ public:
 		double *Matrix_W_Vein,
 		double *Matrix_W_Multi,
 		int spcount,
-		double Vein_threshold_SkyV,
-		double Vein_threshold_GND,
-		double Color_threshold_SkyV,
-		double Color_threshold_GND,
+		float Vein_threshold_SkyV,
+		float Vein_threshold_GND,
+		float Color_threshold_SkyV,
+		float Color_threshold_GND,
 		SP_PROPERTY *p_SpProperty);
 	double Find_MaxSimilar(void);
 public:
 	static bool ColorNearWhiteBlack(LabColor c);
-	static double LabDistanceAB(LabColor ci,LabColor cj);
-	static double LabDistanceLAB(LabColor ci,LabColor cj);
+	static float LabDistanceAB(LabColor ci,LabColor cj);
+	static float LabDistanceLAB(LabColor ci,LabColor cj);
 
 	static bool LabIsSameColorIn(LabColor ci,LabColor cj,bool Enable);
 	static bool LabIsSameColorOut(LabColor ci,LabColor cj,bool Enable);
@@ -72,11 +72,11 @@ public:
 	static bool LabIsSameColor(LabColor ci,LabColor cj);
 	
 
-	static double LabDistanceABangleIn(LabColor ci,LabColor cj);
-	static double LabDistanceABangleOut(LabColor ci,LabColor cj);
-	static double LabDistanceABangleInOut(LabColor ci,LabColor cj);
+	static float LabDistanceABangleIn(LabColor ci,LabColor cj);
+	static float LabDistanceABangleOut(LabColor ci,LabColor cj);
+	static float LabDistanceABangleInOut(LabColor ci,LabColor cj);
 
-	static double LabDistanceLABangle(LabColor ci,LabColor cj);
+	static float LabDistanceLABangle(LabColor ci,LabColor cj);
 };
 /*-------------------------------------------------------------------------------------------*/
 /**

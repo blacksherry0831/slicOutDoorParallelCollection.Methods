@@ -1,9 +1,7 @@
 #include "StdAfx.h"
 #include "HsHg.h"
 /*-------------------------------------------------------------------*/
-#if _MSC_VER
-#pragma warning(disable: 4101)
-#endif
+	
 /*-------------------------------------------------------------------*/
 /**
 *依据分类好的图像（天空立面地面）
@@ -45,9 +43,9 @@ HsHg::~HsHg(void)
 *获得天空上的
 */
 /*-------------------------------------------------------------------*/
-double HsHg::GetHs_InDoor(double DeflectionAngle)
+float HsHg::GetHs_InDoor(float DeflectionAngle)
 {
-	double Hs=0;
+	float Hs=0;
 	if (DeflectionAngle==0){
 		Hs=(CameraHeight*ImgFocus)/(RoomLength)/ImgHeight;
 		Hs=1.0*(432-288)/864;
@@ -61,9 +59,9 @@ double HsHg::GetHs_InDoor(double DeflectionAngle)
 *
 */
 /*-------------------------------------------------------------------*/
-double HsHg::GetHg_InDoor(double DeflectionAngle)
+float HsHg::GetHg_InDoor(float DeflectionAngle)
 {
-	double Hg=0;
+	float Hg=0;
 
 	if (DeflectionAngle==0){
 		Hg=(RoomHeight2Top*ImgFocus)/(RoomLength)/ImgHeight;
@@ -78,13 +76,13 @@ double HsHg::GetHg_InDoor(double DeflectionAngle)
 *
 */
 /*-------------------------------------------------------------------*/
-double  HsHg::GetHs_ByIteration(void)
+float  HsHg::GetHs_ByIteration(void)
 {
 	//最大值
 	int *ImgLab=pMD->ImgLables.get();
 	INT32 * Matrix_Category_Lable=pMD->Matrix_Category_Lable_InDoor.get();
 	this->ForceSky_InDoor_DFS();
-	double Hs=0;
+	float Hs=0;
 	for (int y=pMD->ImgHeight-1;y>=0;y--){
 		for (int x=0;x<pMD->ImgWidth;x++){		
 			int sp=ImgLab[y*pMD->ImgWidth+x];
@@ -93,7 +91,7 @@ double  HsHg::GetHs_ByIteration(void)
 			}
 		}
 	}	
-	double HsLimit=ImgFocus*tan(CameraOffAngle)+pMD->Seg_HorizontalLinePos;
+	float HsLimit=ImgFocus*tan(CameraOffAngle)+pMD->Seg_HorizontalLinePos;
 	Hs=(HsLimit<Hs)?HsLimit:Hs;
 
 	Hs=(pMD->Seg_HorizontalLinePos-Hs)/(pMD->ImgHeight);
@@ -104,7 +102,7 @@ double  HsHg::GetHs_ByIteration(void)
 *
 */
 /*-------------------------------------------------------------------*/
-double  HsHg::GetHg_ByIteration(void)
+float  HsHg::GetHg_ByIteration(void)
 {
 	//最小值
 	int *ImgLab=pMD->ImgLables.get();
@@ -115,7 +113,7 @@ double  HsHg::GetHg_ByIteration(void)
 	ComputeSVG::ForceGround_InDoor_DFS(pMD);
 #endif
 	
-	double Hg=pMD->ImgHeight;
+	float Hg=pMD->ImgHeight;
 	for (int y=0;y<pMD->ImgHeight;y++){
 	for (int x=0;x<pMD->ImgWidth;x++){
 			int sp=ImgLab[y*pMD->ImgWidth+x];
@@ -126,7 +124,7 @@ double  HsHg::GetHg_ByIteration(void)
 	}	
 	
 	
-	double HgLimit=ImgFocus*tan(CameraOffAngle)+pMD->Seg_HorizontalLinePos;
+	float HgLimit=ImgFocus*tan(CameraOffAngle)+pMD->Seg_HorizontalLinePos;
 	Hg=(HgLimit>Hg)?HgLimit:Hg;
 	
 	Hg=(Hg-pMD->Seg_HorizontalLinePos)/(pMD->ImgHeight);
@@ -229,9 +227,9 @@ void HsHg::DFS_4Ground2Up(int spi)
 			if ((Matrix_Category_Lable[spj]==Ground)
 				||(Matrix_Category_Lable[spj]==GroundPending))
 			{
-				double abLike=cui_GeneralImgProcess::LabDistanceAB(SpProperty[spj].lab_color,rootColor);
+				float abLike=cui_GeneralImgProcess::LabDistanceAB(SpProperty[spj].lab_color,rootColor);
 				TRACE(" %d&&%dAB_LIKKE=%f ",spi,spj,abLike);
-				double Threshold=1.5;/*小于1.7*/
+				float Threshold=1.5;/*小于1.7*/
 				if (abLike<=Threshold){
 					//与底块相似
 					Matrix_Category_Lable[spj]=GroundPending;
@@ -367,12 +365,12 @@ void HsHg::DFS_4Sky2Down(int spi)
 *
 */
 /*-------------------------------------------------------------------*/
-double HsHg::GetHs_InDoor_Geometry(double DeflectionAngle)
+float HsHg::GetHs_InDoor_Geometry(float DeflectionAngle)
 {
 
 	
 
-	double Hs=0;
+	float Hs=0;
 	if (DeflectionAngle==0){
 		Hs=(CameraHeight*ImgFocus)/(RoomLength)/ImgHeight;
 		Hs=1.0*(432-288)/864;
@@ -386,11 +384,11 @@ double HsHg::GetHs_InDoor_Geometry(double DeflectionAngle)
 *
 */
 /*-------------------------------------------------------------------*/
-double HsHg::GetHg_InDoor_Geometry(double DeflectionAngle)
+float HsHg::GetHg_InDoor_Geometry(float DeflectionAngle)
 {
 	
 
-	double Hg=0;
+	float Hg=0;
 
 	if (DeflectionAngle==0){
 		Hg=(RoomHeight2Top*ImgFocus)/(RoomLength)/ImgHeight;
@@ -410,7 +408,7 @@ double HsHg::GetHg_InDoor_Geometry(double DeflectionAngle)
 /*-------------------------------------------------------------------*/
 void HsHg::Get_HsHg_ByIteration(void)
 {
-	double HsOffset=this->GetHs_ByIteration()*pMD->ImgHeight;
+	float HsOffset=this->GetHs_ByIteration()*pMD->ImgHeight;
 #if 0
 /*---------------------------------------------------------------------------*/
 	cui_GeneralImgProcess::CuiSaveImgWithPoints(
@@ -422,7 +420,7 @@ void HsHg::Get_HsHg_ByIteration(void)
 		true,
 		pMD,"");
 #endif
-	double HgOffset=this->GetHg_ByIteration()*pMD->ImgHeight;
+	float HgOffset=this->GetHg_ByIteration()*pMD->ImgHeight;
 #if 0
 /*---------------------------------------------------------------------------*/
 
@@ -437,9 +435,9 @@ void HsHg::Get_HsHg_ByIteration(void)
 #endif	
 #if 0
 	/*---------------------------------------------------------------------------*/
-	double Ksg=1.0*RoomHeight2Top/CameraHeight;
-	double HsOffset_c=Ksg*HgOffset;
-	double HgOffset_c=HsOffset/Ksg;	
+	float Ksg=1.0*RoomHeight2Top/CameraHeight;
+	float HsOffset_c=Ksg*HgOffset;
+	float HgOffset_c=HsOffset/Ksg;	
 	/*---------------------------------------------------------------------------*/
 	pMD->PgOffset=(HgOffset+HgOffset_c)/pMD->ImgHeight;
 	pMD->PsOffset=(HsOffset+HsOffset_c)/pMD->ImgHeight;
@@ -483,16 +481,16 @@ void HsHg::Get_HsHg_By_SV_VG(void)
 
 	{
 		/*------------------------------------------------*/
-		double Hs=cui_GeneralImgProcess::GetMaxValue(SVPointY.data(),SVPointY.size());
-		double HsLimit=ImgFocus*tan(CameraOffAngle)+pMD->Seg_HorizontalLinePos;
+		float Hs=cui_GeneralImgProcess::GetMaxValue(SVPointY.data(),SVPointY.size());
+		float HsLimit=ImgFocus*tan(CameraOffAngle)+pMD->Seg_HorizontalLinePos;
 		Hs=(HsLimit<Hs)?HsLimit:Hs;
 		pMD->PsOffset=(pMD->Seg_HorizontalLinePos-Hs)/(pMD->ImgHeight);
 		/*------------------------------------------------*/
 	}
 
 	{
-		double Hg=cui_GeneralImgProcess::GetMinValue(VGPointY.data(),VGPointY.size());
-		double HsLimit=ImgFocus*tan(CameraOffAngle)+pMD->Seg_HorizontalLinePos;
+		float Hg=cui_GeneralImgProcess::GetMinValue(VGPointY.data(),VGPointY.size());
+		float HsLimit=ImgFocus*tan(CameraOffAngle)+pMD->Seg_HorizontalLinePos;
 		Hg=(HsLimit>Hg)?HsLimit:Hg;
 		pMD->PgOffset=(Hg-pMD->Seg_HorizontalLinePos)/(pMD->ImgHeight);
 		/*------------------------------------------------*/
@@ -507,11 +505,11 @@ void HsHg::Get_HsHg_By_SV_VG(void)
 /*-------------------------------------------------------------------*/
 void HsHg::Get_HsHg_By_NBig_FSmall_5m4d(void)
 {
-	vector<double> SkyY;
-	vector<double> GndY;
+	vector<float> SkyY;
+	vector<float> GndY;
 
-	vector<double> SkyYData;
-	vector<double> GndYData;
+	vector<float> SkyYData;
+	vector<float> GndYData;
 	this->StatisticsTrapezoidHgHs_5m4d(SkyY,GndY);
 	SkyYData.clear();
 	GndYData.clear();
@@ -529,32 +527,32 @@ void HsHg::Get_HsHg_By_NBig_FSmall_5m4d(void)
 	}
 #if FALSE
 //获得均值方差
-	double Sky_avg;
-	double Sky_dev;
+	float Sky_avg;
+	float Sky_dev;
 	cui_GeneralImgProcess::GetVarianceValue(SkyYData.data(),SkyYData.size(),&Sky_avg,&Sky_dev);
-	double Sky_avg_1d96dev=Sky_avg-1.96*Sky_dev;
+	float Sky_avg_1d96dev=Sky_avg-1.96*Sky_dev;
 
-	double Gnd_avg;
-	double Gnd_dev;
+	float Gnd_avg;
+	float Gnd_dev;
 	cui_GeneralImgProcess::GetVarianceValue(GndYData.data(),GndYData.size(),&Gnd_avg,&Gnd_dev);
-	double Gnd_avg_1d96dev=Gnd_avg-1.96*Gnd_dev;
+	float Gnd_avg_1d96dev=Gnd_avg-1.96*Gnd_dev;
 #else
 	//获得均值方差
-	double Sky_avg=cui_GeneralImgProcess::GetMaxValue(SkyYData.data(),SkyYData.size());
-	double Sky_dev=0;;
+	float Sky_avg=cui_GeneralImgProcess::GetMaxValue(SkyYData.data(),SkyYData.size());
+	float Sky_dev=0;;
 	//////////////////////////////////
 	for (int i=0;i<SkyYData.size();i++){
 		Sky_dev+=pow(Sky_avg-SkyYData[i],2);
 	}
 	Sky_dev/=SkyYData.size();
 	Sky_dev=sqrtl(Sky_dev); 
-	double Sky_avg_1d96dev=Sky_avg-1.96*Sky_dev;
-	double Sky_avg_1d0dev=Sky_avg-1.0*Sky_dev;
+	float Sky_avg_1d96dev=Sky_avg-1.96*Sky_dev;
+	float Sky_avg_1d0dev=Sky_avg-1.0*Sky_dev;
 	/////////////////////////////////////
 	
 
-	double Gnd_avg=cui_GeneralImgProcess::GetMaxValue(GndYData.data(),GndYData.size());
-	double Gnd_dev=0;
+	float Gnd_avg=cui_GeneralImgProcess::GetMaxValue(GndYData.data(),GndYData.size());
+	float Gnd_dev=0;
 	////////////////////////////////
 	for (int i=0;i<GndYData.size();i++){
 		Gnd_dev+=pow(Gnd_avg-GndYData[i],2);
@@ -562,8 +560,8 @@ void HsHg::Get_HsHg_By_NBig_FSmall_5m4d(void)
 	Gnd_dev/=GndYData.size();
 	Gnd_dev=sqrtl(Gnd_dev); 
 	////////////////////////////////////////////
-	double Gnd_avg_1d96dev=Gnd_avg-1.96*Gnd_dev;
-	double Gnd_avg_1d0dev=Gnd_avg-1.0*Gnd_dev;
+	float Gnd_avg_1d96dev=Gnd_avg-1.96*Gnd_dev;
+	float Gnd_avg_1d0dev=Gnd_avg-1.0*Gnd_dev;
 #endif
 #if FALSE
 	for (int i=0;i<SkyY.size()/2;i++){
@@ -600,16 +598,16 @@ for (int i=0;i<SkyY.size()/2;i++){
 #endif
 	
 	/////////////////////////////////////////////////////////////
-	double Hs;
-	vector<double> HsData;
+	float Hs;
+	vector<float> HsData;
 	for (int i=0;i<SkyY.size()/2;i++){
 		if (SkyY[i]>0){
 			HsData.push_back(i);
 		}
 	}
 	////////////////////////////////////////////////////////////
-	double Hg;
-	vector<double> HgData;
+	float Hg;
+	vector<float> HgData;
 	for (int i=GndY.size()/2;i<GndY.size();i++){
 		if (GndY[i]>0){
 			HgData.push_back(i);
@@ -617,8 +615,8 @@ for (int i=0;i<SkyY.size()/2;i++){
 	}
 	if (HsData.size()!=0){
 		/*------------------------------------------------*/
-		double Hs=cui_GeneralImgProcess::GetMaxValue(HsData.data(),HsData.size());
-		double HsLimit=ImgFocus*tan(CameraOffAngle)+pMD->Seg_HorizontalLinePos;
+		float Hs=cui_GeneralImgProcess::GetMaxValue(HsData.data(),HsData.size());
+		float HsLimit=ImgFocus*tan(CameraOffAngle)+pMD->Seg_HorizontalLinePos;
 		Hs=(HsLimit<Hs)?HsLimit:Hs;
 		pMD->PsOffset=(pMD->Seg_HorizontalLinePos-Hs)/(pMD->ImgHeight);
 		/*------------------------------------------------*/
@@ -627,8 +625,8 @@ for (int i=0;i<SkyY.size()/2;i++){
 	}
 
 	if (HgData.size()!=0){
-		double Hg=cui_GeneralImgProcess::GetMinValue( HgData.data(), HgData.size());
-		double HsLimit=ImgFocus*tan(CameraOffAngle)+pMD->Seg_HorizontalLinePos;
+		float Hg=cui_GeneralImgProcess::GetMinValue( HgData.data(), HgData.size());
+		float HsLimit=ImgFocus*tan(CameraOffAngle)+pMD->Seg_HorizontalLinePos;
 		Hg=(HsLimit>Hg)?HsLimit:Hg;
 		pMD->PgOffset=(Hg-pMD->Seg_HorizontalLinePos)/(pMD->ImgHeight);
 		/*------------------------------------------------*/
@@ -646,11 +644,11 @@ void HsHg::Get_HsHg_ByIterationNoGeometric(void)
 {
 	
 #if 0
-	double HgOffset=this->GetHg_ByIteration()*pMD->ImgHeight;
+	float HgOffset=this->GetHg_ByIteration()*pMD->ImgHeight;
 #else
-	double HgOffset=this->GetHg_Nogeometry()*pMD->ImgHeight;
+	float HgOffset=this->GetHg_Nogeometry()*pMD->ImgHeight;
 #endif
-	double HsOffset=this->GetHs_Nogeometry()*pMD->ImgHeight;
+	float HsOffset=this->GetHs_Nogeometry()*pMD->ImgHeight;
 	pMD->PgOffset=HgOffset/pMD->ImgHeight;
 	pMD->PsOffset=HsOffset/pMD->ImgHeight;
 
@@ -671,18 +669,18 @@ void HsHg::Get_HsHg_ByIterationNoGeometric(void)
 *不使用几何方法获得地面分界线
 */
 /*-------------------------------------------------------------------*/
-double  HsHg::GetHg_Nogeometry(void)
+float  HsHg::GetHg_Nogeometry(void)
 {
 	//最大值
-	double   Hg=pMD->Seg_HorizontalLinePos;
+	float   Hg=pMD->Seg_HorizontalLinePos;
 	int*    ImgLab=pMD->ImgLables.get();
 	INT32*  Matrix_Category_Lable=pMD->Matrix_Category_Lable_InDoor.get();
 	UINT32* Matrix_E=pMD->Matrix_E_InDoor.get();
 	SP_PROPERTY* SpProperty=pMD->p_SpProperty;
 
 #if UseVerticalTop
-	double Hs_Up=pMD->Seg_HorizontalLinePos;
-	double Hs_Down=pMD->Seg_HorizontalLinePos;
+	float Hs_Up=pMD->Seg_HorizontalLinePos;
+	float Hs_Down=pMD->Seg_HorizontalLinePos;
 	for (int y=pMD->ImgHeight-1;y>=0;y--){
 		for (int x=0;x<pMD->ImgWidth;x++){		
 			int sp=ImgLab[y*pMD->ImgWidth+x];
@@ -692,7 +690,7 @@ double  HsHg::GetHg_Nogeometry(void)
 			}
 		}
 	}	
-	double Hs=Hs_Up;
+	float Hs=Hs_Up;
 #endif	
 #if UseVerticalSpTopAvg
 	vector<double> Ypos;
@@ -730,7 +728,7 @@ double  HsHg::GetHg_Nogeometry(void)
 
 #endif	
 
-	double HsLimit=ImgFocus*tan(CameraOffAngle)+pMD->Seg_HorizontalLinePos;
+	float HsLimit=ImgFocus*tan(CameraOffAngle)+pMD->Seg_HorizontalLinePos;
 	Hg=(HsLimit>Hg)?HsLimit:Hg;
 
 	Hg=(Hg-pMD->Seg_HorizontalLinePos)/(pMD->ImgHeight);
@@ -741,18 +739,18 @@ double  HsHg::GetHg_Nogeometry(void)
 *不使用几何方法获得天花板的分界线
 */
 /*-------------------------------------------------------------------*/
-double  HsHg::GetHs_Nogeometry(void)
+float  HsHg::GetHs_Nogeometry(void)
 {
 	//最大值
-	double   Hs=pMD->Seg_HorizontalLinePos;
+	float   Hs=pMD->Seg_HorizontalLinePos;
 	int*    ImgLab=pMD->ImgLables.get();
 	INT32*  Matrix_Category_Lable=pMD->Matrix_Category_Lable_InDoor.get();
 	UINT32* Matrix_E=pMD->Matrix_E_InDoor.get();
 	SP_PROPERTY* SpProperty=pMD->p_SpProperty;
 	
 #if UseVerticalTop
-	double Hs_Up=pMD->Seg_HorizontalLinePos;
-	double Hs_Down=pMD->Seg_HorizontalLinePos;
+	float Hs_Up=pMD->Seg_HorizontalLinePos;
+	float Hs_Down=pMD->Seg_HorizontalLinePos;
 	for (int y=pMD->ImgHeight-1;y>=0;y--){
 		for (int x=0;x<pMD->ImgWidth;x++){		
 			int sp=ImgLab[y*pMD->ImgWidth+x];
@@ -762,7 +760,7 @@ double  HsHg::GetHs_Nogeometry(void)
 			}
 		}
 	}	
-	double Hs=Hs_Up;
+	float Hs=Hs_Up;
 #endif	
 #if UseVerticalSpTopAvg
 	vector<double> Ypos;
@@ -800,7 +798,7 @@ double  HsHg::GetHs_Nogeometry(void)
 	
 #endif	
 
-	double HsLimit=ImgFocus*tan(CameraOffAngle)+pMD->Seg_HorizontalLinePos;
+	float HsLimit=ImgFocus*tan(CameraOffAngle)+pMD->Seg_HorizontalLinePos;
 	Hs=(HsLimit<Hs)?HsLimit:Hs;
 
 	Hs=(pMD->Seg_HorizontalLinePos-Hs)/(pMD->ImgHeight);
@@ -813,11 +811,11 @@ double  HsHg::GetHs_Nogeometry(void)
 /*-------------------------------------------------------------------*/
 bool HsHg::IsConvergence(void)
 {
-	double PsOffset=this->GetHs_Nogeometry();
-	double PgOffset=this->GetHg_Nogeometry();
+	float PsOffset=this->GetHs_Nogeometry();
+	float PgOffset=this->GetHg_Nogeometry();
 
-	double sub_s=fabsl(pMD->PsOffset-PsOffset);
-	double sub_g=fabsl(pMD->PgOffset-PgOffset);
+	float sub_s=fabsl(pMD->PsOffset-PsOffset);
+	float sub_g=fabsl(pMD->PgOffset-PgOffset);
 	if (sub_s<0.01&&sub_g<0.01){
 		return true;
 	}else{
@@ -832,12 +830,12 @@ bool HsHg::IsConvergence(void)
 /*-------------------------------------------------------------------*/
 bool HsHg::IsBorderLineConvergence_5m4d(void)
 {
-	double PsOffset=pMD->PsOffset;
-	double PgOffset=pMD->PgOffset;
+	float PsOffset=pMD->PsOffset;
+	float PgOffset=pMD->PgOffset;
 	bool IsConvergence=false;
 	this->Get_HsHg_By_NBig_FSmall_5m4d();
-	double sub_s=fabsl(pMD->PsOffset-PsOffset);
-	double sub_g=fabsl(pMD->PgOffset-PgOffset);
+	float sub_s=fabsl(pMD->PsOffset-PsOffset);
+	float sub_g=fabsl(pMD->PgOffset-PgOffset);
 	if (sub_s<0.01&&sub_g<0.01){
 		IsConvergence=true;
 	}else{
@@ -957,8 +955,8 @@ void HsHg::CheackBoderCategory_5m4d(void)
 /*-------------------------------------------------------------------*/
 bool HsHg::IsConvergence_5m4d(void)
 {
-	double PsOffset=pMD->PsOffset;
-	double PgOffset=pMD->PgOffset;
+	float PsOffset=pMD->PsOffset;
+	float PgOffset=pMD->PgOffset;
 	//到达收敛条件(则退出)
 	if (this->IsBorderLineConvergence_5m4d()){
 		this->IsBoderCategoryChange_5m4d();
@@ -981,7 +979,7 @@ bool HsHg::IsConvergence_5m4d(void)
 *       地面自下而上梯形
 */
 /*-------------------------------------------------------------------*/
-void HsHg::StatisticsTrapezoidHgHs_5m4d(vector<double>& SkyY,vector<double>& GndY)
+void HsHg::StatisticsTrapezoidHgHs_5m4d(vector<float>& SkyY,vector<float>& GndY)
 {
 	SkyY.clear();
 	GndY.clear();
@@ -990,8 +988,8 @@ void HsHg::StatisticsTrapezoidHgHs_5m4d(vector<double>& SkyY,vector<double>& Gnd
 	int* Lables=pMD->ImgLables.get();
 	INT32* Category=pMD->Matrix_Category_Lable_InDoor.get();
 
-	double HgPos= pMD->Seg_HorizontalLinePos+pMD->PgOffset*pMD->ImgHeight;
-	double HsPos= pMD->Seg_HorizontalLinePos-pMD->PsOffset*pMD->ImgHeight;
+	float HgPos= pMD->Seg_HorizontalLinePos+pMD->PgOffset*pMD->ImgHeight;
+	float HsPos= pMD->Seg_HorizontalLinePos-pMD->PsOffset*pMD->ImgHeight;
 
 	for (int x=0;x<pMD->ImgWidth;x++){
 		for (int y=0;y<HsPos;y++){

@@ -318,7 +318,7 @@ void SpSpAnalyzeData::classify(float maxValue,float minValue,int CateNum)
 *@see   ::Calcuate()
 */
 /*------------------------------------------------*/
-SpSizeAttr::SSA SpAnalyze::IsSpFatorThin(ImageMemData* MemData_t)
+SpSizeAttr SpAnalyze::IsSpFatorThin(ImageMemData* MemData_t)
 {
 
 this->Calcuate(MemData_t,false);

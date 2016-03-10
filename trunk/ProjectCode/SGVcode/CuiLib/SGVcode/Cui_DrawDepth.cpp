@@ -1,8 +1,6 @@
 #include "StdAfx.h"
 #include "Cui_DrawDepth.h"
-#if _MSC_VER
-#pragma warning(disable: 4101)
-#endif
+
 /*----------------------------------------------------------------*/
 /**
 *¹¹Ôìº¯Êý\n
@@ -223,7 +221,7 @@ void Cui_DrawDepth::SetCameraParameter(
 	double focus,
 	double height_over_ground,
 	double film_height,
-	double horizontal_pos)
+	float horizontal_pos)
 {
    this->camera_data.Camera_focus=focus;
    this->camera_data.Camera_film_height=film_height;

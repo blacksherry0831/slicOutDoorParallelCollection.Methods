@@ -76,10 +76,7 @@ static rt_size_t used_mem, max_mem;
 #ifdef RT_USING_HOOK
 static void (*rt_malloc_hook)(void *ptr, rt_size_t size);
 static void (*rt_free_hook)(void *ptr);
-/*-------------------------------------------------------------------*/
-#if _MSC_VER
-#pragma warning(disable: 4101)
-#endif
+
 /**
  * @addtogroup Hook
  */

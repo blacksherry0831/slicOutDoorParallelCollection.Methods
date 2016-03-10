@@ -309,9 +309,9 @@ public:
 			double *Cui_Matrix_D;/**<度矩阵*/
 			double *Cui_Matrix_W;/**<相似矩阵W*/
 			double *Cui_Matrix_L;/**<拉普拉斯矩阵*/
-			double *Cui_MatrixEigenVector_L;/**<L矩阵的N个特征值，按特征值循序排列*/
+			float *Cui_MatrixEigenVector_L;/**<L矩阵的N个特征值，按特征值循序排列*/
 			double *CUi_MatrixEigenValue_L;/**<L矩阵的N个特征值,按顺序排列*/
-			double *Cui_Matrix_Category_Simple;/**<前K个特征值存储的矩阵*/
+			float *Cui_Matrix_Category_Simple;/**<前K个特征值存储的矩阵*/
 			INT32 *Cui_Matrix_Category_Lable;/**<Labe图像各块的分类矩阵 */
 	/*******************************/		
 	int					m_K;	
@@ -372,10 +372,10 @@ public:
 	//vector<double> kseedsb;
 	//vector<double> kseedsx;
 	//vector<double> kseedsy;
-				double alpha;
-				double betta;
-				double gama;
-				double fai;
+				float alpha;
+				float betta;
+				float gama;
+				float fai;
 public:
 	double CalculateNewDistance(
 		double sita_n0,

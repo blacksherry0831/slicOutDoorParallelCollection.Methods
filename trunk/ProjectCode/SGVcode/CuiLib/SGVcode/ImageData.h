@@ -2,15 +2,7 @@
 #include <string>
 #include <iostream>
 using namespace std;
-
-#ifndef UINT32
 typedef  unsigned int UINT32;
-#endif
-
-#ifndef INT32
-typedef signed int INT32;
-#endif
-
 /*----------------------------------------------------------------*/
 #define SaveContours2Disk TRUE
 /*----------------------------------------------------------------*/
@@ -28,18 +20,18 @@ public:
 		string filesavepath,
 		int spcount,
 		double compactness,
-		double horizontal_line_pos);
+		float horizontal_line_pos);
 	ImageData(
 		string filename,
 		string filesavepath,
 		int spcount,
-		double horizontal_line_pos);
+		float horizontal_line_pos);
 	ImageData(
 		IplImage* img,
 		string filesavepath="",
 		int spcount=800,
 		double compactness=8,
-		double horizontal_line_pos=0.5);
+		float horizontal_line_pos=0.5);
 	~ImageData(void);
 	void ReleaseMemory(void);
 	void initParam(void);
@@ -59,9 +51,9 @@ public:
 	int ImgHeight;
 public:
 	int   Seg_HorizontalLinePos;/**<设置视平线位置*/
-	double Seg_HorizontalLinePosScale;/**<*/
-	double PgOffset;/**<*/
-	double PsOffset;/**<*/
+	float Seg_HorizontalLinePosScale;/**<*/
+	float PgOffset;/**<*/
+	float PsOffset;/**<*/
 public:
 	int slic_expect_num;
 	int slic_current_num;
@@ -98,10 +90,10 @@ public:
 	vector<double> kseedsL;
 	vector<double> kseedsX;
 	vector<double> kseedsY;
-	double alpha;
-	double betta;
-	double gama;
-	double fai;
+	float alpha;
+	float betta;
+	float gama;
+	float fai;
 public:
 	int InitTimes;
 	int InitMemDataTimes;
@@ -109,8 +101,6 @@ public:
 	void initLabels(int* labels);
 	void initMemData(int* labels);
 	SpSetProperty SpSet;
-private:
-	unsigned int _seq;
 public:
 	void ImageGetSeedsLabxy_cuda();
 	void ImageGetSeedsThetaML_cuda();
@@ -177,12 +167,5 @@ void FillHoleOnSVGLables(
 	bool BorderSky,
 	bool BorderGnd);
 void DrawS_V_G_Lables_BorderLine(IplImage *img,UINT32 category);
-void ImageData::SaveSuperpixelLabelsImagePNG(
-	INT32*					labels,
-	const int					width,
-	const int					height,
-	const string				filename,
-	const string				path);
-void ImageData::SaveSuperpixelLabelsImagePNG();
 };
 

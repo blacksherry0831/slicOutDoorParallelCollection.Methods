@@ -204,9 +204,9 @@ typedef struct lineData{
 /*------------------------------------------------------------------------------------------------------------*/
 class SVGcount{
 public:
-	double SkyCount;/**<归属天空的像素个数*/
-	double VerticalCount;/**<归属立面的像素个数*/
-	double GroundCount;/**<归属地面的像素个数*/
+	float SkyCount;/**<归属天空的像素个数*/
+	float VerticalCount;/**<归属立面的像素个数*/
+	float GroundCount;/**<归属地面的像素个数*/
 public:
 /**
 *初始化变量
@@ -350,8 +350,8 @@ typedef struct  histRangeData{
 	/*前半段*/
 	double *start;
 	double len;
-	double angle_up;
-	double angle_down;
+	float angle_up;
+	float angle_down;
 	/*后半段*/
 	int  maxHistIdx;
 	int  StepLR;

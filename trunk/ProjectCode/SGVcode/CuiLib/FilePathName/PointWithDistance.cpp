@@ -289,8 +289,8 @@ cvReleaseFileStorage(&fsW);
 /*---------------------------------------------------*/
 void PointWithDistance::CalculatePointOnImg(void)
 {
-	double avg_x=0;
-	double avg_y=0;
+	float avg_x=0;
+	float avg_y=0;
 	for (int i=0;i<line_point.size();i++){
 		avg_x+=line_point[i].x;
 		avg_y+=line_point[i].y;

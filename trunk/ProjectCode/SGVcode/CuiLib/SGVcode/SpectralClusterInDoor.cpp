@@ -176,7 +176,7 @@ void SpectralClusterInDoor::GetMatrix_W(void)
 /*----------------------------------------------------------------------------------*/
 /**
 *相似矩阵
-*@see double Calculate2HistBLikelyByManhattan(ManhattanHistogram histOne,ManhattanHistogram histTwo)
+*@see float Calculate2HistBLikelyByManhattan(ManhattanHistogram histOne,ManhattanHistogram histTwo)
 *@note 
 *比较两个曼哈顿直方图的相似度\n
 *(1)对聚类图像中的所有图块边缘轮廓进行Hough直线提取；\n
@@ -237,7 +237,7 @@ void SpectralClusterInDoor::GetMatrix_W_1_44_84_96_136_180(void)
 *
 */
 /*------------------------------------------------------------------------------------------------------------*/
- double SpectralClusterInDoor::Calculate2HistBLikely(
+ float SpectralClusterInDoor::Calculate2HistBLikely(
 	 HistData180 histOne,
 	 HistData180 histTwo,
 	 int Dim)
@@ -245,7 +245,7 @@ void SpectralClusterInDoor::GetMatrix_W_1_44_84_96_136_180(void)
 	 double SumHistOne=0;
 	 double SumHistTwo=0;
 	 double Hist1MutiHist2=0;
-	 double Blike=0;
+	 float Blike=0;
 	 for(int i=0;i<Dim;i++){
 		 SumHistOne+=pow(histOne.hist_all[i],2);
 		 SumHistTwo+=pow(histTwo.hist_all[i],2);
@@ -271,7 +271,7 @@ void SpectralClusterInDoor::GetMatrix_W_1_44_84_96_136_180(void)
 *@note 须同为矩形图块
 */
 /*------------------------------------------------------------------------------------------------------------*/
- double SpectralClusterInDoor::Calculate2HistBLikely(
+ float SpectralClusterInDoor::Calculate2HistBLikely(
 	 ManhattanHistogram histOne,
 	 ManhattanHistogram histTwo)
  {
@@ -280,7 +280,7 @@ void SpectralClusterInDoor::GetMatrix_W_1_44_84_96_136_180(void)
 	 double SumHistOne=0;
 	 double SumHistTwo=0;
 	 double Hist1MutiHist2=0;
-	 double Blike=0;
+	 float Blike=0;
 	 for(int i=0;i<Dim;i++){
 		 SumHistOne+=pow(histOne.hist_all[i],2);
 		 SumHistTwo+=pow(histTwo.hist_all[i],2);
@@ -306,7 +306,7 @@ void SpectralClusterInDoor::GetMatrix_W_1_44_84_96_136_180(void)
 *
 */
 /*------------------------------------------------------------------------------------------------------------*/
- double SpectralClusterInDoor::Calculate2HistBLikelyByManhattan(
+ float SpectralClusterInDoor::Calculate2HistBLikelyByManhattan(
 	 HistData180 histOne,
 	 HistData180 histTwo,
 	 int Dim)
@@ -339,7 +339,7 @@ void SpectralClusterInDoor::GetMatrix_W_1_44_84_96_136_180(void)
 *
 */
 /*------------------------------------------------------------------------------------------------------------*/
- double SpectralClusterInDoor::Calculate2HistBLikelyByManhattan(
+ float SpectralClusterInDoor::Calculate2HistBLikelyByManhattan(
 	 ManhattanHistogram histOne,
 	 ManhattanHistogram histTwo)
  {
@@ -477,8 +477,8 @@ void SpectralClusterInDoor::Get_L_Eigenvalue(void)
 	int CuiNumLabels=pMD->slic_current_num;
 	double* Matrix_L=pMD->Matrix_L_InDoor.get();
 	/////////////特征向量///////////////////////////////////////////////////////////////////
-	double *MatrixEigenVector_L=pMD->MatrixEigenVector_L_InDoor.get();;
-	memset(MatrixEigenVector_L,0,sizeof(double)*pMD->slic_current_num*pMD->slic_current_num);
+	float *MatrixEigenVector_L=pMD->MatrixEigenVector_L_InDoor.get();;
+	memset(MatrixEigenVector_L,0,sizeof(float)*pMD->slic_current_num*pMD->slic_current_num);
 	/////////////特征值///////////////////////////////////////////////////////////////////
 	double* MatrixEigenValue_L=pMD->MatrixEigenValue_L_InDoor.get();
 	memset(MatrixEigenValue_L,0,sizeof(double)*pMD->slic_current_num);
@@ -536,9 +536,9 @@ void SpectralClusterInDoor::B_Cluster(UINT EigenvectorNum, UINT ClusterNum,doubl
 	EigenvectorNum=EigenvectorNum>2?EigenvectorNum:2;
 	Threshold=Threshold>0.5?Threshold:0.5;
 	/**********前K个特征值********************************/	
-	 double* Matrix_Category_Simple=pMD->Matrix_Category_Simple_InDoor.get();
-   	 memset(Matrix_Category_Simple,0,sizeof(double)*pMD->slic_current_num*EigenvectorNum);
-	 double* MatrixEigenVector_L=pMD->MatrixEigenVector_L_InDoor.get();
+	 float* Matrix_Category_Simple=pMD->Matrix_Category_Simple_InDoor.get();
+   	 memset(Matrix_Category_Simple,0,sizeof(float)*pMD->slic_current_num*EigenvectorNum);
+	 float* MatrixEigenVector_L=pMD->MatrixEigenVector_L_InDoor.get();
 	 int CuiNumLabels=pMD->slic_current_num;
 	for (int i=0;i<pMD->slic_current_num;i++){  //row
 		for (UINT j=0;j<EigenvectorNum;j++){	//col

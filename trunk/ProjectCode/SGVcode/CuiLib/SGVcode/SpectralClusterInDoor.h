@@ -32,21 +32,21 @@ public:
 	void GetMatrix_W(void);
 	void GetMatrix_W_1_44_84_96_136_180(void);
 /*--------------------------------*/	
-static	double Calculate2HistBLikely(
+static	float Calculate2HistBLikely(
 		HistData180 histOne,
 		HistData180 histTwo,
 		int Dim);
 /*--------------------------------*/	
-static	double Calculate2HistBLikely(
+static	float Calculate2HistBLikely(
 		 ManhattanHistogram histOne,
 		 ManhattanHistogram histTwo);
 /*--------------------------------*/	
-static	double Calculate2HistBLikelyByManhattan(
+static	float Calculate2HistBLikelyByManhattan(
 		HistData180 histOne,
 		HistData180 histTwo,
 		int Dim);
 /*--------------------------------*/
-static	double Calculate2HistBLikelyByManhattan(
+static	float Calculate2HistBLikelyByManhattan(
 	    ManhattanHistogram histOne,
 	    ManhattanHistogram histTwo);
 /*--------------------------------*/	

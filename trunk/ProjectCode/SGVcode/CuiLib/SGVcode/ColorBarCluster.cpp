@@ -352,8 +352,8 @@ void ColorBarCluster::HistogramOne2Matrix_Category_Lable(INT32 *Matrix_Category_
 		Matrix_CL_TEST[i]=i;
 	}
 	for (int j=0;j<HistDimSPLAB;j++){
-		size_t SamSP=seeddata.hist_AB_detail[j].size();
-		for (size_t i=0;i<SamSP;i++){
+		int SamSP=seeddata.hist_AB_detail[j].size();
+		for (int i=0;i<SamSP;i++){
 			if (SamSP>=2&&i<SamSP-1){
 				int orgIdx=seeddata.hist_AB_detail[j].at(0);
 				int changeIdx=seeddata.hist_AB_detail[j].at(i+1);

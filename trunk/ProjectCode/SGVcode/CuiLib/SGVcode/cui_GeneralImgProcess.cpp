@@ -2,9 +2,6 @@
 #include "cui_GeneralImgProcess.h"
 #include "../opencv_stl.h"
 #include "Harr/CuiHarrTransformLet.h"
-#if _MSC_VER
-#pragma warning(disable: 4101)
-#endif
 /*----------------------------------------------------------------*/
 /**
 *构造函数\n
@@ -563,7 +560,6 @@ void cui_GeneralImgProcess::CuiSaveImgWithPoints(
 	IplImage *imgdata_t;
 	imgdata_t=cvCreateImageHeader(cvSize(width,height),8,4);
 	imgdata_t->imageData=(char*)imgbuf_t;
-	ASSERT(imgdata_t->width*sizeof(UINT32)==imgdata_t->widthStep);
 	memcpy(imgbuf_t,ubuff,sizeof(UINT32)*width*height);
 	if (category==nullptr){
 		category=InitSP2SVGcategory();
@@ -738,7 +734,6 @@ void cui_GeneralImgProcess::CuiSaveImageData(
 	int sz = width*height;
 	IplImage *Save_Image_t;
 	Save_Image_t=cvCreateImage(cvSize(width,height),IPL_DEPTH_8U,4);
-	ASSERT(Save_Image_t->widthStep==Save_Image_t->width*sizeof(UINT32));
 	memcpy(Save_Image_t->imageData,imgBuffer,4*width*height);
 	//-----------------------------------------
 	// Prepare path and save the result images
@@ -1922,11 +1917,11 @@ int cui_GeneralImgProcess::GetMinValue(int* Data, long DataNum)
 *@return 数组中均值
 */
 /*----------------------------------------------------------------*/
- double cui_GeneralImgProcess::GetAverageValue(double* Data, size_t DataNum)
+ double cui_GeneralImgProcess::GetAverageValue(double* Data, int DataNum)
  {
 	 double sum=0;
 	 ASSERT(DataNum>0);
-	 for (size_t i=0;i<DataNum;i++){
+	 for (int i=0;i<DataNum;i++){
 		 sum+=Data[i];
 	 }
 	 sum/=DataNum;
@@ -1941,11 +1936,11 @@ int cui_GeneralImgProcess::GetMinValue(int* Data, long DataNum)
 *@return 数组中均值
 */
 /*----------------------------------------------------------------*/
-double cui_GeneralImgProcess::GetAverageValue(float* Data, size_t DataNum)
+double cui_GeneralImgProcess::GetAverageValue(float* Data, int DataNum)
 {
 	 double sum=0;
 	 ASSERT(DataNum>0);
-	 for (size_t i=0;i<DataNum;i++){
+	 for (int i=0;i<DataNum;i++){
 		 sum+=Data[i];
 	 }
 	 sum/=DataNum;
