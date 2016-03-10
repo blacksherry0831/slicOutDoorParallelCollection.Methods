@@ -233,6 +233,7 @@ this->FillWeightArrayZlm();
 	pIMD->CombinationImgSVG();
 #if SaveContours2Disk	
 	pIMD->SaveImgSVGCompute("_BT_unknow");
+	pIMD->SaveSuperpixelLabelsImagePNG();
 #endif
 }
 /*--------------------------------------------------------------------------------------------------------*/

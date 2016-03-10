@@ -172,7 +172,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CuiLib\SGVcode\ComputeSVG2.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

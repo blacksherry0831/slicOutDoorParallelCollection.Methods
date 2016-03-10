@@ -1,5 +1,9 @@
 #include "StdAfx.h"
 #include "ImageData.h"
+/*-------------------------------------------------------------------*/
+#if _MSC_VER
+#pragma warning(disable: 4101)
+#endif
 /*----------------------------------------------------------------*/
 /**
 *构造函数\n
@@ -79,6 +83,7 @@ void ImageData::initParam(void)
 	this->FileWritePath="";
 	this->ImgHeight=0;
 	this->ImgWidth=0;
+	this->_seq=1;
 	this->Seg_HorizontalLinePos=0;
 	this->Seg_HorizontalLinePosScale=0;	
 	this->slic_expect_num=0;
@@ -874,6 +879,15 @@ void ImageData::SaveImgWithPointsCompute(string str_add)
 	for (register int spi=0;spi<slic_current_num;spi++){
 		Matrix_Category_Lable[spi]=SpSet.SpPropertySet[spi].ComputeCategory;
 	}
+
+	if(str_add==""){
+		str_add.append("__");
+		char buffer[1024];
+		sprintf_s(buffer,1024,"%03d",_seq++);
+		str_add.append(buffer);	
+	
+	}
+
 	cui_GeneralImgProcess::CuiSaveImgWithPoints(
 		this->src_ImgBGRA,	
 		this->src_ImgLabels,
@@ -902,6 +916,14 @@ void ImageData::SaveImgWithPointsFuzzy(string str_add)
 	for (register int spi=0;spi<slic_current_num;spi++){
 		Matrix_Category_Lable[spi]=SpSet.SpPropertySet[spi].fuzzyCategory;
 	}
+
+	if(str_add==""){
+		str_add.append("__");
+		char buffer[1024];
+		sprintf_s(buffer,1024,"%03d",_seq++);
+		str_add.append(buffer);	
+
+	}
 	cui_GeneralImgProcess::CuiSaveImgWithPoints(
 		this->src_ImgBGRA,	
 		this->src_ImgLabels,
@@ -925,6 +947,13 @@ void ImageData::SaveImgWithPointsFuzzy(string str_add)
 /*----------------------------------------------------------------*/
 void ImageData::SaveImgWithContours(string str_add)
 {
+	if(str_add==""){
+		str_add.append("__");
+		char buffer[1024];
+		sprintf_s(buffer,1024,"%03d",_seq++);
+		str_add.append(buffer);	
+
+	}
 	cui_GeneralImgProcess::CuiSaveImgWithContours(
 		this->src_ImgBGRA,	
 		this->src_ImgLabels,
@@ -1475,6 +1504,13 @@ void ImageData::CombinationImgSVG(void)
 /*----------------------------------------------------------------*/
 void ImageData::SaveImgSVGCompute(string str_add)
 {
+	if(str_add==""){
+		str_add.append("__");
+		char buffer[1024];
+		sprintf_s(buffer,1024,"%03d",_seq++);
+		str_add.append(buffer);	
+
+	}
 	
 	cui_GeneralImgProcess::CuiSaveImgWithPoints(
 		this->src_ImgBGRA,	
@@ -1623,3 +1659,97 @@ void ImageData::DrawS_V_G_Lables_BorderLine(IplImage *img,UINT32 category)
 #endif
 
 }
+/*----------------------------------------------------------------*/
+/**
+*BGRA 4个通道
+*
+*
+*/
+/*----------------------------------------------------------------*/
+void ImageData::SaveSuperpixelLabelsImagePNG(
+	INT32*					labels,
+	const int				width,
+	const int				height,
+	const string			filename,
+	const string			path) 
+{ 
+	ASSERT(width==this->ImgWidth);
+	ASSERT(height==this->ImgHeight);
+	ASSERT(sizeof(INT32)==4);
+
+	//string fileFullPath=path+filename;
+
+	
+	
+	char fname[_MAX_FNAME];
+	_splitpath(filename.c_str(), NULL, NULL, fname, NULL);
+	string pathSave =path+fname+"_SuperPixel.png";
+	
+	
+	IplImage *img_t=cvCreateImage(cvSize(this->ImgWidth,this->ImgHeight),IPL_DEPTH_8U,4);
+    ASSERT(width*height*sizeof(INT32)==img_t->imageSize);
+
+	/*
+	OPENCV  4字节对齐问题
+	*/
+
+	ASSERT(img_t->widthStep==width*sizeof(INT32));  
+
+
+	memcpy(img_t->imageData,labels,img_t->imageSize);
+  //unsigned char red=254;
+	for (int x=0;x<width;x++){
+		int *data=(int*)img_t->imageData;
+		for (int y=0;y<height;y++){
+			int ind=x+y*width;			
+			int org=data[ind];
+			unsigned char red=org>=255?255:org;
+			data[ind]|=0xff<<32;//填充alph通道
+			data[ind]|=red<<24;
+			/*if (org<245){
+				labels[ind]=org|(org<<8)|(org<<16)|(0xff000000);
+			}		*/
+		}
+	}
+	cvSaveImage(pathSave.c_str(),img_t);
+
+	cvReleaseImage(&img_t);
+		
+}
+/*----------------------------------------------------------------*/
+/**
+*
+*
+*
+*/
+/*----------------------------------------------------------------*/
+void ImageData::SaveSuperpixelLabelsImagePNG() 
+{
+	ASSERT(sizeof(UINT32)==sizeof(int));
+	
+	
+	
+	
+	this->SaveSuperpixelLabelsImagePNG(
+		this->src_ImgLabels,
+		this->ImgWidth,
+		this->ImgHeight,
+		this->FileReadFullPath,
+		this->FileWritePath);
+   /* cui_GeneralImgProcess::CuiSaveImageData(
+		this->src_ImgLabels,
+		this->ImgWidth,
+		this->ImgHeight,
+		"superPixel.png",
+		this->FileWritePath,
+		1,
+		"");*/
+
+}
+/*----------------------------------------------------------------*/
+/**
+*
+*
+*
+*/
+/*----------------------------------------------------------------*/
