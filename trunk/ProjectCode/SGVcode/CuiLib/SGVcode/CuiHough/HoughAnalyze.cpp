@@ -28,6 +28,7 @@ HoughAnalyze::HoughAnalyze(ImageMemData* MemData_t,IplImage *ImgMask,HoughAnalyz
 	  gray_img=nullptr;  
 	  ImgMaskControus=ImgMask;
 	  src_img=cvCreateImage(cvSize(pMD->ImgWidth,pMD->ImgHeight),IPL_DEPTH_8U,4);
+	  ASSERT(src_img->widthStep==src_img->width*sizeof(UINT32));
 	  memcpy(src_img->imageData,pMD->Src_ImgData,sizeof(UINT32)*pMD->ImgHeight*pMD->ImgWidth);
 	  this->HAParam=(HAParam==NULL)?HoughAnalyzeParam::GetDefaultHAParam():*HAParam;
 	  AdjustMaskImgSize(ImgMask);
@@ -685,6 +686,7 @@ void  HoughAnalyze::GetAllHoughLineByContour_SP(
 	int cui_Width=WidthSP;
 	int cui_Height=HeightSP;
 	imgContourBlock=cvCreateImage(cvSize(cui_Width,cui_Height),IPL_DEPTH_8U,4);
+	ASSERT(imgContourBlock->widthStep==imgContourBlock->width*sizeof(UINT32));
 	memcpy(imgContourBlock->imageData,ImgData_ContoursSP,imgContourBlock->imageSize);
 	imgContourEdge=cvCreateImage(cvGetSize(imgContourBlock),IPL_DEPTH_8U,4);
 	cvZero(imgContourEdge);

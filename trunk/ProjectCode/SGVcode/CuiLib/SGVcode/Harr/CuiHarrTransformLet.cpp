@@ -1029,6 +1029,8 @@ void CuiHarrTransformLet::CuiWaveletTrans(int scale)
 	cvFlip(img_scr_gray);
 	this->SimpleWaveletTrans(scale);
 	if (m_pImgDataOut!=NULL){	
+
+		ASSERT(img_dst_wavelet->widthStep==img_dst_wavelet->width*sizeof(unsigned char));
 		memcpy(img_dst_wavelet->imageData,m_pImgDataOut,img_dst_wavelet->imageSize);
 		cvFlip(img_dst_wavelet);
 	}
@@ -1046,6 +1048,7 @@ void CuiHarrTransformLet::CuiWaveletReverse(void)
 	cvFlip(img_scr_gray);
 	this->SimpleWaveletReverse();
 	if (m_pImgDataOut!=NULL){	
+		ASSERT(img_dst_wavelet->widthStep==img_dst_wavelet->width*sizeof(unsigned char));
 		memcpy(img_dst_wavelet->imageData,m_pImgDataOut,img_dst_wavelet->imageSize);
 		cvFlip(img_dst_wavelet);
 	}
@@ -1097,6 +1100,7 @@ IplImage* CuiHarrTransformLet::HarrSmooth(int scale)
 	  cvFlip(&img_convert);
 /******************************************/
 	  if (m_pImgDataOut!=NULL){	
+		  ASSERT(img_dst_wavelet->widthStep==img_dst_wavelet->width*sizeof(unsigned char));
 		  memcpy(img_dst_wavelet->imageData,m_pImgDataOut,img_dst_wavelet->imageSize);
 		  cvFlip(img_dst_wavelet);
 	  }

@@ -563,6 +563,7 @@ void cui_GeneralImgProcess::CuiSaveImgWithPoints(
 	IplImage *imgdata_t;
 	imgdata_t=cvCreateImageHeader(cvSize(width,height),8,4);
 	imgdata_t->imageData=(char*)imgbuf_t;
+	ASSERT(imgdata_t->width*sizeof(UINT32)==imgdata_t->widthStep);
 	memcpy(imgbuf_t,ubuff,sizeof(UINT32)*width*height);
 	if (category==nullptr){
 		category=InitSP2SVGcategory();
@@ -737,6 +738,7 @@ void cui_GeneralImgProcess::CuiSaveImageData(
 	int sz = width*height;
 	IplImage *Save_Image_t;
 	Save_Image_t=cvCreateImage(cvSize(width,height),IPL_DEPTH_8U,4);
+	ASSERT(Save_Image_t->widthStep==Save_Image_t->width*sizeof(UINT32));
 	memcpy(Save_Image_t->imageData,imgBuffer,4*width*height);
 	//-----------------------------------------
 	// Prepare path and save the result images

@@ -238,6 +238,7 @@ void CuiHough3::GetImageData(
 	cui_Matrix_Category_Lable=new INT32[NumLabels];
 	memcpy(cui_Matrix_Category_Lable,Category,sizeof(INT32)*NumLabels);
 	this->src_img=cvCreateImage(cvSize(Width,Height),IPL_DEPTH_8U,4);
+	ASSERT(src_img->widthStep==src_img->width*sizeof(UINT32));
 	memcpy(this->src_img->imageData,this->cui_ImgData,this->src_img->imageSize);
 
    cui_GeneralImgProcess::DrawContoursAroundSegments(cui_ImgData_Contour,cui_ImgLables,
@@ -550,7 +551,7 @@ void CuiHough3::GetAllHoughLineByContour(void)
 		 }
 #endif
 
-
+	  ASSERT(imgContour->widthStep==imgContour->width*sizeof(UINT32));
 	  memcpy(imgContour->imageData,cui_ImgData_Contour,imgContour->imageSize);
 
 		
@@ -583,6 +584,7 @@ void CuiHough3::GetAllHoughLineByContourVG(void)
 	IplImage *imgContourVG;
 
 	imgContourVG=cvCreateImage(cvSize(cui_Width,cui_Height),IPL_DEPTH_8U,4);
+	ASSERT(imgContourVG->widthStep==imgContourVG->width*sizeof(UINT32));
 	memcpy(imgContourVG->imageData,cui_ImgData_Contour_GV,imgContourVG->imageSize);
 	this->GetAllhoughLineData(&imgContourVG,&gray_Color_contour_img,&cui_line_VGcontour,&cui_line_VGcontour_len,1);
 
