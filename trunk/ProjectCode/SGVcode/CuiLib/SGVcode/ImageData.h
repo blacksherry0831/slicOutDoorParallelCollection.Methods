@@ -109,6 +109,8 @@ public:
 	void initLabels(int* labels);
 	void initMemData(int* labels);
 	SpSetProperty SpSet;
+private:
+	unsigned int _seq;
 public:
 	void ImageGetSeedsLabxy_cuda();
 	void ImageGetSeedsThetaML_cuda();
@@ -175,11 +177,12 @@ void FillHoleOnSVGLables(
 	bool BorderSky,
 	bool BorderGnd);
 void DrawS_V_G_Lables_BorderLine(IplImage *img,UINT32 category);
-void ImageData::SaveSuperpixelLabels(
+void ImageData::SaveSuperpixelLabelsImagePNG(
 	INT32*					labels,
 	const int					width,
 	const int					height,
 	const string				filename,
 	const string				path);
+void ImageData::SaveSuperpixelLabelsImagePNG();
 };
 

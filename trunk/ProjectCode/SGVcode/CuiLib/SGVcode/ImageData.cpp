@@ -28,7 +28,7 @@ ImageData::ImageData(
 	SetImageData(filename,filesavepath);
 	SetSlicParameter(spcount,compactness);	
 	InitMemoryData(nullptr,filename,filesavepath,spcount,compactness);
-	this->Seg_HorizontalLinePos=horizontal_line_pos*this->ImgHeight;
+	this->Seg_HorizontalLinePos=(int) horizontal_line_pos*this->ImgHeight;
 	this->Seg_HorizontalLinePosScale=horizontal_line_pos;
 }
 /*----------------------------------------------------------------*/
@@ -48,7 +48,7 @@ ImageData::ImageData(
 	SetImageData(filename,filesavepath);
 	SetSlicParameter(spcount,compactness);	
 	InitMemoryData(img,filename,filesavepath,spcount,compactness);
-	this->Seg_HorizontalLinePos=horizontal_line_pos*this->ImgHeight;
+	this->Seg_HorizontalLinePos=(int)horizontal_line_pos*this->ImgHeight;
 	this->Seg_HorizontalLinePosScale=horizontal_line_pos;
 }
 /*----------------------------------------------------------------*/
@@ -67,7 +67,7 @@ ImageData::ImageData(
 	SetImageData(filename,filesavepath);
 	SetSlicParameter(spcount,0);	
 	InitMemoryData(nullptr,filename,filesavepath,spcount,0);
-	this->Seg_HorizontalLinePos=horizontal_line_pos*this->ImgHeight;
+	this->Seg_HorizontalLinePos=(int)horizontal_line_pos*this->ImgHeight;
 	this->Seg_HorizontalLinePosScale=horizontal_line_pos;
 }
 /*----------------------------------------------------------------*/
@@ -83,6 +83,7 @@ void ImageData::initParam(void)
 	this->FileWritePath="";
 	this->ImgHeight=0;
 	this->ImgWidth=0;
+	this->_seq=1;
 	this->Seg_HorizontalLinePos=0;
 	this->Seg_HorizontalLinePosScale=0;	
 	this->slic_expect_num=0;
@@ -879,6 +880,12 @@ void ImageData::SaveImgWithPointsCompute(string str_add)
 	for (register int spi=0;spi<slic_current_num;spi++){
 		Matrix_Category_Lable[spi]=SpSet.SpPropertySet[spi].ComputeCategory;
 	}
+
+	if(str_add.compare("")){
+
+		str_add="__"+_seq++;
+	}
+	
 	cui_GeneralImgProcess::CuiSaveImgWithPoints(
 		this->src_ImgBGRA,	
 		this->src_ImgLabels,
@@ -930,6 +937,13 @@ void ImageData::SaveImgWithPointsFuzzy(string str_add)
 /*----------------------------------------------------------------*/
 void ImageData::SaveImgWithContours(string str_add)
 {
+	if(str_add==""){
+		str_add.append("__");
+		char buf[10];
+		sprintf(buf, "%03d", _seq++);
+		str_add.append(buf);
+		//str_add="__"+;
+	}
 	cui_GeneralImgProcess::CuiSaveImgWithContours(
 		this->src_ImgBGRA,	
 		this->src_ImgLabels,
@@ -1638,7 +1652,7 @@ void ImageData::DrawS_V_G_Lables_BorderLine(IplImage *img,UINT32 category)
 *
 */
 /*----------------------------------------------------------------*/
-void ImageData::SaveSuperpixelLabels(
+void ImageData::SaveSuperpixelLabelsImagePNG(
 	INT32*					labels,
 	const int				width,
 	const int				height,
@@ -1648,6 +1662,15 @@ void ImageData::SaveSuperpixelLabels(
 	ASSERT(width==this->ImgWidth);
 	ASSERT(height==this->ImgHeight);
 	ASSERT(sizeof(INT32)==4);
+
+	//string fileFullPath=path+filename;
+
+	
+	
+	char fname[_MAX_FNAME];
+	_splitpath(filename.c_str(), NULL, NULL, fname, NULL);
+	string pathSave =path+fname+"_SuperPixel.png";
+	
 	
 	IplImage *img_t=cvCreateImage(cvSize(this->ImgWidth,this->ImgHeight),IPL_DEPTH_8U,4);
     ASSERT(width*height*sizeof(INT32)==img_t->imageSize);
@@ -1660,11 +1683,53 @@ void ImageData::SaveSuperpixelLabels(
 
 
 	memcpy(img_t->imageData,labels,img_t->imageSize);
-  
-	cvSaveImage(filename.c_str(),img_t);
+  //unsigned char red=254;
+	for (int x=0;x<width;x++){
+		for (int y=0;y<height;y++){
+			int ind=x+y*width;
+			int org=img_t->imageData[ind];
+			unsigned char red=org>255?255:org;
+			img_t->imageData[ind]|=0xff<<32;//Ìî³äalphÍ¨µÀ
+			img_t->imageData[ind]|=red<<24;
+			/*if (org<245){
+				labels[ind]=org|(org<<8)|(org<<16)|(0xff000000);
+			}		*/
+		}
+	}
+	cvSaveImage(pathSave.c_str(),img_t);
 
 	cvReleaseImage(&img_t);
 		
+}
+/*----------------------------------------------------------------*/
+/**
+*
+*
+*
+*/
+/*----------------------------------------------------------------*/
+void ImageData::SaveSuperpixelLabelsImagePNG() 
+{
+	ASSERT(sizeof(UINT32)==sizeof(int));
+	
+	
+	
+	
+	this->SaveSuperpixelLabelsImagePNG(
+		this->src_ImgLabels,
+		this->ImgWidth,
+		this->ImgHeight,
+		this->FileReadFullPath,
+		this->FileWritePath);
+   /* cui_GeneralImgProcess::CuiSaveImageData(
+		this->src_ImgLabels,
+		this->ImgWidth,
+		this->ImgHeight,
+		"superPixel.png",
+		this->FileWritePath,
+		1,
+		"");*/
+
 }
 /*----------------------------------------------------------------*/
 /**
