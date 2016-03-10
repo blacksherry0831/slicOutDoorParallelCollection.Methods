@@ -248,7 +248,8 @@ void ImageData::ReleaseMemory(void)
 	 ImgHeight=srcCv_ImgBGRA->height;
 	 int sz=ImgHeight*ImgWidth;
 	 /*********************************************************************/
-	  src_ImgBGRA=new UINT32[sz];
+	   src_ImgBGRA=new UINT32[sz];
+	   ASSERT(srcCv_ImgBGRA->widthStep==sizeof(UINT32)*ImgWidth);
 	   memcpy(src_ImgBGRA,srcCv_ImgBGRA->imageData,sizeof(UINT32)*sz);
 	 /*********************************************************************/
 	   src_ImgLabels=new int[sz];
@@ -1532,6 +1533,7 @@ void ImageData::FillHoleOnSVGLables(
 			DrawS_V_G_Lables_BorderLine(Lables_S_Img,Sky);
 		}
 		cui_GeneralImgProcess::GetContour2Fill(Lables_S_Img,Lables_SVG_Img,SkyCv);
+		ASSERT(Lables_SVG_Img->widthStep==sizeof(INT32)*ImgWidth);
 		memcpy(Lables_SVG,Lables_SVG_Img->imageData,Lables_SVG_Img->imageSize);
 	}
 	if (vertical==true){
@@ -1548,6 +1550,7 @@ void ImageData::FillHoleOnSVGLables(
 		}
 		
 		cui_GeneralImgProcess::GetContour2Fill(Lables_V_Img,Lables_SVG_Img,VerticalCv);
+		ASSERT(Lables_SVG_Img->widthStep==sizeof(INT32)*ImgWidth);
 		memcpy(Lables_SVG,Lables_SVG_Img->imageData,Lables_SVG_Img->imageSize);
 	}
 	if (ground==true){
@@ -1566,6 +1569,7 @@ void ImageData::FillHoleOnSVGLables(
  			DrawS_V_G_Lables_BorderLine(Lables_G_Img,Ground);
 		}
 		cui_GeneralImgProcess::GetContour2Fill(Lables_G_Img,Lables_SVG_Img,GroundCv);
+		ASSERT(Lables_SVG_Img->widthStep==sizeof(INT32)*ImgWidth);
 		memcpy(Lables_SVG,Lables_SVG_Img->imageData,Lables_SVG_Img->imageSize);
 	}
 #endif
@@ -1646,9 +1650,17 @@ void ImageData::SaveSuperpixelLabels(
 	ASSERT(sizeof(INT32)==4);
 	
 	IplImage *img_t=cvCreateImage(cvSize(this->ImgWidth,this->ImgHeight),IPL_DEPTH_8U,4);
+    ASSERT(width*height*sizeof(INT32)==img_t->imageSize);
+
+	/*
+	OPENCV  4字节对齐问题
+	*/
+
+	ASSERT(img_t->widthStep==width*sizeof(INT32));  
+
 
 	memcpy(img_t->imageData,labels,img_t->imageSize);
-
+  
 	cvSaveImage(filename.c_str(),img_t);
 
 	cvReleaseImage(&img_t);

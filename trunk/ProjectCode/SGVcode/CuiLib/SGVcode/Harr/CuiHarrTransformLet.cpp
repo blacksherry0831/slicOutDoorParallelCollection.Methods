@@ -908,6 +908,7 @@ void CuiHarrTransformLet::CuiLoadImgBuffer(UINT32* ImgData,int Width,int Height)
 {
 	  this->ReleaseImgData();
 	  img_original_size_color=cvCreateImage(cvSize(Width,Height),IPL_DEPTH_8U,4);
+	  ASSERT(img_original_size_color->widthStep==sizeof(UINT32)*Width);
 	  memcpy(img_original_size_color->imageData,ImgData,sizeof(UINT32)*Width*Height);
 	  this->PreproccessImg();
 
@@ -959,6 +960,7 @@ void CuiHarrTransformLet::CuiGetImageData(
 		cvReleaseImage(&img_dst_wavelet);
 	}
 	img_t=cvCreateImage(cvSize(width,height),IPL_DEPTH_8U,4);
+	ASSERT(img_t->widthStep==width*sizeof(UINT32));
 	memcpy(img_t->imageData,imgBuffer,img_t->imageSize);
 	this->cui_proportion=proportion;
 	strcpy_s(filename_org,sizeof(filename_org),"memory");

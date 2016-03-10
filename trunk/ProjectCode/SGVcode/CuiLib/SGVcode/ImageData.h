@@ -2,7 +2,15 @@
 #include <string>
 #include <iostream>
 using namespace std;
+
+#ifndef UINT32
 typedef  unsigned int UINT32;
+#endif
+
+#ifndef INT32
+typedef signed int INT32;
+#endif
+
 /*----------------------------------------------------------------*/
 #define SaveContours2Disk TRUE
 /*----------------------------------------------------------------*/
