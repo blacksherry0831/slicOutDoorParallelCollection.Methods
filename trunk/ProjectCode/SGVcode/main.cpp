@@ -3,9 +3,18 @@
 
 int main(void)
 {
-	vector<string> file;
+#if _DEBUG
+	IplImage *img=cvCreateImage(cvSize(100,100),IPL_DEPTH_8U,4);
+	cvReleaseImage(&img);
+
+#endif
+#if FALSE
+    vector<string> file;
 	file.push_back("");
-	cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(0,file,"D:",1000);
+
+	//cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(0,file,"D:",1000);
+#endif
+	
 	printf("Hello,World\n");
 	return 0;
 
