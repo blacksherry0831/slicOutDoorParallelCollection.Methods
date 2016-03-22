@@ -20,11 +20,14 @@ ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
    # COMPILE_DEFINITIONS _AFXDLL,_UNICODE,UNICODE,_BIND_TO_CURRENT_CRT_VERSION,_BIND_TO_CURRENT_MFC_VERSION
    # LINK_FLAGS "/ENTRY:\"wWinMainCRTStartup\"")
 
-   INCLUDE_DIRECTORIES( #相关头文件的目录	
+   INCLUDE_DIRECTORIES( #相关头文件的目录		
+		#${SGV_cmake_SOURCE_DIR}/opencv/build/include
+		#${SGV_cmake_SOURCE_DIR}/opencv/build/include/opencv2
+		#${SGV_cmake_SOURCE_DIR}/opencv/build/include/opencv	
+		C:/opencv/build/include
+		C:/opencv/build/include/opencv2
+		C:/opencv/build/include/opencv	
 		${SGV_cmake_SOURCE_DIR}/CuiLib
-		${SGV_cmake_SOURCE_DIR}/opencv/build/include
-		${SGV_cmake_SOURCE_DIR}/opencv/build/include/opencv2
-		${SGV_cmake_SOURCE_DIR}/opencv/build/include/opencv
 	)
 
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")  
