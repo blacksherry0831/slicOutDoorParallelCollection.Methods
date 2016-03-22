@@ -3,10 +3,13 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 #项目名称
 PROJECT(SGV_cmake)
 
+IF (CMAKE_SYSTEM_NAME MATCHES "Linux")  
+   
+ELSE (CMAKE_SYSTEM_NAME MATCHES "Windows")  
+   INCLUDE(FindCuda.cmake)  
+ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")  
 
-
-
-MESSAGE(STSTUS "###################################")  
+MESSAGE(STATUS "###################################")  
 MESSAGE(STATUS "operation system is ${CMAKE_SYSTEM}")   
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")  
     MESSAGE(STATUS "current platform: Linux ")  
@@ -20,7 +23,8 @@ ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
    # COMPILE_DEFINITIONS _AFXDLL,_UNICODE,UNICODE,_BIND_TO_CURRENT_CRT_VERSION,_BIND_TO_CURRENT_MFC_VERSION
    # LINK_FLAGS "/ENTRY:\"wWinMainCRTStartup\"")
 
-   INCLUDE(FindCudaLibrary.cmake)
+   #INCLUDE(FindCudaLibrary.cmake)
+  
 
    INCLUDE_DIRECTORIES( #相关头文件的目录		
 		#${SGV_cmake_SOURCE_DIR}/opencv/build/include
