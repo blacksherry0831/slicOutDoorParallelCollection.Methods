@@ -1,4 +1,4 @@
-#include "SGVcode/stdafx.h"
+#include "stdafx.h"
 #include<stdio.h>
 
 int main(void)
