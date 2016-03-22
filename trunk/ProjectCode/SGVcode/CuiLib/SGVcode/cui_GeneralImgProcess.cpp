@@ -3692,6 +3692,55 @@ IplImage *imglabels=cvCreateImage(cvSize(Width,Height),IPL_DEPTH_8U,4);
 *
 */
 /*-------------------------------------------------------------------------*/
+UINT cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpParam,vector<string> picvec,string saveLocation,int m_spcount)
+{
+
+	vector <double>  Super_Pixel_num_f;
+	vector <double>  Do_Time_f;	
+	int numPics( picvec.size() );
+	/****************************************/
+	
+	/****************************************/
+	for(int k = 0; k < numPics; k++ ){	
+		LARGE_INTEGER litmp;
+		LONGLONG QPart1,QPart2;
+		double dfMinus, dfFreq, dfTim;
+		QueryPerformanceFrequency(&litmp);
+		dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
+		QueryPerformanceCounter(&litmp);
+		QPart1 = litmp.QuadPart;// 获得初始值
+		/////////////////////////////////////////////
+		ImageData MemData(picvec[k],saveLocation,m_spcount,0.5);
+
+		SLIC slic(&MemData);
+		slic.DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy();//得到lable				
+
+
+		ColorBarCluster colorBarCluster(&MemData);
+		colorBarCluster.Clustering();
+
+
+		ComputeSVG2 svg(&MemData);
+		svg.separateSVG_Zlm();
+		/*聚类步骤.docx*/
+
+		///////////////////////////////////////////////
+		QueryPerformanceCounter(&litmp);
+		QPart2 = litmp.QuadPart;//获得中止值
+		dfMinus = (double)(QPart2-QPart1);
+		dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
+		TRACE("\n 全部时间: %f（秒）",dfTim);
+		/*************************************************************/
+#if	!(SaveContours2Disk)
+		MemData.SaveImgWithContours();			
+#endif	
+	}
+
+	/****************************************/
+	
+	
+	return 0;
+}
 /*-------------------------------------------------------------------------*/
 /**
 *

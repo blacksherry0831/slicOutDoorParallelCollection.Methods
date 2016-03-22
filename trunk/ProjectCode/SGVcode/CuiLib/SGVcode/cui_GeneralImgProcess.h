@@ -357,5 +357,6 @@ static void Cui_Combination_ImgLabsNew(
 	ImageData* pMD);
 static void  DetermineColorRank(ImageMemData* pMD,int RankNum);
 static void  ShowImgLabels(int* ImgLabels,int Width,int Height);
+static UINT THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpParam,vector<string> picvec,string saveLocation,int m_spcount);
 };
 
