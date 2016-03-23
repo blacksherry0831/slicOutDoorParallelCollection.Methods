@@ -45,6 +45,10 @@
 #endif
 
 #if TRUE
+#include "cudaLib/CUDA_Code.h"
+#endif
+
+#if TRUE
 #include <SVMcode/TrainTreeBuilding.h>
 #include <SVMcode/TrainImgUseSvm.h>
 #include "SVMcode/svmlight/svmlight.h"

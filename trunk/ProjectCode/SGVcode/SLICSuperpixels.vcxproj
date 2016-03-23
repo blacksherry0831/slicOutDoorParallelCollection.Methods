@@ -248,7 +248,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cudaLib\CUDA_Code.cpp" />
+    <ClCompile Include="CuiLib\cudaLib\CUDA_Code.cpp" />
     <ClCompile Include="CuiLib\FilePathName\FileNameSplit.cpp" />
     <ClCompile Include="CuiLib\FilePathName\PointWithDistance.cpp" />
     <ClCompile Include="CuiLib\ML\Kmean\Kmean.cpp" />
@@ -295,7 +295,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cudaLib\CUDA_Code.h" />
+    <ClInclude Include="CuiLib\cudaLib\CUDA_Code.h" />
     <ClInclude Include="CuiLib\FilePathName\FileNameSplit.h" />
     <ClInclude Include="CuiLib\FilePathName\PointWithDistance.h" />
     <ClInclude Include="CuiLib\ML\Kmean\Kmean.h" />
@@ -365,9 +365,9 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ResourceCompile Include="SLICSuperpixels.rc" />
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="cudaLib\fuzzy.cu" />
-    <CudaCompile Include="cudaLib\HarrWaveletKernel.cu" />
-    <CudaCompile Include="cudaLib\SlicKernel.cu" />
+    <CudaCompile Include="CuiLib\cudaLib\fuzzy.cu" />
+    <CudaCompile Include="CuiLib\cudaLib\HarrWaveletKernel.cu" />
+    <CudaCompile Include="CuiLib\cudaLib\SlicKernel.cu" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

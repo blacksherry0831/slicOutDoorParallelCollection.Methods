@@ -168,7 +168,7 @@
     <ClCompile Include="CuiLib\SGVcode\ComputeSVG2.cpp">
       <Filter>modules</Filter>
     </ClCompile>
-    <ClCompile Include="cudaLib\CUDA_Code.cpp">
+    <ClCompile Include="CuiLib\cudaLib\CUDA_Code.cpp">
       <Filter>CUDA_CU</Filter>
     </ClCompile>
   </ItemGroup>
@@ -348,7 +348,7 @@
     <ClInclude Include="CuiLib\SGVcode\cfg\cui_confg_400_CUDA_ColorBar20150319.h">
       <Filter>config</Filter>
     </ClInclude>
-    <ClInclude Include="cudaLib\CUDA_Code.h">
+    <ClInclude Include="CuiLib\cudaLib\CUDA_Code.h">
       <Filter>CUDA_CU</Filter>
     </ClInclude>
   </ItemGroup>
@@ -369,13 +369,13 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="cudaLib\fuzzy.cu">
+    <CudaCompile Include="CuiLib\cudaLib\fuzzy.cu">
       <Filter>CUDA_CU</Filter>
     </CudaCompile>
-    <CudaCompile Include="cudaLib\HarrWaveletKernel.cu">
+    <CudaCompile Include="CuiLib\cudaLib\HarrWaveletKernel.cu">
       <Filter>CUDA_CU</Filter>
     </CudaCompile>
-    <CudaCompile Include="cudaLib\SlicKernel.cu">
+    <CudaCompile Include="CuiLib\cudaLib\SlicKernel.cu">
       <Filter>CUDA_CU</Filter>
     </CudaCompile>
   </ItemGroup>
