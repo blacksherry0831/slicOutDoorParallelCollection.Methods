@@ -1,4 +1,8 @@
-
+#Searching CUDA
+FIND_PACKAGE(CUDA) 
+#Include the FindCUDA script
+INCLUDE(FindCUDA) 
+#INCLUDE(../../FindCuda.cmake)
 SET(DIR_SRCS   
 	     fuzzy.cu
 	     HarrWaveletKernel.cu
@@ -45,7 +49,7 @@ ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
 
 
-ADD_LIBRARY(cudaLib   STATIC    ${DIR_SRCS}  )
+CUDA_ADD_LIBRARY(cudaLib   STATIC    ${DIR_SRCS}  )
 
 
 

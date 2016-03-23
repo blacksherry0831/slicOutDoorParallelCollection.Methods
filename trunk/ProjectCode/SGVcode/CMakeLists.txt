@@ -3,7 +3,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 #项目名称
 PROJECT(SGV_cmake)
 
- INCLUDE(FindCuda.cmake)
+#INCLUDE(FindCuda.cmake)
+
 INCLUDE_DIRECTORIES( #相关头文件的目录
 	${SGV_cmake_SOURCE_DIR}/CuiLib
 	${SGV_cmake_SOURCE_DIR}
@@ -114,5 +115,4 @@ SET(SRC_LIST
 
 ADD_EXECUTABLE(SpectralClusteringGndVSkyOutDoor main.cpp) #生成应用程序SpectralClusteringGndVSkyOutDoor (在windows下会自动生成hello.exe)
 TARGET_LINK_LIBRARIES(SpectralClusteringGndVSkyOutDoor 
-								#SGVcode
-	                )  
+								SGVcode)  

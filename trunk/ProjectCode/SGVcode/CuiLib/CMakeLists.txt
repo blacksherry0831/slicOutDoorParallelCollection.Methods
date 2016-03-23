@@ -2,7 +2,7 @@
 ADD_SUBDIRECTORY(tinyxml2)
 ADD_SUBDIRECTORY(FilePathName)
 ADD_SUBDIRECTORY(SGVcode)
-
+ADD_SUBDIRECTORY(cudaLib)
 
 
 #SET(DIR_SRCS    ManhattanHistogram.cpp

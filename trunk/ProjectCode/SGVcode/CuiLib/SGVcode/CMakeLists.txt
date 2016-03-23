@@ -5,22 +5,27 @@ SET(DIR_SRCS    ManhattanHistogram.cpp
 				SpAnalyze.cpp
 				HsHg.cpp
 				SpSetProperty.cpp
+				
 				ImageMemData.cpp
 				ImageData.cpp
 				SLIC.cpp
 				#cui_GeneralImgProcess.h
 				cui_GeneralImgProcess.cpp
 				Cui_DrawDepth.cpp
+				
 				ComputeSVG.cpp
 				ComputeSVG2.cpp
 				SpectralClusterInDoor.cpp
 				SplitTreeandBuilding.cpp
-				LabColorAnalyzeCluster.cpp			
+				LabColorAnalyzeCluster.cpp	
+				
 				ColorAnalyzeOnLab.cpp
 				#rtthread.cpp
 				MallocCui.cpp
 				#LabColorAnalyzeCluster_veins.cpp
 				ColorBarCluster.cpp
+				##################
+				SceneDetermine.cpp
 				####
 				CuiHough/CuiHough3.cpp
 				CuiHough/HoughAnalyze.cpp
@@ -64,7 +69,7 @@ ELSE (CMAKE_SYSTEM_NAME MATCHES "Windows")
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")  
 
 ADD_LIBRARY(SGVcode  STATIC     ${DIR_SRCS}  )
-TARGET_LINK_LIBRARIES(SGVcode FilePathName)
+TARGET_LINK_LIBRARIES(SGVcode FilePathName cudaLib)
 
 
 #CuiLib/SGVcode/ImageType.h

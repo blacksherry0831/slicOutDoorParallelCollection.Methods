@@ -22,14 +22,16 @@
 #include <SGVcode/SLIC.h>
 #include <SGVcode/cui_GeneralImgProcess.h>
 #include <SGVcode/Cui_DrawDepth.h>
+
 #include <SGVcode/ComputeSVG.h>
 #include <SGVcode/ComputeSVG2.h>
 #include <SGVcode/SpectralClusterInDoor.h>
 #include <SGVcode/SplitTreeandBuilding.h>
 #include <SGVcode/LabColorAnalyzeCluster.h>
+/*----------------------------------------*/
 #include <SGVcode/CuiHough/CuiHough3.h>
 #include <SGVcode/CuiHough/HoughAnalyze.h>
-#include <SGVcode/CuiHough/HoughAnalyze.h>
+//#include <SGVcode/CuiHough/HoughAnalyze.h>
 #include <SGVcode/Harr/CuiHarrTransformLet.h>
 #include <SGVcode/Harr/HarrWaveletTransImg.h>
 //#include <SGVcode/PointWithDistance.h>
