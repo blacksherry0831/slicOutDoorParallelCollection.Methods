@@ -39,7 +39,7 @@ int main(void)
 #endif 
 
 
-	cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(0,file,"",1000);
+	cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(0,file,out,1000);
 
 	printf("Done ! \n");
 	return 0;
