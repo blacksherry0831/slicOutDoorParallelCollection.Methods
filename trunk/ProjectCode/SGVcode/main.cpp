@@ -8,11 +8,12 @@ int main(void)
 	cvReleaseImage(&img);
 
 #endif
-#if FALSE
+#if TRUE
+
     vector<string> file;
 	file.push_back("");
 
-	//cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(0,file,"D:",1000);
+	cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(0,file,"D:",1000);
 #endif
 	
 	printf("Hello,World\n");

@@ -274,6 +274,10 @@ public:
 #define VerticalColorPNGCv  cvScalar(0x00,0x00,0xff,0xE0)
 #define GroundColorPNGCv    cvScalar(0x7B,0x9D,0x4D,0xF0)
 /*----------------------------------------------------------------------*/
+
+#ifndef __KseedsHistData__
+#define __KseedsHistData__
+ // 声明、定义语句
 class  KseedsHistData{
 public:
 	KseedsHistData(int size=180)
@@ -340,12 +344,20 @@ public:
 	vector<double> hist_AB_CountOrg;//count
 	vector<double> AB_lengthAvg;//128*1.414
 	vector<vector<int>> hist_AB_detail;
-}KseedsHist;
+};
+
 class KseedsHistColorGray{
 public:
 	KseedsHistData ColorHist;
 	KseedsHistData GrayHist;
 };
+
+
+#else
+
+#endif
+
+
 typedef struct  histRangeData{
 	/*前半段*/
 	double *start;
