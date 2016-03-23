@@ -37,9 +37,6 @@
     <Filter Include="modules">
       <UniqueIdentifier>{9054b8c2-8e42-4e13-b9c1-7236ae6d3491}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CUDA_LIB">
-      <UniqueIdentifier>{9edc15f5-5aa0-4d25-81b3-3edf28de3a0e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="CUDA_CU">
       <UniqueIdentifier>{8eac90a7-2199-469d-9b68-4b0214b2b622}</UniqueIdentifier>
     </Filter>
@@ -147,9 +144,6 @@
     <ClCompile Include="CuiLib\FilePathName\PointWithDistance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CUDA_Code.cpp">
-      <Filter>CUDA_LIB</Filter>
-    </ClCompile>
     <ClCompile Include="CuiLib\SGVcode\MallocCui.cpp">
       <Filter>Malloc</Filter>
     </ClCompile>
@@ -173,6 +167,9 @@
     </ClCompile>
     <ClCompile Include="CuiLib\SGVcode\ComputeSVG2.cpp">
       <Filter>modules</Filter>
+    </ClCompile>
+    <ClCompile Include="cudaLib\CUDA_Code.cpp">
+      <Filter>CUDA_CU</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -306,9 +303,6 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CUDA_Code.h">
-      <Filter>CUDA_LIB</Filter>
-    </ClInclude>
     <ClInclude Include="CuiLib\SGVcode\MallocCui.h">
       <Filter>Malloc</Filter>
     </ClInclude>
@@ -354,6 +348,9 @@
     <ClInclude Include="CuiLib\SGVcode\cfg\cui_confg_400_CUDA_ColorBar20150319.h">
       <Filter>config</Filter>
     </ClInclude>
+    <ClInclude Include="cudaLib\CUDA_Code.h">
+      <Filter>CUDA_CU</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\SLICSuperpixels.ico">
@@ -372,13 +369,13 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="HarrWaveletkernel.cu">
+    <CudaCompile Include="cudaLib\fuzzy.cu">
       <Filter>CUDA_CU</Filter>
     </CudaCompile>
-    <CudaCompile Include="SlicKernel.cu">
+    <CudaCompile Include="cudaLib\HarrWaveletKernel.cu">
       <Filter>CUDA_CU</Filter>
     </CudaCompile>
-    <CudaCompile Include="fuzzy.cu">
+    <CudaCompile Include="cudaLib\SlicKernel.cu">
       <Filter>CUDA_CU</Filter>
     </CudaCompile>
   </ItemGroup>

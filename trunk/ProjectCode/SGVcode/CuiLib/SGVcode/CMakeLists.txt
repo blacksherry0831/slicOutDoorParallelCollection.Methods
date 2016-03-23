@@ -63,7 +63,7 @@ ELSE (CMAKE_SYSTEM_NAME MATCHES "Windows")
 		opencv_ocl249d.lib)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")  
 
-ADD_LIBRARY(SGVcode  SHARED     ${DIR_SRCS}  )
+ADD_LIBRARY(SGVcode  STATIC     ${DIR_SRCS}  )
 
 
 #CuiLib/SGVcode/ImageType.h

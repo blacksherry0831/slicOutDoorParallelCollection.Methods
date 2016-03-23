@@ -42,7 +42,7 @@ ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
 
 
-ADD_LIBRARY(tinyxml2      ${DIR_SRCS}  )
+ADD_LIBRARY(tinyxml2   STATIC    ${DIR_SRCS}  )
 
 
 

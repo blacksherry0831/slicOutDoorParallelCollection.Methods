@@ -248,7 +248,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CUDA_Code.cpp" />
+    <ClCompile Include="cudaLib\CUDA_Code.cpp" />
     <ClCompile Include="CuiLib\FilePathName\FileNameSplit.cpp" />
     <ClCompile Include="CuiLib\FilePathName\PointWithDistance.cpp" />
     <ClCompile Include="CuiLib\ML\Kmean\Kmean.cpp" />
@@ -295,7 +295,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CUDA_Code.h" />
+    <ClInclude Include="cudaLib\CUDA_Code.h" />
     <ClInclude Include="CuiLib\FilePathName\FileNameSplit.h" />
     <ClInclude Include="CuiLib\FilePathName\PointWithDistance.h" />
     <ClInclude Include="CuiLib\ML\Kmean\Kmean.h" />
@@ -357,19 +357,17 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="fuzzy.cu" />
-    <CudaCompile Include="HarrWaveletkernel.cu" />
-    <CudaCompile Include="SlicKernel.cu">
-      <FileType>Document</FileType>
-      <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">compute_20,sm_20</CodeGeneration>
-      <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">compute_20,sm_20</CodeGeneration>
-    </CudaCompile>
     <None Include="res\SLICSuperpixels.ico" />
     <None Include="res\SLICSuperpixels.rc2" />
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SLICSuperpixels.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="cudaLib\fuzzy.cu" />
+    <CudaCompile Include="cudaLib\HarrWaveletKernel.cu" />
+    <CudaCompile Include="cudaLib\SlicKernel.cu" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
