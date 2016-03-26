@@ -21,6 +21,8 @@ MESSAGE(STATUS "###################################")
 MESSAGE(STATUS "operation system is ${CMAKE_SYSTEM}")   
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")  
     MESSAGE(STATUS "current platform: Linux ")  
+	find_package( OpenCV REQUIRED )
+    target_link_libraries( DisplayImage ${OpenCV_LIBS} )
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")  
     MESSAGE(STATUS "current platform: Windows")
     #ADD_DEFINITIONS(-D_AFXDLL)¡¡
