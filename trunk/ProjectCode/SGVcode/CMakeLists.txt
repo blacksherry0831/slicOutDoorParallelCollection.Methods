@@ -2,119 +2,53 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 #项目名称
 PROJECT(SGV_cmake)
-
+###############################################################################
+INCLUDE(cmake/SetMFC.cmake)
+INCLUDE(cmake/FindOpencv.cmake)
+###############################################################################
 #INCLUDE(FindCuda.cmake)
-
 INCLUDE_DIRECTORIES( #相关头文件的目录
 	${SGV_cmake_SOURCE_DIR}/CuiLib
 	${SGV_cmake_SOURCE_DIR}
 )
 ADD_SUBDIRECTORY(CuiLib)
-
-IF (CMAKE_SYSTEM_NAME MATCHES "Linux")  
-   
-ELSE (CMAKE_SYSTEM_NAME MATCHES "Windows")  
-   INCLUDE(FindCuda.cmake)  
-ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")  
-
+###############################################################################
+MESSAGE(STATUS "operation system is ${CMAKE_SYSTEM}")  
+###############################################################################
+############配置OPENCV#########################################################
+ConfigOpenCv()
+###############################################################################
+############配置CUDA#########################################################
 MESSAGE(STATUS "###################################")  
-MESSAGE(STATUS "operation system is ${CMAKE_SYSTEM}")   
+MESSAGE(STATUS "cuda")   
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")  
-    MESSAGE(STATUS "current platform: Linux ")  
-	find_package( OpenCV REQUIRED )
-    target_link_libraries( DisplayImage ${OpenCV_LIBS} )
-ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")  
-    MESSAGE(STATUS "current platform: Windows")
-    #ADD_DEFINITIONS(-D_AFXDLL)　
-	#SET(CMAKE_MFC_FLAG 2)
-	#ADD_EXECUTABLE(detect WIN32 ${DIR_SRCS})
-	set(CMAKE_MFC_FLAG 2)
-   # set_target_properties(MyApp PROPERTIES
-   # COMPILE_DEFINITIONS _AFXDLL,_UNICODE,UNICODE,_BIND_TO_CURRENT_CRT_VERSION,_BIND_TO_CURRENT_MFC_VERSION
-   # LINK_FLAGS "/ENTRY:\"wWinMainCRTStartup\"")
-
-  
-   
-   INCLUDE_DIRECTORIES( #相关头文件的目录		
-		#${SGV_cmake_SOURCE_DIR}/opencv/build/include
-		#${SGV_cmake_SOURCE_DIR}/opencv/build/include/opencv2
-		#${SGV_cmake_SOURCE_DIR}/opencv/build/include/opencv	
-		C:/opencv/build/include
-		C:/opencv/build/include/opencv2
-		C:/opencv/build/include/opencv
-	)
-
-	LINK_DIRECTORIES(#
-     	C:/opencv/build/x64/vc10/lib
-	)
-	link_libraries(
-		opencv_calib3d249d.lib
-		opencv_contrib249d.lib
-		opencv_core249d.lib
-		opencv_features2d249d.lib
-		opencv_flann249d.lib
-		opencv_gpu249d.lib
-		opencv_highgui249d.lib
-		opencv_imgproc249d.lib
-		opencv_legacy249d.lib
-		opencv_ml249d.lib
-		opencv_objdetect249d.lib
-		opencv_ts249d.lib
-		opencv_video249d.lib
-		opencv_ocl249d.lib)
-	link_libraries(
-		kernel32.lib
-		user32.lib
-		gdi32.lib
-		winspool.lib
-		comdlg32.lib
-		advapi32.lib
-		shell32.lib
-		ole32.lib
-		oleaut32.lib
-		uuid.lib
-		odbc32.lib
-		odbccp32.lib)
-	IF(CUDA_HAVE_GPU)
+	
+ELSE (CMAKE_SYSTEM_NAME MATCHES "Windows")  
+    INCLUDE(FindCuda.cmake)
+    IF(CUDA_HAVE_GPU)
+      MESSAGE(STATUS "cudart.lib")  
 	  link_libraries(cudart.lib)
 	ENDIF()	
-
-ELSEIF (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")  
-    MESSAGE(STATUS "current platform: FreeBSD")  
-ELSE ()  
-    MESSAGE(STATUS "other platform: ${CMAKE_SYSTEM_NAME}")  
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")  
-  
-MESSAGE(STSTUS "###################################")  
-
-
-
-SET(SRC_LIST                	  
-               #CuiLib/FilePathName/FileNameSplit.cpp
-			   #CuiLib/FilePathName/PointWithDistance.cpp
-			   #CuiLib/ML/Kmean/Kmean.cpp
-			 
-			   
-				
-			   #CuiLib/tinyxml2/tinyxml2.cpp
-			    
-			   # CuiLib/SVMcode/TrainTreeBuilding.cpp
-				#CuiLib/SVMcode/TrainImgUseSvm.cpp
-			    #CuiLib/SVMcode/svmlight/pr_loqo.cpp
-				#CuiLib/SVMcode/svmlight/svm_common.cpp
-				#CuiLib/SVMcode/svmlight/svm_learn.cpp
-				#CuiLib/SVMcode/svmlight/svm_loqo.cpp
-				 
-				 #CUDA_Code.cpp
-			     #fuzzy.cu
-			     #SlicKernel.cu
-			     #HarrWaveletKernel.cu
-				 #main.cpp
-
- )
-
+###############################################################################
+#################编译器配置####################################################
+MESSAGE(STATUS "###################################")  
+MESSAGE(STATUS "编译器配置")   
+IF (CMAKE_SYSTEM_NAME MATCHES "Linux")  
+ 
+ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")   
+	 ConfigMFC_2()
+	link_libraries(${WindowsLib})
+ELSEIF (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+   
+ELSE ()  
+   
+ENDIF ()  
+MESSAGE(STSTUS "###################################")
+###############################################################################
 #AUX_SOURCE_DIRECTORY(. SRC_LIST) #把当前目录(.)下所有源代码文件和头文件加入变量SRC_LIST
-
-ADD_EXECUTABLE(SpectralClusteringGndVSkyOutDoor main.cpp) #生成应用程序SpectralClusteringGndVSkyOutDoor (在windows下会自动生成hello.exe)
+#生成应用程序SpectralClusteringGndVSkyOutDoor (在windows下会自动生成hello.exe)
+ADD_EXECUTABLE(SpectralClusteringGndVSkyOutDoor main.cpp)
 TARGET_LINK_LIBRARIES(SpectralClusteringGndVSkyOutDoor 
-								SGVcode)  
+					            SGVcode
+					  )  

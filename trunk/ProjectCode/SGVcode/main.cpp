@@ -35,7 +35,7 @@ int main(void)
 #ifdef _WIN64 ||_WIN32 ||_MSC_VER ||WIN32
 
  	file.push_back("D:\\ImageDataBase\\400img\\img-op39-p-015t000.jpg");
-	out="E://";
+	out="E://OutPutImg//";
 #endif 
 
 
