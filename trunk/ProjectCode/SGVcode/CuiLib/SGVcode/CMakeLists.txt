@@ -1,3 +1,4 @@
+C11_Config()
 #####################################
 SET(DIR_SRCS    ManhattanHistogram.cpp
 				SeparateSpBlock.cpp

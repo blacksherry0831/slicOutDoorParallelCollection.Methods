@@ -1,4 +1,6 @@
-
+#C11########
+C11_Config()
+#Cuda########
 ConfigCUDA()
 
 SET(DIR_SRCS   

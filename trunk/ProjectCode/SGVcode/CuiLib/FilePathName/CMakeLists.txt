@@ -1,3 +1,4 @@
+C11_Config()
 #add_library(FilePathName FileNameSplit.cpp PointWithDistance.cpp£©
 SET(DIR_SRCS   
 				FileNameSplit.cpp 
