@@ -5,8 +5,8 @@ PROJECT(SGV_cmake)
 ###############################################################################
 INCLUDE(cmake/SetMFC.cmake)
 INCLUDE(cmake/FindOpencv.cmake)
+INCLUDE(cmake/setCUDA.cmake)
 ###############################################################################
-#INCLUDE(FindCuda.cmake)
 INCLUDE_DIRECTORIES( #相关头文件的目录
 	${SGV_cmake_SOURCE_DIR}/CuiLib
 	${SGV_cmake_SOURCE_DIR}
@@ -14,31 +14,18 @@ INCLUDE_DIRECTORIES( #相关头文件的目录
 ADD_SUBDIRECTORY(CuiLib)
 ###############################################################################
 MESSAGE(STATUS "operation system is ${CMAKE_SYSTEM}")  
-###############################################################################
 ############配置OPENCV#########################################################
 ConfigOpenCv()
-###############################################################################
 ############配置CUDA#########################################################
-MESSAGE(STATUS "###################################")  
-MESSAGE(STATUS "cuda")   
-IF (CMAKE_SYSTEM_NAME MATCHES "Linux")  
-	
-ELSE (CMAKE_SYSTEM_NAME MATCHES "Windows")  
-    INCLUDE(FindCuda.cmake)
-    IF(CUDA_HAVE_GPU)
-      MESSAGE(STATUS "cudart.lib")  
-	  link_libraries(cudart.lib)
-	ENDIF()	
-ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")  
-###############################################################################
+ConfigCUDA()
 #################编译器配置####################################################
 MESSAGE(STATUS "###################################")  
-MESSAGE(STATUS "编译器配置")   
+
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")  
  
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")   
 	 ConfigMFC_2()
-	link_libraries(${WindowsLib})
+	 MESSAGE(STATUS "MFC配置")   
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
    
 ELSE ()  

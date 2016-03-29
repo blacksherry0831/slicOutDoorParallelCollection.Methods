@@ -1,8 +1,6 @@
-#Searching CUDA
-FIND_PACKAGE(CUDA) 
-#Include the FindCUDA script
-INCLUDE(FindCUDA) 
-#INCLUDE(../../FindCuda.cmake)
+
+ConfigCUDA()
+
 SET(DIR_SRCS   
 	     fuzzy.cu
 	     HarrWaveletKernel.cu
