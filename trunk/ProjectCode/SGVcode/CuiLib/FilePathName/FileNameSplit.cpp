@@ -1,6 +1,9 @@
 #include "StdAfx.h"
 #include "FileNameSplit.h"
 
+#if linux ||__linux__ ||__linux 
+#include <dirent.h>
+#endif
 /*---------------------------------------------------*/
 /**
 *

@@ -55,6 +55,12 @@
 #include <SVMcode/TrainImgUseSvm.h>
 #include "SVMcode/svmlight/svmlight.h"
 #include "SVMcode/dirent.h"
+
+#if linux
+#include <dirent.h>
+#endif
+
+
 #include <ML/Kmean/Kmean.h>
 #endif
 
