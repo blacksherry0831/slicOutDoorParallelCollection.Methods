@@ -4,7 +4,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 PROJECT(SGV_cmake)
 ###############################################################################
 INCLUDE(cmake/LinuxPrepare.cmake)
-C11_Config()
+
 INCLUDE(cmake/SetMFC.cmake)
 INCLUDE(cmake/FindOpencv.cmake)
 INCLUDE(cmake/setCUDA.cmake)
@@ -17,7 +17,7 @@ ADD_SUBDIRECTORY(CuiLib)
 ###############################################################################
 MESSAGE(STATUS "operation system is ${CMAKE_SYSTEM}")  
 ############≈‰÷√OPENCV#########################################################
-
+C11_Config()
 ConfigOpenCv()
 ############≈‰÷√CUDA#########################################################
 ConfigCUDA()

@@ -7,7 +7,9 @@
 #include <highgui.h>
 #include <opencv2/ml/ml.hpp>
 #include <opencv2/opencv.hpp>
+#if _MSC_VER
 #include <opencv2/gpu/gpu.hpp>
+#endif
 using namespace cv;
 //C++
 #include <iostream>

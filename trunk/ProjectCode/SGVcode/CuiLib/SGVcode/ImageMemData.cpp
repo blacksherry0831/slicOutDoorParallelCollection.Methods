@@ -599,9 +599,12 @@ void ImageMemData::SplitImgBGRAHsv(void)
 /*-----------------------------------------------------------------------------*/
 void ImageMemData::SaveSpProperty(void)
 {
-	CString filepath;
+
+#if Use_CString&&_MSC_VER
+CString filepath;
 	CString filename("SpProperty.xml");
 	CString filefullpath=filepath+filename;
+
 	string xml_save_path=FileNameSplit::ConvertCS2string(filefullpath);
 	/*---------------------------------------*/
 	CvFileStorage *fsW=cvOpenFileStorage(xml_save_path.c_str(),0,CV_STORAGE_APPEND);		
@@ -612,6 +615,8 @@ void ImageMemData::SaveSpProperty(void)
 
 	cvEndWriteStruct(fsW);
 	cvReleaseFileStorage(&fsW);
+#endif
+	
 }
 /*-----------------------------------------------------------------------------*/
 /**

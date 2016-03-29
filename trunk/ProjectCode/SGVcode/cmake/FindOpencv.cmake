@@ -3,6 +3,12 @@ SET(OpencvInclude_Win64
 		C:/opencv/build/include/opencv2
 		C:/opencv/build/include/opencv
 	 )
+SET(OpencvInclude_linux
+		        /usr/local/include
+                /usr/local/include/opencv
+                /usr/local/include/opencv2
+	 )
+
 SET(OpencvLink_Win64
 	  C:/opencv/build/x64/vc10/lib
 	 )
@@ -23,12 +29,13 @@ SET(OpencvLib_Win64
 		opencv_ocl249d.lib
 	 )
 ###############################################################################
-MESSAGE(STATUS "###################################")  
-MESSAGE(STATUS "opencv")  
+#MESSAGE(STATUS "###################################")  
+#MESSAGE(STATUS "opencv")  
 ############≈‰÷√OPENCV#########################################################
 macro(ConfigOpenCv)
 	IF (CMAKE_SYSTEM_NAME MATCHES "Linux")  
-		find_package( OpenCV REQUIRED )
+		FIND_PACKAGE( OpenCV REQUIRED )
+		INCLUDE_DIRECTORIES(${OpencvInclude_linux})
 		#target_link_libraries( DisplayImage ${OpenCV_LIBS} )
 	ELSE (CMAKE_SYSTEM_NAME MATCHES "Windows")  
 	   INCLUDE_DIRECTORIES(${OpencvInclude_Win64})

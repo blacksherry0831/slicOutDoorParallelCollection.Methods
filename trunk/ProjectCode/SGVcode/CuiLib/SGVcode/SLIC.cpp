@@ -205,28 +205,50 @@ void SLIC::RGB2LAB(const int& sR, const int& sG, const int& sB, double& lval, do
 }
 string SLIC::cuiGetCurrentTime(void)
 {
-	SYSTEMTIME systime;
-	CString strName,Time;
-	GetSystemTime(&systime);
+	
+std::string cui_t;
+
+#ifdef _WIN32 || _WIN64
+#if _WIN32 || _WIN64
+ SYSTEMTIME systime;
+  cui_t="win32||win64";
+
+#ifdef Use_CString&&_MSC_VER
+#if Use_CString	&&_MSC_VER
+  CString strName,Time;
+  GetSystemTime(&systime);
 #if 1
-	Time.Format(_T("%u_%u_%u_%u_%u_%u_%u"),
-		systime.wYear, 
-		systime.wMonth, 
-		systime.wDay,
-		systime.wHour, 
-		systime.wMinute, 
-		systime.wSecond, 
-		systime.wMilliseconds);
+  Time.Format(_T("%u_%u_%u_%u_%u_%u_%u"),
+	  systime.wYear, 
+	  systime.wMonth, 
+	  systime.wDay,
+	  systime.wHour, 
+	  systime.wMinute, 
+	  systime.wSecond, 
+	  systime.wMilliseconds);
 #else
-	Time.Format(_T("%u:%u:%u__%uMs"),
-		systime.wHour, 
-		systime.wMinute, 
-		systime.wSecond, 
-		systime.wMilliseconds);
+  Time.Format(_T("%u:%u:%u__%uMs"),
+	  systime.wHour, 
+	  systime.wMinute, 
+	  systime.wSecond, 
+	  systime.wMilliseconds);
+#endif
+ cui_t=cui_GeneralImgProcess::ConvertCS2string(Time);	
+#endif
 #endif
 
-	std::string cui_t=cui_GeneralImgProcess::ConvertCS2string(Time);		
 
+#endif
+ 
+
+#endif
+/**********************************/
+#ifdef linux
+#if linux 
+  cui_t="linux_time";
+#endif
+#endif
+/**********************************/
 	return cui_t;
 }
 
@@ -3663,8 +3685,16 @@ int vectorSize=kseedsa.size();
 	}
 	cvCvtColor(img,img,CV_Lab2BGR);
 	FileNameSplit fns;
-	fns.Parse(CString(FileReadFullPath.c_str()));
-	string filesaveimg_t=pMD->FileWritePath+FileNameSplit::ConvertCS2string(fns.filename)+"SpSeeds.jpg";
+	string filesaveimg_t="SpSeeds.jpg";
+#ifdef Use_CString&&_MSC_VER
+#if Use_CString&&_MSC_VER
+    fns.Parse(CString(FileReadFullPath.c_str()));
+	filesaveimg_t=pMD->FileWritePath+FileNameSplit::ConvertCS2string(fns.filename)+"SpSeeds.jpg";
+#endif
+#endif
+#ifdef linux
+	filesaveimg_t="linuxSpSeeds.jpg";
+#endif
 	cvSaveImage(filesaveimg_t.c_str(),img);
 	cvReleaseImage(&img);
 	}
@@ -3770,10 +3800,12 @@ outfile.close();
 /////////////////////////////////////////////////////////////////////////////////////
 	cvCvtColor(hist_img,hist_img,CV_Lab2BGR);	
 	FileNameSplit fns;
-	fns.Parse(CString(FileReadFullPath.c_str()));
+#if Use_CString&&_MSC_VER
+    fns.Parse(CString(FileReadFullPath.c_str()));
 	string filesaveimg=pMD->FileWritePath+FileNameSplit::ConvertCS2string(fns.filename)+"Histogram.jpg";
 	cvSaveImage( filesaveimg.c_str(), hist_img );//在"H-S Histogtam"窗口中显示图像
 	cvReleaseImage(&hist_img);
+#endif
 	delete[] hist_L;//0-100
 	delete[] hist_AB;//-127--128
 	delete[] hist_Count;//count

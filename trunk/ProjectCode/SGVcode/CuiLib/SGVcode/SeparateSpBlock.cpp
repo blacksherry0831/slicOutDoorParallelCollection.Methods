@@ -37,7 +37,10 @@ void SeparateSpBlock::SeparateSp(void)
 	int ImgWidth=pMD->ImgWidth;
 	int ImgHeight=pMD->ImgHeight;
 	FileNameSplit fns;
-	fns.Parse(FileNameSplit::Convertstring2CS(pMD->FileReadFullPath));
+#if Use_CString&&_MSC_VER
+fns.Parse(FileNameSplit::Convertstring2CS(pMD->FileReadFullPath));
+#endif
+	
 #if TRUE
 	cui_GeneralImgProcess::CalculateAllSpPropertyRange(
 		pMD->ImgLables.get(),
@@ -87,14 +90,14 @@ void SeparateSpBlock::SeparateSp(void)
 				||(Matrix_Category_Lable[spi]==Vertical_Building)){
 					category_sp="_vertical_";
 			}
-#if 1		
+#if Use_CString&&_MSC_VER		
 			sprintf(buff,"_SPa_%d.png",spi);
 			filename=pMD->FileWritePath+FileNameSplit::ConvertCS2string(fns.filename)+category_sp+buff;		
 			Img.imageData=(char *)Origin_img;
 			cvSaveImage(filename.c_str(),&Img);
 #endif
 
-#if 1		
+#if Use_CString&&_MSC_VER		
 			sprintf(buff,"_SPb_%d.png",spi);
 			filename=pMD->FileWritePath+FileNameSplit::ConvertCS2string(fns.filename)+category_sp+buff;		
 			Img.imageData=(char *)Origin_img_NoBoder;
@@ -120,7 +123,12 @@ void SeparateSpBlock::SeparateSp_SvmPredict(void)
 	int ImgWidth=pMD->ImgWidth;
 	int ImgHeight=pMD->ImgHeight;
 	FileNameSplit fns;
-	fns.Parse(FileNameSplit::Convertstring2CS(pMD->FileReadFullPath));
+#if Use_CString&&_MSC_VER
+  fns.Parse(FileNameSplit::Convertstring2CS(pMD->FileReadFullPath));
+#endif
+	
+
+
 #if TRUE
 	cui_GeneralImgProcess::CalculateAllSpPropertyRange(
 		pMD->ImgLables.get(),
@@ -176,14 +184,14 @@ void SeparateSpBlock::SeparateSp_SvmPredict(void)
 				||(Matrix_Category_Lable[spi]==Vertical_Building)){
 					category_sp="_vertical_";
 			}
-#if TRUE		
+#if Use_CString&&_MSC_VER	
 			//Ô­Í¼
 			sprintf(buff,"_SPa_%d.png",spi);
 			filename=pMD->FileWritePath+FileNameSplit::ConvertCS2string(fns.filename)+category_sp+buff;		
 			cvSaveImage(filename.c_str(),&Img_Spa);
 #endif
 
-#if TRUE		
+#if Use_CString&&_MSC_VER	
 			//ÎÞÂÖÀª£¬ºÚ±ß
 			sprintf(buff,"_SPb_%d.png",spi);
 			filename=pMD->FileWritePath+FileNameSplit::ConvertCS2string(fns.filename)+category_sp+buff;		

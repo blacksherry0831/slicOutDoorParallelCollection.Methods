@@ -7,6 +7,8 @@ using namespace std;
 using namespace tinyxml2;
 using namespace std;
 /*---------------------------------------------------*/
+#define  Use_CString TRUE
+/*---------------------------------------------------*/
 /**
 *FileNameSplit 分解全路径字符串
 *@note 使用Parse分解\n
@@ -16,7 +18,11 @@ using namespace std;
 class FileNameSplit
 {
 public:
-	CString  filepath;/**<文件路径*/
+FileNameSplit(void);
+~ FileNameSplit(void);
+public:
+#if _MSC_VER&&Use_CString
+    CString  filepath;/**<文件路径*/
 	CString  filefullpath;/**<文件路径+文件名+扩展名*/
 	CString filename;/**<文件名+扩展名*/
 	CString filefullname;/**<文件全名*/
@@ -25,22 +31,25 @@ public:
 	CString  XmlCfgPath;/**<Xml配置文件路径*/
 	CString  XmlFileName;/**<Xml文件名*/
 	CString  XmlSavePath;/**<Xml保存路径*/
-	vector<CvPoint> line_point;/**<直线上的点集合*/
-public:
-	 FileNameSplit(void);
-	~ FileNameSplit(void);
+#endif
+#if _MSC_VER&&Use_CString
 	CString GetFileTitleFromFileName(CString FileName, BOOL Ext);   
 	CString GetFileName(CString pathname);
 	CString GetPath(CString pathname);
+	static	CString Convertstring2CS(string cstring);
+	static	string  ConvertCS2string(CString cstring);
 	void Parse(CString filepath_t);
 	void ReadData2Mem(CString filepath_t);
+	int GetXmlCfgData(CString filename);
+#endif
+	vector<CvPoint> line_point;/**<直线上的点集合*/
 	void clear(void);
 public:
 static string toLowerCase(const string& in);
 static void getFilesInDirectory(const string& dirName, vector<string>& fileNames, const vector<string>& validExtensions);
-static	string  ConvertCS2string(CString cstring);
-static	CString Convertstring2CS(string cstring);
-	int GetXmlCfgData(CString filename);
+
+
+	
 	void SaveImgFile();
 	CvFileNode* IsNodExist(CvFileStorage *);
 	void CalculatePointOnImg(void);

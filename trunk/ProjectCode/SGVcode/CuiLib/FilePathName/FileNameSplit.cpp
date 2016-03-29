@@ -22,6 +22,7 @@ this->line_point.clear();
 FileNameSplit::~FileNameSplit(void)
 {
 }
+#if _MSC_VER&&Use_CString
 /*---------------------------------------------------*/
 /**
 *从文件全名名中获得文件名
@@ -110,6 +111,8 @@ void FileNameSplit::ReadData2Mem(CString filepath_t)
 	//this->GetXmlCfgData(this->XmlCfgPath);
 	this->XmlSavePath=this->ImagePath+_T("PointData.xml");
 }
+
+#endif
 /*---------------------------------------------------*/
 /**
 *
@@ -119,6 +122,8 @@ void FileNameSplit::ReadData2Mem(CString filepath_t)
 void FileNameSplit::clear(void){
 	
 }
+
+#if _MSC_VER&&Use_CString
 /*---------------------------------------------------*/
 /**
 *
@@ -130,6 +135,7 @@ int FileNameSplit::GetXmlCfgData(CString filename)
 	
 	return 0;
 }
+
 /*---------------------------------------------------*/
 /**
 *CString 字符串转换到string字符串
@@ -158,6 +164,9 @@ CString FileNameSplit::Convertstring2CS(string cstring)
 	CString  cstrw(cstra);
 	return cstrw;
 }
+
+#endif
+
 /*-------------------------------------------------------------------*/
 /**
 
@@ -208,7 +217,7 @@ CvFileNode* FileNameSplit::IsNodExist(CvFileStorage *fsW)
 		for( i = 0; i < total; i++ )
 		{
 			CvFileNode* pt = (CvFileNode*)reader.ptr;
-#if 1 
+#if Use_CString&&_MSC_VER
 			string filename_t=cvReadStringByName(fsW,pt,"File",NULL);
 			if (filename_t==ConvertCS2string(this->filename)){
 				return pt;

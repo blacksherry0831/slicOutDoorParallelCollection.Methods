@@ -177,8 +177,16 @@ void SpAnalyze::Init(ImageMemData* MemData_t)
 	memset(ImgLabels,0,sizeof(int)*pMD->ImgWidth*pMD->ImgHeight);
 	this->ChangeColor2Labels();
 	FileNameSplit fns;
-	fns.Parse(FileNameSplit::Convertstring2CS(pMD->FileReadFullPath));
-	SpADataNow.FileName=FileNameSplit::ConvertCS2string(fns.filefullname);
+#if Use_CString&&_MSC_VER
+   fns.Parse(FileNameSplit::Convertstring2CS(pMD->FileReadFullPath));
+   SpADataNow.FileName=FileNameSplit::ConvertCS2string(fns.filefullname);
+#endif
+
+#if linux
+    SpADataNow.FileName="linux";
+#endif
+	
+
 	SpADataNow.File=pMD->FileReadFullPath;
 	SpADataNow.FileWritePath=pMD->FileWritePath;
 	ImgMaskControus=nullptr;
