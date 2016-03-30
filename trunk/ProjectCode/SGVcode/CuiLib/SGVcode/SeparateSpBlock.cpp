@@ -7,7 +7,9 @@
 #ifdef __GNUC__
 #include "FilePathName/FileNameSplit.h"
 #include "SGVcode/cui_GeneralImgProcess.h"
+#include "SpAnalyze.h"
 #endif
+
 /*------------------------------------------------------------------*/
 /**
 *载入SVM支持向量机的学习模型

@@ -49,8 +49,8 @@
 #define DEBUG_CUI FALSE
 #define GetHorLineFromFile  FALSE
 //#include <vld.h> 
-#include <../CuiLib/SGVcode/cfg/cui_confg_400_CUDA_ColorBar20150319.h>
-#include <../CuiLib/modules.h>
+#include <CuiLib/SGVcode/cfg/cui_confg_400_CUDA_ColorBar20150319.h>
+#include <CuiLib/modules.h>
 //#include <../cudaLib/CUDA_Code.h>
 //#include "vld.h"
 //#include "../../gperftools-2.0/src/gperftools/heap-profiler.h"

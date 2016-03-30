@@ -10,7 +10,9 @@ typedef  unsigned int UINT32;
 #ifndef INT32
 typedef signed int INT32;
 #endif
-
+#ifdef __GNUC__
+#include "SpSetProperty.h"
+#endif
 /*----------------------------------------------------------------*/
 #define SaveContours2Disk TRUE
 /*----------------------------------------------------------------*/
@@ -177,12 +179,12 @@ void FillHoleOnSVGLables(
 	bool BorderSky,
 	bool BorderGnd);
 void DrawS_V_G_Lables_BorderLine(IplImage *img,UINT32 category);
-void ImageData::SaveSuperpixelLabelsImagePNG(
+void SaveSuperpixelLabelsImagePNG(
 	INT32*					labels,
 	const int					width,
 	const int					height,
 	const string				filename,
 	const string				path);
-void ImageData::SaveSuperpixelLabelsImagePNG();
+void SaveSuperpixelLabelsImagePNG();
 };
 

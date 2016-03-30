@@ -33,6 +33,17 @@ endif()
 #if(CMAKE_COMPILER_IS_GNUCXX)
 #    add_definitions(-std=gnu++11)
 #endif()
+IF(CMAKE_COMPILER_IS_GNUCXX)
+
+#set( CMAKE_C_FLAGS   "-fstack-protector -fstack-protector-all" )
+#set( CMAKE_C_FLAGS_DEBUG   "-O2 -Wall -ggdb" )
+#set( CMAKE_C_FLAGS_RELEASE   "-Os -Wall" )
+
+#set( CMAKE_CXX_FLAGS "-fstack-protector -fstack-protector-all" )
+#set( CMAKE_CXX_FLAGS_DEBUG "-O2 -Wall -ggdb" )
+#set( CMAKE_CXX_FLAGS_RELEASE "-Os -Wall" )
+
+ENDIF()
 
 endmacro()
 #############################################

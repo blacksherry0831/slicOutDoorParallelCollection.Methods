@@ -760,29 +760,8 @@ void cui_GeneralImgProcess::CuiSaveImageData(
 /*----------------------------------------------------------------*/
 string cui_GeneralImgProcess::cuiGetCurrentTime(void)
 {
-	SYSTEMTIME systime;
-	CString strName,Time;
-	GetSystemTime(&systime);
-#if 1
-	Time.Format(_T("%u_%u_%u_%u_%u_%u_%u"),
-		systime.wYear, 
-		systime.wMonth, 
-		systime.wDay,
-		systime.wHour, 
-		systime.wMinute, 
-		systime.wSecond, 
-		systime.wMilliseconds);
-#else
-	Time.Format(_T("%u:%u:%u__%uMs"),
-		systime.wHour, 
-		systime.wMinute, 
-		systime.wSecond, 
-		systime.wMilliseconds);
-#endif
-
-	std::string cui_t=ConvertCS2string(Time);		
-
-	return cui_t;
+	SLIC slic;
+	return slic.cuiGetCurrentTime();
 }
 /*----------------------------------------------------------------*/
 /**
@@ -793,6 +772,7 @@ string cui_GeneralImgProcess::cuiGetCurrentTime(void)
 *
 */
 /*----------------------------------------------------------------*/
+#if Use_CString&&_MSC_VER
 string cui_GeneralImgProcess::ConvertCS2string(CString cstring)
 {
 	CStringA stra(cstring.GetBuffer(0));
@@ -801,6 +781,11 @@ string cui_GeneralImgProcess::ConvertCS2string(CString cstring)
 	stra.ReleaseBuffer();
 	return cui_t;
 }
+
+
+
+#endif
+
 /*----------------------------------------------------------------*/
 /**
 *在原图上绘制超像素轮廓

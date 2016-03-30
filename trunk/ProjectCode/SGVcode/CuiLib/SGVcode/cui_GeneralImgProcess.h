@@ -6,9 +6,23 @@ typedef signed int INT32;
 #include <highgui.h>
 #include "ImageType.h"
 #include "ImageMemData.h"
+/*----------------------------------------------------------------*/
+#ifdef __GNUC__
+#include "ImageData.h"
+#endif
 #if _MSC_VER
 #include<atlstr.h>
 #endif
+
+#ifndef LPVOID
+#if __GNUC__
+#define LPVOID  void *
+#endif
+#if _MSC_VER
+
+#endif
+#endif
+
 #define SaveImg2Disk  TRUE
 #define SaveHistgram2Disk       FALSE
 #define SaveAverageImg2Disk     FALSE
@@ -48,7 +62,9 @@ static	void Cui_Combination_ImgLabs2(
 		int					format,
 		const string&		str);
 	static	string cuiGetCurrentTime(void);
+#if Use_CString&&_MSC_VER
 	static	string ConvertCS2string(CString cstring);
+#endif
 	static	void DrawContoursAroundSegments(
 		unsigned int*			ubuff,
 		int*					labels,
@@ -103,7 +119,7 @@ static	void Cui_Combination_ImgLabs2(
 	   int*					labels,
 	   const int&				width,
 	   const int&				height);
- static int cui_GeneralImgProcess::CuiSetNighbour_E_matrix(
+ static int CuiSetNighbour_E_matrix(
 	 int*				labels,
 	 const  int         CuiNumLabels,
 	 UINT32*            Cui_Matrix_E,
@@ -111,7 +127,7 @@ static	void Cui_Combination_ImgLabs2(
 	 const int			height,	
 	 const string		filename,
 	 const string		path);
- static int cui_GeneralImgProcess::CuiSetNighbour_E_matrix_UINT32(
+ static int CuiSetNighbour_E_matrix_UINT32(
 	 int*					labels,
 	 const  int& CuiNumLabels,
 	 UINT32 *Cui_Matrix_E,
@@ -125,7 +141,7 @@ static	void Cui_Combination_ImgLabs2(
 	 const int&				width,
 	 const int&				height,	
 	 INT32*			   category);
-static void cui_GeneralImgProcess::CuiSetNighbour_D_matrix(
+static void CuiSetNighbour_D_matrix(
 	 double *Cui_Matrix_D,	
 	 UINT32 *Cui_Matrix_EW,
 	 const  int& CuiNumLabels);
