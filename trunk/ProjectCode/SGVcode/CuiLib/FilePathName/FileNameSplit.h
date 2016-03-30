@@ -7,7 +7,7 @@ using namespace std;
 using namespace tinyxml2;
 using namespace std;
 /*---------------------------------------------------*/
-#define  Use_CString TRUE
+#define  Use_CString FALSE
 /*---------------------------------------------------*/
 /**
 *FileNameSplit 分解全路径字符串

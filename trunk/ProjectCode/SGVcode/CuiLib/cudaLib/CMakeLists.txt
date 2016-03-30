@@ -1,8 +1,16 @@
+#check_for_cxx11_compiler########
+check_for_cxx11_compiler(CXX11_COMPILER_T)
+IF(CXX11_COMPILER_T)
+ message(STATUS "Checking for C++11 compiler - available")
+ENDIF()
 #C11########
 C11_Config()
-#if(CMAKE_COMPILER_IS_GNUCXX)
-#    add_definitions(-std=gnu++0x)
-#endif()
+#check_for_cxx11_compiler(C11Support)
+############≈‰÷√OPENCV#########################################################
+ConfigOpenCv()
+###############################################################################
+ConfigMFC_2()
+###############################################################################
 #Cuda########
 ConfigCUDA()
 
@@ -11,16 +19,7 @@ SET(DIR_SRCS
 	     HarrWaveletKernel.cu
 	     SlicKernel.cu
 		 CUDA_Code.cpp		 
-		 )  	
-
-
-
-############≈‰÷√OPENCV#########################################################
-ConfigOpenCv()
-###############################################################################
-ConfigMFC_2()
-###############################################################################
-
+		 ) 
 
 
 CUDA_ADD_LIBRARY(cudaLib   STATIC    ${DIR_SRCS}  )

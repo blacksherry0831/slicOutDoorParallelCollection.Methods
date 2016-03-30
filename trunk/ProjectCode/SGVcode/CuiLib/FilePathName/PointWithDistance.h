@@ -3,6 +3,10 @@ using namespace std;
 #include <vector>
 #include "opencv2/opencv.hpp"
 #include "cv.h"
+#ifndef TRUE
+#define TRUE 1
+#endif
+
 #define USE_POINTDATA  TRUE
 /*---------------------------------------------------*/
 /**
@@ -61,10 +65,10 @@ public:
 	{
 		return angule*CV_PI/180.0;
 	}
-	void SaveImgandParam(CString filepath,CString filename){
+	
+#if Use_CString&&_MSC_VER
+    void SaveImgandParam(CString filepath,CString filename){
 
-
-		
 		CString filefullpath=filepath+filename;
 		string xml_save_path=ConvertCS2string(filefullpath);
 		/*---------------------------------------*/
@@ -97,6 +101,8 @@ public:
 		stra.ReleaseBuffer();
 		return cui_t;
 	}
+#endif
+
 };
 #endif
 
@@ -113,6 +119,7 @@ public:
 	PointData point;
 #endif
 
+#if Use_CString&&_MSC_VER
 	CString  filepath;
 	CString  filefullpath;
 	CString filename;
@@ -122,19 +129,20 @@ public:
 	CString  XmlCfgPath;
 	CString  XmlFileName;
 	CString  XmlSavePath;
-	vector<CvPoint> line_point;
-public:
-	PointWithDistance(void);
-	~PointWithDistance(void);
 	CString GetFileTitleFromFileName(CString FileName, BOOL Ext);   
 	CString GetFileName(CString pathname);
 	CString GetPath(CString pathname);
 	void Parse(CString filepath_t);
 	void ReadData2Mem(CString filepath_t);
-	void clear(void);
-public:
-	string ConvertCS2string(CString cstring);
+    string ConvertCS2string(CString cstring);
 	int GetXmlCfgData(CString filename);
+#endif	
+public:
+	vector<CvPoint> line_point;
+	PointWithDistance(void);
+	~PointWithDistance(void);
+	void clear(void);
+public:	
 	void SaveImgFile();
 	CvFileNode* IsNodExist(CvFileStorage *);
 	void CalculatePointOnImg(void);

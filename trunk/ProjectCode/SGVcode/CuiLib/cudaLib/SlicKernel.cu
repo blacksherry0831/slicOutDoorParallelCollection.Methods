@@ -3,7 +3,14 @@
 #include "device_functions.h"
 //#include<stdio.h>
 #include<assert.h>
+#ifndef UINT32
 typedef unsigned int UINT32;
+#endif
+#if linux||__linux||__linux__
+#ifndef nullptr
+#define nullptr 0
+#endif
+#endif
 /*------------------------------------------------------------------------------------------*/
 /**
 *Ê±¼ä2014- 11-4

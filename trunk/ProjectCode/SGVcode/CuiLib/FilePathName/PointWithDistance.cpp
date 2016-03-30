@@ -1,5 +1,8 @@
 #include "StdAfx.h"
 #include "PointWithDistance.h"
+#ifdef __GNUC__
+#include "tinyxml2/tinyxml2.h"
+#endif
 using namespace tinyxml2;
 /*---------------------------------------------------*/
 /**
@@ -30,6 +33,7 @@ PointWithDistance::~PointWithDistance(void)
 *
 */
 /*---------------------------------------------------*/
+#if Use_CString&&_MSC_VER
 CString PointWithDistance::GetFileTitleFromFileName(CString FileName, BOOL Ext)   
 {   
 	int Where;   
@@ -107,6 +111,7 @@ void PointWithDistance::ReadData2Mem(CString filepath_t)
 	this->GetXmlCfgData(this->XmlCfgPath);
 	this->XmlSavePath=this->ImagePath+_T("PointData.xml");
 }
+#endif
 /*---------------------------------------------------*/
 /**
 *
@@ -122,6 +127,7 @@ void PointWithDistance::clear(void){
 *
 */
 /*---------------------------------------------------*/
+#if Use_CString&&_MSC_VER
 int PointWithDistance::GetXmlCfgData(CString filename)
 {
 	ASSERT(filename!="");
@@ -137,8 +143,6 @@ int PointWithDistance::GetXmlCfgData(CString filename)
 #if 0
 this->point.Head_Angule_V=acos(this->point.dst_direct/this->point.dst_laser)*180/3.141592653;
 #endif
-	
-
 	cvReleaseFileStorage(&fsW);
 	return 0;
 }
@@ -156,6 +160,7 @@ string PointWithDistance::ConvertCS2string(CString cstring)
 	stra.ReleaseBuffer();
 	return cui_t;
 }
+#endif
 /*-------------------------------------------------------------------*/
 /**
 
@@ -180,13 +185,22 @@ void PointWithDistance::SaveImgFile2()
 	}
 	this->CalculatePointOnImg();
 	/********************************/
-	string xml_save_path=ConvertCS2string(this->XmlSavePath);
+	string xml_save_path;
+#if Use_CString&&_MSC_VER
+   xml_save_path=ConvertCS2string(this->XmlSavePath);
+#endif
+#if linux||__linux||__linux__
+   xml_save_path="linux.xml";
+#endif
+
 	CvFileStorage *fsW=cvOpenFileStorage(xml_save_path.c_str(),0,CV_STORAGE_READ|CV_STORAGE_APPEND|CV_STORAGE_FORMAT_XML);
 	CvFileNode* RootNode=cvGetRootFileNode(fsW);
 	CvFileNode* Data=this->IsNodExist(fsW);
 	if (Data==NULL){
 		cvStartWriteStruct(fsW,"Data",CV_NODE_MAP,NULL,cvAttrList(0,0));
+#if  Use_CString&&_MSC_VER
 		cvWriteString(fsW,"File",ConvertCS2string(this->filename).c_str());	
+#endif		
 		cvWriteReal(fsW,"Head_Angle_H",this->point.Head_Angle_H);	
 		cvWriteReal(fsW,"Head_Angule_V",this->point.Head_Angule_V);
 		cvWriteReal(fsW,"Dst_Dir",this->point.dst_direct);
@@ -229,7 +243,7 @@ CvFileNode* PointWithDistance::IsNodExist(CvFileStorage *fsW)
 		for( i = 0; i < total; i++ )
 		{
 			CvFileNode* pt = (CvFileNode*)reader.ptr;
-#if 1 
+#if _MSC_VER&&Use_CString
 			string filename_t=cvReadStringByName(fsW,pt,"File",NULL);
 			if (filename_t==ConvertCS2string(this->filename)){
 				return pt;
@@ -316,7 +330,13 @@ void PointWithDistance::SaveImgFile(void)
 		return;
 	}
 	this->CalculatePointOnImg();
-	string xml_save_path=ConvertCS2string(this->XmlSavePath);
+	string xml_save_path;
+#if Use_CString&&_MSC_VER
+	xml_save_path=ConvertCS2string(this->XmlSavePath);
+#endif
+#if linux||__linux||__linux__
+	xml_save_path="linuxxml.xml";
+#endif
 	/***************************************/
 	 tinyxml2::XMLDocument  myDocument;
 	 myDocument.LoadFile(xml_save_path.c_str()); 
@@ -347,16 +367,25 @@ void PointWithDistance::SaveImgFile(void)
 	  tinyxml2::XMLElement *pdata= pRootEle->FirstChildElement("Data");  
 	  while(pdata){
 		  string attr=pdata->Attribute("File");
-		 if (attr==ConvertCS2string(filename)){
+#if _MSC_VER&&Use_CString
+        if (attr==ConvertCS2string(filename)){
 			 break;			
 		 }
+#endif
+#if linux||__linux||__linux__
+		break;
+#endif
 
 		  pdata=pdata->NextSiblingElement();  
 	  }
 	  if (pdata==NULL){
 		  //原本没有添加
 		  pdata = myDocument.NewElement("Data");
-		  pdata->SetAttribute("File",ConvertCS2string(filename).c_str());
+#if _MSC_VER&&Use_CString
+    pdata->SetAttribute("File",ConvertCS2string(filename).c_str());
+#endif
+		
+
 		  pRootEle->LinkEndChild(pdata); 
 		  XMLElement *p_elt=myDocument.NewElement("X_pos");
 		  pdata->LinkEndChild(p_elt);

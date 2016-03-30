@@ -3,6 +3,17 @@
 /////////////////////////////////////////
 #include <iostream>
 #include <math.h>
+/***************************************/
+#ifndef UINT32
+typedef unsigned int UINT32;
+#endif
+/***************************************/
+
+/***************************************/
+#ifndef INT32
+typedef signed int INT32;
+#endif
+/***************************************/
 using namespace std;
 #ifdef __cplusplus
 extern "C" {

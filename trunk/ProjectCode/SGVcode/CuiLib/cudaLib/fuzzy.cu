@@ -8,7 +8,11 @@
 #include <sstream>
 using namespace std;
 #define  WeightZoom (10000)
+
+#ifndef M_PI
 #define M_PI (3.14159265358979323846)
+#endif
+
 #include<assert.h>
 /*------------------------------------------------------------------------------------------*/
 /**
@@ -520,7 +524,8 @@ Statistical_SVGsum_Fill_Category_Lable<<<(Numlabels+1023)/1024,1024>>>(
 		  cudaStatus=cudaMemcpy(VerticalWeightArray_host,VerticalWeightArray_dev,Height*sizeof(double),cudaMemcpyDeviceToHost);
 		  cudaStatus=cudaMemcpy(GroundWeightArray_host,GroundWeightArray_dev,Height*sizeof(double),cudaMemcpyDeviceToHost);
 		  cudaStatus=cudaMemcpy(SkyWeightArray_host,SkyWeightArray_dev,Height*sizeof(double),cudaMemcpyDeviceToHost);
-		  {
+#if _MSC_VER
+ {
 			  char data_t[1024];																			
 			  ofstream outfile;								   
 			  outfile.open("Matrix_Weight_GVS_zlm_cuda.data",ios::out);
@@ -549,6 +554,9 @@ Statistical_SVGsum_Fill_Category_Lable<<<(Numlabels+1023)/1024,1024>>>(
 			  } 
 			  outfile.close();
 		  }
+#endif
+		 
+
 		  Statistical_SVGsum_Fill_Category_Lable_CPU(
 			  Numlabels,	
 			  Matrix_Category_Lable_host,

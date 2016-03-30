@@ -146,6 +146,8 @@ void PerformSuperpixelSLIC_cuda(
 	double*				edgemag,
 	const double		M)
 {
+
+#if _MSC_VER
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -153,6 +155,8 @@ void PerformSuperpixelSLIC_cuda(
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif
+
 #if 1
 {
 
@@ -184,19 +188,28 @@ void PerformSuperpixelSLIC_cuda(
 		finish = clock();
 		double duration_ms = (double)(finish - start)*1000 / CLOCKS_PER_SEC;
 		double duration_s = duration_ms/1000;
-		TRACE("\n 十次迭代: %f（秒）",duration_s);
+#if _MSC_VER
+       TRACE("\n 十次迭代: %f（秒）",duration_s);
+#else
+		printf("gpu time is %f s",duration_s);
+#endif
+		
+		
 		double duration_min =duration_s/60;
-		printf( "gpu time is %f ms/n", duration_ms );
+		printf( "gpu time is %f ms", duration_ms );
 }
 #else
 	for (int i=0;i<m_width*m_height*10;i++){
 		double a=atan2((double)10,(double)10);
 	}	
 #endif
-		QueryPerformanceCounter(&litmp);	
+
+#if _MSC_VER
+        QueryPerformanceCounter(&litmp);	
 		QPart2 = litmp.QuadPart;//获得中止值	
 		dfMinus = (double)(QPart2-QPart1);	
 		dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒	
+#endif
 }
 /*------------------------------------------------------------------------------------------*/
 /**
@@ -255,6 +268,7 @@ void  PerformSuperpixelSLIC_ThetaMLXY_cuda(
 	int*	    klabels,
 	const int	STEP)
 {
+#if _MSC_VER
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -262,6 +276,8 @@ void  PerformSuperpixelSLIC_ThetaMLXY_cuda(
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif
+
 #if 1
 	{
 		PerformSuperpixelSLIC_ThetaMLXY_gpu_simplify(
@@ -286,11 +302,14 @@ void  PerformSuperpixelSLIC_ThetaMLXY_cuda(
 			 STEP);
 	}
 #endif
-	QueryPerformanceCounter(&litmp);	
+#if _MSC_VER
+    QueryPerformanceCounter(&litmp);	
 	QPart2 = litmp.QuadPart;//获得中止值	
 	dfMinus = (double)(QPart2-QPart1);	
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒	
 	TRACE("\n 十次迭代: %f（秒）",dfTim);
+#endif
+	
 }
 /*------------------------------------------------------------------------------------------*/
 /**
@@ -319,6 +338,9 @@ extern "C" void DrawContoursAroundSegments_gpu(
 *
 */
 /*------------------------------------------------------------------------------------------*/
+#ifndef BlackColorPNG
+#define BlackColorPNG (0xff000000)
+#endif
 void DrawContoursAroundSegments_cuda(
 	unsigned int*			ubuff,
 	int*					labels,
@@ -326,20 +348,25 @@ void DrawContoursAroundSegments_cuda(
 	const int				height,
 	const unsigned int		color )
 {
-	LARGE_INTEGER litmp;
+#if _MSC_VER
+    LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
 	QueryPerformanceFrequency(&litmp);
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif	
 #if 1
 	DrawContoursAroundSegments_gpu(ubuff,labels,width,height,color,BlackColorPNG);
 #endif
-	QueryPerformanceCounter(&litmp);	
+#if _MSC_VER
+    QueryPerformanceCounter(&litmp);	
 	QPart2 = litmp.QuadPart;//获得中止值	
 	dfMinus = (double)(QPart2-QPart1);	
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒	
+#endif
+	
 }
 /*------------------------------------------------------------------------------------------*/
 /**
@@ -410,13 +437,16 @@ void  GetSeedsLabxy_cuda(
 	double*				kseedsy,
 	int*				klabels)
 {
-	LARGE_INTEGER litmp;
+#if _MSC_VER
+    LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
 	QueryPerformanceFrequency(&litmp);
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif
+	
 #if 1
 	GetSeedsLabxy_gpu(
 		kseedsSize,
@@ -432,11 +462,14 @@ void  GetSeedsLabxy_cuda(
 		kseedsy,
 		klabels);
 #endif
-	QueryPerformanceCounter(&litmp);	
+#if _MSC_VER
+    QueryPerformanceCounter(&litmp);	
 	QPart2 = litmp.QuadPart;//获得中止值	
 	dfMinus = (double)(QPart2-QPart1);	
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	double dfms=dfTim*1000;//ms
+#endif
+	
 }
 /*------------------------------------------------------------------------------------------*/
 /**
@@ -474,20 +507,25 @@ void Get_Nighbour_E_matrix_cuda(
 	const string		filename,
 	const string		path)
 {
-	LARGE_INTEGER litmp;
+#if _MSC_VER
+    LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
 	QueryPerformanceFrequency(&litmp);
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif
+	
 #if 1
 	Get_Nighbour_E_matrix_gpu(labels,NumLabels,Matrix_E,width,height);
 #endif
-	QueryPerformanceCounter(&litmp);	
+#if _MSC_VER
+    QueryPerformanceCounter(&litmp);	
 	QPart2 = litmp.QuadPart;//获得中止值	
 	dfMinus = (double)(QPart2-QPart1);	
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
+#endif
 }
 /*------------------------------------------------------------------------------------------*/
 /**
@@ -529,6 +567,7 @@ void classify_SkyVerticalGround_cuda(
 	int Width,
 	int Height)
 {
+#if _MSC_VER
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -536,6 +575,8 @@ void classify_SkyVerticalGround_cuda(
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif
+
 #if 1
 	classify_SkyVerticalGround_gpu(
 		horizontal_line,
@@ -551,9 +592,12 @@ void classify_SkyVerticalGround_cuda(
 		Width,
 		Height);
 #endif
+#if _MSC_VER
 	QueryPerformanceCounter(&litmp);	
 	QPart2 = litmp.QuadPart;//获得中止值	
 	dfMinus = (double)(QPart2-QPart1);	
 	dfTim = dfMinus / dfFreq*1000;// 获得对应的时间值，单位为MS
 	//dfTim = 131.77898596090682 ms
+#endif
+
 }
