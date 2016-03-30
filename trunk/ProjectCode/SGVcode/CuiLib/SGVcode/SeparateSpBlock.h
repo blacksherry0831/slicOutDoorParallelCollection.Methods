@@ -3,11 +3,33 @@
 using namespace cv;
 using namespace std;
 #include "SGVcode/ImageMemData.h"
+#if (CV_MAJOR_VERSION==2)&&(CV_MINOR_VERSION==4)
+#include <opencv2/ml/ml.hpp>
+#endif
+#if (CV_MAJOR_VERSION==3)
+#include <opencv2/ml.hpp> 
+#endif
+/************************************************************************/
+/*      
+#if (CV_MAJOR_VERSION==2)&&(CV_MINOR_VERSION==4)
+
+#endif	
+#if (CV_MAJOR_VERSION==3)
+
+#endif
+*/
+/************************************************************************/
 class SeparateSpBlock
 {
 private:
 	ImageMemData* pMD;/**<需要的图像数据和图像计算用的中间变量*/
-	CvSVM SvmTest;/**<支持向量机模型*/
+	
+#if (CV_MAJOR_VERSION==2)&&(CV_MINOR_VERSION==4)
+   CvSVM SvmTest;/**<支持向量机模型*/
+#endif
+#if (CV_MAJOR_VERSION==3)  
+   Ptr<ml::SVM> SvmTest; /**<支持向量机模型*/
+#endif	
 public:
 	UINT32* ImgData;/**<图像数据*/
 	int*    ImgLab;/**<图像标定Lables*/

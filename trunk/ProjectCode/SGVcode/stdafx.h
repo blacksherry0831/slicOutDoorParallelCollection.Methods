@@ -36,7 +36,12 @@
 
 #endif 
 
-
+#ifndef ASSERT
+#if linux||__linux||__linux__||__GNUC__
+#include <assert.h>
+#define  ASSERT(Exp) assert(Exp)
+#endif
+#endif
 
 
 

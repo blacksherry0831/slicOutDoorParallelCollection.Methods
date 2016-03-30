@@ -1,6 +1,7 @@
 #pragma once
 #ifndef ImageTypeCui
 #define ImageTypeCui
+#include <memory>
 #include "cv.h"
 #ifndef ASSERT
 #include <assert.h>
@@ -15,9 +16,15 @@
 *12%
 */
 /*------------------------------------------------------------------------------------------------------------*/
+#ifndef TRUE
+#define TRUE 1
+#endif
+#ifndef  FALSE
+#define FALSE 0
+#endif
+/*----------------------------------------------------------------------*/
 #define MAX_SP_NUM    (3000)
 #define  MAXLINEDATA (2000) 
-
 /*----------------------------------------------------------------------*/
 #define Unclassify (-2)
 #define  Remove (-1)
@@ -53,7 +60,10 @@
 *Ω®÷˛¿‡–Õ
 */
 /*------------------------------------------------------------------------------------------------------------*/
+#ifndef M_PI
 #define M_PI (3.14159265358979323846)
+#endif
+/************************************************************************/
 #ifndef BuildingType_Enum
 #define BuildingType_Enum
 enum BuildingType{

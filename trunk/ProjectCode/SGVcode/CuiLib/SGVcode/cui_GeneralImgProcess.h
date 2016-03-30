@@ -6,7 +6,9 @@ typedef signed int INT32;
 #include <highgui.h>
 #include "ImageType.h"
 #include "ImageMemData.h"
+#if _MSC_VER
 #include<atlstr.h>
+#endif
 #define SaveImg2Disk  TRUE
 #define SaveHistgram2Disk       FALSE
 #define SaveAverageImg2Disk     FALSE

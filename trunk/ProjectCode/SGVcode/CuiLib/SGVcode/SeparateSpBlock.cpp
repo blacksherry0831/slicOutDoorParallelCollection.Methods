@@ -1,6 +1,14 @@
 #include "StdAfx.h"
 #include "SeparateSpBlock.h"
 /*------------------------------------------------------------------*/
+//#ifdef (linux)||(__linux)||(__linux__)||(__GNUC__)
+//#include "FilePathName/FileNameSplit.h"
+//#endif
+#ifdef __GNUC__
+#include "FilePathName/FileNameSplit.h"
+#include "SGVcode/cui_GeneralImgProcess.h"
+#endif
+/*------------------------------------------------------------------*/
 /**
 *载入SVM支持向量机的学习模型
 *@param imgdata_t 图像数据
@@ -13,7 +21,14 @@ SeparateSpBlock::SeparateSpBlock(UINT32* imgdata_t,int*  ImgLab_t,ImageMemData* 
 	this->ImgData=imgdata_t;
 	this->ImgLab=ImgLab_t;
 	this->pMD=MemData_t;
+#if (CV_MAJOR_VERSION==2)&&(CV_MINOR_VERSION==4)
 	SvmTest.load("SvmModule(BV)2014-05-11.xml");
+#endif
+#if (CV_MAJOR_VERSION==3)  
+	printf("OpenCv 3.1.0 use svm");
+	ASSERT(0);
+#endif	
+	
 }
 /*------------------------------------------------------------------*/
 /**
