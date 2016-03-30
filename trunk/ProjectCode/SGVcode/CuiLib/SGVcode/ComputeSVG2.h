@@ -1,6 +1,5 @@
 #pragma once
 #include "SGVcode/ImageData.h"
-#include "modules.h"
 /*-----------------------------------------------------------------------------*/
 /**
 *                                                                     

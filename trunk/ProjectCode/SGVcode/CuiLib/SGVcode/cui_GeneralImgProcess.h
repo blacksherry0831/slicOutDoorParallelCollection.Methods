@@ -6,6 +6,7 @@ typedef signed int INT32;
 #include <highgui.h>
 #include "ImageType.h"
 #include "ImageMemData.h"
+#include "ImageData.h"
 /*----------------------------------------------------------------*/
 #ifdef __GNUC__
 #include "ImageData.h"

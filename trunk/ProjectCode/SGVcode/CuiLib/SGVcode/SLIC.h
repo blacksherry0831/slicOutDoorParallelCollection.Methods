@@ -1,11 +1,13 @@
-#if !defined(_SLIC_H_INCLUDED_)
-#define _SLIC_H_INCLUDED_
-
+#pragma once
+//#//if !defined(_SLIC_H_INCLUDED_)
+//#//define _SLIC_H_INCLUDED_
 #include <vector>
 #include <string>
 #include <algorithm>
 #include <mbctype.h>  
 using namespace std;
+//#include "ImageMemData.h"
+//#include "ImageData.h"
 /**能够进行超像素分割的最大值*/
 #define  Num_Hist 2048 
 #define  UseTextureInColorWithCombine  FALSE 
@@ -16,12 +18,13 @@ using namespace std;
 *
 */
 /*----------------------------------------------------------------------------------------------------------------*/
+//#pragma once
 class SLIC  
 {
 public:
 	SLIC();
-	SLIC(ImageMemData* MemData_t);
-	SLIC(ImageData* MemData_t);
+	SLIC(ImageMemData*  MemData_t);
+	SLIC(ImageData*  MemData_t);
 	virtual ~SLIC();
 	//============================================================================
 	// Superpixel segmentation for a given step size (superpixel size ~= step*step)
@@ -419,4 +422,4 @@ public:
 
 };
 
-#endif // !defined(_SLIC_H_INCLUDED_)
+//#endif // !defined(_SLIC_H_INCLUDED_)

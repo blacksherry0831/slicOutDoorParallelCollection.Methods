@@ -1,5 +1,6 @@
 #include "StdAfx.h"
-#include "SpSetProperty.h"
+#include "module_all_cui.h"
+//#include "SpSetProperty.h"
 /*----------------------------------------------------------------*/
 /**
 *

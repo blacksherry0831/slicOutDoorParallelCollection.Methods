@@ -1,5 +1,6 @@
 #include "stdafx.h"
-#include <SGVcode/Harr/HarrWaveletTransImg.h>
+#include "module_all_cui.h"
+//#include <SGVcode/Harr/HarrWaveletTransImg.h>
 /*---------------------------------------------------*/
 /**
 *初始化成员变量

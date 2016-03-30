@@ -1,5 +1,6 @@
 #include "StdAfx.h"
-#include "SceneDetermine.h"
+#include "module_all_cui.h"
+//#include "SceneDetermine.h"
 /*----------------------------------------------------------------*/
 /**
 *

@@ -1,5 +1,6 @@
 #include "StdAfx.h"
-#include "ManhattanHistogram.h"
+#include "module_all_cui.h"
+//#include "ManhattanHistogram.h"
 /*-------------------------------------------------------------*/
 /**
 *由HistData构造Manhattan直方图

@@ -1,7 +1,8 @@
 #include "StdAfx.h"
-#include "CuiHough3.h"
+#include "module_all_cui.h"
+//#include "CuiHough3.h"
 #include <assert.h>	
-#include "../SceneDetermine.h"
+//#include "../SceneDetermine.h"
 /*------------------------------------------------------------------------------------------------------------*/
 /**
 param1

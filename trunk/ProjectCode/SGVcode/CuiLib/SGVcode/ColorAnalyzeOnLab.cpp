@@ -1,5 +1,7 @@
 #include "StdAfx.h"
+//#include "module_all_cui.h"
 #include "ColorAnalyzeOnLab.h"
+#include "ML/Kmean/Kmean.h"
 /*--------------------------------------------------------*/
 /**
 * ‰»ÎÕºœÒ

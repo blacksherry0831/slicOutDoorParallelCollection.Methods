@@ -1,5 +1,6 @@
 #include "StdAfx.h"
-#include "LabColorAnalyzeCluster.h"
+#include "module_all_cui.h"
+//#include "LabColorAnalyzeCluster.h"
 /*---------------------------------------------------------------------------*/
 /**
 *

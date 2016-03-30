@@ -7,7 +7,7 @@
 */
 /*-------------------------------------------------------------------------------------*/
 #ifndef MFC_ThreadInfo
-#define MFC_ThreadInfo TRUE
+#define MFC_ThreadInfo (TRUE&&_MSC_VER)
 struct ThreadInfo
 {
 #if TRUE

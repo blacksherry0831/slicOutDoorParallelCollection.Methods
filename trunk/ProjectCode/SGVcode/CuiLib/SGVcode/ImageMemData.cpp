@@ -1,6 +1,7 @@
 #include "StdAfx.h"
-#include "ImageMemData.h"
-#include "cui_GeneralImgProcess.h"
+#include "module_all_cui.h"
+//#include "ImageMemData.h"
+//#include "cui_GeneralImgProcess.h"
 /*----------------------------------------------------------------*/
 /**
 *¹¹Ôìº¯Êý\n

@@ -1,5 +1,6 @@
 #include "StdAfx.h"
-#include "SeparateSpBlock.h"
+#include "module_all_cui.h"
+//#include "SeparateSpBlock.h"
 /*------------------------------------------------------------------*/
 //#ifdef (linux)||(__linux)||(__linux__)||(__GNUC__)
 //#include "FilePathName/FileNameSplit.h"

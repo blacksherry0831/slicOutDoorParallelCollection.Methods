@@ -10,7 +10,7 @@ typedef  unsigned int UINT32;
 #ifndef INT32
 typedef signed int INT32;
 #endif
-#ifdef __GNUC__
+#if __GNUC__ || _MSC_VER
 #include "SpSetProperty.h"
 #endif
 /*----------------------------------------------------------------*/

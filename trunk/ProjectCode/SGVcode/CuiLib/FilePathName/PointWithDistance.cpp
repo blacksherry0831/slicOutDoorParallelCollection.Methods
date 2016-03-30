@@ -1,8 +1,13 @@
 #include "StdAfx.h"
 #include "PointWithDistance.h"
-#ifdef __GNUC__
+#ifdef __GNUC__||_MSC_VER
 #include "tinyxml2/tinyxml2.h"
 #endif
+#if _MSC_VER
+#include "SVMcode/dirent.h"
+#endif
+
+#include "tinyxml2/tinyxml2.h"
 using namespace tinyxml2;
 /*---------------------------------------------------*/
 /**

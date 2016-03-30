@@ -1,5 +1,6 @@
 #include "StdAfx.h"
-#include "SpectralClustering.h"
+#include "module_all_cui.h"
+//#include "SpectralClustering.h"
 /*----------------------------------------------------------------------------------*/
 /**
 *

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "module_all_cui.h"
 #include<stdio.h>
 /*----------------------------------------------*/
 /*

@@ -1,5 +1,6 @@
 #include "StdAfx.h"
-#include "SpectralClusterInDoor.h"
+#include "module_all_cui.h"
+//#include "SpectralClusterInDoor.h"
 /*----------------------------------------------------------------------------------*/
 /**
 *¹¹Ôìº¯Êý\n

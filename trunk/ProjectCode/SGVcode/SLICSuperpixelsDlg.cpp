@@ -3,6 +3,7 @@
 //
 
 #include "stdafx.h"
+#include "modules.h"
 #include "SLICSuperpixels.h"
 #include "SLICSuperpixelsDlg.h"
 //#include "PictureHandler.h"

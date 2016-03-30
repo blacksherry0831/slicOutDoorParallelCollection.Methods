@@ -1,5 +1,6 @@
 #include "StdAfx.h"
-#include "Cui_DrawDepth.h"
+#include "module_all_cui.h"
+//#include "Cui_DrawDepth.h"
 
 /*----------------------------------------------------------------*/
 /**

@@ -3,6 +3,7 @@
 #include <iostream>
 using namespace std;
 typedef  unsigned int UINT32;
+#include "module_all_cui.h"
 /*----------------------------------------------------------------*/
 /**
 *

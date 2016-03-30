@@ -1,5 +1,5 @@
 #pragma once
-//#include <SGVcode/ImageMemData.h>
+#include <SGVcode/ImageMemData.h>
 /*------------------------------------------*/
 /**
 *¡¡∂»≤Ó

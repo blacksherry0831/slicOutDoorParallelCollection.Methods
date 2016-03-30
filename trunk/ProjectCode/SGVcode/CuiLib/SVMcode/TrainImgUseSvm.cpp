@@ -1,14 +1,26 @@
 #include "StdAfx.h"
+#include "modules.h"
 #include <ios>
 #include <fstream>
 #include <stdexcept>
-#include "TrainImgUseSvm.h"	
-#include <ML.H>   
-#include "svmlight/svmlight.h"
-#include "dirent.h"
 #include <cstdio> 
 #include<stdio.h>
 #include<string.h>
+/*-------------------------------------------------------------------------------------------*/
+/*--模块依赖*/
+/*-------------------------------------------------------------------------------------------*/
+//#include "svmlight/svmlight.h"
+//#include "dirent.h"
+//#include "TrainImgUseSvm.h"	
+//#include <ML.H>   
+//#include "FilePathName/FileNameSplit.h"
+//#include <SGVcode/cui_GeneralImgProcess.h>
+//#include <SGVcode/SpAnalyze.h>
+/*-------------------------------------------------------------------------------------------*/
+/**
+*
+*/
+/*--------------------------------------------------------------------------------------------*/
  int TrainImgUseSvm::CategoryFeature=0;
  double TrainImgUseSvm:: winwidth=48;
  double TrainImgUseSvm:: winheight=96;
@@ -288,7 +300,7 @@ void TrainImgUseSvm::calculateFeaturesFromInput(
         featureVector.clear();
         printf("Error: Image '%s' dimensions (%u x %u) do not match HOG window size (%u x %u)!\n", imageFilename.c_str(), imageData.cols, imageData.rows, hog.winSize.width, hog.winSize.height);
        
-#if ProgressBar  
+#if ProgressBar&&_MSC_VER  
 		// MessageBox(NULL,_T("窗口大小不匹配"),_T("TRAIN"),MB_OK);		
 	/*	ThreadData.pCtrlButton->EnableWindow(TRUE);
 		ThreadData.ThreadinRun=TRUE;*/
@@ -1242,8 +1254,13 @@ void TrainImgUseSvm::Learning_samples_detection_rate(
 			string fileNameold=pathList[si];
 			FileNameSplit fnsp;
 			IplImage *img=cvLoadImage(fileNameold.c_str());
+			string fileNameneNew="2143124.png";
+#if Use_CString&&_MSC_VER
 			fnsp.Parse(FileNameSplit::Convertstring2CS(fileNameold));
-			string fileNameneNew=SVMDetectorxml+"\\POS2NEG\\"+FileNameSplit::ConvertCS2string(fnsp.filefullname);
+			fileNameneNew=SVMDetectorxml+"\\POS2NEG\\"+FileNameSplit::ConvertCS2string(fnsp.filefullname);
+#endif
+		
+			
 			cvSaveImage(fileNameneNew.c_str(),img);
 			cvReleaseImage(&img);
 #endif
@@ -1253,8 +1270,13 @@ void TrainImgUseSvm::Learning_samples_detection_rate(
 			string fileNameold=pathList[si];
 			FileNameSplit fnsp;
 			IplImage *img=cvLoadImage(fileNameold.c_str());
+		    string fileNameneNew="agifvauhvau.png";
+#if Use_CString&&_MSC_VER
 			fnsp.Parse(FileNameSplit::Convertstring2CS(fileNameold));
-			string fileNameneNew=SVMDetectorxml+"\\NEG2POS\\"+FileNameSplit::ConvertCS2string(fnsp.filefullname);
+			fileNameneNew=SVMDetectorxml+"\\NEG2POS\\"+FileNameSplit::ConvertCS2string(fnsp.filefullname);
+#endif
+		
+		
 			cvSaveImage(fileNameneNew.c_str(),img);
 			cvReleaseImage(&img);
 #endif

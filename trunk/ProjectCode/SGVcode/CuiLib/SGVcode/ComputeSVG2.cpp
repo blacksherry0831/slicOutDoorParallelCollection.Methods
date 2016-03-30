@@ -1,4 +1,5 @@
 ﻿#include "StdAfx.h"
+#include "module_all_cui.h"
 #include "ComputeSVG2.h"
 #include "cui_GeneralImgProcess.h"
 #include <algorithm>

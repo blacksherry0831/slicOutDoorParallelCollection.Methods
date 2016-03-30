@@ -1,7 +1,8 @@
 #include "StdAfx.h"
-#include "HoughAnalyze.h"
-#include "SGVcode/Harr/CuiHarrTransformLet.h"
-#include "SGVcode/cui_GeneralImgProcess.h"
+#include "module_all_cui.h"
+//#include "HoughAnalyze.h"
+//#include "SGVcode/Harr/CuiHarrTransformLet.h"
+//#include "SGVcode/cui_GeneralImgProcess.h"
 typedef signed int INT32;
 /*-----------------------------------------------------------------------------*/
 /**

@@ -10,7 +10,7 @@ using namespace cv;
 #define SvmCategoryNeg (-1)
 #define SvmCategoryBuilding    SvmCategoryPos
 #define SvmCategoryTree        SvmCategoryNeg
-#define  ProgressBar TRUE
+#define  ProgressBar (TRUE&&_MSC_VER)
 /////////////////////////////////////////////
 #define Normal  0
 #define Sum_Count_Density		1
@@ -35,17 +35,27 @@ using namespace tinyxml2;
 *
 */
 /*-------------------------------------------------------------------------------------*/
-#ifndef MFC_ThreadInfo
-#define MFC_ThreadInfo TRUE
+#ifndef  MFC_ThreadInfo
+#define  MFC_ThreadInfo TRUE
+#define  USE_MFC  (FALSE&&_MSC_VER)
+#ifdef ProgressBar
+#undef ProgressBar
+#define ProgressBar  USE_MFC
+#endif
+
 struct ThreadInfo
 {
-#if TRUE
+#if FALSE&&_MSC_VER
 	UINT nMilliSecond;	
 	CEdit*           pCtrlEdit;
-#endif	  	
-	CProgressCtrl* pctrlProgress;//进程指针
+#endif
+
+#if USE_MFC
+    CProgressCtrl* pctrlProgress;//进程指针
 	CStatic*       pctrlStatic;	
 	CButton*         pCtrlButton;
+#endif
+	
 	UINT        ThreadinRun;
 };//结构体
 #else

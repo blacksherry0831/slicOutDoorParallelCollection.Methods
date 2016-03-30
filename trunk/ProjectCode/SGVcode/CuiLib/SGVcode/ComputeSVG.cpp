@@ -1,6 +1,7 @@
 ﻿#include "StdAfx.h"
-#include "ComputeSVG.h"
-#include "cui_GeneralImgProcess.h"
+#include "module_all_cui.h"
+//#include "ComputeSVG.h"
+//#include "cui_GeneralImgProcess.h"
 #include <algorithm>
 ///////////////////////////////////////////////
 double* ComputeSVG:: cui_pYweight_GVS=NULL;

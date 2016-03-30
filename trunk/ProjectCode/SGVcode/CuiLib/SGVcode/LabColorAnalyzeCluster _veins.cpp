@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+#include "modules.h"
 #include "LabColorAnalyzeCluster_Veins.h"
 /*---------------------------------------------------------------------------*/
 /**

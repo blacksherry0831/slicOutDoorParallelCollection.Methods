@@ -1,5 +1,6 @@
 #include "StdAfx.h"
-#include "SplitTreeandBuilding.h"
+#include "module_all_cui.h"
+//#include "SplitTreeandBuilding.h"
 /*-----------------------------------------------------------------------------*/
 /**
 *

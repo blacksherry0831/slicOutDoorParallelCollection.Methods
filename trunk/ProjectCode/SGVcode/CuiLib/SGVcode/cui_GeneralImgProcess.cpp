@@ -1,7 +1,8 @@
 #include "StdAfx.h"
-#include "cui_GeneralImgProcess.h"
-#include "../opencv_stl.h"
-#include "Harr/CuiHarrTransformLet.h"
+#include "module_all_cui.h"
+//#include "cui_GeneralImgProcess.h"
+//#include "../opencv_stl.h"
+//#include "Harr/CuiHarrTransformLet.h"
 /*----------------------------------------------------------------*/
 /**
 *¹¹Ôìº¯Êý\n

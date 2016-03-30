@@ -5,8 +5,11 @@
 
 #pragma once
 
-#include <platform_cui.h>
-#include <opencv_stl.h>
+#include <CuiLib/modules.h>
+//#include <../cudaLib/CUDA_Code.h>
+//#include "vld.h"
+//#include "../../gperftools-2.0/src/gperftools/heap-profiler.h"
+
 
 
 

@@ -1,4 +1,6 @@
 #pragma once
+#include "ImageMemData.h"
+#include "ColorAnalyzeOnLab.h"
 /*--------------------------------------------------------*/
 /**
 *ÑÕÉ«·ÖÎö

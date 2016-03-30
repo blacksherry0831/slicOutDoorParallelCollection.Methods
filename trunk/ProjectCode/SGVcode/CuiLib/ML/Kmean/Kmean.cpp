@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Kmean.h"
+#include "module_all_cui.h"
 #define MAX_CLUSTERS (8) 
 /*----------------------------------------------------------------*/
 /**

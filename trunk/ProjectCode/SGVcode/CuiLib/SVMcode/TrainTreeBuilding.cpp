@@ -1,5 +1,22 @@
 #include "StdAfx.h"
-#include "TrainTreeBuilding.h"
+#include "modules.h"
+//#include "TrainTreeBuilding.h"
+
+/*-------------------------------------------------------------------------------------------*/
+/*--模块依赖*/
+/*-------------------------------------------------------------------------------------------*/
+#include "tinyxml2/tinyxml2.h"
+using namespace tinyxml2;
+
+#if _MSC_VER
+#include "SVMcode/dirent.h"
+#endif
+#if linux
+#include <dirent.h>
+#endif
+//#include "FilePathName/FileNameSplit.h"
+//#include <SGVcode/cui_GeneralImgProcess.h>
+//#include <SGVcode/SpAnalyze.h>
 /*-------------------------------------------------------------------------------------------*/
 /**
 *
@@ -76,7 +93,7 @@ UINT TrainTreeBuilding::TrainWithXMLdata(LPVOID lpParam)
 
 	Learning_samples_detection_rate(dataMatMem,resMatMem,filenames);
 
-#if ProgressBar  
+#if ProgressBar&&USE_MFC  
 	MessageBox(NULL,_T("训练完成"),_T("TrainSample"),MB_OK);
 	ThreadData.pCtrlButton->EnableWindow(TRUE);
 	ThreadData.ThreadinRun=TRUE;
@@ -90,7 +107,7 @@ UINT TrainTreeBuilding::TrainWithXMLdata(LPVOID lpParam)
 /*-------------------------------------------------------------------------------------*/
 UINT TrainTreeBuilding::ThreadPickUpFeature(LPVOID lpParam)
 {
-#if ProgressBar
+#if ProgressBar&&USE_MFC
 	ThreadData.pCtrlButton->EnableWindow(FALSE);
 	ThreadData.ThreadinRun=FALSE;
 #endif 	
@@ -118,7 +135,7 @@ UINT TrainTreeBuilding::ThreadPickUpFeature(LPVOID lpParam)
 		}
 	}
 
-#if ProgressBar  
+#if ProgressBar&&USE_MFC  
 	MessageBox(NULL,_T("训练完成"),_T("TrainSample"),MB_OK);
 	ThreadData.pCtrlButton->EnableWindow(TRUE);
 	ThreadData.ThreadinRun=TRUE;
@@ -555,16 +572,24 @@ void TrainTreeBuilding::Learning_samples_detection_rate(vector<float>& dataMatMe
 			//正样本判断错误的
 			IplImage *img=cvLoadImage(filenames[si].c_str());
 			FileNameSplit fns;
-			fns.Parse(FileNameSplit::Convertstring2CS(filenames[si]));
-			string  filesavepath=SVMDetectorxml+"\\PosError\\"+FileNameSplit::ConvertCS2string(fns.filefullname);
+			string  filesavepath="aschioahscvua.png";
+#if Use_CString&&_MSC_VER
+	        fns.Parse(FileNameSplit::Convertstring2CS(filenames[si]));
+			filesavepath=SVMDetectorxml+"\\PosError\\"+FileNameSplit::ConvertCS2string(fns.filefullname);
+#endif
 			cvSaveImage(filesavepath.c_str(),img);
 		}
 		if (cate_org==0&&cate_si!=0){
 			//负样本判断错误的
 			IplImage *img=cvLoadImage(filenames[si].c_str());
 			FileNameSplit fns;
-			fns.Parse(FileNameSplit::Convertstring2CS(filenames[si]));
-			string  filesavepath=SVMDetectorxml+"\\NegError\\"+FileNameSplit::ConvertCS2string(fns.filefullname);
+			string  filesavepath="anaojfioasj.png";
+#if Use_CString&&_MSC_VER
+	fns.Parse(FileNameSplit::Convertstring2CS(filenames[si]));
+	filesavepath=SVMDetectorxml+"\\NegError\\"+FileNameSplit::ConvertCS2string(fns.filefullname);
+#endif		
+		
+
 			cvSaveImage(filesavepath.c_str(),img);
 		}
 	}

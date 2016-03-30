@@ -1,5 +1,6 @@
 #include "StdAfx.h"
-#include "SpAnalyze.h"
+#include "module_all_cui.h"
+//#include "SpAnalyze.h"
 /*------------------------------------------------*/
 /**
 *初始化变量

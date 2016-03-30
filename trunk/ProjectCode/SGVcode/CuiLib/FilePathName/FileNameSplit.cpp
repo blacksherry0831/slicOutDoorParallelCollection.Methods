@@ -4,6 +4,10 @@
 #if linux ||__linux__ ||__linux 
 #include <dirent.h>
 #endif
+#if _MSC_VER
+#include "SVMcode/dirent.h"
+#endif
+
 /*---------------------------------------------------*/
 /**
 *

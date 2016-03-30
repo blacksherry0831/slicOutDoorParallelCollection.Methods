@@ -141,8 +141,8 @@ public:
 	  void ImgPreprocessAdjustByMaskImg(void);
 	
 public:
-	    bool HoughAnalyze::DoubleIsInt(double n);
-		bool HoughAnalyze::FloatIsInt(float n);
+	    bool DoubleIsInt(double n);
+		bool FloatIsInt(float n);
 		static void StatisticsHistogramByLine(
 			 string filename,
 			 LINEDATA* linedata,

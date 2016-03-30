@@ -1,5 +1,6 @@
 #include "StdAfx.h"
-#include "ImageData.h"
+//#include "ImageData.h"
+#include "module_all_cui.h"
 /*-------------------------------------------------------------------*/
 #if _MSC_VER
 #pragma warning(disable: 4101)

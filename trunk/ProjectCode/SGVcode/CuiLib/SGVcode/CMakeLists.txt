@@ -41,9 +41,14 @@ ConfigOpenCv()
 ###############################################################################
 ConfigMFC_2()
 ###############################################################################
-
+SET(LINK_LIB 
+	         FilePathName
+	         cudaLib
+	         Kmean
+	         SVMcode
+	)
 ADD_LIBRARY(SGVcode  STATIC     ${DIR_SRCS}  )
-TARGET_LINK_LIBRARIES(SGVcode FilePathName cudaLib)
+TARGET_LINK_LIBRARIES(SGVcode ${LINK_LIB})
 
 
 #CuiLib/SGVcode/ImageType.h
