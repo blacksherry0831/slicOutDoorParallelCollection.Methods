@@ -1,8 +1,8 @@
 #pragma once
 #ifndef ImageTypeCui
 #define ImageTypeCui
-#include <memory>
-#include "cv.h"
+//#include <memory>
+//#include "cv.h"
 #ifndef ASSERT
 #include <assert.h>
 #define ASSERT(x) assert(x)
@@ -353,7 +353,7 @@ public:
 	vector<double> hist_AB_CountRemove;
 	vector<double> hist_AB_CountOrg;//count
 	vector<double> AB_lengthAvg;//128*1.414
-	vector<vector<int>> hist_AB_detail;
+	vector< vector<int> > hist_AB_detail;
 };
 
 class KseedsHistColorGray{

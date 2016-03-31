@@ -16,7 +16,8 @@ endmacro()
 # Sets the appropriate flag to enable C++11 support
 macro(enable_cxx11)
     if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+		message(STATUS "-std=c++11")
     endif()
 endmacro()
 
@@ -34,7 +35,7 @@ endif()
 #    add_definitions(-std=gnu++11)
 #endif()
 IF(CMAKE_COMPILER_IS_GNUCXX)
-
+set (CMAKE_CXX_FLAGS "-fpermissive")
 #set( CMAKE_C_FLAGS   "-fstack-protector -fstack-protector-all" )
 #set( CMAKE_C_FLAGS_DEBUG   "-O2 -Wall -ggdb" )
 #set( CMAKE_C_FLAGS_RELEASE   "-Os -Wall" )

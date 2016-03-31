@@ -1,7 +1,13 @@
 #include "StdAfx.h"
 #include "module_all_cui.h"
 //#include "CuiHough3.h"
-#include <assert.h>	
+//#include <assert.h>	
+#ifdef min
+#undef min
+#endif
+#ifdef max
+#undef max
+#endif
 //#include "../SceneDetermine.h"
 /*------------------------------------------------------------------------------------------------------------*/
 /**

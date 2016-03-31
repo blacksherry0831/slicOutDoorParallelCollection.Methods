@@ -1,9 +1,8 @@
 #pragma once
-typedef unsigned int UINT32;
-typedef signed int INT32;
-#include "vector"
-#include <cv.h>
-#include <highgui.h>
+/*----------------------------------------------------------------*/
+#include <platform_cui.h>
+/*----------------------------------------------------------------*/
+
 #include "ImageType.h"
 #include "ImageMemData.h"
 #include "ImageData.h"
@@ -11,18 +10,9 @@ typedef signed int INT32;
 #ifdef __GNUC__
 #include "ImageData.h"
 #endif
-#if _MSC_VER
-#include<atlstr.h>
-#endif
 
-#ifndef LPVOID
-#if __GNUC__
-#define LPVOID  void *
-#endif
-#if _MSC_VER
 
-#endif
-#endif
+
 
 #define SaveImg2Disk  TRUE
 #define SaveHistgram2Disk       FALSE
@@ -372,7 +362,7 @@ static void Cui_Combination_ImgLabs2(
 	double SuperpixelThread,
 	ImageData* pMD);
 static void Cui_Combination_ImgLabsNew(
-	vector<vector<int>> simlarSp,
+	vector<vector<int> > simlarSp,
 	ImageData* pMD);
 static void  DetermineColorRank(ImageMemData* pMD,int RankNum);
 static void  ShowImgLabels(int* ImgLabels,int Width,int Height);

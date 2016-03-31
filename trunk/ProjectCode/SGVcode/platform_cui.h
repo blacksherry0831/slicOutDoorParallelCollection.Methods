@@ -5,6 +5,14 @@
 
 #pragma once
 
+#ifndef PLATFORM_CUI_XXX
+#define PLATFORM_CUI_XXX
+
+
+
+#include "CuiLib/opencv_stl.h"
+/************************************************************************/
+#ifdef _MSC_VER
 #ifndef _SECURE_ATL
 #define _SECURE_ATL 1
 #endif
@@ -22,8 +30,6 @@
 
 
 //#include <vld.h> 
-#ifdef _MSC_VER
-
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
 #ifndef _AFX_NO_OLE_SUPPORT
@@ -33,23 +39,86 @@
 #include <afxcmn.h>             // MFC support for Windows Common Controls
 #endif // _AFX_NO_AFXCMN_SUPPORT
 #include <afxcontrolbars.h>     // MFC support for ribbons and control bars
-
+#if _MSC_VER
+#include<atlstr.h>
+#endif
 #endif 
-
+/************************************************************************/
 #ifndef ASSERT
 #if linux||__linux||__linux__||__GNUC__
 #include <assert.h>
 #define  ASSERT(Exp) assert(Exp)
 #endif
 #endif
+/************************************************************************/
+#ifndef LPVOID
+#if __GNUC__
+#define LPVOID  void *
+#endif
+#if _MSC_VER
 
+#endif
+#endif
+/************************************************************************/
+#ifndef TRUE
+#define TRUE 1
+#endif
+#ifndef FALSE
+#define FALSE 0
+#endif
+/************************************************************************/
+#ifndef UINT32
+typedef unsigned int UINT32;
+#endif
+//
+#ifndef BOOL
+typedef int BOOL;
+#endif
+//
+#ifndef INT32
+typedef signed int INT32;
+#endif
+//
+#ifndef ULONGLONG
+typedef unsigned long long ULONGLONG;
+#endif
+//
+#ifndef LPVOID
+#if __GNUC__
+#define LPVOID  void *
+#endif
+#if _MSC_VER
 
-#include <opencv_stl.h>
+#endif
+#endif
+/************************************************************************/
+/************************************************************************/
 
+#if __GNUC__
+#define sprintf_s  snprintf
 
+#ifndef  TRACE
+//#define printf(fmt, args...) myprintf(fmt, ##args)
+#define TRACE(FMT,ARGS...) {fprintf(stderr,"%s\t%s\t%d\t%s\n",__FILE__,__FUNCTION__,__LINE__,__TIME__);fprintf(stderr,FMT,##ARGS);}
+#endif 
+
+#endif
+
+#if TRUE
+#ifndef nullptr
+#define nullptr 0
+#endif
+#endif
+
+/************************************************************************/
 #define DEBUG_CUI FALSE
 #define GetHorLineFromFile  FALSE
+/************************************************************************/
+
 //#include <vld.h> 
 #include <CuiLib/SGVcode/cfg/cui_confg_400_CUDA_ColorBar20150319.h>
+/************************************************************************/
 
 
+
+#endif

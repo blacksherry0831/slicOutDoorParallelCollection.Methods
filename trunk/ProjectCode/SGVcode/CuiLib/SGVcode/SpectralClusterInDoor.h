@@ -1,4 +1,6 @@
 #pragma once
+#include <platform_cui.h>
+/*------------------------------------------------------------------------*/
 #define  C_Used2FindVP	 22222
 #define  InDoorThreshold  (0.9)
 #define  Iteration__Threshold__InDoor   (0.9)

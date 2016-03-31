@@ -1,9 +1,9 @@
 #include "StdAfx.h"
-#include "module_all_cui.h"
-#include <stdio.h>
+//#include "module_all_cui.h"
+//#include <stdio.h>
 #include "rtthread.h"
-#include <stdlib.h>
-#include <fstream>
+//#include <stdlib.h>
+//#include <fstream>
 #if 0
 /*----------------------------------------------------------*/
 /**

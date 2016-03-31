@@ -6,8 +6,7 @@
 //////////////////////////////////////////////////////////////////////
 #include "stdafx.h"
 #include "module_all_cui.h"
-#include <cfloat>
-#include <cmath>
+
 //#include "SLIC.h"
 //#include "cui_GeneralImgProcess.h"
 

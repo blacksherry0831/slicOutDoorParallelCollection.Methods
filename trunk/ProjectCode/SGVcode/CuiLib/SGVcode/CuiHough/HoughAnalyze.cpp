@@ -3,7 +3,7 @@
 //#include "HoughAnalyze.h"
 //#include "SGVcode/Harr/CuiHarrTransformLet.h"
 //#include "SGVcode/cui_GeneralImgProcess.h"
-typedef signed int INT32;
+//typedef signed int INT32;
 /*-----------------------------------------------------------------------------*/
 /**
 *≥ı ºªØ

@@ -1,11 +1,8 @@
 #pragma once
-using namespace std;
-#include <vector>
-#include "opencv2/opencv.hpp"
-#include "cv.h"
+#include <platform_cui.h>
 #include "tinyxml2/tinyxml2.h"
 using namespace tinyxml2;
-using namespace std;
+
 /*---------------------------------------------------*/
 #define  Use_CString FALSE
 /*---------------------------------------------------*/

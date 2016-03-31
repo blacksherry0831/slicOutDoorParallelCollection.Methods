@@ -57,10 +57,13 @@ public:
 	TrainTreeBuilding(void);
 	~TrainTreeBuilding(void);
 public:
+#if USE_MFC&&Use_CString
 		static CWinThread* pThread;
+		static string ConvertCS2string(CString cstring);
+#endif
 		static   ThreadInfo ThreadData;
 public:
-	static string ConvertCS2string(CString cstring);
+
 	static UINT GetFileNameFromPath(void);
 	static void Read2MemFromXML(vector<float>& data,vector<float>& res,int& Dim,unsigned long& Num);
 	static void Read2MemFromXML(vector<float>& data,vector<float>& res,int& Dim,unsigned long& Num,vector<string>& filenames);

@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 #include "module_all_cui.h"
 //#include "cui_GeneralImgProcess.h"
-//#include "../opencv_stl.h"
 //#include "Harr/CuiHarrTransformLet.h"
 /*----------------------------------------------------------------*/
 /**
@@ -282,7 +281,7 @@ CUI_NEXT:	;
 **/
 /*---------------------------------------------------------------*/
 void cui_GeneralImgProcess::Cui_Combination_ImgLabsNew(
-	vector<vector<int>> simlarSp,
+	vector<vector<int> > simlarSp,
 	ImageData* pMD)
 {
 #if 0

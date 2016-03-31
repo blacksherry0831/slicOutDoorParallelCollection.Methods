@@ -1,12 +1,10 @@
 #pragma once
-using namespace std;
-#include <vector>
-#include "opencv2/opencv.hpp"
-#include "cv.h"
+#include <platform_cui.h>
+/*---------------------------------------------------*/
+/*---------------------------------------------------*/
 #ifndef TRUE
 #define TRUE 1
 #endif
-
 #define USE_POINTDATA  TRUE
 /*---------------------------------------------------*/
 /**

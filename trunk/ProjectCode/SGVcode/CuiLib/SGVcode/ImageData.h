@@ -1,15 +1,17 @@
 #pragma once
-#include <string>
-#include <iostream>
-using namespace std;
+#include <platform_cui.h>
+//#include <string>
+//#include <iostream>
+//using namespace std;
+//
+//#ifndef UINT32
+//typedef  unsigned int UINT32;
+//#endif
+//
+//#ifndef INT32
+//typedef signed int INT32;
+//#endif
 
-#ifndef UINT32
-typedef  unsigned int UINT32;
-#endif
-
-#ifndef INT32
-typedef signed int INT32;
-#endif
 #if __GNUC__ || _MSC_VER
 #include "SpSetProperty.h"
 #endif

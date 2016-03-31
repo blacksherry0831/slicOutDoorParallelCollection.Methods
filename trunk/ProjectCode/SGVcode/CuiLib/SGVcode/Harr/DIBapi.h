@@ -2,6 +2,10 @@
 #ifndef _INC_DIBAPI
 #define _INC_DIBAPI
 
+#ifndef BOOL
+typedef int BOOL;
+#endif
+#if 0&&_MSC_VER
 //DIB handle
 DECLARE_HANDLE(HDIB);
 
@@ -64,6 +68,15 @@ BOOL WINAPI SaveDIB(HDIB hDib,CFile& file);
 
 //read DIB
 HDIB WINAPI ReadDIBFile(CFile& file);
+#endif
+#if linux || __linux || __linux__ 
+#ifndef WINAPI
+# define WINAPI
+#else
+#undef WINAPI
+# define WINAPI
+#endif
+#endif
 
 template <class T>
 void WINAPI ReverseDIBBits(T* lpDibBits, int hrow, int vrow)

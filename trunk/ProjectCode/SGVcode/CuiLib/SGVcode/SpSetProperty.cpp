@@ -1,6 +1,12 @@
 #include "StdAfx.h"
 #include "module_all_cui.h"
 //#include "SpSetProperty.h"
+#ifdef min
+#undef min
+#endif
+#ifdef max
+#undef max
+#endif
 /*----------------------------------------------------------------*/
 /**
 *

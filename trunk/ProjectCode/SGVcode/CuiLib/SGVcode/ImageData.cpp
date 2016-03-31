@@ -1705,7 +1705,7 @@ void ImageData::SaveSuperpixelLabelsImagePNG(
 			int ind=x+y*width;			
 			int org=data[ind];
 			unsigned char red=org>=254?254:org;
-			data[ind]|=0xff<<32;//填充alph通道
+			data[ind]|=0x000000ff<<24;//填充alph通道
 			data[ind]|=red<<24;
 			/*if (org<245){
 				labels[ind]=org|(org<<8)|(org<<16)|(0xff000000);

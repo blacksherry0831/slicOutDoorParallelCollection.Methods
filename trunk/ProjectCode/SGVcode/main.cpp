@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "module_all_cui.h"
-#include<stdio.h>
 /*----------------------------------------------*/
 /*
 C++:编写跨平台程序的关键，C/C++中的内置宏定义

@@ -1,11 +1,9 @@
 #pragma once
 //#//if !defined(_SLIC_H_INCLUDED_)
 //#//define _SLIC_H_INCLUDED_
-#include <vector>
-#include <string>
-#include <algorithm>
-#include <mbctype.h>  
-using namespace std;
+#include <platform_cui.h>
+
+
 //#include "ImageMemData.h"
 //#include "ImageData.h"
 /**能够进行超像素分割的最大值*/
@@ -65,7 +63,7 @@ public:
                 const int&			K,//required number of superpixels
                 const double&      compactness);//10-20 is a good value for CIELAB space
 
-		void SLIC::DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy(
+		void DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy(
 			const UINT32*               ubuff,
 			const int					width,
 			const int					height,

@@ -56,7 +56,7 @@ int  CalculateMostEffectiveSky(
 	double sky_Light_Threshold,
 	double sky_energy_threshold);
 ///////////////////////////////
-bool ComputeSVG2::Is_Sky_Block(
+bool Is_Sky_Block(
 	int spj,
 	float sky_Light_Threshold,
 	float sky_energy_Threshold,
@@ -74,7 +74,7 @@ void  FillWeightArrayG_InDoor20150603(double horizontal_line, double n);
 double Gx_InDoor20150603(int y,int n,float H0,float Hg,int H);
 double Sx_InDoor20150603(int y,int n,float H0,float Hg,int H);
 /*---------------------------------------------------------------------------------------------------*/
-void ComputeSVG2::FillWeightArrayV_New(double horizontal_line, double n);
-void ComputeSVG2::FillWeightArrayV_Gaussian(double horizontal_line, double n,double SigmaScale,double WeightScale);
+void FillWeightArrayV_New(double horizontal_line, double n);
+void FillWeightArrayV_Gaussian(double horizontal_line, double n,double SigmaScale,double WeightScale);
 };
 

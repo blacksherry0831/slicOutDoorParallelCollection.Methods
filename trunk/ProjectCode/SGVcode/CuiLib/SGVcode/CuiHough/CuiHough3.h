@@ -1,13 +1,16 @@
 #pragma once
-typedef unsigned int UINT32;
-typedef signed int INT32;
-using namespace std;
-#include <cv.h>
-#include <highgui.h>
-#include <math.h>
-#include <STDIO.H>
-#include <stdio.h>
-#include <iostream>
+#include <platform_cui.h>
+//typedef unsigned int UINT32;
+//typedef signed int INT32;
+//using namespace std;
+//#include <cv.h>
+//#include <highgui.h>
+//#include <math.h>
+//#if _MSC_VER
+//#include <STDIO.H>
+//#endif
+//#include <stdio.h>
+//#include <iostream>
 #include "SGVcode/ImageType.h"
 #include "SGVcode/ImageMemData.h"
 #include "SGVcode/SceneDetermine.h"
@@ -198,7 +201,7 @@ static	double DistancePoint2Line(CvPoint point, LINEDATA line);
 	void NatureClassifyGV(void);
 	void ClassifyGV(void);
 	unsigned int GetSegmentPoint(int X_coordinate);
-	unsigned int CuiHough3::GetSegmentPointCompare2VGcontrous(int X_coordinate);
+	unsigned int GetSegmentPointCompare2VGcontrous(int X_coordinate);
 	void SetFileReadSavePath(string WritePath, string ReadPath);
 	void GetVPoint(void);
 

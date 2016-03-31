@@ -1,17 +1,12 @@
 #include "StdAfx.h"
 #include "modules.h"
-#include <ios>
-#include <fstream>
-#include <stdexcept>
-#include <cstdio> 
-#include<stdio.h>
-#include<string.h>
+
 /*-------------------------------------------------------------------------------------------*/
 /*--模块依赖*/
 /*-------------------------------------------------------------------------------------------*/
 //#include "svmlight/svmlight.h"
 //#include "dirent.h"
-//#include "TrainImgUseSvm.h"	
+#include "TrainImgUseSvm.h"	
 //#include <ML.H>   
 //#include "FilePathName/FileNameSplit.h"
 //#include <SGVcode/cui_GeneralImgProcess.h>
@@ -21,30 +16,33 @@
 *
 */
 /*--------------------------------------------------------------------------------------------*/
- int TrainImgUseSvm::CategoryFeature=0;
- double TrainImgUseSvm:: winwidth=48;
- double TrainImgUseSvm:: winheight=96;
+int TrainImgUseSvm::CategoryFeature=0;
+double TrainImgUseSvm:: winwidth=48;
+double TrainImgUseSvm:: winheight=96;
 //// Directory containing positive sample images
- string TrainImgUseSvm::posSamplesDir = "pos/";
+string TrainImgUseSvm::posSamplesDir = "pos/";
 //// Directory containing negative sample images
 string TrainImgUseSvm::negSamplesDir = "neg/";
 //// Set the file to write the features to
- string TrainImgUseSvm::featuresFile = "genfiles/features.dat";
+string TrainImgUseSvm::featuresFile = "genfiles/features.dat";
 //// Set the file to write the SVM model to
- string TrainImgUseSvm::svmModelFile = "genfiles/svmlightmodel.dat";
+string TrainImgUseSvm::svmModelFile = "genfiles/svmlightmodel.dat";
 //// Set the file to write the resulting detecting descriptor vector to
- string TrainImgUseSvm::descriptorVectorFile = "genfiles/descriptorvector.dat";
- string TrainImgUseSvm:: SVMDetectorxml="SVMDetector.xml";
-const Size TrainImgUseSvm:: trainingPadding = Size(0, 0);
-const Size TrainImgUseSvm::winStride = Size(8, 8);
- CWinThread*  TrainImgUseSvm:: pThread=NULL;
-   ThreadInfo TrainImgUseSvm::ThreadData;
-/***********************************************************/
-    vector<string> TrainImgUseSvm::positiveTrainingImages;
-    vector<string> TrainImgUseSvm::negativeTrainingImages;
+string TrainImgUseSvm::descriptorVectorFile = "genfiles/descriptorvector.dat";
+string TrainImgUseSvm:: SVMDetectorxml="SVMDetector.xml";
+Size TrainImgUseSvm:: trainingPadding = Size(0, 0);
+Size TrainImgUseSvm::winStride = Size(8, 8);
 
-     CvMat* TrainImgUseSvm::data_mat;
-	 CvMat* TrainImgUseSvm::res_mat;
+#if USE_MFC
+CWinThread*  TrainImgUseSvm:: pThread=NULL;
+#endif
+
+ThreadInfo TrainImgUseSvm::ThreadData;
+/***********************************************************/
+vector<string> TrainImgUseSvm::positiveTrainingImages;
+vector<string> TrainImgUseSvm::negativeTrainingImages;
+CvMat* TrainImgUseSvm::data_mat;
+CvMat* TrainImgUseSvm::res_mat;
 
 	
 /*-------------------------------------------------------------------------------------*/
@@ -70,7 +68,59 @@ MFCtrainHOGsvmlight.exe 中的 0x757ec41f 处有未经处理的异常: Microsoft C++ 异常: 
 /*-------------------------------------------------------------------------------------*/
 TrainImgUseSvm::TrainImgUseSvm(void)
 {
+#if 0
+    int TrainImgUseSvm::CategoryFeature=0;
+	double TrainImgUseSvm:: winwidth=48;
+	double TrainImgUseSvm:: winheight=96;
+	//// Directory containing positive sample images
+	string TrainImgUseSvm::posSamplesDir = "pos/";
+	//// Directory containing negative sample images
+	string TrainImgUseSvm::negSamplesDir = "neg/";
+	//// Set the file to write the features to
+	string TrainImgUseSvm::featuresFile = "genfiles/features.dat";
+	//// Set the file to write the SVM model to
+	string TrainImgUseSvm::svmModelFile = "genfiles/svmlightmodel.dat";
+	//// Set the file to write the resulting detecting descriptor vector to
+	string TrainImgUseSvm::descriptorVectorFile = "genfiles/descriptorvector.dat";
+	string TrainImgUseSvm:: SVMDetectorxml="SVMDetector.xml";
+	const Size TrainImgUseSvm:: trainingPadding = Size(0, 0);
+	const Size TrainImgUseSvm::winStride = Size(8, 8);
+	CWinThread*  TrainImgUseSvm:: pThread=NULL;
+	ThreadInfo TrainImgUseSvm::ThreadData;
+	/***********************************************************/
+	vector<string> TrainImgUseSvm::positiveTrainingImages;
+	vector<string> TrainImgUseSvm::negativeTrainingImages;
 
+	CvMat* TrainImgUseSvm::data_mat;
+	CvMat* TrainImgUseSvm::res_mat;
+#endif
+	CategoryFeature=0;
+	winwidth=48;
+	winheight=96;
+	//// Directory containing positive sample images
+	posSamplesDir = "pos/";
+	//// Directory containing negative sample images
+	negSamplesDir = "neg/";
+	//// Set the file to write the features to
+	featuresFile = "genfiles/features.dat";
+	//// Set the file to write the SVM model to
+	svmModelFile = "genfiles/svmlightmodel.dat";
+	//// Set the file to write the resulting detecting descriptor vector to
+	descriptorVectorFile = "genfiles/descriptorvector.dat";
+	SVMDetectorxml="SVMDetector.xml";
+	trainingPadding = Size(0, 0);
+	winStride = Size(8, 8);
+#if USE_MFC
+	pThread=NULL;
+#endif
+
+	
+	/***********************************************************/
+	//vector<string> TrainImgUseSvm::positiveTrainingImages;
+	//vector<string> TrainImgUseSvm::negativeTrainingImages;
+
+	//CvMat* TrainImgUseSvm::data_mat;
+	//CvMat* TrainImgUseSvm::res_mat;
 }
 /*-------------------------------------------------------------------------------------*/
 /**
@@ -543,7 +593,7 @@ UINT TrainImgUseSvm::TRainTrainHog(LPVOID lpParam)
 
 int TrainImgUseSvm::StartProcess(void)
 {
-	
+#if USE_MFC
 	Sleep(200);
 #if 0
 	pThread=AfxBeginThread(TRainTrainHog,NULL);
@@ -556,6 +606,10 @@ int TrainImgUseSvm::StartProcess(void)
 	}else{
 	   return FALSE;
 	}
+#else
+	ASSERT(0);
+	return 0;
+#endif
 
 }
 /*-------------------------------------------------------------------------------------*/
@@ -566,8 +620,8 @@ int TrainImgUseSvm::StartProcess(void)
 
 int TrainImgUseSvm::StartProcessPickUpFeature(void)
 {
-
-	Sleep(200);
+#if USE_MFC
+Sleep(200);
 
 	pThread=AfxBeginThread(ThreadPickUpFeature,NULL);	
 
@@ -576,6 +630,11 @@ int TrainImgUseSvm::StartProcessPickUpFeature(void)
 	}else{
 		return FALSE;
 	}
+#else
+	ASSERT(0);
+	return 0;
+#endif
+	
 
 }
 /*-------------------------------------------------------------------------------------*/
@@ -586,8 +645,8 @@ int TrainImgUseSvm::StartProcessPickUpFeature(void)
 
 int TrainImgUseSvm::StartProcessFromXmlFile(void)
 {
-
-	Sleep(200);
+#if USE_MFC
+Sleep(200);
 
 	pThread=AfxBeginThread(TrainWithXMLdata,NULL);	
 
@@ -596,6 +655,11 @@ int TrainImgUseSvm::StartProcessFromXmlFile(void)
 	}else{
 		return FALSE;
 	}
+#else
+	ASSERT(0);
+	return 0;
+#endif
+	
 
 }
 /*-------------------------------------------------------------------------------------*/
@@ -616,6 +680,7 @@ int TrainImgUseSvm::EndProcess(void)
 *@return  string 字符串 
 */
 /*-------------------------------------------------------------------------------------*/
+#if Use_CString
 string TrainImgUseSvm::ConvertCS2string(CString cstring)
 {
 	CStringA stra(cstring.GetBuffer(0));
@@ -624,6 +689,7 @@ string TrainImgUseSvm::ConvertCS2string(CString cstring)
 	stra.ReleaseBuffer();
 	return cui_t;
 }
+#endif
 /*-------------------------------------------------------------------------------------*/
 /**
 *
@@ -707,7 +773,7 @@ string TrainImgUseSvm::ConvertCS2string(CString cstring)
 #if SVM_AllocMemCV
 	 res_mat=cvCreateMat(,,);
 #endif
-#if TRUE
+#if (CV_MAJOR_VERSION==2)&&(CV_MINOR_VERSION==4)&&USE_SVM_2_4_X
 	 CvSVM svm; 
 	 CvSVMParams param;
 #ifdef SVM_USE_Linear
@@ -733,6 +799,8 @@ string TrainImgUseSvm::ConvertCS2string(CString cstring)
 	 svm.save(svmsavepath.c_str(),0);
 	 Learning_samples_detection_rate(svm,dataMatMem,resMatMem,filePathList);
 #endif
+
+#if (CV_MAJOR_VERSION==2)&&(CV_MINOR_VERSION==4)&&USE_SVM_2_4_X
 	if(Dimensions_USE==Normal){
 	
 	 }else if(Dimensions_USE==Sum_Count_Density){
@@ -755,8 +823,12 @@ string TrainImgUseSvm::ConvertCS2string(CString cstring)
 		GetLearnModule_Count_Color(svm);
 	 }else if(Dimensions_USE==Density_Color){
 		GetLearnModule_Density_Color(svm);
-	 }
-		
+	 }		
+#endif
+#if (CV_MAJOR_VERSION==3)  
+	 ASSERT(0);
+#endif	
+	
 #if ProgressBar  
 	 MessageBox(NULL,_T("训练完成"),_T("TrainSample"),MB_OK);
 	 ThreadData.pCtrlButton->EnableWindow(TRUE);
@@ -1152,6 +1224,7 @@ void TrainImgUseSvm::strRemoveSpace(char *str){
 		}   str++;   
 	}    
 }
+#if (CV_MAJOR_VERSION==2)&&(CV_MINOR_VERSION==4)&&USE_SVM_2_4_X
 /*-------------------------------------------------------------------------------------*/
 /**
 *
@@ -1296,7 +1369,13 @@ void TrainImgUseSvm::Learning_samples_detection_rate(
     }else{
 		ASSERT(FALSE);
 	}
+
+
+
+
+
 }
+#endif
 /*-------------------------------------------------------------------------------------*/
 /**
 *@param [out] data 特征矩阵
@@ -1783,353 +1862,7 @@ void TrainImgUseSvm::Read2MemFromXML_SColor(
 			}
 					Num=res.size();
 }
-/*-------------------------------------------------------------------------------------*/
-/**
-*将学习模型保存到三维坐标系
-*/
-/*-------------------------------------------------------------------------------------*/
-void TrainImgUseSvm::GetLearnModule_SCountD(CvSVM& svm)
-{
-	CvMat MatOne;
-	int Dim=3;
-	vector<float> SCountD;
-	vector<Svm_SCDC> data_all;
-	for(float si=0;si<1;si+=0.04){
-		for(float counti=0;counti<1;counti+=0.04){
-			for(float di=0;di<1;di+=0.04){
-				 SCountD.clear();
-				 SCountD.push_back(si);
-				 SCountD.push_back(counti);
-				 SCountD.push_back(di);
-				 CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
-				 int cate_si=svm.predict(MatOneFeature);
-				 data_all.push_back(Svm_SCDC(cate_si,si,counti,di,0));
-			
-			}
-		}
-	}
 
-#if TRUE 
-	 string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
-	 FileStorage fs(filepath, FileStorage::APPEND);
-	for(int i=0;i<data_all.size();i++){	
-	 if (fs.isOpened()){
-		 fs<<"SvmData";
-		 fs<<"{";
-		 fs<<"Category"<<data_all[i].Category;
-		 fs<<"SumManhattan"<<data_all[i].SumManhattan;
-		 fs<<"ZeroCount"<<data_all[i].ZeroCount;
-		 fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
-		 fs<<"Color"<<data_all[i].Color;
-		 fs<<"}";
-	 }else{
-		 ASSERT(0);
-	 }
-	}
-#endif
-}
-/*-------------------------------------------------------------------------------------*/
-/**
-*将学习模型保存到三维坐标系
-*/
-/*-------------------------------------------------------------------------------------*/
-void TrainImgUseSvm::GetLearnModule_SDensityC(CvSVM& svm)
-{
-CvMat MatOne;
-	int Dim=3;
-	vector<float> SCountD;
-	vector<Svm_SCDC> data_all;
-	for(float si=0;si<1;si+=0.04){
-		for(float di=0;di<1;di+=0.04){
-			for(float ci=0;ci<1;ci+=0.04){
-				 SCountD.clear();
-				 SCountD.push_back(si);
-				 SCountD.push_back(di);
-				 SCountD.push_back(ci);
-				 CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
-				 int cate_si=svm.predict(MatOneFeature);
-				 data_all.push_back(Svm_SCDC(cate_si,si,0,di,ci));
-			
-			}
-		}
-	}
-
-#if TRUE 
-	 string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
-	 FileStorage fs(filepath, FileStorage::APPEND);
-	for(int i=0;i<data_all.size();i++){	
-	 if (fs.isOpened()){
-		 fs<<"SvmData";
-		 fs<<"{";
-		 fs<<"Category"<<data_all[i].Category;
-		 fs<<"SumManhattan"<<data_all[i].SumManhattan;
-		 fs<<"ZeroCount"<<data_all[i].ZeroCount;
-		 fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
-		 fs<<"Color"<<data_all[i].Color;
-		 fs<<"}";
-	 }else{
-		 ASSERT(0);
-	 }
-	}
-#endif
-}
-/*-------------------------------------------------------------------------------------*/
-/**
-*将学习模型保存到三维坐标系
-*/
-/*-------------------------------------------------------------------------------------*/
-void TrainImgUseSvm::GetLearnModule_SCountColor(CvSVM& svm)
-{
-	CvMat MatOne;
-	int Dim=3;
-	vector<float> SCountD;
-	vector<Svm_SCDC> data_all;
-	for(float si=0;si<1;si+=0.04){
-		for(float counti=0;counti<1;counti+=0.04){
-			for(float ci=0;ci<1;ci+=0.04){
-				 SCountD.clear();
-				 SCountD.push_back(si);
-				 SCountD.push_back(counti);
-				 SCountD.push_back(ci);
-				 CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
-				 int cate_si=svm.predict(MatOneFeature);
-				 data_all.push_back(Svm_SCDC(cate_si,si,counti,0,ci));
-			
-			}
-		}
-	}
-
-#if TRUE 
-	 string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
-	 FileStorage fs(filepath, FileStorage::APPEND);
-	for(int i=0;i<data_all.size();i++){	
-	 if (fs.isOpened()){
-		 fs<<"SvmData";
-		 fs<<"{";
-		 fs<<"Category"<<data_all[i].Category;
-		 fs<<"SumManhattan"<<data_all[i].SumManhattan;
-		 fs<<"ZeroCount"<<data_all[i].ZeroCount;
-		 fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
-		 fs<<"Color"<<data_all[i].Color;
-		 fs<<"}";
-	 }else{
-		 ASSERT(0);
-	 }
-	}
-#endif
-}
-/*-------------------------------------------------------------------------------------*/
-/**
-*将学习模型保存到三维坐标系
-*/
-/*-------------------------------------------------------------------------------------*/
-void TrainImgUseSvm::GetLearnModule_CountDColor(CvSVM& svm)
-{
-	CvMat MatOne;
-	int Dim=3;
-	vector<float> SCountD;
-	vector<Svm_SCDC> data_all;
-	for(float counti=0;counti<1;counti+=0.04){
-		for(float di=0;di<1;di+=0.04){
-			for(float ci=0;ci<1;ci+=0.04){
-				 SCountD.clear();
-				 SCountD.push_back(counti);
-				 SCountD.push_back(di);
-				 SCountD.push_back(ci);
-				 CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
-				 int cate_si=svm.predict(MatOneFeature);
-				 data_all.push_back(Svm_SCDC(cate_si,-1,counti,di,ci));
-			
-			}
-		}
-	}
-
-#if TRUE 
-	 string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
-	 FileStorage fs(filepath, FileStorage::APPEND);
-	for(int i=0;i<data_all.size();i++){	
-	 if (fs.isOpened()){
-		 fs<<"SvmData";
-		 fs<<"{";
-		 fs<<"Category"<<data_all[i].Category;
-		 fs<<"SumManhattan"<<data_all[i].SumManhattan;
-		 fs<<"ZeroCount"<<data_all[i].ZeroCount;
-		 fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
-		 fs<<"Color"<<data_all[i].Color;
-		 fs<<"}";
-	 }else{
-		 ASSERT(0);
-	 }
-	}
-#endif
-}
-/*-------------------------------------------------------------------------------------*/
-/**
-*将学习模型保存到三维坐标系
-*/
-/*-------------------------------------------------------------------------------------*/
-void TrainImgUseSvm::GetLearnModule_SCount(CvSVM& svm)
-{
-
-CvMat MatOne;
-	int Dim=2;
-	vector<float> SCountD;
-	vector<Svm_SCDC> data_all;
-#if 0
-for(int si=0;si<6000;si+=240)
-#else
-for(float si=0;si<1;si+=0.02)
-#endif
-	
-	{
-#if 0
-	for(int counti=0;counti<180;counti+=6)
-#else
-	for(float counti=0;counti<1;counti+=0.02)
-#endif
-	
-		{
-												{
-				 SCountD.clear();
-				 SCountD.push_back(si);
-				 SCountD.push_back(counti);
-				 CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
-				 int cate_si=svm.predict(MatOneFeature);
-				 data_all.push_back(Svm_SCDC(cate_si,si,counti,0,0));
-			
-			}
-		}
-	}
-
-#if TRUE 
-	 string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
-	 FileStorage fs(filepath, FileStorage::APPEND);
-	for(int i=0;i<data_all.size();i++){	
-	 if (fs.isOpened()){
-		 fs<<"SvmData";
-		 fs<<"{";
-		 fs<<"Category"<<data_all[i].Category;
-		 fs<<"SumManhattan"<<data_all[i].SumManhattan;
-		 fs<<"ZeroCount"<<data_all[i].ZeroCount;
-		 fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
-		 fs<<"Color"<<data_all[i].Color;
-		 fs<<"}";
-	 }else{
-		 ASSERT(0);
-	 }
-	}
-#endif
-}
-/*-------------------------------------------------------------------------------------*/
-/**
-*将学习模型保存到三维坐标系
-*/
-/*-------------------------------------------------------------------------------------*/
-void TrainImgUseSvm::GetLearnModule_SDensity(CvSVM& svm)
-{
-CvMat MatOne;
-	int Dim=2;
-	vector<float> SCountD;
-	vector<Svm_SCDC> data_all;
-#if 0
-for(int si=0;si<6000;si+=240)
-#else
-for(float si=0;si<1;si+=0.02)
-#endif
-	
-	{
-#if 0
-	for(int counti=0;counti<180;counti+=6)
-#else
-	for(float di=0;di<1;di+=0.02)
-#endif
-		{
-			{
-				 SCountD.clear();
-				 SCountD.push_back(si);
-				 SCountD.push_back(di);
-				 CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
-				 int cate_si=svm.predict(MatOneFeature);
-				 data_all.push_back(Svm_SCDC(cate_si,si,0,di,0));
-			
-			}
-		}
-	}
-
-#if TRUE 
-	 string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
-	 FileStorage fs(filepath, FileStorage::APPEND);
-	for(int i=0;i<data_all.size();i++){
-	 if (fs.isOpened()){
-		 fs<<"SvmData";
-		 fs<<"{";
-		 fs<<"Category"<<data_all[i].Category;
-		 fs<<"SumManhattan"<<data_all[i].SumManhattan;
-		 fs<<"ZeroCount"<<data_all[i].ZeroCount;
-		 fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
-		 fs<<"Color"<<data_all[i].Color;
-		 fs<<"}";
-	 }else{
-		 ASSERT(0);
-	 }
-	}
-#endif
-}
-/*-------------------------------------------------------------------------------------*/
-/**
-*将学习模型保存到三维坐标系
-*/
-/*-------------------------------------------------------------------------------------*/
-void TrainImgUseSvm::GetLearnModule_SColor(CvSVM& svm)
-{
-CvMat MatOne;
-	int Dim=2;
-	vector<float> SCountD;
-	vector<Svm_SCDC> data_all;
-#if 0
-for(int si=0;si<6000;si+=240)
-#else
-for(float si=0;si<1;si+=0.02)
-#endif
-	
-	{
-#if 0
-	for(int counti=0;counti<180;counti+=6)
-#else
-	for(float ci=0;ci<1;ci+=0.02)
-#endif
-		{
-			{
-				 SCountD.clear();
-				 SCountD.push_back(si);
-				 SCountD.push_back(ci);
-				 CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
-				 int cate_si=svm.predict(MatOneFeature);
-				 data_all.push_back(Svm_SCDC(cate_si,si,0,0,ci));
-			
-			}
-		}
-	}
-
-#if TRUE 
-	 string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
-	 FileStorage fs(filepath, FileStorage::APPEND);
-	for(int i=0;i<data_all.size();i++){
-	 if (fs.isOpened()){
-		 fs<<"SvmData";
-		 fs<<"{";
-		 fs<<"Category"<<data_all[i].Category;
-		 fs<<"SumManhattan"<<data_all[i].SumManhattan;
-		 fs<<"ZeroCount"<<data_all[i].ZeroCount;
-		 fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
-		 fs<<"Color"<<data_all[i].Color;
-		 fs<<"}";
-	 }else{
-		 ASSERT(0);
-	 }
-	}
-#endif
-}
 /*-------------------------------------------------------------------------------------*/
 /**
 *@param [out] data 特征矩阵
@@ -2185,140 +1918,7 @@ void TrainImgUseSvm::Read2MemFromXML_Count_Density(
 			}
 					Num=res.size();
 }
-/*-------------------------------------------------------------------------------------*/
-/**
-*将学习模型保存到三维坐标系
-*/
-/*-------------------------------------------------------------------------------------*/
-void TrainImgUseSvm::GetLearnModule_Count_Density(CvSVM& svm)
-{
-CvMat MatOne;
-	int Dim=2;
-	vector<float> SCountD;
-	vector<Svm_SCDC> data_all;
 
-for(float counti=0;counti<1;counti+=0.02){
-	for(float di=0;di<1;di+=0.02){
-			{
-				 SCountD.clear();
-				 SCountD.push_back(counti);
-				 SCountD.push_back(di);
-				 CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
-				 int cate_si=svm.predict(MatOneFeature);
-				 data_all.push_back(Svm_SCDC(cate_si,0,counti,di,0));
-			
-			}
-		}
-	}
-
-#if TRUE 
-	 string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
-	 FileStorage fs(filepath, FileStorage::APPEND);
-	for(int i=0;i<data_all.size();i++){
-	 if (fs.isOpened()){
-		 fs<<"SvmData";
-		 fs<<"{";
-		 fs<<"Category"<<data_all[i].Category;
-		 fs<<"SumManhattan"<<data_all[i].SumManhattan;
-		 fs<<"ZeroCount"<<data_all[i].ZeroCount;
-		 fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
-		 fs<<"Color"<<data_all[i].Color;
-		 fs<<"}";
-	 }else{
-		 ASSERT(0);
-	 }
-	}
-#endif
-}
-/*-------------------------------------------------------------------------------------*/
-/**
-*将学习模型保存到三维坐标系
-*/
-/*-------------------------------------------------------------------------------------*/
-void TrainImgUseSvm::GetLearnModule_Count_Color(CvSVM& svm)
-{
-	CvMat MatOne;
-	int Dim=2;
-	vector<float> SCountD;
-	vector<Svm_SCDC> data_all;
-
-	for(float counti=0;counti<1;counti+=0.02){
-		for(float colori=0;colori<1;colori+=0.02){
-			{
-				SCountD.clear();
-				SCountD.push_back(counti);
-				SCountD.push_back(colori);
-				CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
-				int cate_si=svm.predict(MatOneFeature);
-				data_all.push_back(Svm_SCDC(cate_si,0,counti,0,colori));
-
-			}
-		}
-	}
-
-#if TRUE 
-	string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
-	FileStorage fs(filepath, FileStorage::APPEND);
-	for(int i=0;i<data_all.size();i++){
-		if (fs.isOpened()){
-			fs<<"SvmData";
-			fs<<"{";
-			fs<<"Category"<<data_all[i].Category;
-			fs<<"SumManhattan"<<data_all[i].SumManhattan;
-			fs<<"ZeroCount"<<data_all[i].ZeroCount;
-			fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
-			fs<<"Color"<<data_all[i].Color;
-			fs<<"}";
-		}else{
-			ASSERT(0);
-		}
-	}
-#endif
-}
-/*-------------------------------------------------------------------------------------*/
-/**
-*将学习模型保存到三维坐标系
-*/
-/*-------------------------------------------------------------------------------------*/
-void TrainImgUseSvm::GetLearnModule_Density_Color(CvSVM& svm)
-{
-	CvMat MatOne;
-	int Dim=2;
-	vector<float> SCountD;
-	vector<Svm_SCDC> data_all;
-
-	for(float di=0;di<1;di+=0.02){
-		for(float ci=0;ci<1;ci+=0.02){
-			{
-				SCountD.clear();
-				SCountD.push_back(di);
-				SCountD.push_back(ci);
-				CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
-				int cate_si=svm.predict(MatOneFeature);
-				data_all.push_back(Svm_SCDC(cate_si,0,0,di,ci));
-			}
-		}
-	}
-
-#if TRUE 
-	string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
-	FileStorage fs(filepath, FileStorage::APPEND);
-	for(int i=0;i<data_all.size();i++){
-		if (fs.isOpened()){
-			fs<<"SvmData";
-			fs<<"{";
-			fs<<"Category"<<data_all[i].Category;
-			fs<<"SumManhattan"<<data_all[i].SumManhattan;
-			fs<<"ZeroCount"<<data_all[i].ZeroCount;
-			fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
-			fs<<"Color"<<data_all[i].Color;
-			fs<<"}";
-		}else{
-			ASSERT(0);
-		}
-	}
-#endif
-}
 /*-------------------------------------------------------------------------------------*/
 /**
 *从XML文件读取 计数 颜色
@@ -2519,3 +2119,490 @@ void TrainImgUseSvm::ReadFileName2PathList(vector<string>& pathList)
 *
 */
 /*-------------------------------------------------------------------------------------*/
+
+#if (CV_MAJOR_VERSION==2)&&(CV_MINOR_VERSION==4)&&USE_SVM_2_4_X
+/*-------------------------------------------------------------------------------------*/
+/**
+*将学习模型保存到三维坐标系
+*/
+/*-------------------------------------------------------------------------------------*/
+void TrainImgUseSvm::GetLearnModule_Count_Density(CvSVM& svm)
+{
+	CvMat MatOne;
+	int Dim=2;
+	vector<float> SCountD;
+	vector<Svm_SCDC> data_all;
+
+	for(float counti=0;counti<1;counti+=0.02){
+		for(float di=0;di<1;di+=0.02){
+			{
+				SCountD.clear();
+				SCountD.push_back(counti);
+				SCountD.push_back(di);
+				CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
+				int cate_si=svm.predict(MatOneFeature);
+				data_all.push_back(Svm_SCDC(cate_si,0,counti,di,0));
+
+			}
+		}
+	}
+
+#if TRUE 
+	string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
+	FileStorage fs(filepath, FileStorage::APPEND);
+	for(int i=0;i<data_all.size();i++){
+		if (fs.isOpened()){
+			fs<<"SvmData";
+			fs<<"{";
+			fs<<"Category"<<data_all[i].Category;
+			fs<<"SumManhattan"<<data_all[i].SumManhattan;
+			fs<<"ZeroCount"<<data_all[i].ZeroCount;
+			fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
+			fs<<"Color"<<data_all[i].Color;
+			fs<<"}";
+		}else{
+			ASSERT(0);
+		}
+	}
+#endif
+}
+/*-------------------------------------------------------------------------------------*/
+/**
+*将学习模型保存到三维坐标系
+*/
+/*-------------------------------------------------------------------------------------*/
+void TrainImgUseSvm::GetLearnModule_Count_Color(CvSVM& svm)
+{
+	CvMat MatOne;
+	int Dim=2;
+	vector<float> SCountD;
+	vector<Svm_SCDC> data_all;
+
+	for(float counti=0;counti<1;counti+=0.02){
+		for(float colori=0;colori<1;colori+=0.02){
+			{
+				SCountD.clear();
+				SCountD.push_back(counti);
+				SCountD.push_back(colori);
+				CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
+				int cate_si=svm.predict(MatOneFeature);
+				data_all.push_back(Svm_SCDC(cate_si,0,counti,0,colori));
+
+			}
+		}
+	}
+
+#if TRUE 
+	string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
+	FileStorage fs(filepath, FileStorage::APPEND);
+	for(int i=0;i<data_all.size();i++){
+		if (fs.isOpened()){
+			fs<<"SvmData";
+			fs<<"{";
+			fs<<"Category"<<data_all[i].Category;
+			fs<<"SumManhattan"<<data_all[i].SumManhattan;
+			fs<<"ZeroCount"<<data_all[i].ZeroCount;
+			fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
+			fs<<"Color"<<data_all[i].Color;
+			fs<<"}";
+		}else{
+			ASSERT(0);
+		}
+	}
+#endif
+}
+/*-------------------------------------------------------------------------------------*/
+/**
+*将学习模型保存到三维坐标系
+*/
+/*-------------------------------------------------------------------------------------*/
+void TrainImgUseSvm::GetLearnModule_Density_Color(CvSVM& svm)
+{
+	CvMat MatOne;
+	int Dim=2;
+	vector<float> SCountD;
+	vector<Svm_SCDC> data_all;
+
+	for(float di=0;di<1;di+=0.02){
+		for(float ci=0;ci<1;ci+=0.02){
+			{
+				SCountD.clear();
+				SCountD.push_back(di);
+				SCountD.push_back(ci);
+				CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
+				int cate_si=svm.predict(MatOneFeature);
+				data_all.push_back(Svm_SCDC(cate_si,0,0,di,ci));
+			}
+		}
+	}
+
+#if TRUE 
+	string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
+	FileStorage fs(filepath, FileStorage::APPEND);
+	for(int i=0;i<data_all.size();i++){
+		if (fs.isOpened()){
+			fs<<"SvmData";
+			fs<<"{";
+			fs<<"Category"<<data_all[i].Category;
+			fs<<"SumManhattan"<<data_all[i].SumManhattan;
+			fs<<"ZeroCount"<<data_all[i].ZeroCount;
+			fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
+			fs<<"Color"<<data_all[i].Color;
+			fs<<"}";
+		}else{
+			ASSERT(0);
+		}
+	}
+#endif
+}
+/*-------------------------------------------------------------------------------------*/
+/**
+*将学习模型保存到三维坐标系
+*/
+/*-------------------------------------------------------------------------------------*/
+void TrainImgUseSvm::GetLearnModule_SCountD(CvSVM& svm)
+{
+	CvMat MatOne;
+	int Dim=3;
+	vector<float> SCountD;
+	vector<Svm_SCDC> data_all;
+	for(float si=0;si<1;si+=0.04){
+		for(float counti=0;counti<1;counti+=0.04){
+			for(float di=0;di<1;di+=0.04){
+				SCountD.clear();
+				SCountD.push_back(si);
+				SCountD.push_back(counti);
+				SCountD.push_back(di);
+				CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
+				int cate_si=svm.predict(MatOneFeature);
+				data_all.push_back(Svm_SCDC(cate_si,si,counti,di,0));
+
+			}
+		}
+	}
+
+#if TRUE 
+	string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
+	FileStorage fs(filepath, FileStorage::APPEND);
+	for(int i=0;i<data_all.size();i++){	
+		if (fs.isOpened()){
+			fs<<"SvmData";
+			fs<<"{";
+			fs<<"Category"<<data_all[i].Category;
+			fs<<"SumManhattan"<<data_all[i].SumManhattan;
+			fs<<"ZeroCount"<<data_all[i].ZeroCount;
+			fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
+			fs<<"Color"<<data_all[i].Color;
+			fs<<"}";
+		}else{
+			ASSERT(0);
+		}
+	}
+#endif
+}
+/*-------------------------------------------------------------------------------------*/
+/**
+*将学习模型保存到三维坐标系
+*/
+/*-------------------------------------------------------------------------------------*/
+void TrainImgUseSvm::GetLearnModule_SDensityC(CvSVM& svm)
+{
+	CvMat MatOne;
+	int Dim=3;
+	vector<float> SCountD;
+	vector<Svm_SCDC> data_all;
+	for(float si=0;si<1;si+=0.04){
+		for(float di=0;di<1;di+=0.04){
+			for(float ci=0;ci<1;ci+=0.04){
+				SCountD.clear();
+				SCountD.push_back(si);
+				SCountD.push_back(di);
+				SCountD.push_back(ci);
+				CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
+				int cate_si=svm.predict(MatOneFeature);
+				data_all.push_back(Svm_SCDC(cate_si,si,0,di,ci));
+
+			}
+		}
+	}
+
+#if TRUE 
+	string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
+	FileStorage fs(filepath, FileStorage::APPEND);
+	for(int i=0;i<data_all.size();i++){	
+		if (fs.isOpened()){
+			fs<<"SvmData";
+			fs<<"{";
+			fs<<"Category"<<data_all[i].Category;
+			fs<<"SumManhattan"<<data_all[i].SumManhattan;
+			fs<<"ZeroCount"<<data_all[i].ZeroCount;
+			fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
+			fs<<"Color"<<data_all[i].Color;
+			fs<<"}";
+		}else{
+			ASSERT(0);
+		}
+	}
+#endif
+}
+/*-------------------------------------------------------------------------------------*/
+/**
+*将学习模型保存到三维坐标系
+*/
+/*-------------------------------------------------------------------------------------*/
+void TrainImgUseSvm::GetLearnModule_SCountColor(CvSVM& svm)
+{
+	CvMat MatOne;
+	int Dim=3;
+	vector<float> SCountD;
+	vector<Svm_SCDC> data_all;
+	for(float si=0;si<1;si+=0.04){
+		for(float counti=0;counti<1;counti+=0.04){
+			for(float ci=0;ci<1;ci+=0.04){
+				SCountD.clear();
+				SCountD.push_back(si);
+				SCountD.push_back(counti);
+				SCountD.push_back(ci);
+				CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
+				int cate_si=svm.predict(MatOneFeature);
+				data_all.push_back(Svm_SCDC(cate_si,si,counti,0,ci));
+
+			}
+		}
+	}
+
+#if TRUE 
+	string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
+	FileStorage fs(filepath, FileStorage::APPEND);
+	for(int i=0;i<data_all.size();i++){	
+		if (fs.isOpened()){
+			fs<<"SvmData";
+			fs<<"{";
+			fs<<"Category"<<data_all[i].Category;
+			fs<<"SumManhattan"<<data_all[i].SumManhattan;
+			fs<<"ZeroCount"<<data_all[i].ZeroCount;
+			fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
+			fs<<"Color"<<data_all[i].Color;
+			fs<<"}";
+		}else{
+			ASSERT(0);
+		}
+	}
+#endif
+}
+/*-------------------------------------------------------------------------------------*/
+/**
+*将学习模型保存到三维坐标系
+*/
+/*-------------------------------------------------------------------------------------*/
+void TrainImgUseSvm::GetLearnModule_CountDColor(CvSVM& svm)
+{
+	CvMat MatOne;
+	int Dim=3;
+	vector<float> SCountD;
+	vector<Svm_SCDC> data_all;
+	for(float counti=0;counti<1;counti+=0.04){
+		for(float di=0;di<1;di+=0.04){
+			for(float ci=0;ci<1;ci+=0.04){
+				SCountD.clear();
+				SCountD.push_back(counti);
+				SCountD.push_back(di);
+				SCountD.push_back(ci);
+				CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
+				int cate_si=svm.predict(MatOneFeature);
+				data_all.push_back(Svm_SCDC(cate_si,-1,counti,di,ci));
+
+			}
+		}
+	}
+
+#if TRUE 
+	string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
+	FileStorage fs(filepath, FileStorage::APPEND);
+	for(int i=0;i<data_all.size();i++){	
+		if (fs.isOpened()){
+			fs<<"SvmData";
+			fs<<"{";
+			fs<<"Category"<<data_all[i].Category;
+			fs<<"SumManhattan"<<data_all[i].SumManhattan;
+			fs<<"ZeroCount"<<data_all[i].ZeroCount;
+			fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
+			fs<<"Color"<<data_all[i].Color;
+			fs<<"}";
+		}else{
+			ASSERT(0);
+		}
+	}
+#endif
+}
+/*-------------------------------------------------------------------------------------*/
+/**
+*将学习模型保存到三维坐标系
+*/
+/*-------------------------------------------------------------------------------------*/
+void TrainImgUseSvm::GetLearnModule_SCount(CvSVM& svm)
+{
+
+	CvMat MatOne;
+	int Dim=2;
+	vector<float> SCountD;
+	vector<Svm_SCDC> data_all;
+#if 0
+	for(int si=0;si<6000;si+=240)
+#else
+	for(float si=0;si<1;si+=0.02)
+#endif
+
+	{
+#if 0
+		for(int counti=0;counti<180;counti+=6)
+#else
+		for(float counti=0;counti<1;counti+=0.02)
+#endif
+
+		{
+			{
+				SCountD.clear();
+				SCountD.push_back(si);
+				SCountD.push_back(counti);
+				CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
+				int cate_si=svm.predict(MatOneFeature);
+				data_all.push_back(Svm_SCDC(cate_si,si,counti,0,0));
+
+			}
+		}
+	}
+
+#if TRUE 
+	string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
+	FileStorage fs(filepath, FileStorage::APPEND);
+	for(int i=0;i<data_all.size();i++){	
+		if (fs.isOpened()){
+			fs<<"SvmData";
+			fs<<"{";
+			fs<<"Category"<<data_all[i].Category;
+			fs<<"SumManhattan"<<data_all[i].SumManhattan;
+			fs<<"ZeroCount"<<data_all[i].ZeroCount;
+			fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
+			fs<<"Color"<<data_all[i].Color;
+			fs<<"}";
+		}else{
+			ASSERT(0);
+		}
+	}
+#endif
+}
+/*-------------------------------------------------------------------------------------*/
+/**
+*将学习模型保存到三维坐标系
+*/
+/*-------------------------------------------------------------------------------------*/
+void TrainImgUseSvm::GetLearnModule_SDensity(CvSVM& svm)
+{
+	CvMat MatOne;
+	int Dim=2;
+	vector<float> SCountD;
+	vector<Svm_SCDC> data_all;
+#if 0
+	for(int si=0;si<6000;si+=240)
+#else
+	for(float si=0;si<1;si+=0.02)
+#endif
+
+	{
+#if 0
+		for(int counti=0;counti<180;counti+=6)
+#else
+		for(float di=0;di<1;di+=0.02)
+#endif
+		{
+			{
+				SCountD.clear();
+				SCountD.push_back(si);
+				SCountD.push_back(di);
+				CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
+				int cate_si=svm.predict(MatOneFeature);
+				data_all.push_back(Svm_SCDC(cate_si,si,0,di,0));
+
+			}
+		}
+	}
+
+#if TRUE 
+	string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
+	FileStorage fs(filepath, FileStorage::APPEND);
+	for(int i=0;i<data_all.size();i++){
+		if (fs.isOpened()){
+			fs<<"SvmData";
+			fs<<"{";
+			fs<<"Category"<<data_all[i].Category;
+			fs<<"SumManhattan"<<data_all[i].SumManhattan;
+			fs<<"ZeroCount"<<data_all[i].ZeroCount;
+			fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
+			fs<<"Color"<<data_all[i].Color;
+			fs<<"}";
+		}else{
+			ASSERT(0);
+		}
+	}
+#endif
+}
+/*-------------------------------------------------------------------------------------*/
+/**
+*将学习模型保存到三维坐标系
+*/
+/*-------------------------------------------------------------------------------------*/
+void TrainImgUseSvm::GetLearnModule_SColor(CvSVM& svm)
+{
+	CvMat MatOne;
+	int Dim=2;
+	vector<float> SCountD;
+	vector<Svm_SCDC> data_all;
+#if 0
+	for(int si=0;si<6000;si+=240)
+#else
+	for(float si=0;si<1;si+=0.02)
+#endif
+
+	{
+#if 0
+		for(int counti=0;counti<180;counti+=6)
+#else
+		for(float ci=0;ci<1;ci+=0.02)
+#endif
+		{
+			{
+				SCountD.clear();
+				SCountD.push_back(si);
+				SCountD.push_back(ci);
+				CvMat *MatOneFeature=cvInitMatHeader(&MatOne,1,Dim,CV_32FC1, SCountD.data());	
+				int cate_si=svm.predict(MatOneFeature);
+				data_all.push_back(Svm_SCDC(cate_si,si,0,0,ci));
+
+			}
+		}
+	}
+
+#if TRUE 
+	string filepath=SVMDetectorxml+"\\"+"SvmDataModule.xml";
+	FileStorage fs(filepath, FileStorage::APPEND);
+	for(int i=0;i<data_all.size();i++){
+		if (fs.isOpened()){
+			fs<<"SvmData";
+			fs<<"{";
+			fs<<"Category"<<data_all[i].Category;
+			fs<<"SumManhattan"<<data_all[i].SumManhattan;
+			fs<<"ZeroCount"<<data_all[i].ZeroCount;
+			fs<<"LineNumDensity"<<data_all[i].LineNumDensity;
+			fs<<"Color"<<data_all[i].Color;
+			fs<<"}";
+		}else{
+			ASSERT(0);
+		}
+	}
+#endif
+}
+#endif
+#if (CV_MAJOR_VERSION==3)  
+
+#endif	

@@ -2,10 +2,20 @@
 #include "module_all_cui.h"
 //#include "ComputeSVG.h"
 //#include "cui_GeneralImgProcess.h"
-#include <algorithm>
-///////////////////////////////////////////////
+//#include <algorithm>
+#ifdef min
+#undef min
+#endif
+#ifdef max
+#undef max
+#endif
+#if  _MSC_VER
 double* ComputeSVG:: cui_pYweight_GVS=NULL;
+#endif
+///////////////////////////////////////////////
+
 #define  WeightZoom (10000)
+
 ////////////////////////////////////////////////
 /*--------------------------------------------------------------------------------------------------------*/
 /**
@@ -15,8 +25,9 @@ double* ComputeSVG:: cui_pYweight_GVS=NULL;
 /*-------------------------------------------------------------------------------------------------------*/
 ComputeSVG::ComputeSVG(ImageMemData* MemData_t)
 {
-   this->InitParam();
-   this->pMD=MemData_t;
+	cui_pYweight_GVS=NULL;
+    this->InitParam();
+    this->pMD=MemData_t;
     storage=cvCreateMemStorage(0);
 }
 /*--------------------------------------------------------------------------------------------------------*/

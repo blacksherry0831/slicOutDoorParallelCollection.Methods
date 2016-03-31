@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "PointWithDistance.h"
-#ifdef __GNUC__||_MSC_VER
+#ifdef __GNUC__
 #include "tinyxml2/tinyxml2.h"
 #endif
 #if _MSC_VER

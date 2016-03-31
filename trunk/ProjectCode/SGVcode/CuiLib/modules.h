@@ -43,29 +43,34 @@
 #endif
 
 #if TRUE
-#include "tinyxml2/tinyxml2.h"
+#include <tinyxml2/tinyxml2.h>
+using namespace tinyxml2;
 #endif
 
 #if TRUE
-#include "cudaLib/CUDA_Code.h"
+#include <cudaLib/CUDA_Code.h>
 #endif
 
 #if TRUE
 #include <SVMcode/TrainTreeBuilding.h>
 #include <SVMcode/TrainImgUseSvm.h>
-#include "SVMcode/svmlight/svmlight.h"
-#include "SVMcode/dirent.h"
+#include <SVMcode/svmlight/svmlight.h>
 
-#if linux
+/*------------------------------------------*/
+#if linux||__linux||__linux__
 #include <dirent.h>
-#endif
+#elif _MSC_VER
+#include <SVMcode/dirent.h>
+#else
 
+#endif
+/*------------------------------------------*/
 
 #include <ML/Kmean/Kmean.h>
 #endif
 
 #if TRUE
-#include "FilePathName/FileNameSplit.h"
+#include <FilePathName/FileNameSplit.h>
 #include <FilePathName/PointWithDistance.h>
 #endif
 

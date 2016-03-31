@@ -1,8 +1,5 @@
 #pragma once
-#include <string>
-#include <iostream>
-using namespace std;
-
+#include <platform_cui.h>
 /*-------------------------------------------------------*/
 /**
 *

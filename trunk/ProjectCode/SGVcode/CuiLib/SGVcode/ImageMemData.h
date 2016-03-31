@@ -1,9 +1,10 @@
 #pragma once
-#include "ImageType.h"
+#include "../../platform_cui.h"
 #include <string>
 #include <iostream>
-#include "ManhattanHistogram.h"
 using namespace std;
+#include "ImageType.h"
+#include "ManhattanHistogram.h"
 /*----------------------------------------------------------------*/
 /**
 *本类包含了图像处理算法中一些通用的数据结构\n
@@ -45,12 +46,12 @@ SP_PROPERTY *p_SpProperty;/**<代表超像素属性的数据结构*/
 	int ImgHeight;/**<矩阵高度*/
 	////////////////
 	INT32 *p_ImgLables_SVG;/**<天空、立面、地面的标定矩阵*/
-	std::shared_ptr<int> ImgLables;/**<超像素标定矩阵*/
+#if _MSC_VER
+    std::shared_ptr<int> ImgLables;/**<超像素标定矩阵*/
 	////////////////
 	std::shared_ptr<UINT32>Matrix_E;/**<E矩阵*/
 	std::shared_ptr<double>Matrix_D;/**<D矩阵*/
-	double *Matrix_W_Color;/**<颜色相似矩阵*/
-	double *Matrix_W_Vein;/**<纹理相似矩阵*/
+
 	std::shared_ptr<double> Matrix_L;/**<L拉普拉斯矩阵*/
 
 	std::shared_ptr<UINT32> Matrix_E_InDoor;/**<E矩阵*/
@@ -67,6 +68,35 @@ SP_PROPERTY *p_SpProperty;/**<代表超像素属性的数据结构*/
 	std::shared_ptr<UINT32> Matrix_Visit;
 	std::shared_ptr<UINT32> LinkConnection;
 	std::shared_ptr<INT32> PositionCategoryForce;
+	std::shared_ptr<UINT32> ImgData_Contours;
+#endif
+#if __GNUC__||linux||__linux||__linux__
+	shared_ptr<int> ImgLables;/**<超像素标定矩阵*/
+	////////////////
+	shared_ptr<UINT32>Matrix_E;/**<E矩阵*/
+	shared_ptr<double>Matrix_D;/**<D矩阵*/
+
+	shared_ptr<double> Matrix_L;/**<L拉普拉斯矩阵*/
+
+	shared_ptr<UINT32> Matrix_E_InDoor;/**<E矩阵*/
+	shared_ptr<double> Matrix_D_InDoor;/**<D矩阵*/
+	shared_ptr<double> Matrix_W_InDoor;/**<D矩阵*/
+	shared_ptr<double> Matrix_L_InDoor;/**<L拉普拉斯矩阵*/
+	shared_ptr<float>  MatrixEigenVector_L_InDoor;
+	shared_ptr<double> MatrixEigenValue_L_InDoor;
+	shared_ptr<INT32>  Matrix_Category_Lable;
+	shared_ptr<INT32>  Matrix_Category_Lable_InDoor;
+	shared_ptr<float>  Matrix_Category_Simple_InDoor;
+	shared_ptr<HistData180> Histogram180;
+
+	shared_ptr<UINT32> Matrix_Visit;
+	shared_ptr<UINT32> LinkConnection;
+	shared_ptr<INT32> PositionCategoryForce;
+	shared_ptr<UINT32> ImgData_Contours;
+#endif	
+
+	double *Matrix_W_Color;/**<颜色相似矩阵*/
+	double *Matrix_W_Vein;/**<纹理相似矩阵*/
 public:
 	IplImage *src_ImgMaskLables;
 	IplImage *src_Img_lab;
@@ -89,7 +119,7 @@ public:
 	double slic_compactness;/**<做超像素时的密度因子*/
 /*----------------------------------------*/
 public:
-	std::shared_ptr<UINT32> ImgData_Contours;
+
 public:
 	LINEDATA *LineContour;/**<在轮廓上进行Hough变换得到的直线*/
 	int   LineContourLen;/**<轮廓上直线的数量*/

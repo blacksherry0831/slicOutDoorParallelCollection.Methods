@@ -1,14 +1,14 @@
 #pragma once
-#include <cv.h>
-using namespace cv;
-using namespace std;
+#include <platform_cui.h>
+//#include <cv.h>
+
 #include "SGVcode/ImageMemData.h"
-#if (CV_MAJOR_VERSION==2)&&(CV_MINOR_VERSION==4)
-#include <opencv2/ml/ml.hpp>
-#endif
-#if (CV_MAJOR_VERSION==3)
-#include <opencv2/ml.hpp> 
-#endif
+//#if (CV_MAJOR_VERSION==2)&&(CV_MINOR_VERSION==4)
+//#include <opencv2/ml/ml.hpp>
+//#endif
+//#if (CV_MAJOR_VERSION==3)
+//#include <opencv2/ml.hpp> 
+//#endif
 /************************************************************************/
 /*      
 #if (CV_MAJOR_VERSION==2)&&(CV_MINOR_VERSION==4)

@@ -2,6 +2,7 @@
 #define OpenCV_STL          
 
 //#include <vld.h>
+/*********************************************************/
 //OPENCV
 #include <cv.h>
 #include <highgui.h>
@@ -18,13 +19,41 @@
 #include <opencv2/gpu/gpu.hpp>
 #endif
 using namespace cv;
+/*********************************************************/
 //C++
+#include<stdio.h>
 #include <iostream>
+#include <stdlib.h>
+#include <fstream>
+//#include <iostream>
+#include <math.h>
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <cfloat>
+#include <cmath>
+#include <ios>
+#include <fstream>
+#include <stdexcept>
+#include <cstdio> 
+#include<stdio.h>
+#include<string.h>
+#if _MSC_VER
+#include <mbctype.h>  
+#endif
+//#if _MSC_VER
+//#include<atlstr.h>
+//#endif
+#if linux||__linux__||__linux||__GNUC__
+#include<memory>
+#include <tr1/memory>
+#include <dirent.h>
+#endif
 using namespace std;
-
+/*********************************************************/
 #endif
 
 

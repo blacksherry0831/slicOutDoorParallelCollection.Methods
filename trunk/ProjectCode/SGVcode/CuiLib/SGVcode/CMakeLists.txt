@@ -1,29 +1,28 @@
-C11_Config()
 #####################################
+C11_Config()
+############≈‰÷√OPENCV#########################################################
+ConfigOpenCv()
+###############################################################################
+ConfigMFC_2()
+###############################################################################
 SET(DIR_SRCS    ManhattanHistogram.cpp
 				SeparateSpBlock.cpp
-				SpectralClustering.cpp
-				SpAnalyze.cpp
-				HsHg.cpp
-				SpSetProperty.cpp
 				
-				ImageMemData.cpp
-				ImageData.cpp
+				SpAnalyze.cpp
+				HsHg.cpp				
+			
 				SLIC.cpp
-				#cui_GeneralImgProcess.h
-				cui_GeneralImgProcess.cpp
+				
 				Cui_DrawDepth.cpp
 				
 				ComputeSVG.cpp
 				ComputeSVG2.cpp
-				SpectralClusterInDoor.cpp
+				
 				SplitTreeandBuilding.cpp
 				LabColorAnalyzeCluster.cpp	
 				
 				ColorAnalyzeOnLab.cpp
-				#rtthread.cpp
-				MallocCui.cpp
-				#LabColorAnalyzeCluster_veins.cpp
+				
 				ColorBarCluster.cpp
 				##################
 				SceneDetermine.cpp
@@ -35,22 +34,34 @@ SET(DIR_SRCS    ManhattanHistogram.cpp
 				Harr/CuiHarrTransformLet.cpp
 				Harr/HarrWaveletTransImg.cpp)  
  #ImageType.h
-
-############≈‰÷√OPENCV#########################################################
-ConfigOpenCv()
-###############################################################################
-ConfigMFC_2()
-###############################################################################
 SET(LINK_LIB 
 	         FilePathName
 	         cudaLib
 	         Kmean
 	         SVMcode
+	         SGVBaseCode
 	)
 ADD_LIBRARY(SGVcode  STATIC     ${DIR_SRCS}  )
 TARGET_LINK_LIBRARIES(SGVcode ${LINK_LIB})
-
-
+###############################################################################
+SET(BASE_SRCS   
+		MallocCui.cpp	
+		SpSetProperty.cpp
+		SpectralClusterInDoor.cpp
+		SpectralClustering.cpp
+		ImageMemData.cpp
+		ImageData.cpp
+		cui_GeneralImgProcess.cpp
+	)  
+SET(BASE_LINK_LIB 
+	         FilePathName
+	         cudaLib
+	         Kmean
+	         SVMcode
+	)
+ADD_LIBRARY(SGVBaseCode  STATIC     ${BASE_SRCS}  )
+TARGET_LINK_LIBRARIES(SGVBaseCode ${BASE_LINK_LIB})
+###############################################################################
 #CuiLib/SGVcode/ImageType.h
 #CuiLib/SGVcode/ManhattanHistogram.cpp
 #CuiLib/SGVcode/SeparateSpBlock.cpp

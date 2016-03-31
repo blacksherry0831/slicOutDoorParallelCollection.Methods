@@ -6,10 +6,11 @@
 #include "WaveletApi.h"
 #include "FilterApi.h"
 #include "DIBapi.h"
-#include <math.h>
-#include <iostream>
-#include <fstream> 
-using namespace std;
+//#include <math.h>
+//#include <iostream>
+//#include <fstream> 
+//using namespace std;
+#include <platform_cui.h>
 #define SHOW_HARR_IMG FALSE
 /*---------------------------------------------------*/
 /**

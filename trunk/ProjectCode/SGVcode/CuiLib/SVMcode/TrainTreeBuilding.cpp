@@ -8,12 +8,7 @@
 #include "tinyxml2/tinyxml2.h"
 using namespace tinyxml2;
 
-#if _MSC_VER
-#include "SVMcode/dirent.h"
-#endif
-#if linux
-#include <dirent.h>
-#endif
+
 //#include "FilePathName/FileNameSplit.h"
 //#include <SGVcode/cui_GeneralImgProcess.h>
 //#include <SGVcode/SpAnalyze.h>
@@ -38,7 +33,9 @@ string TrainTreeBuilding::descriptorVectorFile = "genfiles/descriptorvector.dat"
 string TrainTreeBuilding:: SVMDetectorxml="SVMDetector.xml";
 const Size TrainTreeBuilding:: trainingPadding = Size(0, 0);
 const Size TrainTreeBuilding::winStride = Size(8, 8);
+#if USE_MFC
 CWinThread* TrainTreeBuilding:: pThread=NULL;
+#endif
 ThreadInfo TrainTreeBuilding::ThreadData;
 /***********************************************************/
 vector<string>TrainTreeBuilding::positiveTrainingImages;
@@ -472,8 +469,8 @@ int TrainTreeBuilding::EndProcess(void)
 /*-------------------------------------------------------------------------------------*/
 int TrainTreeBuilding::StartProcessFromXmlFile(void)
 {
-
-	Sleep(200);
+#if USE_MFC
+Sleep(200);
 
 	pThread=AfxBeginThread(TrainWithXMLdata,NULL);	
 
@@ -482,6 +479,11 @@ int TrainTreeBuilding::StartProcessFromXmlFile(void)
 	}else{
 		return FALSE;
 	}
+#else
+	ASSERT(0);
+	return 0;
+#endif
+	
 
 }
 /*-------------------------------------------------------------------------------------*/

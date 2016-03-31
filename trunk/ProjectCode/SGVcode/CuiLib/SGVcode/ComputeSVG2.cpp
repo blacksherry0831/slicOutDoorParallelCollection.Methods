@@ -1,11 +1,18 @@
 ﻿#include "StdAfx.h"
+/*------------------------------*/
 #include "module_all_cui.h"
 #include "ComputeSVG2.h"
 #include "cui_GeneralImgProcess.h"
-#include <algorithm>
+//#include <algorithm>
 ///////////////////////////////////////////////
 #define  WeightZoom (10000)
 ////////////////////////////////////////////////
+#ifdef min
+#undef min
+#endif
+#ifdef max
+#undef max
+#endif
 /*--------------------------------------------------------------------------------------------------------*/
 /**
 *构造函数，完成变量初始化
