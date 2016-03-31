@@ -93,9 +93,15 @@ typedef unsigned long long ULONGLONG;
 #endif
 /************************************************************************/
 /************************************************************************/
-
+#if __GUNC__||linux||__linux||__linux__
+#ifndef memcpy_s
+#define memcpy_s(D,Ds,S,Ss)  {memcpy(D,S,Ss);}
+#endif
+#endif
 #if __GNUC__
+#ifndef sprintf_s
 #define sprintf_s  snprintf
+#endif
 
 #ifndef  TRACE
 //#define printf(fmt, args...) myprintf(fmt, ##args)

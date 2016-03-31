@@ -458,8 +458,11 @@ string TrainTreeBuilding::toLowerCase(const string& in)
 /*-------------------------------------------------------------------------------------*/
 int TrainTreeBuilding::EndProcess(void)
 {
-
+#if _MSC_VER
 	Sleep(500);
+#endif
+
+
 	return TRUE;
 }
 /*-------------------------------------------------------------------------------------*/

@@ -108,8 +108,14 @@ void SpectralClusterInDoor::GetMatrix_L(void)
 	cui_mat_t=cvCreateMat(pMD->slic_current_num,pMD->slic_current_num,CV_64FC1);
 	I_t=cvCreateMat(pMD->slic_current_num,pMD->slic_current_num,CV_64FC1);
 	cvSetIdentity(I_t);
-	cvmMul(&D_t,&W_t,cui_mat_t);
+#if _MSC_VER
+    cvmMul(&D_t,&W_t,cui_mat_t);
 	cvmMul(cui_mat_t,&D_t,&L_t);
+#else
+     ASSERT(0);
+#endif
+	
+
 	cvSub(I_t,&L_t,&L_t); 
 	cvReleaseMat(&I_t);
 	cvReleaseMat(&cui_mat_t);

@@ -1,6 +1,13 @@
 #include "StdAfx.h"
 #include "module_all_cui.h"
 //#include "SpectralClustering.h"
+//#if __GUNC__||linux||__linux||__linux__
+//#if 
+//
+//#endif
+//#define memcpy_s(D,Ds,S,Ss)  {memcpy(D,S,Ss)}
+//#endif
+
 /*----------------------------------------------------------------------------------*/
 /**
 *
@@ -69,8 +76,13 @@ void SpectralClustering::CombinationImgLabs_inIteration(
 	/***************************************************************/
 #endif
 
-
-	memcpy_s(labels,sizeof(int)*width*height,CuiImgLables_t,sizeof(int)*width*height);
+#if _MSC_VER
+   memcpy_s(labels,sizeof(int)*width*height,CuiImgLables_t,sizeof(int)*width*height);
+#else
+   memcpy(labels,CuiImgLables_t,sizeof(int)*width*height);
+#endif
+	
+	
 	delete []CuiImgLables_t;
 	delete []p_SpProperty;
 	cui_GeneralImgProcess::SaveSuperpixelLabels(labels,width,height);

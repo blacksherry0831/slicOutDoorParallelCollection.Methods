@@ -3687,7 +3687,8 @@ UINT cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpPar
 	
 	/****************************************/
 	for(int k = 0; k < numPics; k++ ){	
-		LARGE_INTEGER litmp;
+#if _MSC_VER
+	   LARGE_INTEGER litmp;
 		LONGLONG QPart1,QPart2;
 		double dfMinus, dfFreq, dfTim;
 		QueryPerformanceFrequency(&litmp);
@@ -3695,6 +3696,8 @@ UINT cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpPar
 		QueryPerformanceCounter(&litmp);
 		QPart1 = litmp.QuadPart;// 获得初始值
 		/////////////////////////////////////////////
+#endif
+	
 		ImageData MemData(picvec[k],saveLocation,m_spcount,0.5);
 
 		SLIC slic(&MemData);
@@ -3708,13 +3711,15 @@ UINT cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpPar
 		ComputeSVG2 svg(&MemData);
 		svg.separateSVG_Zlm();
 		/*聚类步骤.docx*/
-
+#if _MSC_VER
 		///////////////////////////////////////////////
 		QueryPerformanceCounter(&litmp);
 		QPart2 = litmp.QuadPart;//获得中止值
 		dfMinus = (double)(QPart2-QPart1);
 		dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 		TRACE("\n 全部时间: %f（秒）",dfTim);
+#endif
+
 		/*************************************************************/
 #if	!(SaveContours2Disk)
 		MemData.SaveImgWithContours();			

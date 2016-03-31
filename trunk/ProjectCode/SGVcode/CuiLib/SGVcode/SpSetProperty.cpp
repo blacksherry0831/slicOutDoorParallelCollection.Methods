@@ -41,14 +41,15 @@ void SpSetProperty::Parse(int*ImgLabels,int slicNum,int width,int height,int Hor
 	this->ImgHeight=height;
 	this->ImgWidth=width;
 	this->HorizontalLinePos=HorizontalLinePos;
-#if 1
- LARGE_INTEGER litmp;
+#if _MSC_VER
+    LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
 	QueryPerformanceFrequency(&litmp);
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif
 	{
 		    this->SpPropertySet.clear();
 		    this->PointSet.clear();
@@ -73,6 +74,7 @@ void SpSetProperty::Parse(int*ImgLabels,int slicNum,int width,int height,int Hor
 			}
 			
 	}
+#if _MSC_VER
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);

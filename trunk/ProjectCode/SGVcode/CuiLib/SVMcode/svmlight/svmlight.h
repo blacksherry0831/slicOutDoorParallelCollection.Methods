@@ -5,8 +5,11 @@
 
 #include "svm_common.h"
 #include "svm_learn.h"
-
-
+#ifndef LONGLONG
+typedef long long LONGLONG;
+#endif
+/*-------------------------------------------*/
+/*-------------------------------------------*/
 class SVMlight {
 private:
     DOC** docs; // training examples
@@ -27,8 +30,16 @@ private:
         verbosity = 1; // Show some messages -v 1
         learn_parm->alphafile[0] = ' '; // NULL; // Important, otherwise files with strange/invalid names appear in the working directory
         //        learn_parm->alphafile = NULL; // Important, otherwise files with strange/invalid names appear in the working directory
-		strcpy_s( learn_parm->alphafile,200,"cui_learn_ara.cui");
-        learn_parm->biased_hyperplane = 1;
+#if _MSC_VER
+    strcpy_s( learn_parm->alphafile,200,"cui_learn_ara.cui");
+#endif
+#if  __GNUC__
+	strncpy( learn_parm->alphafile,"cui_learn_ara.cui",200);
+#endif
+		
+    
+		
+		learn_parm->biased_hyperplane = 1;
         learn_parm->sharedslack = 0; // 1
         learn_parm->skip_final_opt_check = 0;
         learn_parm->svm_maxqpsize = 10;

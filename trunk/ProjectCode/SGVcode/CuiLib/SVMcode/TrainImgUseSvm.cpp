@@ -669,8 +669,10 @@ Sleep(200);
 /*-------------------------------------------------------------------------------------*/
 int TrainImgUseSvm::EndProcess(void)
 {
-	
+#if _MSC_VER
 	Sleep(500);
+#endif
+
 	return TRUE;
 }
 /*-------------------------------------------------------------------------------------*/
@@ -721,7 +723,7 @@ string TrainImgUseSvm::ConvertCS2string(CString cstring)
 	res_mat=cvCreateMat(samplenum,1,CV_32FC1);
 #endif
 	
-
+#if USE_SVM_2_4_X&&_MSC_VER
 	CvSVM svm; 
 	CvSVMParams param;
 	CvTermCriteria criteria=cvTermCriteria(CV_TERMCRIT_EPS, 1000, FLT_EPSILON); 
@@ -732,6 +734,10 @@ string TrainImgUseSvm::ConvertCS2string(CString cstring)
 	//☆☆利用训练数据和确定的学习参数,进行SVM学习☆☆☆☆  
 	string svmsavepath=SVMDetectorxml+"\\SvmModule.xml";
 	svm.save(svmsavepath.c_str(),0);
+#else
+	ASSERT(0);
+#endif
+
 #if AllocMemCV
 	cvReleaseMat(&data_mat);
 	cvReleaseMat(&res_mat);
