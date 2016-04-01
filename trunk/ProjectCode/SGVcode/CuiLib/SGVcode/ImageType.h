@@ -163,7 +163,7 @@ typedef struct spGuid{
 }SP_GUID;
 
 typedef struct spProperty{
-#if _DEBUG
+#if _DEBUG||TRUE
 	UINT SPIndex;/**<³¬ÏñËØ±êºÅ*/
 	SP_GUID SPGuid;
 #endif	

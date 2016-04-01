@@ -29,7 +29,7 @@ SeparateSpBlock::SeparateSpBlock(UINT32* imgdata_t,int*  ImgLab_t,ImageMemData* 
 #endif
 #if (CV_MAJOR_VERSION==3)  
 	printf("OpenCv 3.1.0 use svm");
-	ASSERT(0);
+	//ASSERT(0);
 #endif	
 	
 }
@@ -215,29 +215,34 @@ void SeparateSpBlock::SeparateSp_SvmPredict(void)
 			filename=pMD->FileWritePath+FileNameSplit::ConvertCS2string(fns.filename)+category_sp+buff;		
 			cvSaveImage(filename.c_str(),&Img_Spb);
 #endif
-#if TRUE
-			if (Img_Spb.width!=0&&Img_Spb.height!=0){
-				SpAnalyze Spb;
-				vector<float> feature;
-				ImageMemData MemData(&Img_Spb,"",0,0,0.5);
-				Spb.IsSpFatorThin(&MemData);
-				Spb.SpSA=SpSizeAttr::FAT;
-				Spb.ExtractImageFeatureWithSrcCany(feature);
-				ASSERT(feature.size()==Spb.GetFeatureSize());	
-				CvMat m;
-				cvInitMatHeader(&m, 1,feature.size(), CV_32FC1,feature.data()); 
-				int catagory=SvmTest.predict(&m);
-				if (Matrix_Category_Lable[spi]==Vertical){
-					if (catagory==SvmCategoryBuilding){
-						Matrix_Category_Lable[spi]=Vertical_Building;
-					}else  if (catagory==SvmCategoryTree){
-						Matrix_Category_Lable[spi]=Vertical_Tree;
-					}else{
-						ASSERT(FALSE);
-					}
+#if (CV_MAJOR_VERSION==2)&&(CV_MINOR_VERSION==4)
+		if (Img_Spb.width!=0&&Img_Spb.height!=0){
+			SpAnalyze Spb;
+			vector<float> feature;
+			ImageMemData MemData(&Img_Spb,"",0,0,0.5);
+			Spb.IsSpFatorThin(&MemData);
+			Spb.SpSA=SpSizeAttr::FAT;
+			Spb.ExtractImageFeatureWithSrcCany(feature);
+			ASSERT(feature.size()==Spb.GetFeatureSize());	
+			CvMat m;
+			cvInitMatHeader(&m, 1,feature.size(), CV_32FC1,feature.data()); 
+			int catagory=SvmTest.predict(&m);
+			if (Matrix_Category_Lable[spi]==Vertical){
+				if (catagory==SvmCategoryBuilding){
+					Matrix_Category_Lable[spi]=Vertical_Building;
+				}else  if (catagory==SvmCategoryTree){
+					Matrix_Category_Lable[spi]=Vertical_Tree;
+				}else{
+					ASSERT(FALSE);
 				}
 			}
+		}
 #endif
+#if (CV_MAJOR_VERSION==3)  
+			printf("OpenCv 3.1.0 use svm");
+			ASSERT(0);
+#endif	
+
 		}
 	}
 #if TRUE

@@ -2,6 +2,10 @@
 #include "module_all_cui.h"
 //#include "ImageMemData.h"
 //#include "cui_GeneralImgProcess.h"
+#ifndef cvCopyImage
+#define cvCopyImage( src, dst ) cvCopy( src, dst, 0 )
+#endif // _DEBUG
+
 /*----------------------------------------------------------------*/
 /**
 *¹¹Ôìº¯Êý\n

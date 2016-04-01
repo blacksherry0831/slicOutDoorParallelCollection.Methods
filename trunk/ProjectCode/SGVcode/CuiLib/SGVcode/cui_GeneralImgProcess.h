@@ -367,5 +367,9 @@ static void Cui_Combination_ImgLabsNew(
 static void  DetermineColorRank(ImageMemData* pMD,int RankNum);
 static void  ShowImgLabels(int* ImgLabels,int Width,int Height);
 static UINT THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpParam,vector<string> picvec,string saveLocation,int m_spcount);
+#if linux||__linux__||__linux||__GNUC__
+static void _splitpath(const char *path, char *drive, char *dir, char *fname, char *ext);
+static void _split_whole_name(const char *whole_name, char *fname, char *ext);
+#endif
 };
 

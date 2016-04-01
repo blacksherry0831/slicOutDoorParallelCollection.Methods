@@ -928,14 +928,15 @@ void cui_GeneralImgProcess::CuiSaveImgWithContours(
 	string        filewritepath,
 	string fileadd)
 {
-	LARGE_INTEGER litmp;
+#if _MSC_VER
+LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
 	QueryPerformanceFrequency(&litmp);
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
-
+#endif
 	{
 	unsigned int * imgbuf_t=new unsigned int[width*height];
 	memcpy(imgbuf_t,ubuff,sizeof(unsigned int)*width*height);
@@ -951,12 +952,15 @@ void cui_GeneralImgProcess::CuiSaveImgWithContours(
 	CuiSaveImageData(imgbuf_t,width,height,filereadfullpath,filewritepath, 1,fileadd);
 	delete []imgbuf_t;
 	}
-	QueryPerformanceCounter(&litmp);
+#if _MSC_VER
+    QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	/*************************************************************/
 	TRACE("\n 保存图片时间: %f（秒）",dfTim);
+#endif
+	
 }
 /*----------------------------------------------------------------*/
 /**
@@ -1711,13 +1715,15 @@ void cui_GeneralImgProcess::InSideClusteringByopencv(
 	string        filereadfullpath,
 	string        filewritepath)
 {
-	LARGE_INTEGER litmp;
+#if _MSC_VER
+    LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
 	QueryPerformanceFrequency(&litmp);
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif
 	//////////////////////////////////////////////////////////////
 #if 1
 	IplImage Img_Contour_t;
@@ -1758,11 +1764,14 @@ void cui_GeneralImgProcess::InSideClusteringByopencv(
 	/**************************************************************/
 #endif
 	//////////////////////////////////////////////////////////////
-	QueryPerformanceCounter(&litmp);
+#if _MSC_VER
+    QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	TRACE("\n 全包围: %f（秒）",dfTim);
+#endif
+	
 }
 /*----------------------------------------------------------------*/
 /**
@@ -2034,9 +2043,10 @@ void cui_GeneralImgProcess::GetMaxValueIndex(
 	int* sort, 
 	int sort_num)
 {
+	
 #if 1
-   float* data_t=new float[size];
-	 memcpy(data_t,data,sizeof(float)*size);
+     float* data_t=new float[(LONGLONG)size];
+	 memcpy(data_t,data,sizeof(float)*((LONGLONG)size));
 	/*****寻找最值***************************************************************/
 	for (int sj=0;sj<sort_num;sj++){
 		
@@ -2099,8 +2109,8 @@ void cui_GeneralImgProcess::GetMaxValueIndexdouble(
 	int* sort,
 	int sort_num)
 {
-	double* data_t=new double[size];
-	memcpy(data_t,data,sizeof(double)*size);
+	double* data_t=new double[(LONGLONG)size];
+	memcpy(data_t,data,sizeof(double)*((LONGLONG)size));
 	/*****寻找最值***************************************************************/
 	for (int sj=0;sj<sort_num;sj++){
 
@@ -2306,10 +2316,12 @@ double cui_GeneralImgProcess::GetMiddleValue(double* data, int size)
          }
 	}
 	 /*--------------------------------------------------------------*/
+#if _DEBUG
 	  for (int spi=0;spi<SpNumbers;spi++){
 		 p_SpProperty[spi].SPGuid.GUIDX=p_SpProperty[spi].min_x;
 		 p_SpProperty[spi].SPGuid.GUIDY=p_SpProperty[spi].min_y;
 	  }
+#endif
 	  /*-------------------------------------------------------------*/
 	 //调整使其能被8 整除
 	 for (int spi=0;spi<SpNumbers;spi++){
@@ -2464,13 +2476,15 @@ double cui_GeneralImgProcess::GetMiddleValue(double* data, int size)
 	 int cui_Width,
 	 int cui_Height)
 {
-LARGE_INTEGER litmp;
-LONGLONG QPart1,QPart2;
-double dfMinus, dfFreq, dfTim;
-QueryPerformanceFrequency(&litmp);
-dfFreq = (double)litmp.QuadPart;
-QueryPerformanceCounter(&litmp);
-QPart1 = litmp.QuadPart;				
+#if _MSC_VER
+	LARGE_INTEGER litmp;
+	LONGLONG QPart1,QPart2;
+	double dfMinus, dfFreq, dfTim;
+	QueryPerformanceFrequency(&litmp);
+	dfFreq = (double)litmp.QuadPart;
+	QueryPerformanceCounter(&litmp);
+	QPart1 = litmp.QuadPart;		
+#endif
 #if 1
 	 CuiHarrTransformLet Harr_Origin,Harr_Border;
 	 UINT32 *Origin_img=NULL,*Border_img=NULL;
@@ -2554,12 +2568,13 @@ QPart1 = litmp.QuadPart;
 	 delete[]Origin_img;
 	 delete[]Border_img;
 #endif
-	QueryPerformanceCounter(&litmp);
+#if _MSC_VER
+QueryPerformanceCounter(&litmp);
 QPart2 = litmp.QuadPart;
 dfMinus = (double)(QPart2-QPart1);
 dfTim = dfMinus / dfFreq;
-float mstime=dfTim*1000;			
-					
+float mstime=dfTim*1000;	
+#endif
 }
  /*----------------------------------------------------------------*/
  /**
@@ -2581,6 +2596,7 @@ float mstime=dfTim*1000;
 	 int *cui_ImgLables,
 	 int cui_Width,
 	 int cui_Height){
+#if _MSC_VER
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -2588,6 +2604,8 @@ float mstime=dfTim*1000;
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif
+
 #if 1
 
 	 for (register int i=0;i<num_sp;i++){
@@ -2599,11 +2617,14 @@ float mstime=dfTim*1000;
 			cui_Height);
 	 }	
 #endif
-		QueryPerformanceCounter(&litmp);	
+#if _MSC_VER
+        QueryPerformanceCounter(&litmp);	
 		QPart2 = litmp.QuadPart;//获得中止值	
 		dfMinus = (double)(QPart2-QPart1);	
 		dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒	
 		//Energy_LH = 1463.9357125974948
+#endif
+		
  }
  /*----------------------------------------------------------------*/
  /**
@@ -3272,13 +3293,15 @@ void cui_GeneralImgProcess::Get_Kseeds_Histogram(
 	string FileReadFullPath,
 	string FileWritePath)
 {
-	LARGE_INTEGER litmp;
+#if _MSC_VER
+    LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
 	QueryPerformanceFrequency(&litmp);
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif
 	/*---------------------------------------------------*/
 	{
 	int HistDimSPLAB=seeddata.histDimSPLAB;
@@ -3386,11 +3409,14 @@ void cui_GeneralImgProcess::Get_Kseeds_Histogram(
 #endif
 	}
 	/*---------------------------------------------------*/
-	QueryPerformanceCounter(&litmp);
+#if _MSC_VER
+    QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	TRACE("\n 统计颜色直方图和灰度直方图: %f（秒）",dfTim);
+#endif
+	
 
 }
 /*-------------------------------------------------------------------------*/
@@ -3731,8 +3757,79 @@ UINT cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpPar
 	
 	return 0;
 }
-/*-------------------------------------------------------------------------*/
+/*----------------------------------------------------------------*/
 /**
 *
+*
+*
 */
-/*-------------------------------------------------------------------------*/
+/*----------------------------------------------------------------*/
+#if linux||__linux__||__linux||__GNUC__
+void cui_GeneralImgProcess::_splitpath(const char *path, char *drive, char *dir, char *fname, char *ext)
+{
+	char *p_whole_name;
+
+	drive[0] = '\0';
+	if (NULL == path)
+	{
+		dir[0] = '\0';
+		fname[0] = '\0';
+		ext[0] = '\0';
+		return;
+	}
+
+	if ('/' == path[strlen(path)])
+	{
+		strcpy(dir, path);
+		fname[0] = '\0';
+		ext[0] = '\0';
+		return;
+	}
+
+	p_whole_name = rindex(path, '/');
+	if (NULL != p_whole_name)
+	{
+		p_whole_name++;
+		_split_whole_name(p_whole_name, fname, ext);
+
+		snprintf(dir, p_whole_name - path, "%s", path);
+	}
+	else
+	{
+		_split_whole_name(path, fname, ext);
+		dir[0] = '\0';
+	}
+}
+#endif
+/*----------------------------------------------------------------*/
+/**
+*
+*
+*
+*/
+/*----------------------------------------------------------------*/
+#if linux||__linux__||__linux||__GNUC__
+void cui_GeneralImgProcess::_split_whole_name(const char *whole_name, char *fname, char *ext)
+{
+	char *p_ext;
+
+	p_ext = rindex(whole_name, '.');
+	if (NULL != p_ext)
+	{
+		strcpy(ext, p_ext);
+		snprintf(fname, p_ext - whole_name + 1, "%s", whole_name);
+	}
+	else
+	{
+		ext[0] = '\0';
+		strcpy(fname, whole_name);
+	}
+}
+#endif
+/*----------------------------------------------------------------*/
+/**
+*
+*
+*
+*/
+/*----------------------------------------------------------------*/

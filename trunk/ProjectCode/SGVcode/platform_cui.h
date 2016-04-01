@@ -97,6 +97,13 @@ typedef unsigned long long ULONGLONG;
 #ifndef memcpy_s
 #define memcpy_s(D,Ds,S,Ss)  {memcpy(D,S,Ss);}
 #endif
+#ifndef _MAX_FNAME
+#define _MAX_FNAME  1024
+#endif
+#ifndef  XXXXXXXXXXXX
+#define  XXXXXXXXXXXX  11111
+#endif
+
 #endif
 #if __GNUC__
 #ifndef sprintf_s

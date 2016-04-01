@@ -188,5 +188,8 @@ void SaveSuperpixelLabelsImagePNG(
 	const string				filename,
 	const string				path);
 void SaveSuperpixelLabelsImagePNG();
+
+void _splitpath(const char *path, char *drive, char *dir, char *fname, char *ext);
+
 };
 

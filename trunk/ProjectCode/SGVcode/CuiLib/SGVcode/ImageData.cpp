@@ -354,13 +354,15 @@ void ImageData::initMemData(int*ImgLabels)
 /*----------------------------------------------------------------*/
 void ImageData:: ImageGetSeedsLabxy_cuda(void)
 {
-	LARGE_INTEGER litmp;
+#if _MSC_VER
+   LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
 	QueryPerformanceFrequency(&litmp);
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif	
 	/*---------------------------------------------------*/
 	{
 		kseedsl.clear();
@@ -387,12 +389,15 @@ void ImageData:: ImageGetSeedsLabxy_cuda(void)
 			kseedsy.data(),
 			src_ImgLabels);
 	}
-	/*---------------------------------------------------*/
+#if _MSC_VER
+/*---------------------------------------------------*/
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	TRACE("\n 统计超像素中心点时间: %f（秒）",dfTim);
+#endif
+	
 
 }
 /*----------------------------------------------------------------*/
@@ -415,13 +420,15 @@ void ImageData:: ImageGetSeedsThetaML_cuda(void)
 /*----------------------------------------------------------------*/
 void ImageData::GetMatrixE(void)
 {
-	LARGE_INTEGER litmp;
+#if _MSC_VER
+    LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
 	QueryPerformanceFrequency(&litmp);
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif	
 	/*---------------------------------------------------*/
 	cui_GeneralImgProcess::CuiSetNighbour_E_matrix(
 		src_ImgLabels,
@@ -432,11 +439,14 @@ void ImageData::GetMatrixE(void)
 		"Compute_matrix.matrix",
 		"");
 	/*---------------------------------------------------*/
+#if _MSC_VER
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	TRACE("\n 连接矩阵E: %f（秒）",dfTim);
+#endif
+
 }
 /*----------------------------------------------------------------*/
 /**
@@ -973,14 +983,16 @@ void ImageData::SaveImgWithContours(string str_add)
 /*----------------------------------------------------------------*/
 void ImageData::SurroundClassification()
 {
-	LARGE_INTEGER litmp;
+#if _MSC_VER
+   LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
 	QueryPerformanceFrequency(&litmp);
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
-	//////////////////////////////////////////////////////////////
+#endif
+		//////////////////////////////////////////////////////////////
 #if 1
 	this->InSideClusteringByopencv();
 	this->initSpSet();	
@@ -1014,12 +1026,15 @@ void ImageData::SurroundClassification()
 #if SaveContours2Disk
 this->SaveImgWithContours();
 #endif	
-	//////////////////////////////////////////////////////////////
+#if _MSC_VER
+    //////////////////////////////////////////////////////////////
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	TRACE("\n SurroundClassification全包围: %f（秒）",dfTim);
+#endif
+	
 }
 /*----------------------------------------------------------------*/
 /**
@@ -1030,13 +1045,15 @@ this->SaveImgWithContours();
 /*----------------------------------------------------------------*/
 void ImageData::InSideClusteringByopencv()
 {
-	LARGE_INTEGER litmp;
+#if _MSC_VER
+    LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
 	QueryPerformanceFrequency(&litmp);
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif	
 	/////////////////////////////////////////////
 {
 	UINT32* ubuff=this->src_ImgBGRA;
@@ -1089,14 +1106,15 @@ void ImageData::InSideClusteringByopencv()
 #endif
 this->slic_current_num=cui_GeneralImgProcess::AdjustLabFrom0toN(labels,width,height,NumLabels);
 }
-
-
-		///////////////////////////////////////////////
-		QueryPerformanceCounter(&litmp);
+///////////////////////////////////////////////
+#if _MSC_VER
+	    QueryPerformanceCounter(&litmp);
 		QPart2 = litmp.QuadPart;//获得中止值
 		dfMinus = (double)(QPart2-QPart1);
 		dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 		TRACE("\n Labels级全包围: %f（秒）",dfTim);
+#endif
+	
 }
 /*----------------------------------------------------------------*/
 /**
@@ -1107,22 +1125,27 @@ this->slic_current_num=cui_GeneralImgProcess::AdjustLabFrom0toN(labels,width,hei
 /*----------------------------------------------------------------*/
 void ImageData::InitAllSpBlockEnergy()
 {
-	LARGE_INTEGER litmp;
+#if _MSC_VER
+    LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
 	QueryPerformanceFrequency(&litmp);
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif
+	
 	/////////////////////////////////////////////
 	this->CalculateAllSpPropertyRange();
 	this->CalculateAllSpBlockEnergy();
 	///////////////////////////////////////////////
-	QueryPerformanceCounter(&litmp);
+#if _MSC_VER
+   QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	TRACE("\n 小波: %f（秒）",dfTim);
+#endif
 }
 /*----------------------------------------------------------------*/
 /**
@@ -1133,6 +1156,7 @@ void ImageData::InitAllSpBlockEnergy()
 /*----------------------------------------------------------------*/
 void ImageData::InitAllSpBlockEnergy2(void)
 {
+#if _MSC_VER
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -1140,6 +1164,7 @@ void ImageData::InitAllSpBlockEnergy2(void)
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif
 	/////////////////////////////////////////////
 #if 1
 
@@ -1158,11 +1183,14 @@ void ImageData::InitAllSpBlockEnergy2(void)
 	
 #endif
 	///////////////////////////////////////////////
+#if _MSC_VER
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	TRACE("\n 小波: %f（秒）",dfTim);
+#endif
+
 }
 /*----------------------------------------------------------------*/
 /**
@@ -1286,13 +1314,16 @@ void ImageData::CalculateAllSpBlockEnergy2(void)
 /*----------------------------------------------------------------*/
 void ImageData::CalculateSpBlockEnergy2(int sp)
 {
-	LARGE_INTEGER litmp;
+#if _MSC_VER
+    LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
 	QueryPerformanceFrequency(&litmp);
 	dfFreq = (double)litmp.QuadPart;
 	QueryPerformanceCounter(&litmp);
-	QPart1 = litmp.QuadPart;				
+	QPart1 = litmp.QuadPart;		
+#endif
+			
 #if 1
 	CuiHarrTransformLet Harr_Origin,Harr_Border;
 	UINT32 *Origin_img=NULL,*Border_img=NULL;
@@ -1377,11 +1408,14 @@ void ImageData::CalculateSpBlockEnergy2(int sp)
 	delete[]Origin_img;
 	delete[]Border_img;
 #endif
+#if _MSC_VER
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;
 	float mstime=dfTim*1000;	
+#endif
+	
 }
 /*----------------------------------------------------------------*/
 /**
@@ -1432,7 +1466,7 @@ float* EnergyHighsigmaArray=new float[slic_current_num];
 void ImageData::FillWeightArrayZlmParallel(void)
 {
 	
-#if 1
+#if _MSC_VER
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -1440,6 +1474,7 @@ void ImageData::FillWeightArrayZlmParallel(void)
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值	
+#endif
 	/*---------------------------------------------------------------------------*/
 	{	
 		INT32* fuzzyCategory=new INT32[slic_current_num];
@@ -1464,6 +1499,7 @@ void ImageData::FillWeightArrayZlmParallel(void)
 
 		delete[]fuzzyCategory;
 	}	
+#if _MSC_VER
 	/*---------------------------------------------------------------------------*/
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
@@ -1747,6 +1783,32 @@ void ImageData::SaveSuperpixelLabelsImagePNG()
 		"");*/
 
 }
+/*----------------------------------------------------------------*/
+/**
+*
+*
+*
+*/
+/*----------------------------------------------------------------*/
+
+void ImageData::_splitpath(const char *path, char *drive, char *dir, char *fname, char *ext)
+{
+#if linux||__linux__||__linux||__GNUC__
+	cui_GeneralImgProcess::_splitpath(path,drive,dir,fname,ext);
+#endif
+#if _MSC_VER
+	::_splitpath(path,drive,dir,fname,ext);
+#endif
+}
+
+/*----------------------------------------------------------------*/
+/**
+*
+*
+*
+*/
+/*----------------------------------------------------------------*/
+
 /*----------------------------------------------------------------*/
 /**
 *

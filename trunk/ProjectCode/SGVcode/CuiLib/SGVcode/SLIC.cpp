@@ -889,7 +889,8 @@ void SLIC::SaveSuperpixelLabels(
 /*----------------------------------------------------------------------------------------------------------------*/
 string SLIC::Wide2Narrow(const wstring&		wideString)
 {
-	int m_codepage = ::_getmbcp();
+#if _MSC_VER
+int m_codepage = ::_getmbcp();
 
 	int result = ::WideCharToMultiByte( 
 		m_codepage,  // Code page
@@ -918,6 +919,15 @@ string SLIC::Wide2Narrow(const wstring&		wideString)
 	delete []test;
 
 	return temp;
+#endif
+
+#if linux||__linux||__linux__||__GNUC__
+	ASSERT(0);
+	std::string temp("linux_not_support");
+    return  temp;
+#endif
+
+	
 }
 /*----------------------------------------------------------------------------------------------------------------*/
 /**
@@ -929,7 +939,8 @@ string SLIC::Wide2Narrow(const wstring&		wideString)
 /*----------------------------------------------------------------------------------------------------------------*/
 wstring SLIC::Narrow2Wide(const std::string& narrowString)
 {
-	int m_codepage = _getmbcp();
+#if _MSC_VER
+int m_codepage = _getmbcp();
 
 	int numChars =
 		::MultiByteToWideChar( m_codepage, 
@@ -956,6 +967,13 @@ wstring SLIC::Narrow2Wide(const std::string& narrowString)
 	delete []test;
 
 	return temp;
+#endif
+#if linux||__linux||__linux__||__GNUC__
+	ASSERT(0);
+	std::wstring temp(L"linux_not_support");
+	return  temp;
+#endif
+	
 }
 /*----------------------------------------------------------------------------------------------------------------*/
 /**
@@ -1113,7 +1131,7 @@ void SLIC::CuiFindSaveNighbour_E_matrix(
 	
 	/*************************************************************/
 #endif
-#if 1
+#if _MSC_VER
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -1121,6 +1139,7 @@ void SLIC::CuiFindSaveNighbour_E_matrix(
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif
 	{
 		if (Cui_Matrix_E){
 			delete []Cui_Matrix_E;
@@ -1128,11 +1147,14 @@ void SLIC::CuiFindSaveNighbour_E_matrix(
 		Cui_Matrix_E=new UINT32[pMD->slic_current_num*pMD->slic_current_num];
 		cui_GeneralImgProcess::CuiSetNighbour_E_matrix(CuiImgLables,pMD->slic_current_num,Cui_Matrix_E,pMD->ImgWidth,pMD->ImgHeight,filename,path);
 	}
-	QueryPerformanceCounter(&litmp);
+#if _MSC_VER
+    QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
+
 #endif
+	
 }
 
 //===========================================================================
@@ -2044,6 +2066,7 @@ void SLIC::CuiGetImageDataPIMD(void)
 /*----------------------------------------------------------------------------------------------------------------*/
 void SLIC::CuiDoSuperpixelSegmentation_ForGivenNumberOfSuperpixels( int& K, double&  compactness,int savelable)
 {
+#if _MSC_VER
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -2051,6 +2074,8 @@ void SLIC::CuiDoSuperpixelSegmentation_ForGivenNumberOfSuperpixels( int& K, doub
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif
+
 #if 1
 {
 			ASSERT(pMD->ImgHeight==this->CuiHeight);
@@ -2085,12 +2110,15 @@ void SLIC::CuiDoSuperpixelSegmentation_ForGivenNumberOfSuperpixels( int& K, doub
 				ss>>str_add;
 				cui_GeneralImgProcess::CuiSaveImgWithContours(CuiImgData,CuiImgLables,CuiWidth,CuiHeight,FileReadFullPath,FileWritePath,str_add);
 			}
-			QueryPerformanceCounter(&litmp);
+#if _MSC_VER
+	        QueryPerformanceCounter(&litmp);
 			QPart2 = litmp.QuadPart;//获得中止值
 			dfMinus = (double)(QPart2-QPart1);
 			dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 			TRACE("\n 超像素计算时间: %f（秒）",dfTim);
 			/*************************************************************/
+#endif
+		
 }
 /*----------------------------------------------------------------------------------------------------------------*/
 /**
@@ -2105,6 +2133,7 @@ void SLIC::CuiDoSuperpixelSegmentation_ForGivenNumberOfSuperpixels( int& K, doub
 /*----------------------------------------------------------------------------------------------------------------*/
 void SLIC::DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy(int savelable)
 {
+#if _MSC_VER
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -2113,7 +2142,7 @@ void SLIC::DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy(int sav
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
 	/*double compactness=8;*/
-
+#endif
 	{
 		ASSERT(pIMD->ImgHeight==this->CuiHeight);
 		ASSERT(pIMD->ImgWidth==this->CuiWidth);
@@ -2155,11 +2184,13 @@ std::string str_add;
 	pIMD->SaveImgWithContours(str_add);
 #endif
 	/////////////////////////////////////////////////////
-	QueryPerformanceCounter(&litmp);
+#if _MSC_VER
+    QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	TRACE("\n 超像素计算时间: %f（秒）",dfTim);
+#endif	
 	/*************************************************************/
 	pIMD->initMemData(pIMD->src_ImgLabels);
 }
@@ -2905,23 +2936,27 @@ bool SLIC::Cui_Spectral_Clustering_B(
 	this->CuiFindSaveDgeree_D_matrix();//5.1s
 	this->CuiFindSaveLaplace_L_matrix();//3.6s	
 	/////////////////////////////////////////////////////////////////////////////////
+#if _MSC_VER
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
 	QueryPerformanceFrequency(&litmp);
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
-
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif
 	{
 			this->CuiFindSave_L_Eigenvalue();//41s
 	}
-	QueryPerformanceCounter(&litmp);
+#if _MSC_VER
+    QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	double dftims=dfMinus/1000;	
 	/////////////////////////////////////////////////////////////////////////////
+#endif
+	
 	
 	
 	if (0){
@@ -3111,7 +3146,8 @@ void SLIC::PerformSuperpixelSLIC_CUINEW(
 	double distxy;
 	for( int itr = 0; itr < 10; itr++ )
 	{
-		/**/
+#if _MSC_VER
+/**/
 		LARGE_INTEGER litmp;
 		LONGLONG QPart1,QPart2;
 		double dfMinus, dfFreq, dfTim;
@@ -3119,15 +3155,20 @@ void SLIC::PerformSuperpixelSLIC_CUINEW(
 		dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 		QueryPerformanceCounter(&litmp);
 		QPart1 = litmp.QuadPart;// 获得初始值
-		{
+#endif
+	{
 				distvec.assign(sz, DBL_MAX);		
-		}
+	}
+#if _MSC_VER
 		QueryPerformanceCounter(&litmp);
 		QPart2 = litmp.QuadPart;//获得中止值
 		dfMinus = (double)(QPart2-QPart1);
 		dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 		dfTim*=1000;
 		/**/
+#endif
+	
+		
 		for( int n = 0; n < numk; n++ )
 		{
 			y1 = max(0.0,			kseedsy[n]-offset);

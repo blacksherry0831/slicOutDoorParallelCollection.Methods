@@ -20,6 +20,18 @@
 #endif
 using namespace cv;
 /*********************************************************/
+#ifndef cvCopyImage
+#define cvCopyImage( src, dst ) cvCopy( src, dst, 0 )
+#endif 
+#ifndef cvCvtPixToPlane
+#define cvCvtPixToPlane cvSplit
+#endif
+#ifndef cvmMul
+#define cvmMul( src1, src2, dst ) cvMatMulAdd( src1, src2, 0, dst )
+#endif
+
+
+/*********************************************************/
 //C++
 #include<stdio.h>
 #include <iostream>
