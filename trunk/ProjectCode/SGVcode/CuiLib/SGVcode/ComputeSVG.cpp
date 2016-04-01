@@ -406,13 +406,15 @@ void ComputeSVG::FillWeightArrayFM(void){
 */
 /*-------------------------------------------------------------------------------------------------------*/
 void ComputeSVG::FillWeightArrayZlm(double horizontal_line_scale){
-	LARGE_INTEGER litmp;
+#if _MSC_VER
+    LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
 	QueryPerformanceFrequency(&litmp);
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值	
+#endif
  /*---------------------------------------------------------------------------*/
 	double horizontal_line=this->cui_Height*horizontal_line_scale;
 	this->cui_HorizontalLine=horizontal_line;
@@ -573,13 +575,16 @@ void ComputeSVG::FillWeightArrayZlm(double horizontal_line_scale){
 		cui_Width,cui_Height,true,
 		pMD,"");
 	/*****************************************************/
-	/*---------------------------------------------------------------------------*/
+#if _MSC_VER
+/*---------------------------------------------------------------------------*/
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	TRACE("\n 模糊函数分类时间: %f（秒）",dfTim);
 	//模糊函数分类时间: 1.910214（秒）
+#endif
+
 }
 /*--------------------------------------------------------------------------------------------------------*/
 /**
@@ -588,6 +593,7 @@ void ComputeSVG::FillWeightArrayZlm(double horizontal_line_scale){
 /*-------------------------------------------------------------------------------------------------------*/
 void ComputeSVG::FillWeightArrayZlmParallel(double horizontal_line_scale)
 {
+#if _MSC_VER
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -595,6 +601,8 @@ void ComputeSVG::FillWeightArrayZlmParallel(double horizontal_line_scale)
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值	
+#endif
+
 	/*---------------------------------------------------------------------------*/
 	double horizontal_line=this->cui_Height*horizontal_line_scale;
 	this->cui_HorizontalLine=horizontal_line;	
@@ -674,13 +682,15 @@ void ComputeSVG::FillWeightArrayZlmParallel(double horizontal_line_scale)
 		cui_G_V_S_Num_Category[G_V_S_Num_Category*sp+4]=cui_Matrix_Category_Lable[sp];
 	}
 #endif
-	/*---------------------------------------------------------------------------*/
+#if _MSC_VER
+    /*---------------------------------------------------------------------------*/
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位 为秒
 	TRACE("\n 模糊函数分类时间: %f（秒）",dfTim);
 	//模糊函数分类时间: 2.077450 2.183845 1.978618（秒）
+#endif
 }
 /*--------------------------------------------------------------------------------------------------------*/
 /**

@@ -58,6 +58,7 @@ SET(BASE_LINK_LIB
 	         cudaLib
 	         Kmean
 	         SVMcode
+	         SGVcode
 	)
 ADD_LIBRARY(SGVBaseCode  STATIC     ${BASE_SRCS}  )
 TARGET_LINK_LIBRARIES(SGVBaseCode ${BASE_LINK_LIB})

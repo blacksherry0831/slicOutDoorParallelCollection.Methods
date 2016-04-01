@@ -23,11 +23,21 @@ using namespace cv;
 #ifndef cvCopyImage
 #define cvCopyImage( src, dst ) cvCopy( src, dst, 0 )
 #endif 
+
 #ifndef cvCvtPixToPlane
 #define cvCvtPixToPlane cvSplit
 #endif
+
 #ifndef cvmMul
 #define cvmMul( src1, src2, dst ) cvMatMulAdd( src1, src2, 0, dst )
+#endif
+
+#ifndef cvGetHistValue_1D
+#define cvGetHistValue_1D( hist, idx0 ) ((float*)cvPtr1D( (hist)->bins, (idx0), 0))
+#endif
+
+#ifndef cvQueryHistValue_1D
+#define cvQueryHistValue_1D( hist, idx0 ) ((float)cvGetReal1D( (hist)->bins, (idx0)))
 #endif
 
 

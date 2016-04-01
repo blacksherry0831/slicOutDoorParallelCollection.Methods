@@ -563,6 +563,7 @@ void CuiHarrTransformLet::Trans(
 	int scale,
 	unsigned char *outputData)
 {
+#if _MSC_VER
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -570,14 +571,16 @@ void CuiHarrTransformLet::Trans(
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif
 	{
 			this->Trans_cpu(inputData,inputHeight,inputWidth,lineByte,scale,outputData);				
 	}
+#if _MSC_VER
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
-	
+#endif
 }
 /*---------------------------------------------------*/
 /**

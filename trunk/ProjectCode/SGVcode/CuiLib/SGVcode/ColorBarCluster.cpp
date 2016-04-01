@@ -25,6 +25,7 @@ ColorBarCluster::~ColorBarCluster(void)
 /*----------------------------------------------------------------*/
 void ColorBarCluster::Clustering(void)
 {
+#if _MSC_VER
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -32,7 +33,8 @@ void ColorBarCluster::Clustering(void)
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
-	/*---------------------------------------------------*/
+#endif
+/*---------------------------------------------------*/
 do {
 	this->Clustering_ByHistogramOneColorGray();
 	this->Clustering_ByHistogramMaxHist_NoIterationColor(10);
@@ -51,12 +53,15 @@ cui_GeneralImgProcess::Draw_Kseeds_AverageImg(
 	FileReadFullPath,
 	FileWritePath);
 #endif
+#if _MSC_VER
 	/*---------------------------------------------------*/
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	TRACE("\n 单条多条聚类: %f（秒）",dfTim);
+#endif
+
 }
 
 /*---------------------------------------------------------------------------------*/
@@ -68,13 +73,15 @@ cui_GeneralImgProcess::Draw_Kseeds_AverageImg(
 /*---------------------------------------------------------------------------------*/
 void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 {
-	LARGE_INTEGER litmp;
+#if _MSC_VER
+    LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
 	QueryPerformanceFrequency(&litmp);
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif	
 	/*---------------------------------------------------*/
 #if	1
 	int old_slic_num;
@@ -127,6 +134,7 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 			pIMD->FileReadFullPath,pIMD->FileWritePath);
 #if 1
 		{
+#if _MSC_VER
 			LARGE_INTEGER litmp;
 			LONGLONG QPart1,QPart2;
 			double dfMinus, dfFreq, dfTim;
@@ -135,18 +143,22 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 			QueryPerformanceCounter(&litmp);
 			QPart1 = litmp.QuadPart;// 获得初始值
 			////////////////////////////////////////////////////
+#endif
+			
 			HistColorGray2SimilarSet(seeddata);
-		
 			/////////////////////////////////////////////////////
+#if _MSC_VER	
 			QueryPerformanceCounter(&litmp);
 			QPart2 = litmp.QuadPart;//获得中止值
 			dfMinus = (double)(QPart2-QPart1);
 			dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
-			TRACE("\n 分类: %f（秒）",dfTim);
+			TRACE("\n 分类: %f（秒）",dfTim);		
+#endif
 			////////////////////////////////////
 		}
 		{
-			LARGE_INTEGER litmp;
+#if _MSC_VER
+	       LARGE_INTEGER litmp;
 			LONGLONG QPart1,QPart2;
 			double dfMinus, dfFreq, dfTim;
 			QueryPerformanceFrequency(&litmp);
@@ -154,14 +166,18 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 			QueryPerformanceCounter(&litmp);
 			QPart1 = litmp.QuadPart;// 获得初始值
 			////////////////////////////////////////////////////
-		
+#endif
 			pIMD->Combination_ImgLabs(SimilarSet,true,false,true);
-			/////////////////////////////////////////////////////
+
+#if _MSC_VER
+	        /////////////////////////////////////////////////////
 			QueryPerformanceCounter(&litmp);
 			QPart2 = litmp.QuadPart;//获得中止值
 			dfMinus = (double)(QPart2-QPart1);
 			dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 			TRACE("\n 组合: %f（秒）",dfTim);
+#endif
+		
 		}
 #endif
 #if	SaveContours2Disk
@@ -175,11 +191,14 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 	/*---------------------------------------------------*/
 #endif
 	/*---------------------------------------------------*/
+#if _MSC_VER
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	TRACE("\n 单条聚类: %f（秒）",dfTim);
+#endif
+
 }
 /*----------------------------------------------------------------*/
 /**
@@ -188,13 +207,16 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 /*----------------------------------------------------------------*/
 void ColorBarCluster::Clustering_ByHistogramMaxHist_NoIterationColor(int ColorangleSpan)
 {
-	LARGE_INTEGER litmp;
+#if _MSC_VER
+    LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
 	QueryPerformanceFrequency(&litmp);
 	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
+#endif
+	
 #if 1
 	int HistDimSPLABColor=45;
 	int old_slic_num;
@@ -324,11 +346,14 @@ void ColorBarCluster::Clustering_ByHistogramMaxHist_NoIterationColor(int Coloran
 #endif
 
 #endif
-	QueryPerformanceCounter(&litmp);
+#if _MSC_VER
+    QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	TRACE("\n 多条聚类: %f（秒）",dfTim);
+#endif
+	
 }
 /*---------------------------------------------------------------------------------*/
 /**

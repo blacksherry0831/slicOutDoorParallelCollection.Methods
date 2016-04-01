@@ -1022,7 +1022,15 @@ void  HoughAnalyze::StatisticsHistogram180ByLine(
 /*----------------------------------------------------------------------------------*/
 bool HoughAnalyze::DoubleIsInt(double n)
 {
+#if _MSC_VER
 	__int64 i, a=*(__int64*)&n, e=(a>>52&2047)-1023, t=a&0xFFFFFFFFFFFFFll;
+#endif
+#if __GNUC__
+	int64_t i, a=*(int64_t*)&n, e=(a>>52&2047)-1023, t=a&0xFFFFFFFFFFFFFll;
+	ASSERT(sizeof(int64_t)==8);
+#endif
+
+	ASSERT(sizeof(double)==8);
 	if (n>=-1e-16F && n<=1e-16F) return true; //1e-16：判断是否为0时允许的误差
 	for (i=0xFFFFFFFFFFFFFll; i; i>>=1)
 		if (i>>e&t) return false;
@@ -1035,6 +1043,7 @@ bool HoughAnalyze::DoubleIsInt(double n)
 /*----------------------------------------------------------------------------------*/
 bool HoughAnalyze::FloatIsInt(float n)
 {
+	ASSERT(sizeof(float)==4);
 	int i, a=*(int*)&n, e=(a>>23&255)-127, t=a&8388607;
 	if (n>=-1e-6F && n<=1e-6F) return true; //1e-6：判断是否为0时允许的误差
 	if (e<0) return false;

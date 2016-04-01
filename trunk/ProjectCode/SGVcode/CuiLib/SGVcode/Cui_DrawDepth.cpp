@@ -556,7 +556,13 @@ void Cui_DrawDepth::DrawDepth_Indoor(void)
 	/////////////////////////////////////////////////////////////////
 	string file_name;
 	char fname[_MAX_FNAME];
+#if _MSC_VER
 	_splitpath(pMD->FileReadFullPath.c_str(), NULL, NULL, fname, NULL);
+#elif __GNUC__
+	cui_GeneralImgProcess::_splitpath(pMD->FileReadFullPath.c_str(), NULL, NULL, fname, NULL);
+#else
+	 ASSERT(0);
+#endif	
 	file_name=pMD->FileWritePath+fname+"DepthNoLables.jpg";
 	cvSaveImage(file_name.c_str(),cui_DepthImg);
 	/////////////////////////////////////////////////////////////////
