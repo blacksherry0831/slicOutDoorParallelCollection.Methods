@@ -731,6 +731,8 @@ void cui_GeneralImgProcess::CuiSaveImageData(
 	int					format,
 	const string&		str)
 {
+	
+
 	int sz = width*height;
 	IplImage *Save_Image_t;
 	Save_Image_t=cvCreateImage(cvSize(width,height),IPL_DEPTH_8U,4);
@@ -746,7 +748,11 @@ void cui_GeneralImgProcess::CuiSaveImageData(
 	if( 0 != str.compare("") ) path.append(str);
 	if( 1 == format ) path.append(".png");
 	if( 0 == format ) path.append(".bmp");
+	
+	printf("cvSaveImage: %s \n",path.c_str());
 	cvSaveImage(path.c_str(),Save_Image_t);
+	
+	
 	cvReleaseImage(&Save_Image_t);
 
 }
@@ -3710,7 +3716,7 @@ UINT cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpPar
 	vector <double>  Do_Time_f;	
 	int numPics( picvec.size() );
 	/****************************************/
-	
+	printf("Start: CUDA_CollectionMethods \n");
 	/****************************************/
 	for(int k = 0; k < numPics; k++ ){	
 #if _MSC_VER
@@ -3723,17 +3729,18 @@ UINT cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpPar
 		QPart1 = litmp.QuadPart;// 获得初始值
 		/////////////////////////////////////////////
 #endif
-	
+	    printf("1. ImageData \n");
 		ImageData MemData(picvec[k],saveLocation,m_spcount,0.5);
-
+		
+		printf("2. SLIC \n");
 		SLIC slic(&MemData);
 		slic.DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy();//得到lable				
 
-
+		printf("3. ColorBarCluster \n");
 		ColorBarCluster colorBarCluster(&MemData);
 		colorBarCluster.Clustering();
 
-
+		printf("4. ComputeSVG2 \n");
 		ComputeSVG2 svg(&MemData);
 		svg.separateSVG_Zlm();
 		/*聚类步骤.docx*/
@@ -3764,25 +3771,31 @@ UINT cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpPar
 *
 */
 /*----------------------------------------------------------------*/
-#if linux||__linux__||__linux||__GNUC__
+
 void cui_GeneralImgProcess::_splitpath(const char *path, char *drive, char *dir, char *fname, char *ext)
 {
+#if _MSC_VER
+	::_splitpath(path,drive,dir,fname,ext);
+#endif
+#if linux||__linux__||__linux||__GNUC__
 	char *p_whole_name;
 
-	drive[0] = '\0';
+	if (drive!=NULL) drive[0] = '\0';
+
+	
 	if (NULL == path)
 	{
-		dir[0] = '\0';
-		fname[0] = '\0';
-		ext[0] = '\0';
+		if (dir!=NULL) dir[0] = '\0';
+		if (fname!=NULL) fname[0] = '\0';
+		if (ext!=NULL) ext[0] = '\0';
 		return;
 	}
 
 	if ('/' == path[strlen(path)])
 	{
-		strcpy(dir, path);
-		fname[0] = '\0';
-		ext[0] = '\0';
+		if (dir!=NULL) strcpy(dir, path);
+		if (fname!=NULL) fname[0] = '\0';
+		if (ext!=NULL)  ext[0] = '\0';
 		return;
 	}
 
@@ -3792,15 +3805,16 @@ void cui_GeneralImgProcess::_splitpath(const char *path, char *drive, char *dir,
 		p_whole_name++;
 		_split_whole_name(p_whole_name, fname, ext);
 
-		snprintf(dir, p_whole_name - path, "%s", path);
+		if (dir!=NULL) snprintf(dir, p_whole_name - path, "%s", path);
 	}
 	else
 	{
 		_split_whole_name(path, fname, ext);
-		dir[0] = '\0';
+		if (dir!=NULL) dir[0] = '\0';
 	}
-}
 #endif
+}
+
 /*----------------------------------------------------------------*/
 /**
 *
@@ -3808,24 +3822,26 @@ void cui_GeneralImgProcess::_splitpath(const char *path, char *drive, char *dir,
 *
 */
 /*----------------------------------------------------------------*/
-#if linux||__linux__||__linux||__GNUC__
+
 void cui_GeneralImgProcess::_split_whole_name(const char *whole_name, char *fname, char *ext)
 {
+#if linux||__linux__||__linux||__GNUC__
 	char *p_ext;
 
 	p_ext = rindex(whole_name, '.');
 	if (NULL != p_ext)
 	{
-		strcpy(ext, p_ext);
-		snprintf(fname, p_ext - whole_name + 1, "%s", whole_name);
+		if (ext!=NULL) strcpy(ext, p_ext);
+		if (fname!=NULL)  snprintf(fname, p_ext - whole_name + 1, "%s", whole_name);
 	}
 	else
 	{
 		ext[0] = '\0';
-		strcpy(fname, whole_name);
+		if (fname!=NULL)  strcpy(fname, whole_name);
 	}
-}
 #endif
+}
+
 /*----------------------------------------------------------------*/
 /**
 *

@@ -22,26 +22,64 @@ GCC/G++:   __GNUC__
 SunCC:   __SUNPRO_CºÍ__SUNPRO_CC
 */
 /*----------------------------------------------*/
-int main(void)
+void PrintARG(int argc,char *argv[])
+{
+  for(int i=0;i<argc;i++){
+	  printf("###########################################\n");
+	  printf("Param: %d>>%s \n",i,argv[i]);
+	  printf("###########################################\n");
+  }
+}
+/*----------------------------------------------*/
+/*
+*
+*/
+/*----------------------------------------------*/
+void TestOpenCV()
 {
 #if _DEBUG
-	IplImage *img=cvCreateImage(cvSize(100,100),IPL_DEPTH_8U,4);
-	cvReleaseImage(&img);
-
+	{
+		IplImage *img=cvCreateImage(cvSize(100,100),IPL_DEPTH_8U,4);
+		cvReleaseImage(&img);
+	}
 #endif
+}
+/*----------------------------------------------*/
+/*
+*
+*/
+/*----------------------------------------------*/
+int main(int argc,char *argv[])
+{
+	TestOpenCV();
+	PrintARG(argc,argv);
 
   vector<string> file;
   string out;
-#ifdef _WIN64 ||_WIN32 ||_MSC_VER ||WIN32
+  if (argc==1)
+  {
+#if _WIN64 ||_WIN32 ||_MSC_VER ||WIN32
 
  	file.push_back("D:\\ImageDataBase\\400img\\img-op39-p-015t000.jpg");
-	out="E://OutPutImg//";
+	out="E:\\OutPutImg\\";
 #endif 
 
+#if linux||__linux||__linux__||__GNUC__
+	file.push_back("/home/blacksherry/400/400img/img-op39-p-015t000.jpg");
+	out="/home/blacksherry/400/400out/";
+#endif
 
+  }
+
+
+    
 	cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(0,file,out,1000);
-
 	printf("Done ! \n");
 	return 0;
 
 }
+/*----------------------------------------------*/
+/*
+*
+*/
+/*----------------------------------------------*/

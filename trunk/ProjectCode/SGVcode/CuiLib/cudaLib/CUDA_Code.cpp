@@ -163,6 +163,7 @@ void PerformSuperpixelSLIC_cuda(
 		clock_t start, finish;
 		start = clock();
 		{
+			printf("GPU Core Start \n");
 			PerformSuperpixelSLIC_gpu_simplify2(
 				alpha,
 				betta,
@@ -188,15 +189,13 @@ void PerformSuperpixelSLIC_cuda(
 		finish = clock();
 		double duration_ms = (double)(finish - start)*1000 / CLOCKS_PER_SEC;
 		double duration_s = duration_ms/1000;
-#if _MSC_VER
-       TRACE("\n 十次迭代: %f（秒）",duration_s);
-#else
-		printf("gpu time is %f s",duration_s);
-#endif
-		
-		
 		double duration_min =duration_s/60;
-		printf( "gpu time is %f ms", duration_ms );
+#if _MSC_VER
+       //TRACE("\n 十次迭代: %f（秒）",duration_s);
+
+		//printf("gpu time is %f s \n",duration_s);
+#endif	
+		printf( "gpu time is %0.1f ms \n", duration_ms );
 }
 #else
 	for (int i=0;i<m_width*m_height*10;i++){

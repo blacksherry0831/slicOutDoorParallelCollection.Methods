@@ -223,8 +223,13 @@ void ImageData::ReleaseMemory(void)
 	
 	 IplImage *src_img_t;
 	if (img==nullptr){
+		 printf("cvLoadImage: %s \n",filename.c_str());
 		 src_img_t=cvLoadImage(filename.c_str(),CV_LOAD_IMAGE_UNCHANGED); 
+		 if (src_img_t==NULL){
+			printf("cvLoadImage: Fail %s \n",filename.c_str());
+		 }
 	}else{
+		printf("cvCreateImage: %s \n");
 		src_img_t=cvCreateImage(cvGetSize(img),img->depth,4);
 		if (img->nChannels==4){
 			 cvCopyImage(img,src_img_t);
@@ -1741,7 +1746,7 @@ void ImageData::SaveSuperpixelLabelsImagePNG(
 			int ind=x+y*width;			
 			int org=data[ind];
 			unsigned char red=org>=254?254:org;
-			data[ind]|=0x000000ff<<24;//填充alph通道
+			//data[ind]|=0x000000ff<<24;//填充alph通道
 			data[ind]|=red<<24;
 			/*if (org<245){
 				labels[ind]=org|(org<<8)|(org<<16)|(0xff000000);
@@ -1793,12 +1798,13 @@ void ImageData::SaveSuperpixelLabelsImagePNG()
 
 void ImageData::_splitpath(const char *path, char *drive, char *dir, char *fname, char *ext)
 {
-#if linux||__linux__||__linux||__GNUC__
+//#if linux||__linux__||__linux||__GNUC__||TRUE
 	cui_GeneralImgProcess::_splitpath(path,drive,dir,fname,ext);
-#endif
-#if _MSC_VER
-	::_splitpath(path,drive,dir,fname,ext);
-#endif
+//#endif
+//#if _MSC_VER
+	//::_splitpath(path,drive,dir,fname,ext);
+	//cui_GeneralImgProcess::_splitpath(path,drive,dir,fname,ext);
+//#endif
 }
 
 /*----------------------------------------------------------------*/

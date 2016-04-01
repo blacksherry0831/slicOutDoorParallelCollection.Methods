@@ -24,8 +24,15 @@
 #include <stdio.h>
 #include "pr_loqo.h"
 
+#ifdef max
+#undef max
+#endif
+#ifdef min
+#undef min
+#endif
 #define	max(A, B)	((A) > (B) ? (A) : (B))
 #define	min(A, B)	((A) < (B) ? (A) : (B))
+
 #define sqr(A)          ((A) * (A))
 #define	ABS(A)  	((A) > 0 ? (A) : (-(A)))
 
