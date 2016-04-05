@@ -1603,7 +1603,7 @@ void cui_GeneralImgProcess::GetContour2Fill(
 	//--------------≤È’“¬÷¿™----------------
 	mode=CV_RETR_LIST;
 	contoursNum=cvFindContours(pImg,storage,&  pcontour,sizeof(CvContour),mode,CV_CHAIN_APPROX_NONE);
-	cout<<contoursNum<<" "<<endl;
+	//cout<<contoursNum<<" "<<endl;
 	//--------------ª≠¬÷¿™----------------
 	if (contoursNum>1){
 		for (;pcontour!=0;pcontour=pcontour->h_next)
