@@ -13,11 +13,15 @@ sudo apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavform
 echo "opencv optional"
 sudo apt-get install python-dev python-numpy libtbb2 libtbb-dev 
 sudo apt-get install libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
-echo "opencv optional"
+#echo "opencv optional"
 #sudo apt-get install
 echo "office software install"
 sudo apt-get install Psensor
+sudo apt-get install openssh-server
+ps -e |grep ssh
 echo "Web node.js install"
 sudo apt-get install g++ curl libssl-dev apache2-utils 
 sudo apt-get install git-core 
 sudo apt-get install nodejs
+#
+
