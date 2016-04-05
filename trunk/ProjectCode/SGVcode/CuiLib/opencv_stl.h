@@ -75,6 +75,21 @@ using namespace cv;
 #include <dirent.h>
 #include <unistd.h>
 #endif
+
+
+#ifndef TimeCountClock_START
+
+#endif 
+#ifndef TimeCountClock_END
+
+#endif
+
+#ifndef TimeCountClockTest
+#define TimeCountClockTest(P,M)  {double dur;clock_t start,end;start = clock();	{P} end = clock();dur = (double)(end - start);printf("%s(S):%0.3f\n",M,(dur/CLOCKS_PER_SEC));}
+#endif
+
+
+
 using namespace std;
 /*********************************************************/
 #endif

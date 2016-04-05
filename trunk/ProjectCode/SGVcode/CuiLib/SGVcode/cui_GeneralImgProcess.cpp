@@ -3729,20 +3729,26 @@ UINT cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpPar
 		QPart1 = litmp.QuadPart;// 获得初始值
 		/////////////////////////////////////////////
 #endif
-	    printf("1. ImageData \n");
-		ImageData MemData(picvec[k],saveLocation,m_spcount,0.5);
+
+		TimeCountClockTest(
+		{
+			printf("1. ImageData \n");
+			ImageData MemData(picvec[k],saveLocation,m_spcount,0.5);
 		
-		printf("2. SLIC \n");
-		SLIC slic(&MemData);
-		slic.DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy();//得到lable				
+			printf("2. SLIC \n");
+			SLIC slic(&MemData);
+			slic.DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy();//得到lable				
 
-		printf("3. ColorBarCluster \n");
-		ColorBarCluster colorBarCluster(&MemData);
-		colorBarCluster.Clustering();
+			printf("3. ColorBarCluster \n");
+			ColorBarCluster colorBarCluster(&MemData);
+			colorBarCluster.Clustering();
 
-		printf("4. ComputeSVG2 \n");
-		ComputeSVG2 svg(&MemData);
-		svg.separateSVG_Zlm();
+			printf("4. ComputeSVG2 \n");
+			ComputeSVG2 svg(&MemData);
+			svg.separateSVG_Zlm();
+		},"Do One Image Cost Time :");
+
+		
 		/*聚类步骤.docx*/
 #if _MSC_VER
 		///////////////////////////////////////////////
