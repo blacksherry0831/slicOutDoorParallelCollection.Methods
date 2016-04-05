@@ -69,6 +69,25 @@ int main(int argc,char *argv[])
 	out="/home/blacksherry/400/400out/";
 #endif
 
+  }else if (argc>1){
+	  for (int i=1;i<argc;i++){
+#if linux||__linux||__linux__||__GNUC__
+		  if ( !access(argv[i], F_OK)){
+			  printf("this is a file /n");
+			  file.push_back(argv[i]);
+		  }else{
+			  printf("not a file   /n");
+		  }
+		  out="/home/blacksherry/400/400out/";
+#endif
+			
+
+
+	  }
+	
+
+  }else{
+
   }
 
 

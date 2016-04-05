@@ -73,6 +73,7 @@ using namespace cv;
 #include<memory>
 #include <tr1/memory>
 #include <dirent.h>
+#include <unistd.h>
 #endif
 using namespace std;
 /*********************************************************/
