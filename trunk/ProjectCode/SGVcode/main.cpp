@@ -82,10 +82,17 @@ int main(int argc,char *argv[])
 			  printf("this is a file /n");
 			  file.push_back(argv[i]);
 		  }else if (strcmp(argv[i],"-Save")==0){
-			  cui_GeneralImgProcess::SAVEIMAGE2DISK=TRUE;
+			  cui_GeneralImgProcess::SAVE_IMAGE_2DISK=TRUE;
 		  }else if(strcmp(argv[i],"-NotSave")==0){
-		      cui_GeneralImgProcess::SAVEIMAGE2DISK=FALSE;
-		  }else{
+		      cui_GeneralImgProcess::SAVE_IMAGE_2DISK=FALSE;
+			  printf("Will not save Image \n");
+		  }else if (strcmp(argv[i],"-DebugInfo")==0){
+			  cui_GeneralImgProcess::SAVE_DEBUG_2DISK=TRUE;
+		  }else if(strcmp(argv[i],"-NotDebugInfo")==0){
+			  cui_GeneralImgProcess::SAVE_DEBUG_2DISK=FALSE;
+			  printf("Will not save debug info \n");
+		  }
+		  else{
 				printf("not support cmd   /n");
 		  }
 			

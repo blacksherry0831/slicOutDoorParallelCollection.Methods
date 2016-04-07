@@ -30,7 +30,8 @@ public:
 	cui_GeneralImgProcess(void);
 	~cui_GeneralImgProcess(void);
 public:
-	static int SAVEIMAGE2DISK;
+	static int SAVE_IMAGE_2DISK;
+	static int SAVE_DEBUG_2DISK;
 public:
 public:
 static int AdjustLabFrom0toN(int *CuiImgLables_t,

@@ -1184,32 +1184,39 @@ double Energy=0;
 */
 /*---------------------------------------------------*/
 void CuiHarrTransformLet::CuiSaveImg(void){
-	char filename[1024];
-	sprintf(filename,"%s_Harr.jpg",filename_org);
-	cvSaveImage(filename,img_dst_wavelet);
-	/************************************/
-	{
-	  ofstream result_flie;
-	  result_flie.open("CuiHarrTransformLet.txt",ios::app|ios::out);
-	  if (result_flie.is_open()){
-		   result_flie<<filename_org<<endl;
-		   result_flie<<"  L_LL: "<<harr_energy.EnergyL_LL
-			          <<"  L_LH: "<<harr_energy.EnergyL_LH
-			          <<"  L_HL: "<<harr_energy.EnergyL_HL
-			          <<"  L_HH: "<< harr_energy.EnergyL_HH
 
-			          <<"   LL:    "<<harr_energy.Energy_LL
-			          <<"   LH:    "<<harr_energy.Energy_LH
-					  <<"   HL:    "<<harr_energy.Energy_HL
-					  <<"   HH:    "<<harr_energy.Energy_HH<<endl;
-	  }else{
+	if (cui_GeneralImgProcess::SAVE_DEBUG_2DISK==TRUE){
+		char filename[1024];
+			sprintf(filename,"%s_Harr.jpg",filename_org);
+			cvSaveImage(filename,img_dst_wavelet);
+			/************************************/
+			{
+			  ofstream result_flie;
+			  result_flie.open("CuiHarrTransformLet.txt",ios::app|ios::out);
+			  if (result_flie.is_open()){
+				   result_flie<<filename_org<<endl;
+				   result_flie<<"  L_LL: "<<harr_energy.EnergyL_LL
+							  <<"  L_LH: "<<harr_energy.EnergyL_LH
+							  <<"  L_HL: "<<harr_energy.EnergyL_HL
+							  <<"  L_HH: "<< harr_energy.EnergyL_HH
 
-		  cout<<"Open Fail"<<endl;
-	  }
+							  <<"   LL:    "<<harr_energy.Energy_LL
+							  <<"   LH:    "<<harr_energy.Energy_LH
+							  <<"   HL:    "<<harr_energy.Energy_HL
+							  <<"   HH:    "<<harr_energy.Energy_HH<<endl;
+			  }else{
+
+				  cout<<"Open Fail"<<endl;
+			  }
 	 
-	  result_flie.close();
-	}	           
-	/*************************************/
+			  result_flie.close();
+			}	           
+			/*************************************/
+	}else{
+
+	}
+
+	
 }
 /*---------------------------------------------------*/
 /**

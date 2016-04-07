@@ -1697,7 +1697,11 @@ void ImageData::DrawS_V_G_Lables_BorderLine(IplImage *img,UINT32 category)
 		cvLine(img,cvPoint(0,img->height),cvPoint(img->width,img->height), WhiteColorPNGCv,4);		
 	}
 #if TRUE
-	cvSaveImage("Sky_lab.jpg",img);
+	if (cui_GeneralImgProcess::SAVE_DEBUG_2DISK==TRUE)
+	{
+	 cvSaveImage("Sky_lab.jpg",img);
+	}
+
 #endif
 
 }
@@ -1715,7 +1719,7 @@ void ImageData::SaveSuperpixelLabelsImagePNG(
 	const string			filename,
 	const string			path) 
 { 
-	if (cui_GeneralImgProcess::SAVEIMAGE2DISK==FALSE){
+	if (cui_GeneralImgProcess::SAVE_IMAGE_2DISK==FALSE){
 		 	printf("SaveSuperpixelLabelsImagePNG: --not-- \n");
 	}else{
 

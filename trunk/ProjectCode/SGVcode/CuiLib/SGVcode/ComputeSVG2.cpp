@@ -95,7 +95,7 @@ void ComputeSVG2::FillWeightArrayZlm(void)
 	this->FillWeightArrayS_InDoor20150603(horizontal_line,1);
 	this->FillWeightArrayV_New(horizontal_line,1);	
 #if 1
-	{
+	if (cui_GeneralImgProcess::SAVE_DEBUG_2DISK==TRUE){
 		char data_t[1024];																			
 		ofstream outfile;								   
 		outfile.open("Matrix_Weight_GVS_zlm_cuda.data",ios::out);
@@ -136,7 +136,7 @@ void ComputeSVG2::FillWeightArrayZlm(void)
 	pIMD->SaveImgWithPointsCompute("fuzzy");
 #endif
 #if 1
-	{
+	if (cui_GeneralImgProcess::SAVE_DEBUG_2DISK==TRUE){
 		char data_t[1024];																			
 		ofstream outfile;								   
 		outfile.open("Matrix_Weight_GVS_zlm_cuda.data",ios::out);

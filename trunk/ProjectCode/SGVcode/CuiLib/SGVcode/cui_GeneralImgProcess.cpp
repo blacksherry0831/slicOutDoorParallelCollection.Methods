@@ -8,7 +8,8 @@
 *
 */
 /*----------------------------------------------------------------*/
- int cui_GeneralImgProcess::SAVEIMAGE2DISK=TRUE;
+ int cui_GeneralImgProcess::SAVE_IMAGE_2DISK=TRUE;
+ int cui_GeneralImgProcess::SAVE_DEBUG_2DISK=TRUE;
 /*----------------------------------------------------------------*/
 /**
 *构造函数\n
@@ -652,7 +653,7 @@ void cui_GeneralImgProcess::CuiSaveImgWithPoints(
 	string fileadd)
 {
 
-	if (SAVEIMAGE2DISK==FALSE){
+	if (SAVE_IMAGE_2DISK==FALSE){
 			printf("SaveImgWithPoints: --not-- \n");
 		return ;
 	}else{
@@ -746,7 +747,7 @@ void cui_GeneralImgProcess::CuiSaveImageData(
 	int					format,
 	const string&		str)
 {
-	if (SAVEIMAGE2DISK==FALSE){
+	if (SAVE_IMAGE_2DISK==FALSE){
 		printf("SaveImageData: --not-- \n");
 	}else{
 		int sz = width*height;
@@ -960,7 +961,7 @@ LARGE_INTEGER litmp;
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
 #endif
-	if (SAVEIMAGE2DISK==FALSE){
+	if (SAVE_IMAGE_2DISK==FALSE){
 	    printf("SaveImgWithContours: --not-- \n");
 	}else{
 	unsigned int * imgbuf_t=new unsigned int[width*height];
@@ -3246,7 +3247,10 @@ void cui_GeneralImgProcess::DrawS_V_G_Lables_BorderLine(IplImage *img,UINT32 cat
 		cvLine(img,cvPoint(img->width,0),cvPoint(img->width,img->height), WhiteColorPNGCv,2);
 	}
 #if TRUE
-	cvSaveImage("Sky_lab.jpg",img);
+	if (SAVE_DEBUG_2DISK==TRUE){
+		cvSaveImage("Sky_lab.jpg",img);
+	}
+	
 #endif
 
 }
