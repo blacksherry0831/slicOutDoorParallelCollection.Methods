@@ -35,6 +35,14 @@ void PrintARG(int argc,char *argv[])
 *
 */
 /*----------------------------------------------*/
+void PrintHelp(){
+
+}
+/*----------------------------------------------*/
+/*
+*
+*/
+/*----------------------------------------------*/
 void TestOpenCV()
 {
 #if _DEBUG
@@ -58,38 +66,54 @@ int main(int argc,char *argv[])
   string out;
   if (argc==1)
   {
-#if _WIN64 ||_WIN32 ||_MSC_VER ||WIN32
 
- 	file.push_back("D:\\ImageDataBase\\400img\\img-op39-p-015t000.jpg");
-	out="E:\\OutPutImg\\";
-#endif 
-
-#if linux||__linux||__linux__||__GNUC__
-	file.push_back("/home/blacksherry/400/400img/img-op39-p-015t000.jpg");
-	out="/home/blacksherry/400/400out/";
-#endif
 
   }else if (argc>1){
 	  for (int i=1;i<argc;i++){
-#if linux||__linux||__linux__||__GNUC__
-		  if ( !access(argv[i], F_OK)){
+
+		  if ( 
+#if linux||__linux||__linux__||__GNUC__			  
+			  !access(argv[i], F_OK)
+#endif	
+#if _WIN64 ||_WIN32 ||_MSC_VER ||WIN32
+			  access(argv[i], 0) == 0			
+#endif
+			  ){
 			  printf("this is a file /n");
 			  file.push_back(argv[i]);
+		  }else if (strcmp(argv[i],"-Save")==0){
+			  cui_GeneralImgProcess::SAVEIMAGE2DISK=TRUE;
+		  }else if(strcmp(argv[i],"-NotSave")==0){
+		      cui_GeneralImgProcess::SAVEIMAGE2DISK=FALSE;
 		  }else{
-			  printf("not a file   /n");
+				printf("not support cmd   /n");
 		  }
-		  out="/home/blacksherry/400/400out/";
-#endif
 			
 
-
-	  }
-	
-
+			
+		
+		
+     }
   }else{
 
   }
-
+#if _WIN64 ||_WIN32 ||_MSC_VER ||WIN32
+if (file.size()==0){
+	file.push_back("D:\\ImageDataBase\\400img\\img-op39-p-015t000.jpg");
+}
+if (out.empty())
+{
+    out="E:\\OutPutImg\\";
+}
+#endif 
+#if linux||__linux||__linux__||__GNUC__
+if (file.size()==0){
+   file.push_back("/home/blacksherry/400/400img/img-op39-p-015t000.jpg");
+}
+if (out.empty()){
+   out="/home/blacksherry/400/400out/";
+}
+#endif
 
     
 	cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(0,file,out,1000);

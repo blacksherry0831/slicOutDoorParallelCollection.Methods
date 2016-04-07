@@ -65,6 +65,7 @@ using namespace cv;
 #include<string.h>
 #if _MSC_VER
 #include <mbctype.h>  
+#include <io.h>
 #endif
 //#if _MSC_VER
 //#include<atlstr.h>

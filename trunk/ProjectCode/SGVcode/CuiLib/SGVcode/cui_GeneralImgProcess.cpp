@@ -4,6 +4,13 @@
 //#include "Harr/CuiHarrTransformLet.h"
 /*----------------------------------------------------------------*/
 /**
+*
+*
+*/
+/*----------------------------------------------------------------*/
+ int cui_GeneralImgProcess::SAVEIMAGE2DISK=TRUE;
+/*----------------------------------------------------------------*/
+/**
 *构造函数\n
 *
 *
@@ -644,69 +651,77 @@ void cui_GeneralImgProcess::CuiSaveImgWithPoints(
 	string        filewritepath,
 	string fileadd)
 {
-	UINT32 * imgbuf_t=new UINT32[width*height];
-	IplImage *imgdata_t;
-	imgdata_t=cvCreateImageHeader(cvSize(width,height),8,4);
-	imgdata_t->imageData=(char*)imgbuf_t;
-	memcpy(imgbuf_t,ubuff,sizeof(UINT32)*width*height);
-	if (category==nullptr){
-		category=InitSP2SVGcategory();
-	}
-	/********************unknow****G**********V************S******/
-#if  OUT_NOGROUND_IMG
-	const UINT32 color[10]={0xff000000,0xffff0000,0xffff0000,0xff4B4587};
-#else
-	UINT32 *color=InitColorTable();
-#endif
-	/******************black**********r***********g*******b******/
-	/*****间隔画点******************************************/
-	for (register int i=0;i<height;i+=2){
-		for (register int j=0;j<width;j+=1){
-			int sp_t=labels[i*width+j];
-			int color_i=  category[sp_t];
-			if (color_i<0){
-				imgbuf_t[i*width+j]=imgbuf_t[i*width+j];
-			}else{
-				imgbuf_t[i*width+j]=color[color_i];
-			}
-#if FALSE
-			if (color_i==Vertical_Tree){
-				TRACE("Tree\n");
-			}
-			if (color_i==Vertical_Building){
-				TRACE("Building\n");
-			}
-#endif
 
-		}
-	}
-	/**************画上轮廓*********************************/
-	if (withcontours){
-		DrawContoursAroundSegments(imgbuf_t,labels,width,height,BlackColorPNG);
-	}
+	if (SAVEIMAGE2DISK==FALSE){
+			printf("SaveImgWithPoints: --not-- \n");
+		return ;
+	}else{
+			IplImage *imgdata_t;
+				UINT32 * imgbuf_t=new UINT32[width*height];
+				imgdata_t=cvCreateImageHeader(cvSize(width,height),8,4);
+				imgdata_t->imageData=(char*)imgbuf_t;
+				memcpy(imgbuf_t,ubuff,sizeof(UINT32)*width*height);
+				if (category==nullptr){
+					category=InitSP2SVGcategory();
+				}
+				/********************unknow****G**********V************S******/
+			#if  OUT_NOGROUND_IMG
+				const UINT32 color[10]={0xff000000,0xffff0000,0xffff0000,0xff4B4587};
+			#else
+				UINT32 *color=InitColorTable();
+			#endif
+				/******************black**********r***********g*******b******/
+				/*****间隔画点******************************************/
+				for (register int i=0;i<height;i+=2){
+					for (register int j=0;j<width;j+=1){
+						int sp_t=labels[i*width+j];
+						int color_i=  category[sp_t];
+						if (color_i<0){
+							imgbuf_t[i*width+j]=imgbuf_t[i*width+j];
+						}else{
+							imgbuf_t[i*width+j]=color[color_i];
+						}
+			#if FALSE
+						if (color_i==Vertical_Tree){
+							TRACE("Tree\n");
+						}
+						if (color_i==Vertical_Building){
+							TRACE("Building\n");
+						}
+			#endif
 
-#if CUI_DRAW_SC_INDEX
-	if (category!=InitSP2SVGcategory()){
-#if 0
-		cvLine(imgdata_t,cvPoint(0,pMD->Seg_HorizontalLinePos),cvPoint(imgdata_t->width,pMD->Seg_HorizontalLinePos),cvScalar(255,255,255,255),3);
-		float HgPos= pMD->Seg_HorizontalLinePos+pMD->PgOffset*pMD->ImgHeight;
-		float HsPos= pMD->Seg_HorizontalLinePos-pMD->PsOffset*pMD->ImgHeight;
-		cvLine(imgdata_t,cvPoint(0,HgPos),cvPoint(imgdata_t->width,HgPos),cvScalar(255,255,255,255),3);
-		cvLine(imgdata_t,cvPoint(0,HsPos),cvPoint(imgdata_t->width,HsPos),cvScalar(255,255,255,255),3);
-#endif
+					}
+				}
+				/**************画上轮廓*********************************/
+				if (withcontours){
+					DrawContoursAroundSegments(imgbuf_t,labels,width,height,BlackColorPNG);
+				}
+
+			#if CUI_DRAW_SC_INDEX
+				if (category!=InitSP2SVGcategory()){
+			#if 0
+					cvLine(imgdata_t,cvPoint(0,pMD->Seg_HorizontalLinePos),cvPoint(imgdata_t->width,pMD->Seg_HorizontalLinePos),cvScalar(255,255,255,255),3);
+					float HgPos= pMD->Seg_HorizontalLinePos+pMD->PgOffset*pMD->ImgHeight;
+					float HsPos= pMD->Seg_HorizontalLinePos-pMD->PsOffset*pMD->ImgHeight;
+					cvLine(imgdata_t,cvPoint(0,HgPos),cvPoint(imgdata_t->width,HgPos),cvScalar(255,255,255,255),3);
+					cvLine(imgdata_t,cvPoint(0,HsPos),cvPoint(imgdata_t->width,HsPos),cvScalar(255,255,255,255),3);
+			#endif
 		
-		DrawTextOnImage(imgbuf_t,labels,width,height); 
-	}
+					DrawTextOnImage(imgbuf_t,labels,width,height); 
+				}
 
-#endif   	  
+			#endif   	  
 
-	cvReleaseImageHeader(&imgdata_t);
-	/***********************************************/
-	if (fileadd==""){
-		fileadd=cuiGetCurrentTime();
+				cvReleaseImageHeader(&imgdata_t);
+				/***********************************************/
+				if (fileadd==""){
+					fileadd=cuiGetCurrentTime();
+				}
+				CuiSaveImageData(imgbuf_t,width,height,filereadfullpath,filewritepath, 1,fileadd);
+				delete []imgbuf_t;
+
 	}
-	CuiSaveImageData(imgbuf_t,width,height,filereadfullpath,filewritepath, 1,fileadd);
-	delete []imgbuf_t;
+	
 }
 /*----------------------------------------------------------------*/
 /**
@@ -731,29 +746,31 @@ void cui_GeneralImgProcess::CuiSaveImageData(
 	int					format,
 	const string&		str)
 {
-	
+	if (SAVEIMAGE2DISK==FALSE){
+		printf("SaveImageData: --not-- \n");
+	}else{
+		int sz = width*height;
+		IplImage *Save_Image_t;
+		Save_Image_t=cvCreateImage(cvSize(width,height),IPL_DEPTH_8U,4);
+		memcpy(Save_Image_t->imageData,imgBuffer,4*width*height);
+		//-----------------------------------------
+		// Prepare path and save the result images
+		//-----------------------------------------
+		string path = saveLocation;
+		char fname[_MAX_FNAME];
+		_splitpath(outFilename.c_str(), NULL, NULL, fname, NULL);
+		path += fname;
 
-	int sz = width*height;
-	IplImage *Save_Image_t;
-	Save_Image_t=cvCreateImage(cvSize(width,height),IPL_DEPTH_8U,4);
-	memcpy(Save_Image_t->imageData,imgBuffer,4*width*height);
-	//-----------------------------------------
-	// Prepare path and save the result images
-	//-----------------------------------------
-	string path = saveLocation;
-	char fname[_MAX_FNAME];
-	_splitpath(outFilename.c_str(), NULL, NULL, fname, NULL);
-	path += fname;
+		if( 0 != str.compare("") ) path.append(str);
+		if( 1 == format ) path.append(".png");
+		if( 0 == format ) path.append(".bmp");
+	
+		printf("cvSaveImage: %s \n",path.c_str());
+		cvSaveImage(path.c_str(),Save_Image_t);
+		cvReleaseImage(&Save_Image_t);
+	}
 
-	if( 0 != str.compare("") ) path.append(str);
-	if( 1 == format ) path.append(".png");
-	if( 0 == format ) path.append(".bmp");
 	
-	printf("cvSaveImage: %s \n",path.c_str());
-	cvSaveImage(path.c_str(),Save_Image_t);
-	
-	
-	cvReleaseImage(&Save_Image_t);
 
 }
 /*----------------------------------------------------------------*/
@@ -943,7 +960,9 @@ LARGE_INTEGER litmp;
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
 #endif
-	{
+	if (SAVEIMAGE2DISK==FALSE){
+	    printf("SaveImgWithContours: --not-- \n");
+	}else{
 	unsigned int * imgbuf_t=new unsigned int[width*height];
 	memcpy(imgbuf_t,ubuff,sizeof(unsigned int)*width*height);
 	

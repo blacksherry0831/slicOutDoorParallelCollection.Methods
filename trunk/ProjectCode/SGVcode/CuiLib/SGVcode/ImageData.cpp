@@ -1715,47 +1715,54 @@ void ImageData::SaveSuperpixelLabelsImagePNG(
 	const string			filename,
 	const string			path) 
 { 
-	ASSERT(width==this->ImgWidth);
-	ASSERT(height==this->ImgHeight);
-	ASSERT(sizeof(INT32)==4);
+	if (cui_GeneralImgProcess::SAVEIMAGE2DISK==FALSE){
+		 	printf("SaveSuperpixelLabelsImagePNG: --not-- \n");
+	}else{
 
-	//string fileFullPath=path+filename;
+			ASSERT(width==this->ImgWidth);
+			ASSERT(height==this->ImgHeight);
+			ASSERT(sizeof(INT32)==4);
+
+			//string fileFullPath=path+filename;
 
 	
 	
-	char fname[_MAX_FNAME];
-	_splitpath(filename.c_str(), NULL, NULL, fname, NULL);
-	string pathSave =path+fname+"_SuperPixel.png";
+			char fname[_MAX_FNAME];
+			_splitpath(filename.c_str(), NULL, NULL, fname, NULL);
+			string pathSave =path+fname+"_SuperPixel.png";
 	
 	
-	IplImage *img_t=cvCreateImage(cvSize(this->ImgWidth,this->ImgHeight),IPL_DEPTH_8U,4);
-    ASSERT(width*height*sizeof(INT32)==img_t->imageSize);
+			IplImage *img_t=cvCreateImage(cvSize(this->ImgWidth,this->ImgHeight),IPL_DEPTH_8U,4);
+			ASSERT(width*height*sizeof(INT32)==img_t->imageSize);
 
-	/*
-	OPENCV  4字节对齐问题
-	*/
+			/*
+			OPENCV  4字节对齐问题
+			*/
 
-	ASSERT(img_t->widthStep==width*sizeof(INT32));  
+			ASSERT(img_t->widthStep==width*sizeof(INT32));  
 
 
-	memcpy(img_t->imageData,labels,img_t->imageSize);
-  //unsigned char red=254;
-	for (int x=0;x<width;x++){
-		int *data=(int*)img_t->imageData;
-		for (int y=0;y<height;y++){
-			int ind=x+y*width;			
-			int org=data[ind];
-			unsigned char red=org>=254?254:org;
-			//data[ind]|=0x000000ff<<24;//填充alph通道
-			data[ind]|=red<<24;
-			/*if (org<245){
-				labels[ind]=org|(org<<8)|(org<<16)|(0xff000000);
-			}		*/
-		}
+			memcpy(img_t->imageData,labels,img_t->imageSize);
+		  //unsigned char red=254;
+			for (int x=0;x<width;x++){
+				int *data=(int*)img_t->imageData;
+				for (int y=0;y<height;y++){
+					int ind=x+y*width;			
+					int org=data[ind];
+					unsigned char red=org>=254?254:org;
+					//data[ind]|=0x000000ff<<24;//填充alph通道
+					data[ind]|=red<<24;
+					/*if (org<245){
+						labels[ind]=org|(org<<8)|(org<<16)|(0xff000000);
+					}		*/
+				}
+			}
+			cvSaveImage(pathSave.c_str(),img_t);
+
+			cvReleaseImage(&img_t);
 	}
-	cvSaveImage(pathSave.c_str(),img_t);
 
-	cvReleaseImage(&img_t);
+	
 		
 }
 /*----------------------------------------------------------------*/
