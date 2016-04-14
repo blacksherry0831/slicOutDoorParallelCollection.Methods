@@ -3758,7 +3758,7 @@ UINT cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpPar
 			printf("1. ImageData \n");
 			ImageData MemData(picvec[k],saveLocation,m_spcount,0.5);
 		
-			printf("2. SLIC \n");
+			printf("2. GPU Super \n");
 			SLIC slic(&MemData);
 			slic.DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy();//µÃµ½lable				
 

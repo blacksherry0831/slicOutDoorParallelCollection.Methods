@@ -27,22 +27,19 @@ LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 // Dialog
 //
 
-IDD_SLICSUPERPIXELS_DIALOG DIALOGEX 0, 0, 330, 140
+IDD_SLICSUPERPIXELS_DIALOG DIALOGEX 0, 0, 212, 116
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "SLICSuperpixels"
+CAPTION "OutdoorImage"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,7,126,50,14,WS_DISABLED
-    PUSHBUTTON      "Close",IDCANCEL,273,126,50,14
-    PUSHBUTTON      "Create superpixels",IDC_BUTTON_CREATESUPERPIXELS,56,66,186,14
-    EDITTEXT        IDC_EDIT_SPCOUNT,178,9,40,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_COMPACTNESS,178,29,40,14,ES_AUTOHSCROLL
-    LTEXT           "Desired number of superpixels",IDC_STATIC,71,13,98,8
-    LTEXT           "Set compactness factor (1-40)",IDC_STATIC,71,33,98,8
-    LTEXT           "密度因素",IDC_STATIC,95,45,33,8
-    CONTROL         "http://ivrgwww.epfl.ch/supplementary_material/RK_SLICSuperpixels/",IDC_MFCLINK1,
-                    "MfcLink",WS_TABSTOP,19,97,276,12
+    DEFPUSHBUTTON   "OK",IDOK,9,94,50,14,WS_DISABLED
+    PUSHBUTTON      "Close",IDCANCEL,153,92,50,14
+    PUSHBUTTON      "Start",IDC_BUTTON_CREATESUPERPIXELS,14,52,186,32
+    EDITTEXT        IDC_EDIT_SPCOUNT,121,9,40,14,ES_AUTOHSCROLL | NOT WS_VISIBLE
+    EDITTEXT        IDC_EDIT_COMPACTNESS,121,29,40,14,ES_AUTOHSCROLL | NOT WS_VISIBLE
+    LTEXT           "Desired number",IDC_STATIC,15,13,51,8,NOT WS_VISIBLE
+    LTEXT           "Set compactness factor (1-40)",IDC_STATIC,14,33,98,8,NOT WS_VISIBLE
 END
 
 
@@ -57,32 +54,11 @@ BEGIN
     IDD_SLICSUPERPIXELS_DIALOG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 323
+        RIGHTMARGIN, 205
         TOPMARGIN, 7
     END
 END
 #endif    // APSTUDIO_INVOKED
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Dialog Info
-//
-
-IDD_SLICSUPERPIXELS_DIALOG DLGINIT
-BEGIN
-    IDC_MFCLINK1, 0x37c, 157, 0
-0x4d3c, 0x4346, 0x694c, 0x6b6e, 0x555f, 0x6c72, 0x3c3e, 0x4d2f, 0x4346, 
-0x694c, 0x6b6e, 0x555f, 0x6c72, 0x3c3e, 0x464d, 0x4c43, 0x6e69, 0x5f6b, 
-0x7255, 0x506c, 0x6572, 0x6966, 0x3e78, 0x2f3c, 0x464d, 0x4c43, 0x6e69, 
-0x5f6b, 0x7255, 0x506c, 0x6572, 0x6966, 0x3e78, 0x4d3c, 0x4346, 0x694c, 
-0x6b6e, 0x545f, 0x6f6f, 0x746c, 0x7069, 0x3c3e, 0x4d2f, 0x4346, 0x694c, 
-0x6b6e, 0x545f, 0x6f6f, 0x746c, 0x7069, 0x3c3e, 0x464d, 0x4c43, 0x6e69, 
-0x5f6b, 0x7546, 0x6c6c, 0x6554, 0x7478, 0x6f54, 0x6c6f, 0x6974, 0x3e70, 
-0x4146, 0x534c, 0x3c45, 0x4d2f, 0x4346, 0x694c, 0x6b6e, 0x465f, 0x6c75, 
-0x546c, 0x7865, 0x5474, 0x6f6f, 0x746c, 0x7069, "\076" 
-    0
-END
 
 #endif    // 中文(简体，中国) resources
 /////////////////////////////////////////////////////////////////////////////
