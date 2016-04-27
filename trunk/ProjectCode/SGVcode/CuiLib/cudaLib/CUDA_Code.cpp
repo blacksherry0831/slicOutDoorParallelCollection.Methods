@@ -208,6 +208,7 @@ void PerformSuperpixelSLIC_cuda(
 		QPart2 = litmp.QuadPart;//获得中止值	
 		dfMinus = (double)(QPart2-QPart1);	
 		dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒	
+		printf( "gpu time is %0.1f ms [msvc]\n", dfTim*1000 );
 #endif
 }
 /*------------------------------------------------------------------------------------------*/
