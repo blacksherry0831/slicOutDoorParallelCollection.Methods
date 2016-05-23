@@ -3556,8 +3556,10 @@ void cui_GeneralImgProcess::Get_Kseeds_Histogram(
 		double angle=atan2(A,B);//-PI---PI
 		double angule_360=(angle+M_PI)*180/M_PI;
 		assert(angule_360>=-0.1&&angule_360<=360.1);
-		int angle_index=cvFloor(angule_360/360*HistDimSPLABColor);
-		int gray_index=cvFloor(L/100*HIstDimSPLGray);
+		double	angule_idx_float=1.0*angule_360/360*HistDimSPLABColor;
+		double	gray_idx_float=1.0*L/100*HIstDimSPLGray;
+		int angle_index=cvRound(angule_idx_float);//采用四舍五入法
+		int gray_index=cvRound(gray_idx_float);
 		//////////////////////////////////////////
 		//4
 		if (AB_length>2){
