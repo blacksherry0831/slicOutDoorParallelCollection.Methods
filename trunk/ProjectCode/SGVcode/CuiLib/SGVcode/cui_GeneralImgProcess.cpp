@@ -700,14 +700,13 @@ void cui_GeneralImgProcess::CuiSaveImgWithPoints(
 
 			#if CUI_DRAW_SC_INDEX
 				if (category!=InitSP2SVGcategory()){
-			#if 0
-					cvLine(imgdata_t,cvPoint(0,pMD->Seg_HorizontalLinePos),cvPoint(imgdata_t->width,pMD->Seg_HorizontalLinePos),cvScalar(255,255,255,255),3);
-					float HgPos= pMD->Seg_HorizontalLinePos+pMD->PgOffset*pMD->ImgHeight;
-					float HsPos= pMD->Seg_HorizontalLinePos-pMD->PsOffset*pMD->ImgHeight;
-					cvLine(imgdata_t,cvPoint(0,HgPos),cvPoint(imgdata_t->width,HgPos),cvScalar(255,255,255,255),3);
-					cvLine(imgdata_t,cvPoint(0,HsPos),cvPoint(imgdata_t->width,HsPos),cvScalar(255,255,255,255),3);
-			#endif
-		
+					if (SAVE_DEBUG_2DISK){
+						cvLine(imgdata_t,cvPoint(0,pMD->Seg_HorizontalLinePos),cvPoint(imgdata_t->width,pMD->Seg_HorizontalLinePos),cvScalar(255,255,255,255),3);
+						float HgPos= pMD->Seg_HorizontalLinePos+pMD->PgOffset*pMD->ImgHeight;
+						float HsPos= pMD->Seg_HorizontalLinePos-pMD->PsOffset*pMD->ImgHeight;
+						cvLine(imgdata_t,cvPoint(0,HgPos),cvPoint(imgdata_t->width,HgPos),cvScalar(255,255,255,255),3);
+						cvLine(imgdata_t,cvPoint(0,HsPos),cvPoint(imgdata_t->width,HsPos),cvScalar(255,255,255,255),3)
+					}		
 					DrawTextOnImage(imgbuf_t,labels,width,height); 
 				}
 
