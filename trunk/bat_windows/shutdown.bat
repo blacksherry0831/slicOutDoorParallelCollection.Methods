@@ -1,0 +1,1 @@
+at 22:01 shutdown /s
