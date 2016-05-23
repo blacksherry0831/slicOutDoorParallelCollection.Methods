@@ -3561,6 +3561,9 @@ void cui_GeneralImgProcess::Get_Kseeds_Histogram(
 		int angle_index=cvRound(angule_idx_float);//采用四舍五入法
 		int gray_index=cvRound(gray_idx_float);
 		//////////////////////////////////////////
+		if (gray_index==HIstDimSPLGray){	gray_index=HIstDimSPLGray-1;	}
+		if (angle_index==HistDimSPLABColor){	angle_index=HistDimSPLABColor-1;	}
+		//////////////////////////////////////////
 		//4
 		if (AB_length>2){
 			//角度直方图
