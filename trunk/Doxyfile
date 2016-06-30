@@ -24,7 +24,7 @@
 # for the list of possible encodings.
 # The default value is: UTF-8.
 
-DOXYFILE_ENCODING      = UTF-8
+DOXYFILE_ENCODING      = GBK
 
 # The PROJECT_NAME tag is a single word (or a sequence of words surrounded by
 # double-quotes, unless you are using Doxywizard) that should identify the
@@ -790,7 +790,7 @@ INPUT                  = E:\share\Image_SVG_program\windows\slicOutDoorParallelC
 # possible encodings.
 # The default value is: UTF-8.
 
-INPUT_ENCODING         = UTF-8
+INPUT_ENCODING         = GBK
 
 # If the value of the INPUT tag contains directories, you can use the
 # FILE_PATTERNS tag to specify one or more wildcard patterns (like *.cpp and
@@ -1766,7 +1766,7 @@ LATEX_EXTRA_FILES      =
 # The default value is: YES.
 # This tag requires that the tag GENERATE_LATEX is set to YES.
 
-PDF_HYPERLINKS         = YES
+PDF_HYPERLINKS         = NO
 
 # If the USE_PDFLATEX tag is set to YES, doxygen will use pdflatex to generate
 # the PDF file directly from the LaTeX files. Set this option to YES, to get a
