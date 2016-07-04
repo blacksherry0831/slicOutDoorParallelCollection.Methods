@@ -1617,23 +1617,26 @@ void cui_GeneralImgProcess::GetContour2Fill(
 	CvScalar holeColor;
 	CvMemStorage * storage=cvCreateMemStorage(0);    //提取轮廓需要的储存容量 0为默认64KB
 	CvSeq * pcontour=0;  //提取轮廓的序列指针	
-	IplImage * src=cvCloneImage(contour);
-	IplImage * pImg=cvCreateImage(cvGetSize(src),src->depth,1);	
-	cvCvtColor(src,pImg,CV_RGB2GRAY);    //将图像转换为灰度
+	//IplImage * src=cvCloneImage(contour);
+	IplImage * pImg=cvCreateImage(cvGetSize(contour),contour->depth,1);	
+	cvCvtColor(contour,pImg,CV_RGB2GRAY);    //将图像转换为灰度
 	//--------------查找轮廓----------------
 	mode=CV_RETR_LIST;
 	contoursNum=cvFindContours(pImg,storage,&  pcontour,sizeof(CvContour),mode,CV_CHAIN_APPROX_NONE);
 	//cout<<contoursNum<<" "<<endl;
 	//--------------画轮廓----------------
 	if (contoursNum>1){
+		TRACE("%d个轮廓，START",contoursNum);
 		for (;pcontour!=0;pcontour=pcontour->h_next)
 		{
 			holeColor=filldata;
 			externalColor=filldata;
 			cvDrawContours(fill_img,pcontour,externalColor,holeColor,1,CV_FILLED,8,cvPoint(OriginX,OriginY));
+			TRACE("#");
 		}
+		TRACE("\n");
 	}
-	cvReleaseImage(&src);
+//	cvReleaseImage(&src);
 	cvReleaseImage(&pImg);
 	cvReleaseMemStorage(&storage);
 #endif

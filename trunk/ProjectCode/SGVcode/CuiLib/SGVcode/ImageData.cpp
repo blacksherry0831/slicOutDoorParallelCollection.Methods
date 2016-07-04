@@ -1074,11 +1074,12 @@ void ImageData::InSideClusteringByopencv()
 	Img_labels.imageData=(char *)labels;
 	this->CalculateAllSpPropertyRange();
 #if 1	
-	UINT32 *Origin_img=NULL;	
+	UINT32 *Origin_img=NULL;
+	Origin_img=new UINT32[width*height];
 		for (register int sp=0;sp<slic_current_num;sp++){
 				int img_width=SpSet.SpPropertySet[sp].max_x-SpSet.SpPropertySet[sp].min_x;
 				int img_height=SpSet.SpPropertySet[sp].max_y-SpSet.SpPropertySet[sp].min_y;
-				Origin_img=new UINT32[img_width*img_height];
+				//Origin_img=new UINT32[img_width*img_height];
 				IplImage Img_Contour_t;
 				cvInitImageHeader(&Img_Contour_t,cvSize(img_width,img_height),IPL_DEPTH_8U,4);
 				Img_Contour_t.imageData=(char *)Origin_img;
@@ -1103,11 +1104,10 @@ void ImageData::InSideClusteringByopencv()
 					SpSet.SpPropertySet[sp].min_y,
 					&Img_labels,
 					cvScalar(sp&0xff,(sp>>8)&0xff,(sp>>16)&0xff,(sp>>24)&0xff));
-				/**********************************************/
-				delete[]Origin_img;
+				/**********************************************/				
 		}
 	/**********************************************/
-	
+	delete[]Origin_img;
 #endif
 this->slic_current_num=cui_GeneralImgProcess::AdjustLabFrom0toN(labels,width,height,NumLabels);
 }
