@@ -898,7 +898,7 @@ UINT CSLICSuperpixelsDlg::THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpParam
 	/****************************************/
 	cui_Button.EnableWindow(FALSE);
 	/****************************************/
-		for(int k = 0; k < numPics; k++ ){	
+/*		for(int k = 0; k < numPics; k++ ){	
 			LARGE_INTEGER litmp;
 			LONGLONG QPart1,QPart2;
 			double dfMinus, dfFreq, dfTim;
@@ -922,17 +922,17 @@ UINT CSLICSuperpixelsDlg::THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpParam
 				/*聚类步骤.docx*/
 
 			///////////////////////////////////////////////
-			QueryPerformanceCounter(&litmp);
+/*			QueryPerformanceCounter(&litmp);
 			QPart2 = litmp.QuadPart;//获得中止值
 			dfMinus = (double)(QPart2-QPart1);
 			dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 			TRACE("\n 全部时间: %f（秒）",dfTim);
 			/*************************************************************/
-#if	!(SaveContours2Disk)
+/*#if	!(SaveContours2Disk)
 			MemData.SaveImgWithContours();			
-#endif	
-		}
-
+#endif	}*/
+		
+	cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(NULL,picvec,saveLocation,m_spcount);
 	/****************************************/
 	cui_Button.EnableWindow(TRUE);
 	return AfxMessageBox(L"Done!", 0, 0);

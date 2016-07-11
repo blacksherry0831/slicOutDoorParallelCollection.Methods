@@ -367,7 +367,7 @@ public:
 
 #endif
 
-
+/*----------------------------------------------------------------------*/
 typedef struct  histRangeData{
 	/*Ç°°ë¶Î*/
 	double *start;
@@ -381,5 +381,25 @@ typedef struct  histRangeData{
 	double* maxHistLeft;
 	double* maxHistRight;
 }HistRangeData;
+/*----------------------------------------------------------------------*/
+class ThreadDoOneImageData{
+public:
+	vector<string> picvec;
+	string saveLocation;
+	int m_spcount;
+	int start;
+	int step;
+	ThreadDoOneImageData(vector<string> picvec,
+							string saveLocation,
+							int m_spcount,
+							int start,
+							int step){
+		this->picvec=picvec;
+		this->saveLocation=saveLocation;
+		this->m_spcount=m_spcount;
+		this->start=start;
+		this->step=step;
+	}
+};
 /*----------------------------------------------------------------------*/
 #endif

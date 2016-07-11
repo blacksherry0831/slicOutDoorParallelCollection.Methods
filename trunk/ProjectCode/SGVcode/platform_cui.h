@@ -128,6 +128,13 @@ typedef unsigned long long ULONGLONG;
 #define nullptr 0
 #endif
 #endif
+/************************************************************************/
+#if _MSC_VER
+//#define PT_USE_SEM
+//#include <pthread.h>
+//#include <thread>
+//#include <mutex> 
+#endif
 
 /************************************************************************/
 #define DEBUG_CUI FALSE

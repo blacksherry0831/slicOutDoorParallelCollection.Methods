@@ -32,6 +32,11 @@ public:
 public:
 	static int SAVE_IMAGE_2DISK;
 	static int SAVE_DEBUG_2DISK;
+	//static struct pt_sem SEM_CPU_NUMS;
+#if _MSC_VER
+	static	HANDLE H_SEM_CPU_NUMS;  
+#endif
+
 public:
 public:
 static int AdjustLabFrom0toN(int *CuiImgLables_t,
@@ -370,7 +375,11 @@ static void Cui_Combination_ImgLabsNew(
 	ImageData* pMD);
 static void  DetermineColorRank(ImageMemData* pMD,int RankNum);
 static void  ShowImgLabels(int* ImgLabels,int Width,int Height);
+
 static UINT THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpParam,vector<string> picvec,string saveLocation,int m_spcount);
+static void THreadSuperPixel_DoOneImage(string picvec,string saveLocation,int m_spcount);
+static unsigned THreadSuperPixel_DoOneImage_win(LPVOID lpParam);
+static int	get_CPU_core_num(); 
 
 static void _splitpath(const char *path, char *drive, char *dir, char *fname, char *ext);
 static void _split_whole_name(const char *whole_name, char *fname, char *ext);

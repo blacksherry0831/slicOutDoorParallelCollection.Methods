@@ -10,6 +10,10 @@
 /*----------------------------------------------------------------*/
  int cui_GeneralImgProcess::SAVE_IMAGE_2DISK=TRUE;
  int cui_GeneralImgProcess::SAVE_DEBUG_2DISK=TRUE;
+ //struct pt_sem cui_GeneralImgProcess::SEM_CPU_NUMS;
+#if _MSC_VER
+ HANDLE cui_GeneralImgProcess::H_SEM_CPU_NUMS = NULL;  
+#endif
 /*----------------------------------------------------------------*/
 /**
 *构造函数\n
@@ -3740,63 +3744,136 @@ IplImage *imglabels=cvCreateImage(cvSize(Width,Height),IPL_DEPTH_8U,4);
 *
 */
 /*-------------------------------------------------------------------------*/
+int cui_GeneralImgProcess::get_CPU_core_num() 
+{ 
+#if defined(WIN32) 
+	SYSTEM_INFO info; 
+	GetSystemInfo(&info); 
+	return info.dwNumberOfProcessors; 
+#elif defined(LINUX) || defined(SOLARIS) || defined(AIX) 
+	return get_nprocs();   //GNU fuction 
+#else 
+#error  不支持的操作系统 
+#endif 
+} 
+/*-------------------------------------------------------------------------*/
+/**
+*
+*/
+/*-------------------------------------------------------------------------*/
+unsigned cui_GeneralImgProcess::THreadSuperPixel_DoOneImage_win(LPVOID lpParam)
+{
+	ThreadDoOneImageData* tdoid=(ThreadDoOneImageData*)lpParam;
+
+	for(int k = tdoid->start; k <tdoid->picvec.size(); k+=tdoid->step){
+
+		if(k>tdoid->picvec.size()){
+			return 0;
+		}
+		THreadSuperPixel_DoOneImage(tdoid->picvec[k],tdoid->saveLocation,tdoid->m_spcount);
+	}
+	return 0;
+}
+/*-------------------------------------------------------------------------*/
+/**
+*
+*/
+/*-------------------------------------------------------------------------*/
+void cui_GeneralImgProcess::THreadSuperPixel_DoOneImage(string picvec,string saveLocation,int m_spcount)
+{
+#if _MSC_VER
+	LARGE_INTEGER litmp;
+	LONGLONG QPart1,QPart2;
+	double dfMinus, dfFreq, dfTim;
+	QueryPerformanceFrequency(&litmp);
+	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
+	QueryPerformanceCounter(&litmp);
+	QPart1 = litmp.QuadPart;// 获得初始值
+	/////////////////////////////////////////////
+#endif
+
+	TimeCountClockTest(
+	{
+		printf("1. ImageData \n");
+		ImageData MemData(picvec,saveLocation,m_spcount,0.5);
+
+		printf("2. GPU Super \n");
+		SLIC slic(&MemData);
+		slic.DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy();//得到lable				
+
+		printf("3. ColorBarCluster \n");
+		ColorBarCluster colorBarCluster(&MemData);
+		colorBarCluster.Clustering();
+
+		printf("4. ComputeSVG2 \n");
+		ComputeSVG2 svg(&MemData);
+		svg.separateSVG_Zlm();
+
+//#if	!(SaveContours2Disk)
+//		MemData.SaveImgWithContours();			
+//#endif
+
+	},"Do One Image Cost Time :");
+
+#if _MSC_VER
+	///////////////////////////////////////////////
+	QueryPerformanceCounter(&litmp);
+	QPart2 = litmp.QuadPart;//获得中止值
+	dfMinus = (double)(QPart2-QPart1);
+	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
+	TRACE("\n 全部时间: %f（秒）",dfTim);
+#endif
+}
+/*-------------------------------------------------------------------------*/
+/**
+*
+*/
+/*-------------------------------------------------------------------------*/
 UINT cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpParam,vector<string> picvec,string saveLocation,int m_spcount)
 {
-
+//struct pt_sem SEM_CPU_NUMS;
+//PT_SEM_INIT(&SEM_CPU_NUMS,get_CPU_core_num()); //初始化信号量为1，即没人用
 	vector <double>  Super_Pixel_num_f;
 	vector <double>  Do_Time_f;	
 	int numPics( picvec.size() );
 	/****************************************/
 	printf("Start: CUDA_CollectionMethods \n");
-	/****************************************/
-	for(int k = 0; k < numPics; k++ ){	
+/****************************************/
 #if _MSC_VER
-	   LARGE_INTEGER litmp;
-		LONGLONG QPart1,QPart2;
-		double dfMinus, dfFreq, dfTim;
-		QueryPerformanceFrequency(&litmp);
-		dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
-		QueryPerformanceCounter(&litmp);
-		QPart1 = litmp.QuadPart;// 获得初始值
-		/////////////////////////////////////////////
-#endif
+	/*if (H_SEM_CPU_NUMS==NULL){
+		H_SEM_CPU_NUMS = CreateSemaphore(NULL, 1, 10, NULL); 
+	}*/
+	int CPU_NUMS=get_CPU_core_num();
+	printf("Start: CPU nums %d \n",CPU_NUMS);
+	//CPU_NUMS+=CPU_NUMS;
+	
+	vector<HANDLE> handle;
+	vector<ThreadDoOneImageData *> data;
+	for(int k = 0; k <min(CPU_NUMS,picvec.size()); k++ ){	
 
-		TimeCountClockTest(
-		{
-			printf("1. ImageData \n");
-			ImageData MemData(picvec[k],saveLocation,m_spcount,0.5);
-		
-			printf("2. GPU Super \n");
-			SLIC slic(&MemData);
-			slic.DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy();//得到lable				
-
-			printf("3. ColorBarCluster \n");
-			ColorBarCluster colorBarCluster(&MemData);
-			colorBarCluster.Clustering();
-
-			printf("4. ComputeSVG2 \n");
-			ComputeSVG2 svg(&MemData);
-			svg.separateSVG_Zlm();
-		},"Do One Image Cost Time :");
-
-		
-		/*聚类步骤.docx*/
-#if _MSC_VER
-		///////////////////////////////////////////////
-		QueryPerformanceCounter(&litmp);
-		QPart2 = litmp.QuadPart;//获得中止值
-		dfMinus = (double)(QPart2-QPart1);
-		dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
-		TRACE("\n 全部时间: %f（秒）",dfTim);
-#endif
-
-		/*************************************************************/
-#if	!(SaveContours2Disk)
-		MemData.SaveImgWithContours();			
-#endif	
+		ThreadDoOneImageData* tdoid=new ThreadDoOneImageData(picvec,saveLocation,m_spcount,k,CPU_NUMS);
+		HANDLE handle_t=::CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)THreadSuperPixel_DoOneImage_win,tdoid,0,NULL); 
+		handle.push_back(handle_t);
+		data.push_back(tdoid);
 	}
 
-	/****************************************/
+	for(int i=0;i<handle.size();i++){
+		WaitForSingleObject(handle.at(i),INFINITE);
+	}
+
+	for (int j=0;j<data.size();j++){
+		delete data.at(j);
+	}
+
+#endif
+
+
+/****************************************/	
+#if __GUNC__||linux||__linux||__linux__
+	for(int k = 0; k < numPics; k++ ){	
+		THreadSuperPixel_DoOneImage(picvec[k],saveLocation,m_spcount);
+	}
+#endif
 	
 	
 	return 0;
