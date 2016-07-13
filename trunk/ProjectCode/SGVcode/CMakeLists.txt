@@ -38,7 +38,52 @@ MESSAGE(STSTUS "###################################")
 ###############################################################################
 #AUX_SOURCE_DIRECTORY(. SRC_LIST) #把当前目录(.)下所有源代码文件和头文件加入变量SRC_LIST
 #生成应用程序SpectralClusteringGndVSkyOutDoor (在windows下会自动生成hello.exe)
-ADD_EXECUTABLE(SpectralClusteringGndVSkyOutDoor main.cpp)
-TARGET_LINK_LIBRARIES(SpectralClusteringGndVSkyOutDoor 
-					            SGVcode
-					  )  
+
+#find_package(Threads REQUIRED)
+#if(THREADS_HAVE_PTHREAD_ARG)
+#  target_compile_options(PUBLIC my_app "-pthread")
+#endif()
+#if(CMAKE_THREAD_LIBS_INIT)
+#  target_link_libraries(my_app "${CMAKE_THREAD_LIBS_INIT}")
+#endif()
+##################################################################################
+
+IF (CMAKE_SYSTEM_NAME MATCHES "Linux")  
+	
+	ADD_EXECUTABLE(SpectralClusteringGndVSkyOutDoor main.cpp)
+	
+	find_package(Threads REQUIRED)
+	if(THREADS_HAVE_PTHREAD_ARG)
+	  target_compile_options(PUBLIC SpectralClusteringGndVSkyOutDoor "-pthread")
+	endif()
+	
+	if(CMAKE_THREAD_LIBS_INIT)
+	 
+		TARGET_LINK_LIBRARIES(SpectralClusteringGndVSkyOutDoor 
+									SGVcode
+									"${CMAKE_THREAD_LIBS_INIT}"
+						  ) 
+		
+	ELSE()
+	
+	TARGET_LINK_LIBRARIES(SpectralClusteringGndVSkyOutDoor 
+									SGVcode
+						  ) 
+	
+	endif()
+	
+
+	
+	
+ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")   
+	ADD_EXECUTABLE(SpectralClusteringGndVSkyOutDoor main.cpp)
+	TARGET_LINK_LIBRARIES(SpectralClusteringGndVSkyOutDoor 
+									SGVcode
+						  )  	
+ELSEIF (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+   
+ELSE ()  
+   
+ENDIF ()  
+
+##################################################################################

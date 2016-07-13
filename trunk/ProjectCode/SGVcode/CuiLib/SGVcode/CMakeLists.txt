@@ -41,8 +41,47 @@ SET(LINK_LIB
 	         SVMcode
 	         SGVBaseCode
 	)
-ADD_LIBRARY(SGVcode  STATIC     ${DIR_SRCS}  )
-TARGET_LINK_LIBRARIES(SGVcode ${LINK_LIB})
+###############################################################################
+IF (CMAKE_SYSTEM_NAME MATCHES "Linux")  
+			
+			ADD_LIBRARY(SGVcode  STATIC     ${DIR_SRCS}  )
+			
+			find_package(Threads REQUIRED)
+			
+			if(THREADS_HAVE_PTHREAD_ARG)
+			  #target_compile_options(PUBLIC SGVcode "-pthread")
+			endif()
+	
+			
+			if(CMAKE_THREAD_LIBS_INIT)
+	 
+				TARGET_LINK_LIBRARIES(SGVcode 
+										"${CMAKE_THREAD_LIBS_INIT}"
+										 ${LINK_LIB})
+			ELSE()
+			
+				TARGET_LINK_LIBRARIES(SGVcode ${LINK_LIB})
+				
+			endif()	
+
+
+ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")   
+
+		ADD_LIBRARY(SGVcode  STATIC     ${DIR_SRCS}  )
+		TARGET_LINK_LIBRARIES(SGVcode ${LINK_LIB})
+
+
+ELSE()
+
+		ADD_LIBRARY(SGVcode  STATIC     ${DIR_SRCS}  )
+		TARGET_LINK_LIBRARIES(SGVcode ${LINK_LIB})
+
+
+	
+ENDIF () 
+###############################################################################
+
+
 ###############################################################################
 SET(BASE_SRCS   
 		MallocCui.cpp	

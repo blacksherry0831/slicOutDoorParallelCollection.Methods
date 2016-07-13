@@ -1382,7 +1382,7 @@ void cui_GeneralImgProcess::LinkSurroundClassification(
 		for(register int i = 0; i <NumLabels; i++ ){
 			
 				double value_t= category[i];
-				sprintf(data_t," %d ",value_t);
+				sprintf(data_t," %d ",(int)value_t);
 				outfile<<data_t;
 
 			outfile<<endl;
@@ -1630,15 +1630,15 @@ void cui_GeneralImgProcess::GetContour2Fill(
 	//cout<<contoursNum<<" "<<endl;
 	//--------------画轮廓----------------
 	if (contoursNum>1){
-		TRACE("%d个轮廓，START",contoursNum);
+		printf("%d个轮廓，START",contoursNum);
 		for (;pcontour!=0;pcontour=pcontour->h_next)
 		{
 			holeColor=filldata;
 			externalColor=filldata;
 			cvDrawContours(fill_img,pcontour,externalColor,holeColor,1,CV_FILLED,8,cvPoint(OriginX,OriginY));
-			TRACE("#");
+			printf("#");
 		}
-		TRACE("\n");
+		printf("\n");
 	}
 //	cvReleaseImage(&src);
 	cvReleaseImage(&pImg);
@@ -3750,7 +3750,7 @@ int cui_GeneralImgProcess::get_CPU_core_num()
 	SYSTEM_INFO info; 
 	GetSystemInfo(&info); 
 	return info.dwNumberOfProcessors; 
-#elif defined(LINUX) || defined(SOLARIS) || defined(AIX) 
+#elif defined(LINUX) || defined(SOLARIS) || defined(AIX) || defined(linux) || defined(__linux__)
 	return get_nprocs();   //GNU fuction 
 #else 
 #error  不支持的操作系统 
@@ -3838,17 +3838,20 @@ UINT cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpPar
 	int numPics( picvec.size() );
 	/****************************************/
 	printf("Start: CUDA_CollectionMethods \n");
-/****************************************/
+	/****************************************/
+	int CPU_NUMS=get_CPU_core_num();
+	printf("Start: CPU nums %d \n",CPU_NUMS);
+	
+	vector<ThreadDoOneImageData *> data;
+
+
 #if _MSC_VER
 	/*if (H_SEM_CPU_NUMS==NULL){
 		H_SEM_CPU_NUMS = CreateSemaphore(NULL, 1, 10, NULL); 
-	}*/
-	int CPU_NUMS=get_CPU_core_num();
-	printf("Start: CPU nums %d \n",CPU_NUMS);
-	//CPU_NUMS+=CPU_NUMS;
-	
+	}*/	
+	//CPU_NUMS+=CPU_NUMS;	
 	vector<HANDLE> handle;
-	vector<ThreadDoOneImageData *> data;
+	
 	for(int k = 0; k <min(CPU_NUMS,picvec.size()); k++ ){	
 
 		ThreadDoOneImageData* tdoid=new ThreadDoOneImageData(picvec,saveLocation,m_spcount,k,CPU_NUMS);
@@ -3861,20 +3864,36 @@ UINT cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpPar
 		WaitForSingleObject(handle.at(i),INFINITE);
 	}
 
-	for (int j=0;j<data.size();j++){
-		delete data.at(j);
+	
+
+#elif	__GUNC__||linux||__linux||__linux__
+
+	vector<pthread_t> handle;
+	
+	for(int k = 0; k <std::min((int) CPU_NUMS,(int) picvec.size()); k++ ){	
+		
+		int i,ret;
+		pthread_t handle_t;
+		ThreadDoOneImageData* tdoid=new ThreadDoOneImageData(picvec,saveLocation,m_spcount,k,CPU_NUMS);
+		ret=pthread_create(&handle_t,NULL,(void *)THreadSuperPixel_DoOneImage_win,tdoid); 
+		handle.push_back(handle_t);
+		data.push_back(tdoid);
 	}
 
-#endif
-
-
-/****************************************/	
-#if __GUNC__||linux||__linux||__linux__
+	for(int i=0;i<handle.size();i++){
+		pthread_join(handle.at(i),NULL);
+	}
+#else 
+	
 	for(int k = 0; k < numPics; k++ ){	
 		THreadSuperPixel_DoOneImage(picvec[k],saveLocation,m_spcount);
 	}
+
 #endif
-	
+
+	for (int j=0;j<data.size();j++){
+		delete data.at(j);
+	}	
 	
 	return 0;
 }

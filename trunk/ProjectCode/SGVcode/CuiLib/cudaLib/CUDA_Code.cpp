@@ -9,8 +9,13 @@
 */
 /*------------------------------------------------------------------------------------------*/
 //std::mutex CUDA_LOCK;
+// pthread_mutex_lock(&CUDA_MUTEX);
 #if _MSC_VER
 	CMutex CUDA_MUTEX;
+#elif __GNUC__
+	pthread_mutex_t CUDA_MUTEX= PTHREAD_MUTEX_INITIALIZER;
+#else
+
 #endif
 /*------------------------------------------------------------------------------------------*/
 /**
@@ -167,6 +172,10 @@ void PerformSuperpixelSLIC_cuda(
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
 	CUDA_MUTEX.Lock();
+#elif __GNUC__
+	pthread_mutex_lock(&CUDA_MUTEX);
+#else
+
 #endif
 
 #if 1
@@ -222,6 +231,10 @@ void PerformSuperpixelSLIC_cuda(
 		dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒	
 		printf( "gpu time is %0.1f ms [msvc]\n", dfTim*1000 );
 		CUDA_MUTEX.Unlock();
+#elif __GNUC__
+		 pthread_mutex_unlock(&CUDA_MUTEX);
+#else
+
 #endif
 }
 /*------------------------------------------------------------------------------------------*/
@@ -290,6 +303,10 @@ void  PerformSuperpixelSLIC_ThetaMLXY_cuda(
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
 	CUDA_MUTEX.Lock();
+#elif __GNUC__
+	pthread_mutex_lock(&CUDA_MUTEX);
+#else
+
 #endif
 
 #if 1
@@ -323,6 +340,10 @@ void  PerformSuperpixelSLIC_ThetaMLXY_cuda(
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒	
 	TRACE("\n 十次迭代: %f（秒）",dfTim);
 	CUDA_MUTEX.Unlock();
+#elif __GNUC__
+	 pthread_mutex_unlock(&CUDA_MUTEX);
+#else
+
 #endif
 	
 }
@@ -372,6 +393,10 @@ void DrawContoursAroundSegments_cuda(
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
 	CUDA_MUTEX.Lock();
+#elif __GNUC__
+	pthread_mutex_lock(&CUDA_MUTEX);
+#else
+
 #endif	
 #if 1
 	DrawContoursAroundSegments_gpu(ubuff,labels,width,height,color,BlackColorPNG);
@@ -382,6 +407,10 @@ void DrawContoursAroundSegments_cuda(
 	dfMinus = (double)(QPart2-QPart1);	
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒	
 	CUDA_MUTEX.Unlock();
+#elif __GNUC__
+	 pthread_mutex_unlock(&CUDA_MUTEX);
+#else
+
 #endif
 	
 }
@@ -414,6 +443,10 @@ void HarrTransformLet_MatrixSub_cuda(
 {
 #if _MSC_VER
 	CUDA_MUTEX.Lock();
+#elif __GNUC__
+	pthread_mutex_lock(&CUDA_MUTEX);
+#else
+
 #endif
 	HarrTransformLet_MatrixSub_gpu(
 	matrixA, 
@@ -424,6 +457,10 @@ void HarrTransformLet_MatrixSub_cuda(
 
 #if _MSC_VER
 	CUDA_MUTEX.Unlock();
+#elif __GNUC__
+	 pthread_mutex_unlock(&CUDA_MUTEX);
+#else
+
 #endif
 
 }
@@ -471,6 +508,10 @@ void  GetSeedsLabxy_cuda(
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
 	CUDA_MUTEX.Lock();
+#elif __GNUC__
+	pthread_mutex_lock(&CUDA_MUTEX);
+#else
+
 #endif
 	
 #if 1
@@ -495,6 +536,10 @@ void  GetSeedsLabxy_cuda(
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	double dfms=dfTim*1000;//ms
 	CUDA_MUTEX.Unlock();
+#elif __GNUC__
+	 pthread_mutex_unlock(&CUDA_MUTEX);
+#else
+
 #endif
 	
 }
@@ -543,6 +588,10 @@ void Get_Nighbour_E_matrix_cuda(
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
 	CUDA_MUTEX.Lock();
+#elif __GNUC__
+	pthread_mutex_lock(&CUDA_MUTEX);
+#else
+
 #endif
 	
 #if 1
@@ -554,6 +603,10 @@ void Get_Nighbour_E_matrix_cuda(
 	dfMinus = (double)(QPart2-QPart1);	
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	CUDA_MUTEX.Unlock();
+#elif __GNUC__
+	 pthread_mutex_unlock(&CUDA_MUTEX);
+#else
+
 #endif
 }
 /*------------------------------------------------------------------------------------------*/
@@ -605,6 +658,10 @@ void classify_SkyVerticalGround_cuda(
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
 	CUDA_MUTEX.Lock();
+#elif __GNUC__
+	pthread_mutex_lock(&CUDA_MUTEX);
+#else
+
 #endif
 
 #if 1
@@ -629,6 +686,10 @@ void classify_SkyVerticalGround_cuda(
 	dfTim = dfMinus / dfFreq*1000;// 获得对应的时间值，单位为MS
 	//dfTim = 131.77898596090682 ms
 	CUDA_MUTEX.Unlock();
+#elif __GNUC__
+	 pthread_mutex_unlock(&CUDA_MUTEX);
+#else
+
 #endif
 
 }

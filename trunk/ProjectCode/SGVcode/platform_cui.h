@@ -136,6 +136,12 @@ typedef unsigned long long ULONGLONG;
 //#include <mutex> 
 #endif
 
+#if linux||__linux||__linux__||__GNUC__
+
+#include <sys/sysinfo.h>
+#include <pthread.h>
+#endif
+
 /************************************************************************/
 #define DEBUG_CUI FALSE
 #define GetHorLineFromFile  FALSE
