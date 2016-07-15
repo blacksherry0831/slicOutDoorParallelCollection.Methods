@@ -13,8 +13,13 @@ typedef unsigned int UINT32;
 #define nullptr 0
 #endif
 
-//#include <sys/syscall.h>//Linux system call for thread id
-//#include <pthread.h>
+#ifndef _DEBUG
+#define  _DEBUG 1
+#endif
+#include <unistd.h>    
+#include <sys/types.h>  
+#include <sys/syscall.h>//Linux system call for thread id
+#include <pthread.h>
 
 #endif
 
@@ -333,7 +338,7 @@ bool cudaInit_CUI(void)
 			 return false;
 		 }
 #if _DEBUG
-		printf("CUDA DEVICE NUMS: %d \n",device_count);
+		//printf("CUDA DEVICE NUMS: %d \n",device_count);
 #endif
 		 // 找到一个可用的设备
 		 for(i=0;i<device_count;i++)
@@ -393,6 +398,8 @@ bool cudaInit_CUI(void)
 		 int thread_id=GetThreadIdSelfwinlinux();
 		 expect_id=thread_id%device_count;
 		
+		 printf("CUDA NUMS: %d, ID: %d,EXPECT: %d \n",device_count,thread_id,expect_id);
+
 		 cudaGetDevice(&default_id);
 
 		 if(default_id==expect_id){
@@ -400,7 +407,7 @@ bool cudaInit_CUI(void)
 		 }else{			 
 			 //设备可用
 			 if(cudaSetDevice(expect_id)==cudaSuccess){
-				 printf("USE GPU ID: %d \n",expect_id);
+				 //printf("USE GPU ID: %d \n",expect_id);
 				 return true;
 			 }
 		 }
@@ -4703,13 +4710,13 @@ int GetThreadIdSelfwinlinux(void)
 #if _MSC_VER
 		  thread_id =::GetCurrentThreadId();
 #elif linux||__linux||__linux__||__GNUC__
-		 // thread_id= pthread_self();
+		  //thread_id=(struct pthread_fake *)pthread_self()->tid;
+		  thread_id=syscall( __NR_gettid );
 #else
-		 thread_id=-1;
-		 assert(0);
+		  thread_id=-1;
+		  assert(0);
 #endif
-		 
-	
+
 	return thread_id;
 }
 /*------------------------------------------------------------------------------------------*/
