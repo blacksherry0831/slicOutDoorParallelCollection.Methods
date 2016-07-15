@@ -3792,7 +3792,8 @@ void cui_GeneralImgProcess::THreadSuperPixel_DoOneImage(string picvec,string sav
 	/////////////////////////////////////////////
 #endif
 
-	TimeCountClockTest(
+	
+	TimeCountStart();
 	{
 		printf("1. ImageData \n");
 		ImageData MemData(picvec,saveLocation,m_spcount,0.5);
@@ -3813,7 +3814,8 @@ void cui_GeneralImgProcess::THreadSuperPixel_DoOneImage(string picvec,string sav
 //		MemData.SaveImgWithContours();			
 //#endif
 
-	},"Do One Image Cost Time :");
+	}
+	TimeCountStop("Do One Image Cost Time :");
 
 #if _MSC_VER
 	///////////////////////////////////////////////
@@ -3833,6 +3835,7 @@ UINT cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpPar
 {
 //struct pt_sem SEM_CPU_NUMS;
 //PT_SEM_INIT(&SEM_CPU_NUMS,get_CPU_core_num()); //初始化信号量为1，即没人用
+	TimeCountStart();
 	vector <double>  Super_Pixel_num_f;
 	vector <double>  Do_Time_f;	
 	int numPics( picvec.size() );
@@ -3894,7 +3897,7 @@ UINT cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(LPVOID lpPar
 	for (int j=0;j<data.size();j++){
 		delete data.at(j);
 	}	
-	
+	TimeCountStop("Threads Done : ");
 	return 0;
 }
 /*----------------------------------------------------------------*/
