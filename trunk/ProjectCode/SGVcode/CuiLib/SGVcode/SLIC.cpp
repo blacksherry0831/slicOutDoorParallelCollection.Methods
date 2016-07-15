@@ -3034,11 +3034,11 @@ cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matr
 									Iteration__Threshold,pMD);//1.4s									
 							}else{	
 #if 0
-	 								this->Cui_Combination_ImgLabs2(0.71);	//组合时依然使用相似度
-									static int i=0;
-									if (0==++i%2){
-										break;
-									}
+	 							//	this->Cui_Combination_ImgLabs2(0.71);	//组合时依然使用相似度
+									//s*****c int i=0;
+									//if (0==++i%2){
+									//	break;
+									//}
 #else
 								if (Iteration_Complete_Combine_Threshold){
 									cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matrix_Category_Lable,Cui_Matrix_W,pMD->slic_current_num,CuiWidth,CuiHeight,

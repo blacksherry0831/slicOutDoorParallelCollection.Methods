@@ -295,18 +295,18 @@ void ImageData::ReleaseMemory(void)
 void ImageData::initSpSet(void)
 {
 #if 0
-	static bool doOnce=true;
-	ASSERT(doOnce==true);
-	if (doOnce){
-		this->SpSet.Parse(
-			src_ImgLabels,
-			slic_current_num,
-			ImgWidth,
-			ImgHeight,
-			Seg_HorizontalLinePos);
-		this->InitAllSpBlockEnergy();
-		doOnce=false;
-	}
+	//bool doOnce=true;
+	//ASSERT(doOnce==true);
+	//if (doOnce){
+	//	this->SpSet.Parse(
+	//		src_ImgLabels,
+	//		slic_current_num,
+	//		ImgWidth,
+	//		ImgHeight,
+	//		Seg_HorizontalLinePos);
+	//	this->InitAllSpBlockEnergy();
+	//	doOnce=false;
+	//}
 #endif
 	this->SpSet.Parse(
 		src_ImgLabels,

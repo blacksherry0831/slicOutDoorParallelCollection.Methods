@@ -1,16 +1,31 @@
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 #include "device_functions.h"
+#include <stdio.h>
 //#include<stdio.h>
 #include<assert.h>
 #ifndef UINT32
 typedef unsigned int UINT32;
 #endif
-#if linux||__linux||__linux__
+#if linux||__linux||__linux__ || __GNUC__
+
 #ifndef nullptr
 #define nullptr 0
 #endif
+
+//#include <sys/syscall.h>//Linux system call for thread id
+//#include <pthread.h>
+
 #endif
+
+
+
+#ifdef _MSC_VER
+
+#include <windows.h>
+
+#endif
+
 /*------------------------------------------------------------------------------------------*/
 /**
 *时间2014- 11-4
@@ -140,6 +155,14 @@ extern "C" void  GetSeedsLabxy_gpu(
 	double*				host_kseedsx,
 	double*				host_kseedsy,
 	int*				host_klabels);
+/*------------------------------------------------------------------------------------------*/
+/**
+*
+*
+*
+*/
+/*------------------------------------------------------------------------------------------*/
+extern "C" int GetThreadIdSelfwinlinux(void);
 /*------------------------------------------------------------------------------------------*/
 /**
 *
@@ -303,69 +326,89 @@ bool cudaInit_CUI(void)
 {
 		 int i;
 		 int device_count;
+
 		 if( cudaGetDeviceCount(&device_count) )
 		 {
-//		  printf(" There is zero device beyond 1.0\n"); 
-		  return false;
+			 printf(" There is zero device beyond 1.0\n"); 
+			 return false;
 		 }
-		 else 
-//		  printf("There is %d device beyond 1.0\n",device_count);
+#if _DEBUG
+		printf("CUDA DEVICE NUMS: %d \n",device_count);
+#endif
+		 // 找到一个可用的设备
 		 for(i=0;i<device_count;i++)
 		 {
 			  struct cudaDeviceProp device_prop;
 			  if(cudaGetDeviceProperties(&device_prop,i)==cudaSuccess)
 			  {
-	#if 0
-   printf("device properties is :\n"
-      "\t device name is %s\n"
-      "\t totalGlobalMem is %d\n"
-      "\t sharedMemPerBlock is %d\n"
-      "\t regsPerBlock is %d\n"
-      "\t warpSize is %d\n"
-      "\t memPitch is %d\n"
-      "\t maxThreadsPerBlock is %d\n"
-      "\t maxThreadsDim [3] is %d X %d X %d\n"
-      "\t maxGridSize [3] is %d X %d X %d\n"
-      "\t totalConstMem is %d\n"
-      "\t device version is major %d ,minor %d\n"
-      "\t clockRate is %d\n"
-      "\t textureAlignment is %d\n"
-      "\t deviceOverlap is %d\n"
-      "\t multiProcessorCount is %d\n",
-      device_prop.name,
-      device_prop.totalGlobalMem,
-      device_prop.sharedMemPerBlock,
-      device_prop.regsPerBlock,
-      device_prop.warpSize,
-      device_prop.memPitch,
-      device_prop.maxThreadsPerBlock,
-      device_prop.maxThreadsDim[0],device_prop.maxThreadsDim[1],device_prop.maxThreadsDim[2],
-      device_prop.maxGridSize[0],device_prop.maxGridSize[1],device_prop.maxGridSize[2],
-      device_prop.totalConstMem,
-      device_prop.major,device_prop.minor,
-      device_prop.clockRate,
-      device_prop.textureAlignment,
-      device_prop.deviceOverlap,
-      device_prop.multiProcessorCount);
-	#endif
-			   break;
+#if 0
+	printf("device properties is :\n"
+			"\t device name is %s\n"
+			"\t totalGlobalMem is %d\n"
+			"\t sharedMemPerBlock is %d\n"
+			"\t regsPerBlock is %d\n"
+			"\t warpSize is %d\n"
+			"\t memPitch is %d\n"
+			"\t maxThreadsPerBlock is %d\n"
+			"\t maxThreadsDim [3] is %d X %d X %d\n"
+			"\t maxGridSize [3] is %d X %d X %d\n"
+			"\t totalConstMem is %d\n"
+			"\t device version is major %d ,minor %d\n"
+			"\t clockRate is %d\n"
+			"\t textureAlignment is %d\n"
+			"\t deviceOverlap is %d\n"
+			"\t multiProcessorCount is %d\n",
+			device_prop.name,
+			device_prop.totalGlobalMem,
+			device_prop.sharedMemPerBlock,
+			device_prop.regsPerBlock,
+			device_prop.warpSize,
+			device_prop.memPitch,
+			device_prop.maxThreadsPerBlock,
+			device_prop.maxThreadsDim[0],device_prop.maxThreadsDim[1],device_prop.maxThreadsDim[2],
+			device_prop.maxGridSize[0],device_prop.maxGridSize[1],device_prop.maxGridSize[2],
+			device_prop.totalConstMem,
+			device_prop.major,device_prop.minor,
+			device_prop.clockRate,
+			device_prop.textureAlignment,
+			device_prop.deviceOverlap,
+			device_prop.multiProcessorCount);
+#endif				
+					/* if(cudaSetDevice(i)==cudaSuccess){
+						 printf("USE GPU ID: %d \n",i);
+						 return true;
+					 }*/
+				break;
 			  }
+
 		 }
+		 
 		 if(i==device_count)
 		 {
-//			  printf("Get the propertites of device occurred error\n");
+			  printf("Get the propertites of device occurred error\n");
 			  return false;
 		 }
+		 //有可用设备
+		 int default_id,expect_id;		 
+		 int thread_id=GetThreadIdSelfwinlinux();
+		 expect_id=thread_id%device_count;
+		
+		 cudaGetDevice(&default_id);
 
-		 if(cudaSetDevice(i)==cudaErrorInvalidDevice)
-		 {
-//			  printf("Set Device occurred error\n");
-			  return false;
+		 if(default_id==expect_id){
+			 return true;
+		 }else{			 
+			 //设备可用
+			 if(cudaSetDevice(expect_id)==cudaSuccess){
+				 printf("USE GPU ID: %d \n",expect_id);
+				 return true;
+			 }
 		 }
+		 
 		 //////////////////////////////////////////
 	//	 int ket=kernelExecTimeoutEnabled();
 		 /////////////////////////////////////////
-		 return true;
+		 return false;
 	
 }
 /*------------------------------------------------------------------------------------------*/
@@ -379,6 +422,7 @@ bool cudaInit_CUI(void)
 /*------------------------------------------------------------------------------------------*/
 bool cudaDeInit_CUI(void)
 {
+#if 0
 	cudaError_t cudaStatus;
 	cudaStatus=cudaDeviceReset();
 	if(cudaStatus!=cudaSuccess){
@@ -386,6 +430,10 @@ bool cudaDeInit_CUI(void)
 	}else{
 		return true;
 	}
+#else
+	return true;
+#endif
+	
 }
 /*------------------------------------------------------------------------------------------*/
 /**
@@ -396,19 +444,29 @@ bool cudaDeInit_CUI(void)
 /*------------------------------------------------------------------------------------------*/
 void cudaGetLastError_Sync_CUI(void)
 {
-	cudaError_t cudaStatus;
+	cudaError_t cudaStatus_syn,cudaStatus;
 	const char  *errstr=NULL;
-	cudaStatus=cudaGetLastError();
-	if (cudaStatus!=cudaSuccess){
-		errstr=cudaGetErrorString(cudaStatus);
-	}
-	assert(cudaStatus==cudaSuccess);
-	cudaStatus=cudaDeviceSynchronize();
-	cudaStatus=cudaGetLastError();
-	if (cudaStatus!=cudaSuccess){
-		errstr=cudaGetErrorString(cudaStatus);
-	}
-	assert(cudaStatus==cudaSuccess);
+
+
+	do 
+	{
+		cudaStatus_syn=cudaDeviceSynchronize();
+		if (cudaStatus_syn==cudaSuccess)
+		{
+			break;
+
+		}else{
+			cudaStatus=cudaGetLastError();
+			if (cudaStatus!=cudaSuccess){
+				errstr=cudaGetErrorString(cudaStatus);
+				printf("cudaDeviceSynchronize: %s",errstr);
+			}
+		}
+		
+
+
+	} while (cudaStatus_syn!=cudaSuccess);
+
 }
 /*------------------------------------------------------------------------------------------*/
 /**
@@ -2889,9 +2947,11 @@ void PerformSuperpixelSLIC_gpu(
 	double* dev_distvec;
 	///////////////////////////////////////////
 	assert(cudaInit_CUI()==true);
+#ifdef _DEBUG
 	cudaDeviceProp prop;
 	cudaGetDeviceProperties(&prop,0);
 	int blocks=prop.multiProcessorCount;
+#endif	
 	{
 		cudaStatus = cudaMalloc((void**)&dev_kseedsl, kseedsSize * sizeof(double));
 		cudaStatus = cudaMalloc((void**)&dev_kseedsa, kseedsSize * sizeof(double));
@@ -3692,9 +3752,11 @@ void PerformSuperpixelSLIC_gpu_simplify2(
 	double* dev_distvec;
 	///////////////////////////////////////////
 	assert(cudaInit_CUI()==true);
+#ifdef _DEBUG
 	cudaDeviceProp prop;
 	cudaGetDeviceProperties(&prop,0);
 	int blocks=prop.multiProcessorCount;
+#endif
 	{
 		cudaStatus = cudaMalloc((void**)&dev_kseedsl, kseedsSize * sizeof(double));
 		cudaStatus = cudaMalloc((void**)&dev_kseedsa, kseedsSize * sizeof(double));
@@ -4621,6 +4683,46 @@ void Get_Nighbour_E_matrix_gpu(
 	cudaFree(dev_labels);
 	cudaFree(dev_Matrix_E);
 }
+/*------------------------------------------------------------------------------------------*/
+/**
+*
+*
+*
+*/
+/*------------------------------------------------------------------------------------------*/
+int GetThreadIdSelfwinlinux(void)
+{
+		
+		  int thread_id=0;
+#if _DEBUG
+		  int device_count;
+		  cudaGetDeviceCount(&device_count);
+#endif
+
+		
+#if _MSC_VER
+		  thread_id =::GetCurrentThreadId();
+#elif linux||__linux||__linux__||__GNUC__
+		 // thread_id= pthread_self();
+#else
+		 thread_id=-1;
+		 assert(0);
+#endif
+		 
+	
+	return thread_id;
+}
+/*------------------------------------------------------------------------------------------*/
+/**
+*
+*
+*
+*/
+/*------------------------------------------------------------------------------------------*/
+//int GetCudaNum(){
+//
+//}
+
 /*------------------------------------------------------------------------------------------*/
 /**
 *

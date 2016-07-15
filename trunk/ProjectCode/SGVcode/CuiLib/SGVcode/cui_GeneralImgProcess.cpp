@@ -488,6 +488,7 @@ void cui_GeneralImgProcess::Cui_CombinationImgSVG(
 		}
 	}
 	/********************************************************/
+			delete[] catesvg;
 }
 /*-------------------------------------------------------------------------------------------*/
 /**
@@ -497,20 +498,32 @@ void cui_GeneralImgProcess::Cui_CombinationImgSVG(
 *
 */
 /*-------------------------------------------------------------------------------------------*/
-INT32* cui_GeneralImgProcess::InitSP2SVGcategory(INT32* category, int size)
+INT32* cui_GeneralImgProcess::InitSP2SVGcategory(INT32* category,const int size)
 {
-	static INT32 Matrix_Category_Lable_SVG[10]={0,Ground,Vertical,Sky};
+#if 0
+	static  INT32 Matrix_Category_Lable_SVG[10]={0,Ground,Vertical,Sky};
+	
+#else
+	INT32* Matrix_Category_Lable_SVG=new INT32[size+10];
+	Matrix_Category_Lable_SVG[0]=0;
+	Matrix_Category_Lable_SVG[1]=Ground;
+	Matrix_Category_Lable_SVG[2]=Vertical;
+	Matrix_Category_Lable_SVG[3]=Sky;
+	
+#endif
+
 	if (category==nullptr){
-		category=Matrix_Category_Lable_SVG;
-		size=sizeof(Matrix_Category_Lable_SVG)/sizeof(INT32);
+		category=(INT32*)Matrix_Category_Lable_SVG;
+		//size=sizeof(Matrix_Category_Lable_SVG)/sizeof(INT32);
 	}
-	memset(category,0,sizeof(INT32)*size);
+	memset(category,0,sizeof(INT32)*(size+10));
 	category[Sky]=Sky;
 	category[Ground]=Ground;
 	category[Vertical]=Vertical;
 	category[Vertical_Tree]=Vertical_Tree;
 	category[Vertical_Building]=Vertical_Building;
 	return category;
+
 }
 /*-------------------------------------------------------------------------------------------*/
 /**
@@ -526,9 +539,9 @@ INT32* cui_GeneralImgProcess::InitSP2SVGcategory(INT32* category, int size)
 /*-------------------------------------------------------------------------------------------*/
 UINT32* cui_GeneralImgProcess::InitColorTable(UINT32* tab, int size)
 {
-	 static UINT32 ColorTab[10]={UnknowColorPNG,GroundColorPNG,VerticalColorPNG,SkyColorPNG,VerticalTreeColorPNG,VerticalBuildingColorPNG};
+	 static  UINT32 ColorTab[10]={UnknowColorPNG,GroundColorPNG,VerticalColorPNG,SkyColorPNG,VerticalTreeColorPNG,VerticalBuildingColorPNG};
 	if (tab==nullptr){
-		tab=ColorTab;
+		tab=(UINT32*)ColorTab;
 		size=sizeof(ColorTab)/sizeof(UINT32);
 	}
 	 for (int i=0;i<size;i++){
@@ -573,8 +586,10 @@ void cui_GeneralImgProcess::CuiSaveImgWithPoints(
 	imgdata_t=cvCreateImageHeader(cvSize(width,height),8,4);
 	imgdata_t->imageData=(char*)imgbuf_t;
 	memcpy(imgbuf_t,ubuff,sizeof(UINT32)*width*height);
+	INT32*	category_new=NULL;
 	if (category==nullptr){
-		category=InitSP2SVGcategory();
+		category_new=InitSP2SVGcategory();
+		category=category_new;
 	}
 	/********************unknow****G**********V************S******/
 #if  OUT_NOGROUND_IMG
@@ -610,7 +625,7 @@ void cui_GeneralImgProcess::CuiSaveImgWithPoints(
 			}
 
 #if CUI_DRAW_SC_INDEX
-		  if (category!=InitSP2SVGcategory()){
+		  if (category!=category_new){
 				cvLine(imgdata_t,cvPoint(0,pMD->Seg_HorizontalLinePos),cvPoint(imgdata_t->width,pMD->Seg_HorizontalLinePos),cvScalar(255,255,255,255),3);
 				float HgPos= pMD->Seg_HorizontalLinePos+pMD->PgOffset*pMD->ImgHeight;
 				float HsPos= pMD->Seg_HorizontalLinePos-pMD->PsOffset*pMD->ImgHeight;
@@ -628,6 +643,7 @@ void cui_GeneralImgProcess::CuiSaveImgWithPoints(
 	}
 	CuiSaveImageData(imgbuf_t,width,height,pMD->FileReadFullPath,pMD->FileWritePath, 1,fileadd);
 	delete []imgbuf_t;
+	delete []category_new;
 }
 /*----------------------------------------------------------------*/
 /**
@@ -661,20 +677,22 @@ void cui_GeneralImgProcess::CuiSaveImgWithPoints(
 			printf("SaveImgWithPoints: --not-- \n");
 		return ;
 	}else{
-			IplImage *imgdata_t;
+				IplImage *imgdata_t;
+				INT32*	 category_new=NULL;
 				UINT32 * imgbuf_t=new UINT32[width*height];
 				imgdata_t=cvCreateImageHeader(cvSize(width,height),8,4);
 				imgdata_t->imageData=(char*)imgbuf_t;
 				memcpy(imgbuf_t,ubuff,sizeof(UINT32)*width*height);
 				if (category==nullptr){
-					category=InitSP2SVGcategory();
+					category_new=InitSP2SVGcategory();
+					category=category_new;
 				}
 				/********************unknow****G**********V************S******/
-			#if  OUT_NOGROUND_IMG
+#if  OUT_NOGROUND_IMG
 				const UINT32 color[10]={0xff000000,0xffff0000,0xffff0000,0xff4B4587};
-			#else
+#else
 				UINT32 *color=InitColorTable();
-			#endif
+#endif
 				/******************black**********r***********g*******b******/
 				/*****¼ä¸ô»­µã******************************************/
 				for (register int i=0;i<height;i+=2){
@@ -686,14 +704,14 @@ void cui_GeneralImgProcess::CuiSaveImgWithPoints(
 						}else{
 							imgbuf_t[i*width+j]=color[color_i];
 						}
-			#if FALSE
+#if FALSE
 						if (color_i==Vertical_Tree){
 							TRACE("Tree\n");
 						}
 						if (color_i==Vertical_Building){
 							TRACE("Building\n");
 						}
-			#endif
+#endif
 
 					}
 				}
@@ -702,8 +720,8 @@ void cui_GeneralImgProcess::CuiSaveImgWithPoints(
 					DrawContoursAroundSegments(imgbuf_t,labels,width,height,BlackColorPNG);
 				}
 
-			#if CUI_DRAW_SC_INDEX
-				if (category!=InitSP2SVGcategory()){
+#if CUI_DRAW_SC_INDEX
+				if (category!=category_new){
 					if (SAVE_DEBUG_2DISK){
 						//cvLine(imgdata_t,cvPoint(0,pMD->Seg_HorizontalLinePos),cvPoint(imgdata_t->width,pMD->Seg_HorizontalLinePos),cvScalar(255,255,255,255),3);
 						cvLine(imgdata_t,cvPoint(0,height/2),cvPoint(imgdata_t->width,height/2),cvScalar(255,255,255,255),3);
@@ -715,7 +733,7 @@ void cui_GeneralImgProcess::CuiSaveImgWithPoints(
 					DrawTextOnImage(imgbuf_t,labels,width,height); 
 				}
 
-			#endif   	  
+#endif   	  
 
 				cvReleaseImageHeader(&imgdata_t);
 				/***********************************************/
@@ -724,6 +742,7 @@ void cui_GeneralImgProcess::CuiSaveImgWithPoints(
 				}
 				CuiSaveImageData(imgbuf_t,width,height,filereadfullpath,filewritepath, 1,fileadd);
 				delete []imgbuf_t;
+				delete []category_new;
 
 	}
 	
@@ -1144,7 +1163,7 @@ int cui_GeneralImgProcess::CuiSetNighbour_E_matrix(
 		const int dx8[8] = {-1, -1,  0,  1, 1, 1, 0, -1};
 	const int dy8[8] = { 0, -1, -1, -1, 0, 1, 1,  1};
 	int mainindex(0);int cind(0);
-	static int DoCount=0;
+	s****c int DoCount=0;
 	if (Cui_Matrix_E){
 	   memset(Cui_Matrix_E,0,CuiNumLabels*CuiNumLabels*sizeof(UINT32));
 	}else{
@@ -3772,6 +3791,11 @@ unsigned cui_GeneralImgProcess::THreadSuperPixel_DoOneImage_win(LPVOID lpParam)
 		}
 		THreadSuperPixel_DoOneImage(tdoid->picvec[k],tdoid->saveLocation,tdoid->m_spcount);
 	}
+#if __GUNC__||linux||__linux||__linux__
+
+	 pthread_exit(0); 
+
+#endif
 	return 0;
 }
 /*-------------------------------------------------------------------------*/

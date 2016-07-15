@@ -107,6 +107,7 @@ int main(int argc,char *argv[])
 #if _WIN64 ||_WIN32 ||_MSC_VER ||WIN32
 if (file.size()==0){
 	file.push_back("D:\\ImageDataBase\\400img\\img-op39-p-015t000.jpg");
+	file.push_back("D:\\ImageDataBase\\400img\\img-10.21op7-p-046t000.jpg");
 }
 if (out.empty())
 {
@@ -116,6 +117,7 @@ if (out.empty())
 #if linux||__linux||__linux__||__GNUC__
 if (file.size()==0){
    file.push_back("/home/blacksherry/400/400img/img-op39-p-015t000.jpg");
+   file.push_back("/home/blacksherry/400/400img/img-10.21op7-p-046t000.jpg");
 }
 if (out.empty()){
    out="/home/blacksherry/400/400out/";
@@ -124,6 +126,8 @@ if (out.empty()){
 
     
 	cui_GeneralImgProcess::THreadSuperPixel_CUDA_CollectionMethods(0,file,out,1000);
+
+
 	printf("Done ! \n");
 	return 0;
 

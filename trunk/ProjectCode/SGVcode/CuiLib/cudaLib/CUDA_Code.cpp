@@ -10,11 +10,15 @@
 /*------------------------------------------------------------------------------------------*/
 //std::mutex CUDA_LOCK;
 // pthread_mutex_lock(&CUDA_MUTEX);
+#define  USE_CUDA_MUTEX FALSE
+#if USE_CUDA_MUTEX
 #if _MSC_VER
 	CMutex CUDA_MUTEX;
 #elif __GNUC__
 	pthread_mutex_t CUDA_MUTEX= PTHREAD_MUTEX_INITIALIZER;
 #else
+#endif
+
 
 #endif
 /*------------------------------------------------------------------------------------------*/
@@ -163,7 +167,7 @@ void PerformSuperpixelSLIC_cuda(
 	const double		M)
 {
 
-#if _MSC_VER
+#if _MSC_VER &&  USE_CUDA_MUTEX
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -172,7 +176,7 @@ void PerformSuperpixelSLIC_cuda(
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
 	CUDA_MUTEX.Lock();
-#elif __GNUC__
+#elif __GNUC__ && USE_CUDA_MUTEX
 	pthread_mutex_lock(&CUDA_MUTEX);
 #else
 
@@ -224,14 +228,14 @@ void PerformSuperpixelSLIC_cuda(
 	}	
 #endif
 
-#if _MSC_VER
+#if _MSC_VER &&  USE_CUDA_MUTEX
         QueryPerformanceCounter(&litmp);	
 		QPart2 = litmp.QuadPart;//获得中止值	
 		dfMinus = (double)(QPart2-QPart1);	
 		dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒	
 		printf( "gpu time is %0.1f ms [msvc]\n", dfTim*1000 );
 		CUDA_MUTEX.Unlock();
-#elif __GNUC__
+#elif __GNUC__ &&  USE_CUDA_MUTEX
 		 pthread_mutex_unlock(&CUDA_MUTEX);
 #else
 
@@ -294,7 +298,7 @@ void  PerformSuperpixelSLIC_ThetaMLXY_cuda(
 	int*	    klabels,
 	const int	STEP)
 {
-#if _MSC_VER
+#if _MSC_VER &&  USE_CUDA_MUTEX
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -303,7 +307,7 @@ void  PerformSuperpixelSLIC_ThetaMLXY_cuda(
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
 	CUDA_MUTEX.Lock();
-#elif __GNUC__
+#elif __GNUC__ &&  USE_CUDA_MUTEX
 	pthread_mutex_lock(&CUDA_MUTEX);
 #else
 
@@ -333,14 +337,14 @@ void  PerformSuperpixelSLIC_ThetaMLXY_cuda(
 			 STEP);
 	}
 #endif
-#if _MSC_VER
+#if _MSC_VER &&  USE_CUDA_MUTEX
     QueryPerformanceCounter(&litmp);	
 	QPart2 = litmp.QuadPart;//获得中止值	
 	dfMinus = (double)(QPart2-QPart1);	
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒	
 	TRACE("\n 十次迭代: %f（秒）",dfTim);
 	CUDA_MUTEX.Unlock();
-#elif __GNUC__
+#elif __GNUC__ &&  USE_CUDA_MUTEX
 	 pthread_mutex_unlock(&CUDA_MUTEX);
 #else
 
@@ -384,7 +388,7 @@ void DrawContoursAroundSegments_cuda(
 	const int				height,
 	const unsigned int		color )
 {
-#if _MSC_VER
+#if _MSC_VER &&  USE_CUDA_MUTEX
     LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -393,7 +397,7 @@ void DrawContoursAroundSegments_cuda(
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
 	CUDA_MUTEX.Lock();
-#elif __GNUC__
+#elif __GNUC__ &&  USE_CUDA_MUTEX
 	pthread_mutex_lock(&CUDA_MUTEX);
 #else
 
@@ -401,13 +405,13 @@ void DrawContoursAroundSegments_cuda(
 #if 1
 	DrawContoursAroundSegments_gpu(ubuff,labels,width,height,color,BlackColorPNG);
 #endif
-#if _MSC_VER
+#if _MSC_VER &&  USE_CUDA_MUTEX
     QueryPerformanceCounter(&litmp);	
 	QPart2 = litmp.QuadPart;//获得中止值	
 	dfMinus = (double)(QPart2-QPart1);	
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒	
 	CUDA_MUTEX.Unlock();
-#elif __GNUC__
+#elif __GNUC__ &&  USE_CUDA_MUTEX
 	 pthread_mutex_unlock(&CUDA_MUTEX);
 #else
 
@@ -441,9 +445,9 @@ void HarrTransformLet_MatrixSub_cuda(
 	int width, 
 	unsigned char *result)
 {
-#if _MSC_VER
+#if _MSC_VER &&  USE_CUDA_MUTEX
 	CUDA_MUTEX.Lock();
-#elif __GNUC__
+#elif __GNUC__ &&  USE_CUDA_MUTEX
 	pthread_mutex_lock(&CUDA_MUTEX);
 #else
 
@@ -455,9 +459,9 @@ void HarrTransformLet_MatrixSub_cuda(
 	width, 
 	result);
 
-#if _MSC_VER
+#if _MSC_VER &&  USE_CUDA_MUTEX
 	CUDA_MUTEX.Unlock();
-#elif __GNUC__
+#elif __GNUC__ &&  USE_CUDA_MUTEX
 	 pthread_mutex_unlock(&CUDA_MUTEX);
 #else
 
@@ -499,7 +503,7 @@ void  GetSeedsLabxy_cuda(
 	double*				kseedsy,
 	int*				klabels)
 {
-#if _MSC_VER
+#if _MSC_VER &&  USE_CUDA_MUTEX
     LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -508,7 +512,7 @@ void  GetSeedsLabxy_cuda(
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
 	CUDA_MUTEX.Lock();
-#elif __GNUC__
+#elif __GNUC__ &&  USE_CUDA_MUTEX
 	pthread_mutex_lock(&CUDA_MUTEX);
 #else
 
@@ -529,14 +533,14 @@ void  GetSeedsLabxy_cuda(
 		kseedsy,
 		klabels);
 #endif
-#if _MSC_VER
+#if _MSC_VER &&  USE_CUDA_MUTEX
     QueryPerformanceCounter(&litmp);	
 	QPart2 = litmp.QuadPart;//获得中止值	
 	dfMinus = (double)(QPart2-QPart1);	
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	double dfms=dfTim*1000;//ms
 	CUDA_MUTEX.Unlock();
-#elif __GNUC__
+#elif __GNUC__ &&  USE_CUDA_MUTEX
 	 pthread_mutex_unlock(&CUDA_MUTEX);
 #else
 
@@ -579,7 +583,7 @@ void Get_Nighbour_E_matrix_cuda(
 	const string		filename,
 	const string		path)
 {
-#if _MSC_VER
+#if _MSC_VER &&  USE_CUDA_MUTEX
     LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -588,7 +592,7 @@ void Get_Nighbour_E_matrix_cuda(
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
 	CUDA_MUTEX.Lock();
-#elif __GNUC__
+#elif __GNUC__ &&  USE_CUDA_MUTEX
 	pthread_mutex_lock(&CUDA_MUTEX);
 #else
 
@@ -597,13 +601,13 @@ void Get_Nighbour_E_matrix_cuda(
 #if 1
 	Get_Nighbour_E_matrix_gpu(labels,NumLabels,Matrix_E,width,height);
 #endif
-#if _MSC_VER
+#if _MSC_VER &&  USE_CUDA_MUTEX
     QueryPerformanceCounter(&litmp);	
 	QPart2 = litmp.QuadPart;//获得中止值	
 	dfMinus = (double)(QPart2-QPart1);	
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	CUDA_MUTEX.Unlock();
-#elif __GNUC__
+#elif __GNUC__ &&  USE_CUDA_MUTEX
 	 pthread_mutex_unlock(&CUDA_MUTEX);
 #else
 
@@ -649,7 +653,7 @@ void classify_SkyVerticalGround_cuda(
 	int Width,
 	int Height)
 {
-#if _MSC_VER
+#if _MSC_VER &&  USE_CUDA_MUTEX
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -658,7 +662,7 @@ void classify_SkyVerticalGround_cuda(
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
 	CUDA_MUTEX.Lock();
-#elif __GNUC__
+#elif __GNUC__ &&  USE_CUDA_MUTEX
 	pthread_mutex_lock(&CUDA_MUTEX);
 #else
 
@@ -679,14 +683,14 @@ void classify_SkyVerticalGround_cuda(
 		Width,
 		Height);
 #endif
-#if _MSC_VER
+#if _MSC_VER &&  USE_CUDA_MUTEX
 	QueryPerformanceCounter(&litmp);	
 	QPart2 = litmp.QuadPart;//获得中止值	
 	dfMinus = (double)(QPart2-QPart1);	
 	dfTim = dfMinus / dfFreq*1000;// 获得对应的时间值，单位为MS
 	//dfTim = 131.77898596090682 ms
 	CUDA_MUTEX.Unlock();
-#elif __GNUC__
+#elif __GNUC__ &&  USE_CUDA_MUTEX
 	 pthread_mutex_unlock(&CUDA_MUTEX);
 #else
 
