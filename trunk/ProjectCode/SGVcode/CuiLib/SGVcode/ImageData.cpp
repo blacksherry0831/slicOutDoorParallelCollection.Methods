@@ -63,6 +63,7 @@ ImageData::ImageData(
 	int spcount,
 	float horizontal_line_pos)
 {
+	TRACE_FUNC();
 	this->initParam();
 	ASSERT(filename!="");
 	SetImageData(filename,filesavepath);
@@ -80,6 +81,7 @@ ImageData::ImageData(
 /*----------------------------------------------------------------*/
 void ImageData::initParam(void)
 {	
+	TRACE_FUNC();
 	this->FileReadFullPath="";
 	this->FileWritePath="";
 	this->ImgHeight=0;
@@ -127,7 +129,7 @@ void ImageData::initParam(void)
 /*----------------------------------------------------------------*/
 void ImageData::SetImageData(string filename,string filesavepath){
 
-	
+	TRACE_FUNC();
 	FileReadFullPath=filename;
 	FileWritePath=filesavepath;
 	
@@ -141,7 +143,9 @@ void ImageData::SetImageData(string filename,string filesavepath){
 *
 */
 /*----------------------------------------------------------------*/
- void ImageData::SetSlicParameter(int spcount,double compactness){
+ void ImageData::SetSlicParameter(int spcount,double compactness)
+ {
+	 TRACE_FUNC();
 	 slic_expect_num=spcount;
 	 slic_current_num=spcount;
 	 slic_compactness=compactness;
@@ -217,7 +221,7 @@ void ImageData::ReleaseMemory(void)
 	 int spcount,
 	 double compactness)
  {  
-	
+	 TRACE_FUNC();
 	 ReleaseMemory();
 	 /*************************************************************************************************/ 
 	
@@ -359,6 +363,7 @@ void ImageData::initMemData(int*ImgLabels)
 /*----------------------------------------------------------------*/
 void ImageData:: ImageGetSeedsLabxy_cuda(void)
 {
+	TRACE_FUNC();
 #if _MSC_VER
    LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
@@ -425,6 +430,7 @@ void ImageData:: ImageGetSeedsThetaML_cuda(void)
 /*----------------------------------------------------------------*/
 void ImageData::GetMatrixE(void)
 {
+	TRACE_FUNC();
 #if _MSC_VER
     LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
@@ -482,6 +488,7 @@ void ImageData::DoRGBtoLABConversion(
 	double*					avec,
 	double*					bvec)
 {
+	TRACE_FUNC();
 	int sz = ImgWidth*ImgHeight;
 	/*lvec = new double[sz];
 	avec = new double[sz];
@@ -506,6 +513,7 @@ void ImageData::DoRGBtoLABConversion(
 //===========================================================================
 void ImageData::RGB2LAB(const int& sR, const int& sG, const int& sB, double& lval, double& aval, double& bval)
 {
+	//TRACE_FUNC();
 	//------------------------
 	// sRGB to XYZ conversion
 	//------------------------
@@ -551,6 +559,7 @@ void ImageData::RGB2XYZ(
 	double&			Y,
 	double&			Z)
 {
+	//TRACE_FUNC();
 	double R = sR/255.0;
 	double G = sG/255.0;
 	double B = sB/255.0;

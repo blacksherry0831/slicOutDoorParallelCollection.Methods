@@ -503,6 +503,7 @@ void  GetSeedsLabxy_cuda(
 	double*				kseedsy,
 	int*				klabels)
 {
+	TRACE_FUNC();
 #if _MSC_VER &&  USE_CUDA_MUTEX
     LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
@@ -583,6 +584,7 @@ void Get_Nighbour_E_matrix_cuda(
 	const string		filename,
 	const string		path)
 {
+	TRACE_FUNC();
 #if _MSC_VER &&  USE_CUDA_MUTEX
     LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;

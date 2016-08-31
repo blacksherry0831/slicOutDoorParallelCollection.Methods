@@ -1155,6 +1155,7 @@ int cui_GeneralImgProcess::CuiSetNighbour_E_matrix(
 	const string				filename,
 	const string				path)
 {
+	TRACE_FUNC();
 #if 0
 	int num_devices=gpu::getCudaEnabledDeviceCount();
 	if (num_devices<=0){
@@ -2853,6 +2854,7 @@ float mstime=dfTim*1000;
 /*-------------------------------------------------------------------------------------------*/
  void cui_GeneralImgProcess::ConvertImg2Eighth4Ch(IplImage **src)
  {
+	 TRACE_FUNC();
 	 CvSize SizeOld=cvGetSize(*src);
 	 CvSize SizeNew=cvGetSize(*src);
 	 int depth=(*src)->depth;
@@ -2889,6 +2891,7 @@ float mstime=dfTim*1000;
 /*-------------------------------------------------------------------------------------------*/
  void cui_GeneralImgProcess::ConvertImg3ChTo4Ch(IplImage **src)
  {
+	 TRACE_FUNC();
 	 CvSize SizeOld=cvGetSize(*src);
 	 int depth=(*src)->depth;
 	 int nChannels=(*src)->nChannels;
@@ -3557,6 +3560,7 @@ void cui_GeneralImgProcess::Get_Kseeds_Histogram(
 	string FileReadFullPath,
 	string FileWritePath)
 {
+	TRACE_FUNC();
 	int HistDimSPLABColor=seeddata.ColorHist.histDimSPLAB;
 	int HIstDimSPLGray=seeddata.GrayHist.histDimSPLAB;
 	int vectorSize=kseedsa.size();

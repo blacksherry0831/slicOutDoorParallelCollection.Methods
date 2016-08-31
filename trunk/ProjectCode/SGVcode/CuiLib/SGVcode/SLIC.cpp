@@ -45,6 +45,7 @@ SLIC::SLIC(ImageMemData* pMD_t)
 /*----------------------------------------------------------------------------------------------------------------*/
 SLIC::SLIC(ImageData* pMD_t)
 {
+	TRACE_FUNC();
 	this->pIMD=pMD_t;
 	this->InitParameter();
 	this->CuiGetImageDataPIMD();
@@ -57,7 +58,7 @@ SLIC::SLIC(ImageData* pMD_t)
 void SLIC::InitParameter(void)
 {
 	
-
+	TRACE_FUNC();
 	m_lvecvec = NULL;
 	m_avecvec = NULL;
 	m_bvecvec = NULL;
@@ -331,6 +332,7 @@ void SLIC::PerturbSeeds(
 	vector<double>&				kseedsy,
     const vector<double>&       edges)
 {
+	TRACE_FUNC();
 	double*  m_lvec=NULL;
 	double*  m_avec=NULL;
 	double*  m_bvec=NULL;
@@ -1648,6 +1650,7 @@ void SLIC::DoSuperpixelSegmentation_ForGivenSuperpixelSize_sitaMLxyIncompletion(
 	int&						numlabels,
 	const int&					superpixelsize)
 {
+	TRACE_FUNC();
 	//------------------------------------------------
 	const int STEP = sqrt(double(superpixelsize))+0.5;
 	//------------------------------------------------
@@ -1755,6 +1758,7 @@ void SLIC::DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy(
 	int*&						klabels,
 	int&						numlabels)
 {
+	TRACE_FUNC();
     const int superpixelsize = 0.5+double(width*height)/double(numlabels);
 #if 0
  DoSuperpixelSegmentation_ForGivenSuperpixelSize_sitaMLxy(
@@ -2012,6 +2016,7 @@ void SLIC::CuiGetImageData(void)
 /*----------------------------------------------------------------------------------------------------------------*/
 void SLIC::CuiGetImageDataPIMD(void)
 {
+	TRACE_FUNC();
 #if 1
 	/**********************************************/
 	if (CuiImgData) delete []CuiImgData;
@@ -2133,6 +2138,7 @@ void SLIC::CuiDoSuperpixelSegmentation_ForGivenNumberOfSuperpixels( int& K, doub
 /*----------------------------------------------------------------------------------------------------------------*/
 void SLIC::DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy(int savelable)
 {
+	TRACE_FUNC();
 #if _MSC_VER
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
@@ -3592,6 +3598,7 @@ void SLIC::GetLABXYSeeds_ForGivenStepSize_Rectangle2(
 	double*  m_avec,
 	double*  m_bvec)
 {	
+	TRACE_FUNC();
 	float xStep;
 	float yStep;
 	const bool hexgrid = false;

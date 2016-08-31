@@ -124,6 +124,14 @@ typedef unsigned long long ULONGLONG;
 #endif
 
 #if TRUE
+//此宏展开后，类似于printf("%d""%d", 1, 2);  
+#define TRACE_FUNC_ARGS(fmt,...)  printf("%s(%d)-<%s>: "##fmt, __FILE__, __LINE__, __FUNCTION__, ##__VA_ARGS__) 
+
+#define TRACE_FUNC()  printf("\n>>>>>>CALL FUNC : %s(%d)\n<%s>\n", __FUNCTION__,__LINE__,__FILE__) 
+
+#endif
+
+#if TRUE
 #ifndef nullptr
 #define nullptr 0
 #endif

@@ -25,6 +25,7 @@ ColorBarCluster::~ColorBarCluster(void)
 /*----------------------------------------------------------------*/
 void ColorBarCluster::Clustering(void)
 {
+	TRACE_FUNC();
 #if _MSC_VER
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
@@ -73,6 +74,7 @@ cui_GeneralImgProcess::Draw_Kseeds_AverageImg(
 /*---------------------------------------------------------------------------------*/
 void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 {
+	TRACE_FUNC();
 #if _MSC_VER
     LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
@@ -441,6 +443,7 @@ void ColorBarCluster::HistogramOne2Matrix_Category_Lable(INT32 *Matrix_Category_
 /*---------------------------------------------------------------------------------*/
 void ColorBarCluster::HistColorGray2SimilarSet(KseedsHistColorGray seeddata)
 {
+	TRACE_FUNC();
 	int vectorSize=0;
 	int HistDimSPLABColor=seeddata.ColorHist.histDimSPLAB;
 	int HistDimSPLGray=seeddata.GrayHist.histDimSPLAB;
