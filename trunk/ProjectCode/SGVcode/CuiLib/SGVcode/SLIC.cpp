@@ -2139,7 +2139,7 @@ void SLIC::CuiDoSuperpixelSegmentation_ForGivenNumberOfSuperpixels( int& K, doub
 void SLIC::DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy(int savelable)
 {
 	TRACE_FUNC();
-#if _MSC_VER
+#if _MSC_VER&&_DEBUG
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -2167,30 +2167,31 @@ void SLIC::DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy(int sav
 			pIMD->slic_current_num);
 
 	}
+#if _DEBUG
 	if (savelable){
 		this->SaveSuperpixelLabels(pIMD->src_ImgLabels,CuiWidth,CuiHeight);
 	}
-std::string str_add;
+#endif
+
+
+	std::string str_add;
+#if _DEBUG
 	{
 		std::stringstream ss;
-		
 		ss<<"_Num_";
 		ss<<pIMD->slic_expect_num;
 		ss<<"_Factor_" ;
 		ss<<1;
-#if TRUE
 		ss<<"_Fai_";
 		ss<<alpha*10;
-#endif
-		ss>>str_add;
-		
+		ss>>str_add;		
 	}	
-
-#if	SaveContours2Disk
+#endif
+#if	SaveContours2Disk&&_DEBUG
 	pIMD->SaveImgWithContours(str_add);
 #endif
 	/////////////////////////////////////////////////////
-#if _MSC_VER
+#if _MSC_VER&&_DEBUG
     QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
