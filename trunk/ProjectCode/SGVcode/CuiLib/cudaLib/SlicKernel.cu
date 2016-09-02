@@ -2852,6 +2852,7 @@ void PerformSuperpixelSLIC_ColorConvert_gpu(
 	double*				dev_X_n,
 	double*				dev_Y_n)
 {
+#if  _DEBUG
 	cudaEvent_t start,stop;
 	cudaError_t cudaStatus;
 	float costtime_ms=0;
@@ -2860,6 +2861,7 @@ void PerformSuperpixelSLIC_ColorConvert_gpu(
 	cudaEventCreate(&stop);
 	///////////////////////////////////////////////////////////////////////////////////////
 	cudaEventRecord(start,0);
+#endif
 	{
 		dim3    threadsPerBlock(16,16);
 		dim3    numBlock((m_width+threadsPerBlock.x-1)/threadsPerBlock.x,(m_height+threadsPerBlock.y-1)/threadsPerBlock.y);
@@ -2878,13 +2880,18 @@ void PerformSuperpixelSLIC_ColorConvert_gpu(
 	}
 	////////////////////////////////////////////////////////////////////////////////////////
 	cudaGetLastError_Sync_CUI();
+#if _DEBUG
 	cudaStatus=cudaEventRecord(stop,0);	
 	cudaGetLastError_Sync_CUI();
 	cudaStatus=cudaEventElapsedTime(&costtime_ms,start,stop);	
 	costtime_us=costtime_ms*1000;
+#endif
 	cudaGetLastError_Sync_CUI();
+#if _DEBUG
 	cudaEventDestroy(start);
 	cudaEventDestroy(stop);
+#endif
+
 }
 /*------------------------------------------------------------------------------------------*/
 /**
