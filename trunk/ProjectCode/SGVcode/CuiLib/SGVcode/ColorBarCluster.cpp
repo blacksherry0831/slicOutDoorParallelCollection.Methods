@@ -137,7 +137,7 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 			pIMD->FileReadFullPath,pIMD->FileWritePath);
 #endif
 
-#if 1
+
 		{
 #if _MSC_VER && _DEBUG
 			LARGE_INTEGER litmp;
@@ -184,7 +184,7 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 #endif
 		
 		}
-#endif
+
 #if	SaveContours2Disk &&_DEBUG
 		pIMD->SaveImgWithContours();
 #endif
