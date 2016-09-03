@@ -26,7 +26,7 @@ ColorBarCluster::~ColorBarCluster(void)
 void ColorBarCluster::Clustering(void)
 {
 	TRACE_FUNC();
-#if _MSC_VER
+#if _MSC_VER &&_DEBUG
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -43,7 +43,7 @@ do {
 
 pIMD->SurroundClassification();
 
-#if SaveAverageImg2Disk 
+#if SaveAverageImg2Disk && _DEBUG
   pIMD->ImageGetSeedsLabxy_cuda();
 
 cui_GeneralImgProcess::Draw_Kseeds_AverageImg(
@@ -54,7 +54,7 @@ cui_GeneralImgProcess::Draw_Kseeds_AverageImg(
 	FileReadFullPath,
 	FileWritePath);
 #endif
-#if _MSC_VER
+#if _MSC_VER &&_DEBUG
 	/*---------------------------------------------------*/
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
@@ -75,7 +75,7 @@ cui_GeneralImgProcess::Draw_Kseeds_AverageImg(
 void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 {
 	TRACE_FUNC();
-#if _MSC_VER
+#if _MSC_VER &&_DEBUG
     LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -136,7 +136,7 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 			pIMD->FileReadFullPath,pIMD->FileWritePath);
 #if 1
 		{
-#if _MSC_VER
+#if _MSC_VER && _DEBUG
 			LARGE_INTEGER litmp;
 			LONGLONG QPart1,QPart2;
 			double dfMinus, dfFreq, dfTim;
@@ -149,7 +149,7 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 			
 			HistColorGray2SimilarSet(seeddata);
 			/////////////////////////////////////////////////////
-#if _MSC_VER	
+#if _MSC_VER &&_DEBUG
 			QueryPerformanceCounter(&litmp);
 			QPart2 = litmp.QuadPart;//获得中止值
 			dfMinus = (double)(QPart2-QPart1);
@@ -159,7 +159,7 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 			////////////////////////////////////
 		}
 		{
-#if _MSC_VER
+#if _MSC_VER &&_DEBUG
 	       LARGE_INTEGER litmp;
 			LONGLONG QPart1,QPart2;
 			double dfMinus, dfFreq, dfTim;
@@ -171,7 +171,7 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 #endif
 			pIMD->Combination_ImgLabs(SimilarSet,true,false,true);
 
-#if _MSC_VER
+#if _MSC_VER && _DEBUG
 	        /////////////////////////////////////////////////////
 			QueryPerformanceCounter(&litmp);
 			QPart2 = litmp.QuadPart;//获得中止值
@@ -193,7 +193,7 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 	/*---------------------------------------------------*/
 #endif
 	/*---------------------------------------------------*/
-#if _MSC_VER
+#if _MSC_VER &&_DEBUG
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
@@ -320,8 +320,8 @@ void ColorBarCluster::Clustering_ByHistogramMaxHist_NoIterationColor(int Coloran
 	//while (old_slic_num!=new_slic_num);
 	while (0);
 	/////////////////////////////////////
-#if 1
 	pIMD->ImageGetSeedsLabxy_cuda();
+#if _DEBUG
 	cui_GeneralImgProcess::Get_Kseeds_Histogram(
 		pIMD->kseedsl,
 		pIMD->kseedsa,
@@ -348,7 +348,7 @@ void ColorBarCluster::Clustering_ByHistogramMaxHist_NoIterationColor(int Coloran
 #endif
 
 #endif
-#if _MSC_VER
+#if _MSC_VER &&_DEBUG
     QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);

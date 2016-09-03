@@ -3663,7 +3663,7 @@ void cui_GeneralImgProcess::Draw_Kseeds_Histogram(
 {
 	int HistDimSPLAB=seeddata.histDimSPLAB;
 	int vectorSize=kseedsa.size();
-#if SaveHistgram2Disk
+#if SaveHistgram2Disk &&_DEBUG
 	/////////////////////////////////////////////////////////////////
 	double* hist_L=new double[HistDimSPLAB];//0-100
 	double* hist_AB=new double[HistDimSPLAB];//-127--128
