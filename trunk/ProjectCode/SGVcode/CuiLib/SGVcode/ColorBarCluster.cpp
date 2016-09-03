@@ -115,6 +115,7 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 			pIMD->FileReadFullPath,
 			pIMD->FileWritePath);
 		/**/
+#if _DEBUG
 		cui_GeneralImgProcess::Draw_Kseeds_Histogram(
 			pIMD->kseedsl,
 			pIMD->kseedsa,
@@ -134,6 +135,8 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 			pIMD->src_ImgLabels,
 			pIMD->ImgWidth,pIMD->ImgHeight,
 			pIMD->FileReadFullPath,pIMD->FileWritePath);
+#endif
+
 #if 1
 		{
 #if _MSC_VER && _DEBUG
@@ -182,7 +185,7 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 		
 		}
 #endif
-#if	SaveContours2Disk
+#if	SaveContours2Disk &&_DEBUG
 		pIMD->SaveImgWithContours();
 #endif
 		
