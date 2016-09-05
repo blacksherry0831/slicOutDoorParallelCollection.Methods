@@ -212,7 +212,7 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 /*----------------------------------------------------------------*/
 void ColorBarCluster::Clustering_ByHistogramMaxHist_NoIterationColor(int ColorangleSpan)
 {
-#if _MSC_VER
+#if _MSC_VER &&_DEBUG
     LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -221,8 +221,7 @@ void ColorBarCluster::Clustering_ByHistogramMaxHist_NoIterationColor(int Coloran
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
 #endif
-	
-#if 1
+
 	int HistDimSPLABColor=45;
 	int old_slic_num;
 	int new_slic_num;
@@ -251,7 +250,7 @@ void ColorBarCluster::Clustering_ByHistogramMaxHist_NoIterationColor(int Coloran
 			pIMD->ImgHeight,
 			pIMD->FileReadFullPath,
 			pIMD->FileWritePath);
-
+#if _DEBUG
 		cui_GeneralImgProcess::Draw_Kseeds_Histogram(
 			pIMD->kseedsl,
 			pIMD->kseedsa,
@@ -262,12 +261,14 @@ void ColorBarCluster::Clustering_ByHistogramMaxHist_NoIterationColor(int Coloran
 			pIMD->src_ImgLabels,
 			pIMD->ImgWidth,pIMD->ImgHeight,
 			pIMD->FileReadFullPath,pIMD->FileWritePath);
+#endif
+		
 		do {
-
 			SameLink.clear();
 			do {
 				seeddata.ColorHist.removeUsedHist();
 				this->HistogramRange2Matrix_Category_Lable_SameLink(seeddata.ColorHist,SameLink,ColorangleSpan);
+#if _DEBUG
 				cui_GeneralImgProcess::Draw_Kseeds_Histogram(
 					pIMD->kseedsl,
 					pIMD->kseedsa,
@@ -277,12 +278,14 @@ void ColorBarCluster::Clustering_ByHistogramMaxHist_NoIterationColor(int Coloran
 					seeddata.GrayHist,
 					pIMD->src_ImgLabels,
 					pIMD->ImgWidth,pIMD->ImgHeight,
-					pIMD->FileReadFullPath,pIMD->FileWritePath);		
+					pIMD->FileReadFullPath,pIMD->FileWritePath);	
+#endif
+	
 				/*组合图块*/
 			} while (seeddata.ColorHist.IsRemoveALL()!=true);
 		} while (0);
 
-#if		UseTextureInColorWithCombine
+#if		UseTextureInColorWithCombine && _DEBUG
 		cui_GeneralImgProcess::CalculateAllSpPropertyRange(
 			CuiImgLables,
 			pIMD->ImgWidth,pIMD->ImgHeight,
@@ -306,7 +309,7 @@ void ColorBarCluster::Clustering_ByHistogramMaxHist_NoIterationColor(int Coloran
 		
 #endif
 		pIMD->Combination_ImgLabs(SameLink,true,false,true);
-#if SaveContours2Disk
+#if SaveContours2Disk && _DEBUG
 		pIMD->SaveImgWithContours();
 #endif
 	/*	cui_GeneralImgProcess::Cui_Combination_ImgLabs2(
@@ -350,7 +353,6 @@ void ColorBarCluster::Clustering_ByHistogramMaxHist_NoIterationColor(int Coloran
 		pIMD->FileReadFullPath,pIMD->FileWritePath);
 #endif
 
-#endif
 #if _MSC_VER &&_DEBUG
     QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
