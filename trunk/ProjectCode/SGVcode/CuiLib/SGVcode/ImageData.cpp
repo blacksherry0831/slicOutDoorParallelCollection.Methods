@@ -364,7 +364,7 @@ void ImageData::initMemData(int*ImgLabels)
 void ImageData:: ImageGetSeedsLabxy_cuda(void)
 {
 	TRACE_FUNC();
-#if _MSC_VER
+#if _MSC_VER && _DEBUG
    LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -399,7 +399,7 @@ void ImageData:: ImageGetSeedsLabxy_cuda(void)
 			kseedsy.data(),
 			src_ImgLabels);
 	}
-#if _MSC_VER
+#if _MSC_VER && _DEBUG
 /*---------------------------------------------------*/
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值

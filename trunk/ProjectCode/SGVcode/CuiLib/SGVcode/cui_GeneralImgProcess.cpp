@@ -3566,7 +3566,7 @@ void cui_GeneralImgProcess::Get_Kseeds_Histogram(
 	int vectorSize=kseedsa.size();
 	seeddata.GrayHist.Clear();
 	seeddata.ColorHist.Clear();
-#if 1
+#if _DEBUG
 	Draw_Kseeds_AverageImg(
 		kseedsl,kseedsa,kseedsb,
 		CuiImgLables,
