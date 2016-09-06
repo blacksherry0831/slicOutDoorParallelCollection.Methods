@@ -94,7 +94,7 @@ void ComputeSVG2::FillWeightArrayZlm(void)
 	this->FillWeightArrayG_InDoor20150603(horizontal_line,1);
 	this->FillWeightArrayS_InDoor20150603(horizontal_line,1);
 	this->FillWeightArrayV_New(horizontal_line,1);	
-#if 1
+#if _DEBUG
 	if (cui_GeneralImgProcess::SAVE_DEBUG_2DISK==TRUE){
 		char data_t[1024];																			
 		ofstream outfile;								   
@@ -132,10 +132,10 @@ void ComputeSVG2::FillWeightArrayZlm(void)
 		pIMD->SpSet.SpPropertySet[spi].fuzzyCategory=fuzzyCategory[spi];
 		pIMD->SpSet.SpPropertySet[spi].ComputeCategory=fuzzyCategory[spi];
 	}
-#if SaveContours2Disk
+#if SaveContours2Disk && _DEBUG
 	pIMD->SaveImgWithPointsCompute("fuzzy");
 #endif
-#if 1
+#if _DEBUG
 	if (cui_GeneralImgProcess::SAVE_DEBUG_2DISK==TRUE){
 		char data_t[1024];																			
 		ofstream outfile;								   
@@ -194,7 +194,7 @@ void ComputeSVG2::CalculateSpClassification(int* Matrix_Category_Lable_host)
 			SVG_SpSum_host[spi]+=1;
 		}
 	}
-	for (int spi=0;spi<pIMD->slic_current_num;spi++){
+	for (register int spi=0;spi<pIMD->slic_current_num;spi++){
 		SkyWeightSp_host[spi]/=SVG_SpSum_host[spi];
 		VerticalWeightSp_host[spi]/=SVG_SpSum_host[spi];
 		GroundWeightSp_host[spi]/=SVG_SpSum_host[spi];
@@ -239,7 +239,8 @@ this->FillWeightArrayZlm();
 	this->ForceSkyGroundVertical();
 
 	pIMD->CombinationImgSVG();
-#if SaveContours2Disk	
+
+#if SaveContours2Disk && _DEBUG
 	pIMD->SaveImgSVGCompute("_BT_unknow");
 	pIMD->SaveSuperpixelLabelsImagePNG();
 #endif
@@ -254,7 +255,7 @@ void ComputeSVG2::ForceSkyGroundVertical(void)
 {
 	this->zlm_ForceSky();
 	
-#if 1
+#if _DEBUG
 	pIMD->SaveImgWithPointsCompute();
 #endif
 
@@ -265,7 +266,7 @@ this->zlm_ForceGround();
 	this->RemoveSomeUnreasonableClassification();
 #endif
 
-#if SaveContours2Disk
+#if SaveContours2Disk &&_DEBUG
 	pIMD->SaveImgWithPointsCompute("_FinalCompute_");
 #endif
 }
