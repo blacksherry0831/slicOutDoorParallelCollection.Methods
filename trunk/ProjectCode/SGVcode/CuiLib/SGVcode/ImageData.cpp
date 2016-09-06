@@ -997,8 +997,8 @@ void ImageData::SaveImgWithContours(string str_add)
 /*----------------------------------------------------------------*/
 void ImageData::SurroundClassification()
 {
-#if _MSC_VER
-   LARGE_INTEGER litmp;
+#if _MSC_VER && _DEBUG
+    LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
 	QueryPerformanceFrequency(&litmp);
@@ -1037,10 +1037,10 @@ void ImageData::SurroundClassification()
 	Combination_ImgLabs(simlarSp);
 #endif
 	
-#if SaveContours2Disk
+#if SaveContours2Disk &&_DEBUG
 this->SaveImgWithContours();
 #endif	
-#if _MSC_VER
+#if _MSC_VER &&_DEBUG
     //////////////////////////////////////////////////////////////
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
@@ -1059,7 +1059,7 @@ this->SaveImgWithContours();
 /*----------------------------------------------------------------*/
 void ImageData::InSideClusteringByopencv()
 {
-#if _MSC_VER
+#if _MSC_VER && _DEBUG
     LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -1104,7 +1104,6 @@ void ImageData::InSideClusteringByopencv()
 						}else{
 							Origin_img[y_t*img_width+x_t]=0;							
 						}
-
 					}
 				}
 				/**********************************************/
@@ -1121,7 +1120,7 @@ void ImageData::InSideClusteringByopencv()
 this->slic_current_num=cui_GeneralImgProcess::AdjustLabFrom0toN(labels,width,height,NumLabels);
 }
 ///////////////////////////////////////////////
-#if _MSC_VER
+#if _MSC_VER &&_DEBUG
 	    QueryPerformanceCounter(&litmp);
 		QPart2 = litmp.QuadPart;//获得中止值
 		dfMinus = (double)(QPart2-QPart1);
