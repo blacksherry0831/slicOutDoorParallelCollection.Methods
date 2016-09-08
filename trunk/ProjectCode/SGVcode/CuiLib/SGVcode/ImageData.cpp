@@ -632,9 +632,10 @@ inline void ImageData::ConvertLab2oml(
 /*----------------------------------------------------------------*/
 void ImageData::initThetaMLXY(void)
 {
-	for (int x=0;x<ImgWidth;x++){
-		for (int y=0;y<ImgHeight;y++){
-			int Idx=y*ImgWidth+x;
+	TRACE_FUNC();
+	for (register int x=0;x<ImgWidth;x++){
+		for (int register y=0;y<ImgHeight;y++){
+			register int Idx=y*ImgWidth+x;
 			ConvertLab2oml(m_lvec[Idx],m_avec[Idx],m_bvec[Idx],x,y,
 				sita_n[Idx],m_n[Idx],L_n[Idx],X_n[Idx],Y_n[Idx]);
 		}
