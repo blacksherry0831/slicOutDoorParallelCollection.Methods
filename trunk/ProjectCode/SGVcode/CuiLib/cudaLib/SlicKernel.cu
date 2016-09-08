@@ -3976,14 +3976,7 @@ void PerformSuperpixelSLIC_gpu_simplify2(
 *@param    kseedsSize  种子个数
 *@param    m_width   图像宽度
 *@param    m_height  图像高度
-*@param	   m_lvec  图像L分量
-*@param	   m_avec  图像A分量
-*@param	   m_bvec  图像B分量
-*@param	   kseedsl  种子L分量
-*@param	   kseedsa  种子A分量
-*@param	   kseedsb  种子B分量
-*@param	   kseedsx  种子X分量
-*@param	   kseedsy  种子Y分量
+
 *@param	   klabels  图像图块的标定图像
 *@param	   STEP     未使用
 *@param	   edgemag  未使用
