@@ -344,6 +344,7 @@ void ImageData::initLabels(int* labels)
 /*----------------------------------------------------------------*/
 void ImageData::initMemData(int*ImgLabels)
 {	
+	TRACE_FUNC();
 	InitMemDataTimes++;
 	if (InitMemDataTimes==1){
 		Matrix_E=new UINT32[slic_current_num*slic_current_num];

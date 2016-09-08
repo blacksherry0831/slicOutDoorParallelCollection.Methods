@@ -3666,10 +3666,10 @@ void SLIC::GetLABXYSeeds_ForGivenStepSize_Rectangle2(
 	kseedsx.resize(numseeds);
 	kseedsy.resize(numseeds);
 
-	for( int y = 0; y < ystrips; y++ )
+	for(register int y = 0; y < ystrips; y++ )
 	{
 		int ye = y*yerrperstrip;
-		for( int x = 0; x < xstrips; x++ )
+		for(register int x = 0; x < xstrips; x++ )
 		{
 			int xe = x*xerrperstrip;
 			int seedx = (x*xStep+xoff+xe);
