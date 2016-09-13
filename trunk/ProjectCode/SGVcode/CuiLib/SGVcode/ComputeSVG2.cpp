@@ -21,6 +21,7 @@
 /*-------------------------------------------------------------------------------------------------------*/
 ComputeSVG2::ComputeSVG2(ImageData* MemData_t)
 {
+	TRACE_FUNC();
 	this->pIMD=MemData_t;
 	pIMD->GetMatrixE();
 	Lab2Point_AB_Dst.resize(pIMD->slic_current_num);
@@ -90,6 +91,7 @@ void ComputeSVG2::FillWeightArrayZlmParallel(void)
 /*-------------------------------------------------------------------------------------------------------*/
 void ComputeSVG2::FillWeightArrayZlm(void)
 {
+	TRACE_FUNC();
     float horizontal_line=pIMD->Seg_HorizontalLinePosScale*pIMD->ImgHeight;
 	this->FillWeightArrayG_InDoor20150603(horizontal_line,1);
 	this->FillWeightArrayS_InDoor20150603(horizontal_line,1);
@@ -175,6 +177,7 @@ void ComputeSVG2::FillWeightArrayZlm(void)
 /*-------------------------------------------------------------------------------------------------------*/
 void ComputeSVG2::CalculateSpClassification(int* Matrix_Category_Lable_host)
 {
+	TRACE_FUNC();
   double*  SkyWeightSp_host=pIMD->SkyWeightSp_host;
   double*  VerticalWeightSp_host=pIMD->VerticalWeightSp_host;
   double*  GroundWeightSp_host=pIMD->GroundWeightSp_host;
@@ -228,7 +231,7 @@ void ComputeSVG2::CalculateSpClassification(int* Matrix_Category_Lable_host)
 /*-------------------------------------------------------------------------------------------------------*/
 void ComputeSVG2::separateSVG_Zlm(void)
 {
-
+	TRACE_FUNC();
 #if 0
 this->FillWeightArrayZlmParallel();
 #else
@@ -253,6 +256,7 @@ this->FillWeightArrayZlm();
 /*-------------------------------------------------------------------------------------------------------*/
 void ComputeSVG2::ForceSkyGroundVertical(void)
 {
+	TRACE_FUNC();
 	this->zlm_ForceSky();
 	
 #if _DEBUG
@@ -278,6 +282,7 @@ this->zlm_ForceGround();
 /*-------------------------------------------------------------------------------------------------------*/
 void ComputeSVG2::zlm_ForceSky(void)
 {
+	TRACE_FUNC();
 	float L_Distance=65;
 	double    sky_energy_threshold=GetSkyHarrEnergyThreshold();
 	double	  sky_Light_Threshold=GetSkyHarrLightThreshold();
@@ -307,6 +312,7 @@ void ComputeSVG2::zlm_ForceVertical(void)
 void ComputeSVG2::zlm_ForceGround(void)
 {
 	//地面连续
+	TRACE_FUNC();
 	this->RemoveGroundByPosition2();
 }
 /*--------------------------------------------------------------------------------------------------------*/
@@ -317,7 +323,7 @@ void ComputeSVG2::zlm_ForceGround(void)
 /*-------------------------------------------------------------------------------------------------------*/
 void ComputeSVG2::Init2SkyEffective(int sky_Effect_Index)
 {
-	
+	TRACE_FUNC();
 		pIMD->ImageGetSeedsLabxy_cuda();
 		for (register int sp=pIMD->slic_current_num-1;sp>=0;sp--){
 			   //到原点距离
@@ -362,6 +368,7 @@ double ComputeSVG2::GetSkyHarrLightThreshold(void)
 /*-------------------------------------------------------------------------------------------------------*/
 double ComputeSVG2::GetSkyHarrEnergyThreshold(void)
 {
+	TRACE_FUNC();
 	double    sky_energy_threshold=0;	
 	vector<double> sky_harr_energy;
 	sky_harr_energy.clear();
@@ -390,6 +397,7 @@ double ComputeSVG2::GetSkyHarrEnergyThreshold(void)
 /*-------------------------------------------------------------------------------------------------------*/
 int  ComputeSVG2::CalculateMostEffectiveSky(double sky_Light_Threshold,double sky_energy_threshold)
 {
+	TRACE_FUNC();
 	int sky_Effect_Square_Index=-1;
 	int	sky_Effect_vein_Index=0;
 	ULONGLONG	sky_SquareMeter=0;
@@ -455,6 +463,7 @@ int  ComputeSVG2::CalculateMostEffectiveSky(double sky_Light_Threshold,double sk
 /*-------------------------------------------------------------------------------------------------------*/
 void ComputeSVG2::RemoveUnEffectiveSkySP(ULONGLONG sky_Effect_Index,float L_distance)
 {
+	TRACE_FUNC();
 	if (sky_Effect_Index<0) 
 		return;
 	//除去与候选天空差异较大的天空候选块
@@ -769,7 +778,8 @@ void ComputeSVG2::zlm_ForceVertical_De(void)
 /*-------------------------------------------------------------------------------------------------------*/
 void ComputeSVG2::RemoveGroundByPosition2(void)
 {
-	
+	TRACE_FUNC();
+
 	for (register int sp=pIMD->slic_current_num-1;sp>=0;sp--){
 		if (((pIMD->SpSet.SpPropertySet[sp].BorderCategory&spBorderCategoryBottom)==spBorderCategoryBottom)
 			&&(pIMD->SpSet.SpPropertySet[sp].ComputeCategory==Ground)){
@@ -825,6 +835,7 @@ double ComputeSVG2::CalculateVGDifference(int spi)
 /*-------------------------------------------------------------------------------------------------------*/
 void  ComputeSVG2::FillWeightArrayS_InDoor20150603(double horizontal_line, double n)
 {
+	TRACE_FUNC();
 	float HgPos= pIMD->Seg_HorizontalLinePos+pIMD->PgOffset*pIMD->ImgHeight;
 	float HsPos= pIMD->Seg_HorizontalLinePos-pIMD->PsOffset*pIMD->ImgHeight;
 	float Hg=HgPos-pIMD->Seg_HorizontalLinePos;
@@ -851,7 +862,7 @@ void  ComputeSVG2::FillWeightArrayS_InDoor20150603(double horizontal_line, doubl
 /*---------------------------------------------------------------------------------------------------*/
 void  ComputeSVG2::FillWeightArrayG_InDoor20150603(double horizontal_line, double n)
 {
-
+	TRACE_FUNC();
 	float HgPos= pIMD->Seg_HorizontalLinePos+pIMD->PgOffset*pIMD->ImgHeight;
 	float HsPos= pIMD->Seg_HorizontalLinePos-pIMD->PsOffset*pIMD->ImgHeight;
 	float Hg=HgPos-pIMD->Seg_HorizontalLinePos;
@@ -916,6 +927,7 @@ double ComputeSVG2::Sx_InDoor20150603(int y,int n,float H0,float Hc,int H)
 /*--------------------------------------------------------------------*/
 void ComputeSVG2::FillWeightArrayV_New(double horizontal_line, double n)
 {
+	TRACE_FUNC();
 	/*-------------清零---------------------*/
 	for (register int i=0;i<pIMD->ImgHeight;i++){
 			pIMD->pYweight_V[i]=0;
@@ -939,6 +951,7 @@ void ComputeSVG2::FillWeightArrayV_New(double horizontal_line, double n)
 /*--------------------------------------------------------------------*/
 void ComputeSVG2::FillWeightArrayV_Gaussian(double horizontal_line, double n,double SigmaScale,double WeightScale)
 {
+	TRACE_FUNC();
 	{
 #if 1
 		//室外原始和室内叠加
