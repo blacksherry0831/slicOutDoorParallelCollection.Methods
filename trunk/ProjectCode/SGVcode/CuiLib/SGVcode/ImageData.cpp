@@ -271,7 +271,7 @@ void ImageData::ReleaseMemory(void)
 	   m_lvec=new double[sz];
 	   m_avec=new double[sz];
 	   m_bvec=new double[sz];
-	   DoRGBtoLABConversion(src_ImgBGRA, m_lvec, m_avec, m_bvec);
+	   DoRGBtoLABConversion(src_ImgBGRA, m_lvec, m_avec, m_bvec,ImgWidth,ImgHeight);
 	 /*********************************************************************/
 	   sita_n=new double[sz];
 	   m_n=new double[sz];
@@ -484,13 +484,17 @@ void ImageData::Combine2SPto1(void)
 ///	For whole image: overlaoded floating point version
 //===========================================================================
 void ImageData::DoRGBtoLABConversion(
-	unsigned int*		ubuff,
+	const unsigned int*		ubuff,
 	double*					lvec,
 	double*					avec,
-	double*					bvec)
+	double*					bvec,
+	int                     width,
+	int                     height)
 {
 	TRACE_FUNC();
-	int sz = ImgWidth*ImgHeight;
+	TimeCountStart();
+	int sz=width*height;
+	//int sz = ImgWidth*ImgHeight;
 	/*lvec = new double[sz];
 	avec = new double[sz];
 	bvec = new double[sz];*/
@@ -508,11 +512,12 @@ void ImageData::DoRGBtoLABConversion(
 		RGB2LAB( r, g, b, lvec[j], avec[j], bvec[j] );
 		/*assert();*/
 	}
+	TimeCountStop("######RGB2LAB Cost Time :");
 }
 //===========================================================================
 ///	RGB2LAB
 //===========================================================================
-void ImageData::RGB2LAB(const int& sR, const int& sG, const int& sB, double& lval, double& aval, double& bval)
+inline void ImageData::RGB2LAB(const int& sR, const int& sG, const int& sB, double& lval, double& aval, double& bval)
 {
 	//TRACE_FUNC();
 	//------------------------
@@ -524,12 +529,12 @@ void ImageData::RGB2LAB(const int& sR, const int& sG, const int& sB, double& lva
 	//------------------------
 	// XYZ to LAB conversion
 	//------------------------
-	double epsilon = 0.008856;	//actual CIE standard
-	double kappa   = 903.3;		//actual CIE standard
+	const double epsilon = 0.008856;	//actual CIE standard
+	const double kappa   = 903.3;		//actual CIE standard
 
-	double Xr = 0.950456;	//reference white
-	double Yr = 1.0;		//reference white
-	double Zr = 1.088754;	//reference white
+	const double Xr = 0.950456;	//reference white
+	const double Yr = 1.0;		//reference white
+	const double Zr = 1.088754;	//reference white
 
 	double xr = X/Xr;
 	double yr = Y/Yr;
@@ -552,7 +557,7 @@ void ImageData::RGB2LAB(const int& sR, const int& sG, const int& sB, double& lva
 ///
 /// sRGB (D65 illuninant assumption) to XYZ conversion
 //==============================================================================
-void ImageData::RGB2XYZ(
+inline void ImageData::RGB2XYZ(
 	const int&		sR,
 	const int&		sG,
 	const int&		sB,
@@ -634,6 +639,7 @@ inline void ImageData::ConvertLab2oml(
 void ImageData::initThetaMLXY(void)
 {
 	TRACE_FUNC();
+	TimeCountStart();
 	for (register int x=0;x<ImgWidth;x++){
 		for (int register y=0;y<ImgHeight;y++){
 			register int Idx=y*ImgWidth+x;
@@ -641,6 +647,7 @@ void ImageData::initThetaMLXY(void)
 				sita_n[Idx],m_n[Idx],L_n[Idx],X_n[Idx],Y_n[Idx]);
 		}
 	}
+	TimeCountStop("######(¦È,m,l,x,y) Cost Time :");
 }
 /*---------------------------------------------------------------------------------*/
 /**

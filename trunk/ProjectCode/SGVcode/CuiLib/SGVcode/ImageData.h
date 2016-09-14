@@ -118,21 +118,27 @@ private:
 public:
 	void ImageGetSeedsLabxy_cuda();
 	void ImageGetSeedsThetaML_cuda();
-    void DoRGBtoLABConversion(
-		unsigned int*		ubuff,
-		double*					lvec,
-		double*					avec,
-		double*					bvec);
-	void RGB2LAB(
+
+static		void DoRGBtoLABConversion(
+			const unsigned int*		ubuff,
+			double*					lvec,
+			double*					avec,
+			double*					bvec,
+			int                     width,
+			int                     height);
+
+static	void RGB2LAB(
 		const int& sR, const int& sG, const int& sB, 
 		double& lval, double& aval, double& bval);
-	void RGB2XYZ(
+
+static	void RGB2XYZ(
 		const int&		sR,
 		const int&		sG,
 		const int&		sB,
 		double&			X,
 		double&			Y,
 		double&			Z);
+
 inline	void ConvertLab2oml(
 		double L,
 		double A,

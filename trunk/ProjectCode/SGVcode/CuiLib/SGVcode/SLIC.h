@@ -181,23 +181,23 @@ private:
 	//============================================================================
 	// sRGB to XYZ conversion; helper for RGB2LAB()
 	//============================================================================
-	void RGB2XYZ(
+	/*void RGB2XYZ(
 		const int&					sR,
 		const int&					sG,
 		const int&					sB,
 		double&						X,
 		double&						Y,
-		double&						Z);
+		double&						Z);*/
 	//============================================================================
 	// sRGB to CIELAB conversion (uses RGB2XYZ function)
 	//============================================================================
-	void RGB2LAB(
+	/*void RGB2LAB(
 		const int&					sR,
 		const int&					sG,
 		const int&					sB,
 		double&						lval,
 		double&						aval,
-		double&						bval);
+		double&						bval);*/
 	//============================================================================
 	// sRGB to CIELAB conversion for 2-D images
 	//============================================================================
