@@ -497,7 +497,7 @@ void ImageData::DoRGBtoLABConversion(
 	/*r:0--255*/
 	/*g:0--255*/
 	/*b:0--255*/
-	for( int j = 0; j < sz; j++ )
+	for(register int j = 0; j < sz; j++ )
 	{
 		int r = (ubuff[j] >> 16) & 0xFF;
 		int g = (ubuff[j] >>  8) & 0xFF;
