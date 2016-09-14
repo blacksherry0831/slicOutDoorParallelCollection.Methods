@@ -1232,9 +1232,9 @@ void SLIC::EnforceLabelConnectivity(
 	int* yvec = new int[sz];
 	int oindex(0);
 	int adjlabel(0);//adjacent label
-	for( int j = 0; j < height; j++ )
+	for(register int j = 0; j < height; j++ )
 	{
-		for( int k = 0; k < width; k++ )
+		for(register int k = 0; k < width; k++ )
 		{
 			if( 0 > nlabels[oindex] )
 			{
@@ -1247,7 +1247,7 @@ void SLIC::EnforceLabelConnectivity(
 				//-------------------------------------------------------
 				// Quickly find an adjacent label for use later if needed
 				//-------------------------------------------------------
-				{for( int n = 0; n < 4; n++ )
+				{for(register int n = 0; n < 4; n++ )
 				{
 					int x = xvec[0] + dx4[n];
 					int y = yvec[0] + dy4[n];
@@ -1259,9 +1259,9 @@ void SLIC::EnforceLabelConnectivity(
 				}}
 
 				int count(1);
-				for( int c = 0; c < count; c++ )
+				for(register int c = 0; c < count; c++ )
 				{
-					for( int n = 0; n < 4; n++ )
+					for(register int n = 0; n < 4; n++ )
 					{
 						int x = xvec[c] + dx4[n];
 						int y = yvec[c] + dy4[n];
@@ -1287,7 +1287,7 @@ void SLIC::EnforceLabelConnectivity(
 				//-------------------------------------------------------
 				if(count <= SUPSZ >> 2)
 				{
-					for( int c = 0; c < count; c++ )
+					for(register int c = 0; c < count; c++ )
 					{
 						int ind = yvec[c]*width+xvec[c];
 						nlabels[ind] = adjlabel;
