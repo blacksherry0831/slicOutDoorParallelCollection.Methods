@@ -2529,7 +2529,7 @@ double cui_GeneralImgProcess::GetMiddleValue(double* data, int size)
 	 int cui_Width,
 	 int cui_Height)
 {
-#if _MSC_VER
+#if _MSC_VER &&_DEBUG
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -2603,7 +2603,7 @@ double cui_GeneralImgProcess::GetMiddleValue(double* data, int size)
 
 
 
-#if CUI_SAVE_HARR_IMG
+#if CUI_SAVE_HARR_IMG &&_DEBUG
 	 Harr_Border.CuiSaveImg(); 
 	 Harr_Origin.CuiSaveImg();
 #endif
@@ -2621,7 +2621,7 @@ double cui_GeneralImgProcess::GetMiddleValue(double* data, int size)
 	 delete[]Origin_img;
 	 delete[]Border_img;
 #endif
-#if _MSC_VER
+#if _MSC_VER &&_DEBUG
 QueryPerformanceCounter(&litmp);
 QPart2 = litmp.QuadPart;
 dfMinus = (double)(QPart2-QPart1);
@@ -2649,7 +2649,7 @@ float mstime=dfTim*1000;
 	 int *cui_ImgLables,
 	 int cui_Width,
 	 int cui_Height){
-#if _MSC_VER
+#if _MSC_VER &&_DEBUG
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -2670,7 +2670,7 @@ float mstime=dfTim*1000;
 			cui_Height);
 	 }	
 #endif
-#if _MSC_VER
+#if _MSC_VER &&_DEBUG
         QueryPerformanceCounter(&litmp);	
 		QPart2 = litmp.QuadPart;//获得中止值	
 		dfMinus = (double)(QPart2-QPart1);	

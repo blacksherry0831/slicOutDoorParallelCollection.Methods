@@ -1807,7 +1807,7 @@ void CuiHarrTransformLet::CalculateBoderImg(int scale)
 		int p_x[4]={0,0,m_imgWidth/2,m_imgWidth/2};
 		int p_y[4]={0,m_imgHeight/2,0,m_imgHeight/2};
 		cvZero(boder_img);
-		for (int i=0;i<4;i++)
+		for (register int i=0;i<4;i++)
 		{
 			cvSetImageROI(boder_img,cvRect(p_x[i],p_y[i],m_imgWidth/2,m_imgHeight/2));
 			cvCopyImage(contour_img_quarter,boder_img);
