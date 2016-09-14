@@ -298,6 +298,8 @@ void ImageData::ReleaseMemory(void)
 /*----------------------------------------------------------------*/
 void ImageData::initSpSet(void)
 {
+	TRACE_FUNC();
+	TimeCountStart();
 #if 0
 	//bool doOnce=true;
 	//ASSERT(doOnce==true);
@@ -320,6 +322,7 @@ void ImageData::initSpSet(void)
 		Seg_HorizontalLinePos);
 	this->CalculateAllSpBlockEnergy2();
 	InitTimes++;
+	TimeCountStop("###### Super Pixel Property :");
 }
 /*----------------------------------------------------------------*/
 /**
@@ -1178,7 +1181,8 @@ void ImageData::InitAllSpBlockEnergy()
 /*----------------------------------------------------------------*/
 void ImageData::InitAllSpBlockEnergy2(void)
 {
-#if _MSC_VER
+	TRACE_FUNC();
+#if _MSC_VER&&_DEBUG
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -1199,13 +1203,13 @@ void ImageData::InitAllSpBlockEnergy2(void)
 	//Harr_Origin.CuiCalculateEnergyALL();
 	Harr_Origin.CalculateEnergyAllApBlock(SpSet);
 	//Harr_Origin.CuiGetAllEnergy(&harr_origin_energy);
-#if CUI_SAVE_HARR_IMG
+#if CUI_SAVE_HARR_IMG &&_DEBUG
 	Harr_Origin.CuiSaveImg();
 #endif
 	
 #endif
 	///////////////////////////////////////////////
-#if _MSC_VER
+#if _MSC_VER&&_DEBUG
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);

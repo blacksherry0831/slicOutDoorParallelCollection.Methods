@@ -38,10 +38,11 @@ SpSetProperty::~SpSetProperty()
 /*----------------------------------------------------------------*/
 void SpSetProperty::Parse(int*ImgLabels,int slicNum,int width,int height,int HorizontalLinePos)
 {
+	TRACE_FUNC();
 	this->ImgHeight=height;
 	this->ImgWidth=width;
 	this->HorizontalLinePos=HorizontalLinePos;
-#if _MSC_VER
+#if _MSC_VER &&_DEBUG
     LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -74,7 +75,7 @@ void SpSetProperty::Parse(int*ImgLabels,int slicNum,int width,int height,int Hor
 			}
 			
 	}
-#if _MSC_VER
+#if _MSC_VER &&_DEBUG
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);

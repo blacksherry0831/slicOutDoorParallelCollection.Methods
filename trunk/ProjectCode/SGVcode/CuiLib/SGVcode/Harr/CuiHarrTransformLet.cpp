@@ -1864,7 +1864,7 @@ void  CuiHarrTransformLet::SetSuperPixelLabels(int* ImgLabels,int Width,int Heig
 	/////////////////
 	int X_base[4]={0,WidthQuarter,0,WidthQuarter};
 	int Y_base[4]={0,0,HeightQuarter,HeightQuarter};
-	for (int i=0;i<4;i++){
+	for (register int i=0;i<4;i++){
 		int x_org=X_base[i];
 		int y_org=Y_base[i];
 		for (register int x=0;x<WidthQuarter;x++){
