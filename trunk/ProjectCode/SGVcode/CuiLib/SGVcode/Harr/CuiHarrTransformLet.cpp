@@ -126,7 +126,7 @@ inline void CuiHarrTransformLet::MatrixRegionCopy(unsigned char *matrixRegion,
 	//计算区域高度和宽度
 	int heightMin = heightRegion>heightDest ? heightDest : heightRegion;
 	int widthMin = widthRegion>widthDest ? widthDest : widthRegion;
-	int h, w;
+	register int h, w;
 	for (h=0; h<heightMin; h++)
 	{
 		for (w=0; w<widthMin; w++)
@@ -167,7 +167,7 @@ inline void CuiHarrTransformLet::MatrixSub(unsigned char *matrixA,
 	
 	{
 		unsigned char temp;
-		int h, w;
+		register int h, w;
 		for (h=0; h<height; h++)
 		{
 			for (w=0; w<width; w++)
@@ -216,7 +216,7 @@ inline void CuiHarrTransformLet::MatrixSub(unsigned char *matrixA,
 inline void CuiHarrTransformLet::MatrixSampleRow(unsigned char *matrixInput, unsigned char *matrixOutputOdd,
 										  unsigned char *matrixOutputEven, int heightOutput, int widthOutput, int widthInput)
 {
-	int h, w;
+	register int h, w;
 	for (h=0; h<heightOutput; h++)
 	{
 		for (w=0; w<widthOutput; w++)
@@ -254,7 +254,7 @@ inline void CuiHarrTransformLet::MatrixSampleLine(
 	int widthOutput, 
 	int widthInput)
 {
-	int h, w;
+	register int h, w;
 	for (h=0; h<heightOutput; h++)
 	{
 		for (w=0; w<widthOutput; w++)
@@ -563,7 +563,7 @@ void CuiHarrTransformLet::Trans(
 	int scale,
 	unsigned char *outputData)
 {
-#if _MSC_VER
+#if _MSC_VER &&_DEBUG
 	LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -575,7 +575,7 @@ void CuiHarrTransformLet::Trans(
 	{
 			this->Trans_cpu(inputData,inputHeight,inputWidth,lineByte,scale,outputData);				
 	}
-#if _MSC_VER
+#if _MSC_VER &&_DEBUG
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
