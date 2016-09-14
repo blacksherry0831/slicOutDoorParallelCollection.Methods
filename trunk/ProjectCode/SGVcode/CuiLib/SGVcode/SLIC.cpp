@@ -1226,7 +1226,7 @@ void SLIC::EnforceLabelConnectivity(
 	const int sz = width*height;
 	const int SUPSZ = sz/K;
 	//nlabels.resize(sz, -1);
-	for( int i = 0; i < sz; i++ ) nlabels[i] = -1;
+	for(register int i = 0; i < sz; i++ ) nlabels[i] = -1;
 	int label(0);
 	int* xvec = new int[sz];
 	int* yvec = new int[sz];
@@ -1709,7 +1709,7 @@ void SLIC::DoSuperpixelSegmentation_ForGivenSuperpixelSize_sitaMLxyIncompletion(
 		double(sz)/double(STEP*STEP));
 
 	{
-		for(int i = 0; i < sz; i++ )
+		for(register int i = 0; i < sz; i++ )
 			klabels[i] = nlabels[i];
 	}
 	if(nlabels) delete [] nlabels;
