@@ -89,8 +89,8 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 	int old_slic_num;
 	int new_slic_num;
 	/*---------------------------------------------------*/
-	int HistDimSPLABColor=60;
-	int HistDimSPLgray=16;
+	const int HistDimSPLABColor=60;
+	const int HistDimSPLgray=16;
 	do{
 		old_slic_num=pIMD->slic_current_num;
 		pIMD->ImageGetSeedsLabxy_cuda();
