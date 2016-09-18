@@ -84,6 +84,7 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
 #endif	
+	TimeCountStart();
 	/*---------------------------------------------------*/
 #if	1
 	int old_slic_num;
@@ -203,7 +204,7 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	TRACE("\n 单条聚类: %f（秒）",dfTim);
 #endif
-
+	TimeCountStop("######Gray&Color Bar Hist Cost Time (s) : ");
 }
 /*----------------------------------------------------------------*/
 /**
@@ -221,6 +222,8 @@ void ColorBarCluster::Clustering_ByHistogramMaxHist_NoIterationColor(int Coloran
 	QueryPerformanceCounter(&litmp);
 	QPart1 = litmp.QuadPart;// 获得初始值
 #endif
+
+	TimeCountStart();
 
 	int HistDimSPLABColor=45;
 	int old_slic_num;
@@ -353,6 +356,7 @@ void ColorBarCluster::Clustering_ByHistogramMaxHist_NoIterationColor(int Coloran
 		pIMD->FileReadFullPath,pIMD->FileWritePath);
 #endif
 
+	TimeCountStop("######Multy Color Bar Cost Time (s) :");
 #if _MSC_VER &&_DEBUG
     QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
