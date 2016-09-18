@@ -504,11 +504,12 @@ void ImageData::DoRGBtoLABConversion(
 	/*r:0--255*/
 	/*g:0--255*/
 	/*b:0--255*/
+	int r,g,b;
 	for(register int j = 0; j < sz; j++ )
 	{
-		int r = (ubuff[j] >> 16) & 0xFF;
-		int g = (ubuff[j] >>  8) & 0xFF;
-		int b = (ubuff[j]      ) & 0xFF;
+		r = (ubuff[j] >> 16) & 0xFF;
+		g = (ubuff[j] >>  8) & 0xFF;
+		b = (ubuff[j]      ) & 0xFF;
 		//////////////////////////////////
 		// a  r      g      b
 		//////////////////////////////////
