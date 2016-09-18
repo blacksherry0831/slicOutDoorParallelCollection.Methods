@@ -9,9 +9,9 @@
 */
 /*----------------------------------------------------------------*/
  int cui_GeneralImgProcess::SAVE_IMAGE_2DISK=TRUE;
- int cui_GeneralImgProcess::SAVE_DEBUG_2DISK=TRUE;
+ int cui_GeneralImgProcess::SAVE_DEBUG_2DISK=TRUE&&_DEBUG;
  //struct pt_sem cui_GeneralImgProcess::SEM_CPU_NUMS;
-#if _MSC_VER
+#if _MSC_VER &&_DEBUG
  HANDLE cui_GeneralImgProcess::H_SEM_CPU_NUMS = NULL;  
 #endif
 /*----------------------------------------------------------------*/
@@ -106,18 +106,22 @@ void cui_GeneralImgProcess::Cui_Combination_ImgLabs2(
 	/*************************************************************/
 	bool IS_Force_CombineLabs;
 	if (cui_Matrix_W){ 
+#if _DEBUG
 		char data_t[1024];
 		ofstream outfile;
 		outfile.open("Matrix_W_Combin.data",ios::out);
 		for(register int i = 0; i <numlabels; i++ ){
 			for(register int j = 0; j <numlabels; j++ ){
 				double value_t=cui_Matrix_W[i*numlabels+j];
+				
 				sprintf(data_t," %0.2f ",value_t);
+			
 				outfile<<data_t;
 			}
 			outfile<<endl;
 		} 
 		outfile.close();
+#endif	
 		IS_Force_CombineLabs=false;
 	}else{
 		IS_Force_CombineLabs=true;
@@ -205,6 +209,7 @@ void cui_GeneralImgProcess::Cui_Combination_ImgLabs2(
 	/*************************************************************/
 	bool IS_Force_CombineLabs;
 	if (cui_Matrix_W){ 
+#if _DEBUG
 		char data_t[1024];
 		ofstream outfile;
 		outfile.open("Matrix_W_Combin.data",ios::out);
@@ -217,6 +222,7 @@ void cui_GeneralImgProcess::Cui_Combination_ImgLabs2(
 			outfile<<endl;
 		} 
 		outfile.close();
+#endif
 		IS_Force_CombineLabs=false;
 	}else{
 		IS_Force_CombineLabs=true;
@@ -805,7 +811,7 @@ void cui_GeneralImgProcess::CuiSaveImageData(
 *@return 当前时间字符串
 */
 /*----------------------------------------------------------------*/
-string cui_GeneralImgProcess::cuiGetCurrentTime(void)
+inline string cui_GeneralImgProcess::cuiGetCurrentTime(void)
 {
 	SLIC slic;
 	return slic.cuiGetCurrentTime();
@@ -1337,6 +1343,7 @@ void cui_GeneralImgProcess::CuiSetNighbour_D_matrix(
 	}	
 
 	/***************************************/
+#if _DEBUG
 	{
 		char data_t[1024];
 		ofstream outfile;
@@ -1350,7 +1357,9 @@ void cui_GeneralImgProcess::CuiSetNighbour_D_matrix(
 			outfile<<endl;
 		} 
 		outfile.close();
-	}	
+	}
+#endif
+
 }
 /*----------------------------------------------------------------*/
 /**
@@ -2502,7 +2511,7 @@ double cui_GeneralImgProcess::GetMiddleValue(double* data, int size)
 	//Harr_Border.CuiCalculateEnergyALL();
 	Harr_Origin.CuiGetAllEnergy(&harr_origin_energy);
 	//Harr_Border.CuiGetAllEnergy(&harr_boder_energy);	
-#if CUI_SAVE_HARR_IMG
+#if CUI_SAVE_HARR_IMG&&_DEBUG
 	Harr_Border.CuiSaveImg(); 
 	Harr_Origin.CuiSaveImg();
 #endif

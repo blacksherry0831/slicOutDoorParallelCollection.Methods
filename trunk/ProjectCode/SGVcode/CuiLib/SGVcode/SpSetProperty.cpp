@@ -109,7 +109,7 @@ void SpSetProperty::Combine2in1(int spi,int spj,bool CombineHarr)
 *
 */
 /*----------------------------------------------------------------*/
-void SpSetProperty::combinePointSet(int DesSp,int SrcSp)
+inline void SpSetProperty::combinePointSet(int DesSp,int SrcSp)
 {
 		 SpPropertySet[DesSp].pointSetIdx.insert(
 		 SpPropertySet[DesSp].pointSetIdx.end(),
@@ -124,7 +124,7 @@ void SpSetProperty::combinePointSet(int DesSp,int SrcSp)
 *
 */
 /*----------------------------------------------------------------*/
-void SpSetProperty::CombineBorderProperty(int DesSp,int SrcSp)
+inline void SpSetProperty::CombineBorderProperty(int DesSp,int SrcSp)
 {
 	 SpPropertySet[DesSp].BorderCategory|=SpPropertySet[SrcSp].BorderCategory;
 	 SpPropertySet[SrcSp].BorderCategory=0;
@@ -134,7 +134,7 @@ void SpSetProperty::CombineBorderProperty(int DesSp,int SrcSp)
 *
 */
 /*----------------------------------------------------------------*/
-void SpSetProperty::CombineHarrProperty(int DesSp,int SrcSp,bool CombineHarr)
+inline void SpSetProperty::CombineHarrProperty(int DesSp,int SrcSp,bool CombineHarr)
 {
 	if (CombineHarr==true){
 		ASSERT(SpPropertySet[SrcSp].harr_energy.EnergyGrade==SpPropertySet[DesSp].harr_energy.EnergyGrade);
@@ -180,7 +180,7 @@ void SpSetProperty::AdjustSpSet(void)
 *
 */
 /*----------------------------------------------------------------*/
-void SpSetProperty::ParsespBorderCategory(int spi,int width_x,int height_y)
+inline void SpSetProperty::ParsespBorderCategory(int spi,int width_x,int height_y)
 {
 	if (width_x==0){
 		SpPropertySet[spi].BorderCategory|=spBorderCategoryLeft;

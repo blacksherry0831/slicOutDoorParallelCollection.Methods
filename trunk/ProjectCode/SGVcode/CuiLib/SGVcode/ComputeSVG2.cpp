@@ -883,7 +883,7 @@ void  ComputeSVG2::FillWeightArrayG_InDoor20150603(double horizontal_line, doubl
 *
 */
 /*--------------------------------------------------------------------*/
-double ComputeSVG2::Gx_InDoor20150603(int y,int n,float H0,float Hg,int H)
+inline double ComputeSVG2::Gx_InDoor20150603(int y,int n,float H0,float Hg,int H)
 {
 	double Pn=1.0*(2*n+2)/(2*n+1);
 	double Gy=0;
@@ -904,7 +904,7 @@ double ComputeSVG2::Gx_InDoor20150603(int y,int n,float H0,float Hg,int H)
 *
 */
 /*--------------------------------------------------------------------*/
-double ComputeSVG2::Sx_InDoor20150603(int y,int n,float H0,float Hc,int H)
+inline double ComputeSVG2::Sx_InDoor20150603(int y,int n,float H0,float Hc,int H)
 {
 	double Pn=1.0*(2*n+2)/(2*n+1);
 	double Gy=0;
