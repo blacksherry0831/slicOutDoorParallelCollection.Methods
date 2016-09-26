@@ -111,6 +111,8 @@ public:
 	float gama;
 	float fai;
 public:
+	SP_PROPERTY *p_SpProperty;/**<代表超像素属性的数据结构*/
+public:
 	int InitTimes;
 	int InitMemDataTimes;
 	void initSpSet(void);

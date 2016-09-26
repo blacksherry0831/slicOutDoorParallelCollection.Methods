@@ -122,6 +122,7 @@ void ImageData::initParam(void)
 	a_plane=NULL;
 	b_plane=NULL;
 #endif
+	this->p_SpProperty=NULL;
 }
 /*----------------------------------------------------------------*/
 /**
@@ -204,6 +205,7 @@ void ImageData::ReleaseMemory(void)
 	if (a_plane)  cvReleaseImage(&a_plane);
 	if (b_plane)  cvReleaseImage(&b_plane);
 #endif	
+	delete [] p_SpProperty;
 }
 /*----------------------------------------------------------------*/
 /**
@@ -303,7 +305,7 @@ void ImageData::ReleaseMemory(void)
 	   this->pYweight_S=new double[ImgHeight];
 	   this->pYweight_V=new double[ImgHeight];
 	   /*********************************************************************/
-
+	   this->p_SpProperty=new SP_PROPERTY[MAX_SP_NUM];
  }
 /*----------------------------------------------------------------*/
 /**

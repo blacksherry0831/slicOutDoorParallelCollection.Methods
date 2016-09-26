@@ -66,6 +66,7 @@ void SLIC::InitParameter(void)
 	Cui_Matrix_E=NULL;
 	Cui_Matrix_D=NULL;
 	Cui_Matrix_W=NULL;
+	Cui_Matrix_W_Vein=NULL;
 	Cui_Matrix_L=NULL;
 	Cui_MatrixEigenVector_L=NULL;
 	CUi_MatrixEigenValue_L=NULL;
@@ -2464,6 +2465,70 @@ void SLIC::CuiFindSaveDgeree_D_matrix(void)
 }
 /*----------------------------------------------------------------------------------------------------------------*/
 /**
+*根据相似矩阵W 计算D（度矩阵）
+*并保存矩阵到硬盘
+*/
+/*----------------------------------------------------------------------------------------------------------------*/
+void SLIC::CuiFindSaveDgeree_D_matrix2016_09_26(void)
+{
+	if (Cui_Matrix_D){
+		delete []Cui_Matrix_D;
+		Cui_Matrix_D=NULL;
+	}
+	Cui_Matrix_D=new double[pIMD->slic_current_num*pIMD->slic_current_num];
+	memset(Cui_Matrix_D,0,sizeof(double)*pIMD->slic_current_num*pIMD->slic_current_num);
+	/**************************************/ 		
+	for (register int wi=0;wi<pIMD->slic_current_num;wi++){
+		double sum=0;
+		for (register int wj=0;wj<pIMD->slic_current_num;wj++){ 
+			sum+=Cui_Matrix_W[wi*pIMD->slic_current_num+wj];
+		}
+		Cui_Matrix_D[wi*pIMD->slic_current_num+wi]=sum;
+	}	
+
+	/***************************************/
+#if _DEBUG
+	{
+		char data_t[1024];
+		ofstream outfile;
+		outfile.open("Matrix_D.data",ios::out);
+		for(register int i = 0; i <pIMD->slic_current_num; i++ ){
+			for(register int j = 0; j <pIMD->slic_current_num; j++ ){
+				double value_t=Cui_Matrix_D[i*pIMD->slic_current_num+j];
+				sprintf(data_t," %0.2e ",value_t);
+				outfile<<data_t;
+			}
+			outfile<<endl;
+		} 
+		outfile.close();
+	}
+#endif
+	/*****************************************/
+	CvMat D_Matrix_t;
+	cvInitMatHeader(&D_Matrix_t,pIMD->slic_current_num,pIMD->slic_current_num,CV_64FC1,  Cui_Matrix_D);
+	cvInvert(&D_Matrix_t,&D_Matrix_t,CV_SVD);
+	cvPow(&D_Matrix_t,&D_Matrix_t,0.5);
+	/******************************************/
+#if _DEBUG
+	{
+		char data_t[1024];
+		ofstream outfile;
+		outfile.open("Matrix_D-sqrt.data",ios::out);
+		for( int i = 0; i <pIMD->slic_current_num; i++ ){
+			for( int j = 0; j <pIMD->slic_current_num; j++ ){
+				double value_t=Cui_Matrix_D[i*pIMD->slic_current_num+j];
+				sprintf(data_t," %0.2e ",value_t);
+				outfile<<data_t;
+			}
+			outfile<<endl;
+		} 
+		outfile.close();
+	}
+#endif
+
+}
+/*----------------------------------------------------------------------------------------------------------------*/
+/**
 *采用Normalized-cut准则来计算规范化的Laplacian（拉普拉斯)矩阵L \n
 *L_sym=I-D^((-1)⁄2) WD^((-1)⁄2)  \n
 * 并保存矩阵到硬盘
@@ -2496,25 +2561,134 @@ void SLIC::CuiFindSaveLaplace_L_matrix(void)
    cvSub(I_t,&L_t,&L_t); 
    cvReleaseMat(&I_t);
    cvReleaseMat(&cui_mat_t);
-
 #endif
- 
-  /*************************/
+/*************************/
+#if _DEBUG
+   {
+	   char data_t[1024];
+	   ofstream outfile;
+	   outfile.open("Matrix_L.data",ios::out);
+	   for( int i = 0; i <pMD->slic_current_num; i++ ){
+		   for( int j = 0; j <pMD->slic_current_num; j++ ){
+			   double value_t=Cui_Matrix_L[i*pMD->slic_current_num+j];
+			   sprintf(data_t," %0.2e ",value_t);
+			   outfile<<data_t;
+		   }
+		   outfile<<endl;
+	   } 
+	   outfile.close();
+   }
+#endif
 
-  {
-	  char data_t[1024];
-	  ofstream outfile;
-	  outfile.open("Matrix_L.data",ios::out);
-	  for( int i = 0; i <pMD->slic_current_num; i++ ){
-		  for( int j = 0; j <pMD->slic_current_num; j++ ){
-			  double value_t=Cui_Matrix_L[i*pMD->slic_current_num+j];
-			  sprintf(data_t," %0.2e ",value_t);
-			  outfile<<data_t;
-		  }
-		  outfile<<endl;
-	  } 
-	  outfile.close();
-  }
+
+}
+/*----------------------------------------------------------------------------------------------------------------*/
+/**
+*采用Normalized-cut准则来计算规范化的Laplacian（拉普拉斯)矩阵L \n
+*L_sym=I-D^((-1)⁄2) WD^((-1)⁄2)  \n
+* 并保存矩阵到硬盘
+*/
+/*----------------------------------------------------------------------------------------------------------------*/
+/*void SLIC::CuiFindSaveLaplace_L_matrix_2016_09_26(void)
+{
+
+	//////////////////////////////////////////////////////////////
+	if (Cui_Matrix_L){
+		delete []Cui_Matrix_L;
+		Cui_Matrix_L=NULL;
+	}
+	Cui_Matrix_L=new double[pIMD->slic_current_num*pIMD->slic_current_num];
+	memset(Cui_Matrix_L,0,sizeof(double)*pMD->slic_current_num*pMD->slic_current_num);
+	//////////////////////////////////////////////////////////////
+	CvMat D_t,W_t,L_t;
+	cvInitMatHeader(&D_t,pMD->slic_current_num,pMD->slic_current_num,CV_64FC1,Cui_Matrix_D);
+	cvInitMatHeader(&W_t,pMD->slic_current_num,pMD->slic_current_num,CV_64FC1,Cui_Matrix_W);
+	cvInitMatHeader(&L_t,pMD->slic_current_num,pMD->slic_current_num,CV_64FC1,Cui_Matrix_L); 
+#if 0	 
+	cvSub(&D_t,&W_t,&L_t); 
+#else
+	CvMat *I_t,*cui_mat_t;
+	cui_mat_t=cvCreateMat(pMD->slic_current_num,pMD->slic_current_num,CV_64FC1);
+	I_t=cvCreateMat(pMD->slic_current_num,pMD->slic_current_num,CV_64FC1);
+	cvSetIdentity(I_t);
+	cvmMul(&D_t,&W_t,cui_mat_t);
+	cvmMul(cui_mat_t,&D_t,&L_t);
+	cvSub(I_t,&L_t,&L_t); 
+	cvReleaseMat(&I_t);
+	cvReleaseMat(&cui_mat_t);
+#endif
+	/*************************/
+/*#if _DEBUG
+	{
+		char data_t[1024];
+		ofstream outfile;
+		outfile.open("Matrix_L.data",ios::out);
+		for( int i = 0; i <pMD->slic_current_num; i++ ){
+			for( int j = 0; j <pMD->slic_current_num; j++ ){
+				double value_t=Cui_Matrix_L[i*pMD->slic_current_num+j];
+				sprintf(data_t," %0.2e ",value_t);
+				outfile<<data_t;
+			}
+			outfile<<endl;
+		} 
+		outfile.close();
+	}
+#endif*/
+
+
+//}*/
+/*----------------------------------------------------------------------------------------------------------------*/
+/**
+*采用Normalized-cut准则来计算规范化的Laplacian（拉普拉斯)矩阵L \n
+*L_sym=I-D^((-1)⁄2) WD^((-1)⁄2)  \n
+* 并保存矩阵到硬盘
+*/
+/*----------------------------------------------------------------------------------------------------------------*/
+void SLIC::CuiFindSaveLaplace_L_matrix_2016_09_26(void)
+{
+	if (Cui_Matrix_L){
+		delete []Cui_Matrix_L;
+		Cui_Matrix_L=NULL;
+	}
+	Cui_Matrix_L=new double[pIMD->slic_current_num*pIMD->slic_current_num];
+	memset(Cui_Matrix_L,0,sizeof(double)*pIMD->slic_current_num*pIMD->slic_current_num);
+	//////////////////////////////////////////////////////////////
+	CvMat D_t,W_t,L_t;
+	cvInitMatHeader(&D_t,pIMD->slic_current_num,pIMD->slic_current_num,CV_64FC1,Cui_Matrix_D);
+	cvInitMatHeader(&W_t,pIMD->slic_current_num,pIMD->slic_current_num,CV_64FC1,Cui_Matrix_W);
+	cvInitMatHeader(&L_t,pIMD->slic_current_num,pIMD->slic_current_num,CV_64FC1,Cui_Matrix_L); 
+#if 0	 
+	cvSub(&D_t,&W_t,&L_t); 
+#else
+	CvMat *I_t,*cui_mat_t;
+	cui_mat_t=cvCreateMat(pIMD->slic_current_num,pIMD->slic_current_num,CV_64FC1);
+	I_t=cvCreateMat(pIMD->slic_current_num,pIMD->slic_current_num,CV_64FC1);
+	cvSetIdentity(I_t);
+	cvmMul(&D_t,&W_t,cui_mat_t);
+	cvmMul(cui_mat_t,&D_t,&L_t);
+	cvSub(I_t,&L_t,&L_t); 
+	cvReleaseMat(&I_t);
+	cvReleaseMat(&cui_mat_t);
+#endif
+	/*************************/
+#if _DEBUG
+	{
+		char data_t[1024];
+		ofstream outfile;
+		outfile.open("Matrix_L.data",ios::out);
+		for( int i = 0; i <pIMD->slic_current_num; i++ ){
+			for( int j = 0; j <pIMD->slic_current_num; j++ ){
+				double value_t=Cui_Matrix_L[i*pIMD->slic_current_num+j];
+				sprintf(data_t," %0.2e ",value_t);
+				outfile<<data_t;
+			}
+			outfile<<endl;
+		} 
+		outfile.close();
+	}
+#endif
+
+
 }
 /*----------------------------------------------------------------------------------------------------------------*/
 /**
@@ -2551,6 +2725,42 @@ void SLIC::CuiFindSave_L_Eigenvalue(void)
 	cui_GeneralImgProcess::SaveMatrix_W("","Matrix_L_Value.data",pMD->slic_current_num,CUi_MatrixEigenValue_L);
 #endif
 	
+}
+/*----------------------------------------------------------------------------------------------------------------*/
+/**
+* 利用公式计算L（拉普拉斯）矩阵的特征值、征向量 \n
+* 并保存矩阵到硬盘
+*/
+/*----------------------------------------------------------------------------------------------------------------*/
+void SLIC::CuiFindSave_L_Eigenvalue_2016_09_26(void)
+{
+	/////////////特征向量///////////////////////////////////////////////////////////////////
+	if (Cui_MatrixEigenVector_L){
+		delete []Cui_MatrixEigenVector_L;
+		Cui_MatrixEigenVector_L=NULL;
+	}
+	Cui_MatrixEigenVector_L=new float[pIMD->slic_current_num*pIMD->slic_current_num];
+	memset(Cui_MatrixEigenVector_L,0,sizeof(float)*pIMD->slic_current_num*pIMD->slic_current_num);
+	/////////////特征值///////////////////////////////////////////////////////////////////
+	if (CUi_MatrixEigenValue_L){
+		delete []CUi_MatrixEigenValue_L;
+		CUi_MatrixEigenValue_L=NULL;
+	}
+	CUi_MatrixEigenValue_L=new double[pIMD->slic_current_num];
+	memset(CUi_MatrixEigenValue_L,0,sizeof(double)*pIMD->slic_current_num);
+	////////////////////////////////////////////////////////////////////////////////
+	CvMat E_vector_t,E_value_t,L_t;
+	cvInitMatHeader(&E_vector_t,pIMD->slic_current_num,pIMD->slic_current_num,CV_32FC1,Cui_MatrixEigenVector_L);
+	cvInitMatHeader(&E_value_t,pIMD->slic_current_num,1,CV_64FC1,CUi_MatrixEigenValue_L);
+	cvInitMatHeader(&L_t,pIMD->slic_current_num,pIMD->slic_current_num,CV_64FC1,Cui_Matrix_L); 
+	cvEigenVV(&L_t,&E_vector_t,&E_value_t);//C是A的特征值(降序排列)，而B则是A的特征向量(每行)
+	cvInvert(&E_vector_t,&E_vector_t);
+	/******************************************/
+#if 0
+	cui_GeneralImgProcess::SaveMatrix_Float("","Matrix_L_Vector.data",pMD->slic_current_num,Cui_MatrixEigenVector_L);
+	cui_GeneralImgProcess::SaveMatrix_W("","Matrix_L_Value.data",pMD->slic_current_num,CUi_MatrixEigenValue_L);
+#endif
+
 }
 /*------------------------------------------------------------------------------------------------------------------*/
 /**
@@ -3161,8 +3371,16 @@ cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matr
 									//}
 #else
 								if (Iteration_Complete_Combine_Threshold){
-									cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matrix_Category_Lable,Cui_Matrix_W,pMD->slic_current_num,CuiWidth,CuiHeight,
-										Spectral_Clustering_Combine_Threshold,pMD);
+									cui_GeneralImgProcess::Cui_Combination_ImgLabs2(
+										CuiImgData,
+										CuiImgLables,
+										Cui_Matrix_Category_Lable,
+										Cui_Matrix_W,
+										pIMD->slic_current_num,
+										pIMD->ImgWidth,
+										pIMD->ImgHeight,
+										Spectral_Clustering_Combine_Threshold,
+										pIMD);
 									break;
 								}else{
 									break;
@@ -3174,7 +3392,10 @@ cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matr
 
 
 		this->Cui_SurroundClassification();
+
+#if _DEBUG&&OUT_DOOR_SUPERPIXEL_COLOR_BAT
 		pMD->SaveColorSpectralClusteringNum();
+#endif
 	return false;
 #endif
 }
@@ -3192,6 +3413,7 @@ bool SLIC::Cui_Spectral_Clustering_B_2016_09_26(
 	double ClusterPercent,
 	double Threshold)
 {
+	TRACE_FUNC();
 #if 0
 
 #endif
@@ -3202,105 +3424,152 @@ bool SLIC::Cui_Spectral_Clustering_B_2016_09_26(
 	//10%作为图像聚类特征向量的维度(EigenvectorNumPercent=0.1)
 	pIMD->GetMatrixE();//this->CuiFindSaveNighbour_E_matrix();//得到相邻矩阵905ms
 	this->CuiFindSaveSimilar_W_matrix2_2016_09_26();//5.9s
-	this->CuiFindSaveDgeree_D_matrix();//5.1s
-	this->CuiFindSaveLaplace_L_matrix();//3.6s	
+	this->CuiFindSaveDgeree_D_matrix2016_09_26();//5.1s
+	this->CuiFindSaveLaplace_L_matrix_2016_09_26();//3.6s	
 	/////////////////////////////////////////////////////////////////////////////////
-#if _MSC_VER&&_DEBUG
-	LARGE_INTEGER litmp;
-	LONGLONG QPart1,QPart2;
-	double dfMinus, dfFreq, dfTim;
-	QueryPerformanceFrequency(&litmp);
-	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
-	QueryPerformanceCounter(&litmp);
-	QPart1 = litmp.QuadPart;// 获得初始值
-#endif
 	{
-		this->CuiFindSave_L_Eigenvalue();//41s
+		this->CuiFindSave_L_Eigenvalue_2016_09_26();//41s
 	}
-#if _MSC_VER&&_DEBUG
-	QueryPerformanceCounter(&litmp);
-	QPart2 = litmp.QuadPart;//获得中止值
-	dfMinus = (double)(QPart2-QPart1);
-	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
-	double dftims=dfMinus/1000;	
-	/////////////////////////////////////////////////////////////////////////////
-#endif
-
-
-
 	if (0){
-		this->Cui_Kmean_Cluster(EigenvectorNum,ClusterNum);
-		W_Threshold=0.707;
+		/*this->Cui_Kmean_Cluster(EigenvectorNum,ClusterNum);
+		W_Threshold=0.707;*/
 	}else if (1){
 #if OUT_DOOR
-		cui_GeneralImgProcess::CalculateAllSpPropertyRange(CuiImgLables,pMD->ImgWidth,pMD->ImgHeight,pMD->p_SpProperty,pMD->slic_current_num);
-		cui_GeneralImgProcess::CalculateAllSpBlockEnergy(pMD->slic_current_num,pMD->p_SpProperty,pMD->Src_ImgData,CuiImgLables,pMD->ImgWidth,pMD->ImgHeight);
+		cui_GeneralImgProcess::CalculateAllSpPropertyRange(
+			CuiImgLables,
+			pIMD->ImgWidth,
+			pIMD->ImgHeight,
+			pIMD->p_SpProperty,
+			pIMD->slic_current_num);
+
+		cui_GeneralImgProcess::CalculateAllSpBlockEnergy(
+			pIMD->slic_current_num,
+			pIMD->p_SpProperty,
+			pIMD->src_ImgBGRA,
+			CuiImgLables,
+			pIMD->ImgWidth,
+			pIMD->ImgHeight);
 
 		this->Cui_B_Cluster(EigenvectorNum,ClusterNum,Threshold); 
-		cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matrix_Category_Lable,Cui_Matrix_W,pMD->slic_current_num,CuiWidth,CuiHeight,
-			Spectral_Clustering_Combine_Threshold,pMD);
+
+		cui_GeneralImgProcess::Cui_Combination_ImgLabs2(
+			CuiImgData,
+			CuiImgLables,
+			Cui_Matrix_Category_Lable,
+			Cui_Matrix_W,
+			pIMD->slic_current_num,
+			CuiWidth,
+			CuiHeight,
+			Spectral_Clustering_Combine_Threshold,
+			pIMD);
+
 		///////////////////////////////////////////////////
 		W_Threshold=Iteration__Threshold;
 #endif
-#if IN_DOOR
-		ASSERT(sizeof(int)==sizeof(INT32));
-		cui_GeneralImgProcess::CalculateAllSpPropertyRange(CuiImgLables,pMD->ImgWidth,pMD->ImgHeight,pMD->p_SpProperty,pMD->slic_current_num);
-		cui_GeneralImgProcess::CalculateAllSpBlockEnergy(pMD->slic_current_num,pMD->p_SpProperty,pMD->Src_ImgData,CuiImgLables,pMD->ImgWidth,pMD->ImgHeight);
-
-		this->Cui_B_Cluster(EigenvectorNum,ClusterNum,Threshold); 
-		cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matrix_Category_Lable,Cui_Matrix_W,pMD->slic_current_num,CuiWidth,CuiHeight,
-			Iteration__Threshold,pMD);
-		///////////////////////////////////////////////////
-		W_Threshold=Iteration__Threshold;
-#endif
+//#if IN_DOOR
+//		ASSERT(sizeof(int)==sizeof(INT32));
+//		cui_GeneralImgProcess::CalculateAllSpPropertyRange(CuiImgLables,pMD->ImgWidth,pMD->ImgHeight,pMD->p_SpProperty,pMD->slic_current_num);
+//		cui_GeneralImgProcess::CalculateAllSpBlockEnergy(pMD->slic_current_num,pMD->p_SpProperty,pMD->Src_ImgData,CuiImgLables,pMD->ImgWidth,pMD->ImgHeight);
+//
+//		this->Cui_B_Cluster(EigenvectorNum,ClusterNum,Threshold); 
+//		cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matrix_Category_Lable,Cui_Matrix_W,pMD->slic_current_num,CuiWidth,CuiHeight,
+//			Iteration__Threshold,pMD);
+//		///////////////////////////////////////////////////
+//		W_Threshold=Iteration__Threshold;
+//#endif
 
 	}else{
 		this->Cui_Min_Cluster();
 #if OUT_DOOR
-		cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matrix_Category_Lable,Cui_Matrix_W,pMD->slic_current_num,CuiWidth,CuiHeight,
-			Spectral_Clustering_Combine_Threshold,pMD);
+		cui_GeneralImgProcess::Cui_Combination_ImgLabs2(
+			CuiImgData,
+			CuiImgLables,
+			Cui_Matrix_Category_Lable,
+			Cui_Matrix_W,
+			pIMD->slic_current_num,
+			CuiWidth,
+			CuiHeight,
+			Spectral_Clustering_Combine_Threshold,
+			pIMD);
 #endif
-#if IN_DOOR
+/*#if IN_DOOR
 		cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matrix_Category_Lable,Cui_Matrix_W,pMD->slic_current_num,CuiWidth,CuiHeight,
 			Spectral_Clustering_Combine_Threshold,pMD);
-#endif		
+#endif*/		
 		return false;
 		//W_Threshold=0;
 	}	
 	/***********************************************************/
 	do{ 
 		double T_Similar=0;
-		this->CuiFindSaveNighbour_E_matrix();//得到相邻矩阵0.9s
-		this->CuiFindSaveSimilar_W_matrix2();//5.9s
-#ifdef InDoor
-#if ((IN_DOOR)&&(Iteration__Threshold_Vein_SkyV>0)&&(Iteration__Threshold_Vein_GND>0))
-		cui_GeneralImgProcess::CalculateAllSpPropertyRange(CuiImgLables,pMD->ImgWidth,pMD->ImgHeight,pMD->p_SpProperty,pMD->slic_current_num);
-		cui_GeneralImgProcess::CalculateAllSpBlockEnergy(pMD->slic_current_num,pMD->p_SpProperty,pMD->Src_ImgData,CuiImgLables,pMD->ImgWidth,pMD->ImgHeight);
-		cui_GeneralImgProcess::CalculateAllSpPropertyPostitonByHLine(CuiImgLables,pMD->ImgWidth,pMD->ImgHeight,pMD->p_SpProperty,pMD->slic_current_num,pMD->Seg_HorizontalLinePos);
-
-		cui_GeneralImgProcess::CuiSetNighbour_W_Vein_matrix(pMD->Matrix_W_Vein,pMD->slic_current_num,pMD->p_SpProperty,pMD);//纹理相似阵
-		cui_GeneralImgProcess::AdjustNighbour_W(Cui_Matrix_W,pMD->Matrix_W_Vein,Cui_Matrix_W,pMD->slic_current_num,Iteration__Threshold_Vein_SkyV,Iteration__Threshold_Vein_GND,Iteration__Threshold_Color_SkyV,Iteration__Threshold_Color_GND,pMD->p_SpProperty);
-#endif
-#endif
+		pIMD->GetMatrixE();//this->CuiFindSaveNighbour_E_matrix();//得到相邻矩阵0.9s
+		this->CuiFindSaveSimilar_W_matrix2_2016_09_26();//5.9s
+//#ifdef InDoor
+//#if ((IN_DOOR)&&(Iteration__Threshold_Vein_SkyV>0)&&(Iteration__Threshold_Vein_GND>0))
+//		cui_GeneralImgProcess::CalculateAllSpPropertyRange(CuiImgLables,pMD->ImgWidth,pMD->ImgHeight,pMD->p_SpProperty,pMD->slic_current_num);
+//		cui_GeneralImgProcess::CalculateAllSpBlockEnergy(pMD->slic_current_num,pMD->p_SpProperty,pMD->Src_ImgData,CuiImgLables,pMD->ImgWidth,pMD->ImgHeight);
+//		cui_GeneralImgProcess::CalculateAllSpPropertyPostitonByHLine(CuiImgLables,pMD->ImgWidth,pMD->ImgHeight,pMD->p_SpProperty,pMD->slic_current_num,pMD->Seg_HorizontalLinePos);
+//
+//		cui_GeneralImgProcess::CuiSetNighbour_W_Vein_matrix(pMD->Matrix_W_Vein,pMD->slic_current_num,pMD->p_SpProperty,pMD);//纹理相似阵
+//		cui_GeneralImgProcess::AdjustNighbour_W(Cui_Matrix_W,pMD->Matrix_W_Vein,Cui_Matrix_W,pMD->slic_current_num,Iteration__Threshold_Vein_SkyV,Iteration__Threshold_Vein_GND,Iteration__Threshold_Color_SkyV,Iteration__Threshold_Color_GND,pMD->p_SpProperty);
+//#endif
+//#endif
 
 #if OUT_DOOR
-		cui_GeneralImgProcess::CalculateAllSpPropertyRange(CuiImgLables,pMD->ImgWidth,pMD->ImgHeight,pMD->p_SpProperty,pMD->slic_current_num);//78ms
-		cui_GeneralImgProcess::CalculateAllSpBlockEnergy(pMD->slic_current_num,pMD->p_SpProperty,pMD->Src_ImgData,CuiImgLables,pMD->ImgWidth,pMD->ImgHeight);//1s
 
-		cui_GeneralImgProcess::CalculateAllSpPropertyPostitonByHLine(CuiImgLables,pMD->ImgWidth,pMD->ImgHeight,pMD->p_SpProperty,pMD->slic_current_num,pMD->Seg_HorizontalLinePos);//76ms
-		cui_GeneralImgProcess::CuiSetNighbour_W_Vein_matrix(pMD->Matrix_W_Vein,pMD->slic_current_num,pMD->p_SpProperty,pMD);//纹理相似阵
-		cui_GeneralImgProcess::AdjustNighbour_W(Cui_Matrix_W,pMD->Matrix_W_Vein,Cui_Matrix_W,pMD->slic_current_num,
-			Iteration__Threshold_Vein_SkyV,Iteration__Threshold_Vein_GND,Iteration__Threshold_Color_SkyV,Iteration__Threshold_Color_GND,pMD->p_SpProperty);											
+		cui_GeneralImgProcess::CalculateAllSpPropertyRange(
+			pIMD->src_ImgLabels,
+			pIMD->ImgWidth,
+			pIMD->ImgHeight,
+			pIMD->p_SpProperty,
+			pIMD->slic_current_num);//78ms
+
+		cui_GeneralImgProcess::CalculateAllSpBlockEnergy(
+			pIMD->slic_current_num,
+			pIMD->p_SpProperty,
+			pIMD->src_ImgBGRA,
+			pIMD->src_ImgLabels,
+			pIMD->ImgWidth,
+			pIMD->ImgHeight);//1s
+
+		cui_GeneralImgProcess::CalculateAllSpPropertyPostitonByHLine(
+			pIMD->src_ImgLabels,
+			pIMD->ImgWidth,
+			pIMD->ImgHeight,
+			pIMD->p_SpProperty,
+			pIMD->slic_current_num,
+			pIMD->Seg_HorizontalLinePos);//76ms
+
+		cui_GeneralImgProcess::CuiSetNighbour_W_Vein_matrix(
+			Cui_Matrix_W_Vein,
+			pIMD->slic_current_num,
+			pIMD->p_SpProperty,
+			NULL);//纹理相似阵
+
+		cui_GeneralImgProcess::AdjustNighbour_W(
+			Cui_Matrix_W,
+			Cui_Matrix_W_Vein,
+			Cui_Matrix_W,
+			pIMD->slic_current_num,
+			Iteration__Threshold_Vein_SkyV,
+			Iteration__Threshold_Vein_GND,
+			Iteration__Threshold_Color_SkyV,
+			Iteration__Threshold_Color_GND,
+			pIMD->p_SpProperty);											
 #endif
-		memset(Cui_Matrix_Category_Lable,0,sizeof(INT32)*pMD->slic_current_num);
+		memset(Cui_Matrix_Category_Lable,0,sizeof(INT32)*pIMD->slic_current_num);
 		T_Similar=this->Cui_Find_MaxSimilar();
 		if (T_Similar>Iteration__Threshold){				
 			cui_GeneralImgProcess::Cui_Combination_ImgLabs2(
-				CuiImgData,CuiImgLables,
+				CuiImgData,
+				CuiImgLables,
 				Cui_Matrix_Category_Lable,
-				Cui_Matrix_W,pMD->slic_current_num,
-				CuiWidth,CuiHeight,
-				Iteration__Threshold,pMD);//1.4s									
+				Cui_Matrix_W,
+				pIMD->slic_current_num,
+				CuiWidth,
+				CuiHeight,
+				Iteration__Threshold,
+				pIMD);//1.4s									
 		}else{	
 #if 0
 			//	this->Cui_Combination_ImgLabs2(0.71);	//组合时依然使用相似度
@@ -3309,21 +3578,24 @@ bool SLIC::Cui_Spectral_Clustering_B_2016_09_26(
 			//	break;
 			//}
 #else
-			if (Iteration_Complete_Combine_Threshold){
+			/*if (Iteration_Complete_Combine_Threshold){
 				cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matrix_Category_Lable,Cui_Matrix_W,pMD->slic_current_num,CuiWidth,CuiHeight,
 					Spectral_Clustering_Combine_Threshold,pMD);
 				break;
 			}else{
 				break;
-			}
+			}*/
 #endif
 		}
 
 	}while(1);
 
-
 	this->Cui_SurroundClassification();
-	pMD->SaveColorSpectralClusteringNum();
+
+//#if _DEBUG
+//	pIMD->SaveColorSpectralClusteringNum();
+//#endif
+
 	return false;
 #endif
 }
@@ -3341,8 +3613,18 @@ void SLIC::Cui_SurroundClassification(void){
 	cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,category,NULL,pMD->slic_current_num,CuiWidth,CuiHeight,0,FileReadFullPath,FileWritePath);
 	delete[] category;
 #endif
-#if 1
-   cui_GeneralImgProcess::InSideClusteringByopencv(CuiImgData,CuiImgLables,pMD->slic_current_num,CuiWidth,CuiHeight,pMD->FileReadFullPath,pMD->FileWritePath);
+#if OUT_DOOR_SUPERPIXEL_COLOR_BAT
+   cui_GeneralImgProcess::InSideClusteringByopencv(
+	   CuiImgData,
+	   CuiImgLables,
+	   pMD->slic_current_num,
+	   CuiWidth,
+	   CuiHeight,
+	   pMD->FileReadFullPath,
+	   pMD->FileWritePath);
+#endif
+#if OUT_DOOR_SUPERPIXEL_Spectral_Clustering_2016_09_26
+   pIMD->SurroundClassification();
 #endif
 }
 /*------------------------------------------------------------------------------------------------------------------*/

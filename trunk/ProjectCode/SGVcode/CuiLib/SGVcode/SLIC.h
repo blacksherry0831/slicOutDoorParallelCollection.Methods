@@ -105,6 +105,8 @@ public:
 	// Can also be used to draw boundaries around supervoxels, i.e layer by layer.
 	//============================================================================
 public:
+	double* Cui_Matrix_W_Vein;
+public:
 	string FileReadFullPath;
 	string FileWritePath;
 private:
@@ -266,17 +268,22 @@ public:
 	IplImage * Cui_ARGB_Image;
 public:
 	void CuiFindSaveNighbour_E_matrix(
-		const UINT32&                  SelfNighbour=0,
+		const UINT32&               SelfNighbour=0,
 		const string&				filename="NighbourMatrixPixels.data",
 		const string&				path="");
 	
 	void CuiFindSaveSimilar_W_matrix2(const string& filename="Matrix_W2.data",const string&	path="");
-
 	void CuiFindSaveSimilar_W_matrix2_2016_09_26(const string& filename="Matrix_W2.data",const string&	path="");
 
 	void CuiFindSaveDgeree_D_matrix(void);
+	void CuiFindSaveDgeree_D_matrix2016_09_26(void);
+
 	void CuiFindSaveLaplace_L_matrix(void);
+	void CuiFindSaveLaplace_L_matrix_2016_09_26(void);
+
 	void CuiFindSave_L_Eigenvalue(void);
+	void CuiFindSave_L_Eigenvalue_2016_09_26(void);
+
 	void CuiGetImageData(string filename,string filesavepath);
 private:
 	void CuiGetImageData(void);
