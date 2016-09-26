@@ -3839,9 +3839,18 @@ void cui_GeneralImgProcess::THreadSuperPixel_DoOneImage(string picvec,string sav
 		SLIC slic(&MemData);
 		slic.DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy();//µÃµ½lable				
 
+#if OUT_DOOR_SUPERPIXEL_Spectral_Clustering_2016_09_26
+		printf("3. Spectral Clustering \n");
+		slic.Cui_Spectral_Clustering_B_2016_09_26();
+
+#endif
+
+#if OUT_DOOR_SUPERPIXEL_COLOR_BAT
 		printf("3. ColorBarCluster \n");
 		ColorBarCluster colorBarCluster(&MemData);
 		colorBarCluster.Clustering();
+#endif
+
 
 		printf("4. ComputeSVG2 \n");
 		ComputeSVG2 svg(&MemData);

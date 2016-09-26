@@ -117,6 +117,11 @@ void ImageData::initParam(void)
 	InitMemDataTimes=0;
 	PgOffset=0;
 	PsOffset=0;
+#if _DEBUG
+	l_plane=NULL;
+	a_plane=NULL;
+	b_plane=NULL;
+#endif
 }
 /*----------------------------------------------------------------*/
 /**
@@ -194,6 +199,11 @@ void ImageData::ReleaseMemory(void)
 	///////////////////////////////
 	delete[]  Matrix_E;
 	cvReleaseImage(&srcCv_ImgBGRA); 
+#if _DEBUG
+	if (l_plane)  cvReleaseImage(&l_plane);
+	if (a_plane)  cvReleaseImage(&a_plane);
+	if (b_plane)  cvReleaseImage(&b_plane);
+#endif	
 }
 /*----------------------------------------------------------------*/
 /**
@@ -250,11 +260,17 @@ void ImageData::ReleaseMemory(void)
 	 cui_GeneralImgProcess::ConvertImg2Eighth4Ch(&src_img_t);
 
 	 srcCv_ImgBGRA=cvCloneImage(src_img_t);
+
 	 cui_GeneralImgProcess::ConvertImg3ChTo4Ch(&srcCv_ImgBGRA);
 
-	
-	
 	 cvReleaseImage(&src_img_t);
+	 /********************************************************************/
+#if _DEBUG
+	 l_plane=cvCreateImage(cvGetSize(srcCv_ImgBGRA),IPL_DEPTH_8U,1);
+	 a_plane=cvCreateImage(cvGetSize(srcCv_ImgBGRA),IPL_DEPTH_8U,1);
+	 b_plane=cvCreateImage(cvGetSize(srcCv_ImgBGRA),IPL_DEPTH_8U,1);	
+#endif	
+	 /********************************************************************/
 	 ImgWidth=srcCv_ImgBGRA->width;
 	 ImgHeight=srcCv_ImgBGRA->height;
 	 int sz=ImgHeight*ImgWidth;
@@ -435,7 +451,7 @@ void ImageData:: ImageGetSeedsThetaML_cuda(void)
 void ImageData::GetMatrixE(void)
 {
 	TRACE_FUNC();
-#if _MSC_VER
+#if _MSC_VER&&_DEBUG
     LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -454,7 +470,7 @@ void ImageData::GetMatrixE(void)
 		"Compute_matrix.matrix",
 		"");
 	/*---------------------------------------------------*/
-#if _MSC_VER
+#if _MSC_VER&&_DEBUG
 	QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);

@@ -270,8 +270,10 @@ public:
 		const string&				filename="NighbourMatrixPixels.data",
 		const string&				path="");
 	
-	void CuiFindSaveSimilar_W_matrix2(const string& filename="Matrix_W2.data",
-		const string&	path="");
+	void CuiFindSaveSimilar_W_matrix2(const string& filename="Matrix_W2.data",const string&	path="");
+
+	void CuiFindSaveSimilar_W_matrix2_2016_09_26(const string& filename="Matrix_W2.data",const string&	path="");
+
 	void CuiFindSaveDgeree_D_matrix(void);
 	void CuiFindSaveLaplace_L_matrix(void);
 	void CuiFindSave_L_Eigenvalue(void);
@@ -285,7 +287,14 @@ public:
 	void Cui_Kmean_Cluster(UINT EigenvectorNum, UINT ClusterNum);
 	void Cui_B_Cluster(UINT EigenvectorNum, UINT ClusterNum,double Threshold);
 	bool Cui_Spectral_Clustering_KM(UINT EigenvectorNum, UINT ClusterNum,double Similar_Threshold);
+	
 	bool Cui_Spectral_Clustering_B(double EigenvectorNumPercent=0.1, double ClusterPercent=0.1,double Threshold=Spectral_Clustering_B_Threshold);
+	
+	bool SLIC::Cui_Spectral_Clustering_B_2016_09_26(
+		double EigenvectorNumPercent=0.1, 
+		double ClusterPercent=0.1,
+		double Threshold=Spectral_Clustering_B_Threshold);
+
 	string cuiGetCurrentTime(void);
 	void CuiSaveImageData(UINT*&				imgBuffer,
 		int					width,

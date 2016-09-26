@@ -2219,6 +2219,11 @@ void SLIC::DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy(int sav
 /*----------------------------------------------------------------------------------------------------------------*/
 void SLIC::CuiFindSaveSimilar_W_matrix2(const string& filename,const string&	path)
 {
+	TRACE_FUNC();
+#if OUT_DOOR
+	assert(pIMD->slic_current_num<MAX_SP_NUM);
+#endif
+	/****************************************************************/
 	CvHistogram *hist[MAX_SP_NUM ];
 	vector<unsigned char> hist_h_value[MAX_SP_NUM ];
 	vector<unsigned char> hist_s_value[MAX_SP_NUM ];
@@ -2232,8 +2237,8 @@ void SLIC::CuiFindSaveSimilar_W_matrix2(const string& filename,const string&	pat
 			delete []Cui_Matrix_W;
 			Cui_Matrix_W=NULL;
 		}
-		Cui_Matrix_W=new double[pMD->slic_current_num*pMD->slic_current_num];
-		memset(Cui_Matrix_W,0,pMD->slic_current_num*pMD->slic_current_num*sizeof(double));
+		Cui_Matrix_W=new double[pIMD->slic_current_num*pIMD->slic_current_num];
+		memset(Cui_Matrix_W,0,pIMD->slic_current_num*pIMD->slic_current_num*sizeof(double));
 	}
 	/****************************************************************/
 
@@ -2290,9 +2295,109 @@ void SLIC::CuiFindSaveSimilar_W_matrix2(const string& filename,const string&	pat
 		cvReleaseHist(&hist[spi]);
 	}
 	/********************************************************/
+#if _DEBUG
 	cui_GeneralImgProcess::SaveMatrix_W(path,filename,pMD->slic_current_num,Cui_Matrix_W);
+#endif
 	/********************************************************/
 }
+
+/*----------------------------------------------------------------------------------------------------------------*/
+/**
+*根据相邻矩阵计算超像素块之间的相似度计算相似矩阵W
+*并保存到硬盘
+*@param filename 要保存的文件名
+*@param path    要保存的文件路径
+*
+*@note 将图像的色彩空间转换到CIELab空间，并将L通道的取值范围划分为8级等分，\n
+*a通道的取值范围划分为16等分，将b 通道的取值范围划分成16个等级，其中将L通道\n
+*取值范围划分为8级的目的是降低色彩亮度变化对权值的扰动，每个超像素在8×16×16=2048\n
+*维度的空间计算值直方图\n
+*/
+/*----------------------------------------------------------------------------------------------------------------*/
+void SLIC::CuiFindSaveSimilar_W_matrix2_2016_09_26(const string& filename,const string&	path)
+{
+	TRACE_FUNC();
+#if OUT_DOOR
+	assert(pIMD->slic_current_num<MAX_SP_NUM);
+#endif
+	/****************************************************************/
+	CvHistogram *hist[MAX_SP_NUM ];
+	vector<unsigned char> hist_h_value[MAX_SP_NUM ];
+	vector<unsigned char> hist_s_value[MAX_SP_NUM ];
+	vector<unsigned char> hist_v_value[MAX_SP_NUM ];
+	IplImage  *hist_h_matrix=NULL;
+	IplImage  *hist_s_matrix=NULL;
+	IplImage  *hist_v_matrix=NULL;
+	/****************************************************************/
+	{
+		if (Cui_Matrix_W){
+			delete []Cui_Matrix_W;
+			Cui_Matrix_W=NULL;
+		}
+		Cui_Matrix_W=new double[pIMD->slic_current_num*pIMD->slic_current_num];
+		memset(Cui_Matrix_W,0,pIMD->slic_current_num*pIMD->slic_current_num*sizeof(double));
+	}
+	/****************************************************************/
+
+	for (register int spi=0;spi<pIMD->slic_current_num;spi++){
+		{
+			int	hist_size[3]={Lab_L_Division,Lab_a_Division,Lab_b_Division};
+			float h_l_ranges[]={0,256};
+			float s_a_range[]={0,256};
+			float v_b_range[]={0,256}; //亮度
+			float *ranges[]={h_l_ranges,s_a_range,v_b_range};
+			hist[spi]=cvCreateHist(3,hist_size,CV_HIST_ARRAY,ranges);
+
+		}  
+	}
+	/****************************************************************/
+	for (register int li=0;li<pIMD->ImgHeight;li++) {
+		for (register int lj=0;lj<pIMD->ImgWidth;lj++){
+			int sp=pIMD->src_ImgLabels[li*pIMD->ImgWidth+lj];
+			hist_h_value[sp].push_back((unsigned char)cvGetReal2D(pIMD->l_plane,li,lj));
+			hist_s_value[sp].push_back((unsigned char)cvGetReal2D(pIMD->a_plane,li,lj));
+			hist_v_value[sp].push_back((unsigned char)cvGetReal2D(pIMD->b_plane,li,lj));
+
+		}
+	}
+	for (register int sp=0;sp<pIMD->slic_current_num;sp++){
+		hist_h_matrix=cvCreateImage(cvSize(hist_h_value[sp].size(),1),IPL_DEPTH_8U,1);
+		hist_s_matrix=cvCreateImage(cvSize(hist_s_value[sp].size(),1),IPL_DEPTH_8U,1);
+		hist_v_matrix=cvCreateImage(cvSize(hist_v_value[sp].size(),1),IPL_DEPTH_8U,1);
+		IplImage *hist_matrix[]={hist_h_matrix,hist_s_matrix,hist_v_matrix};
+		memcpy(hist_h_matrix->imageData,hist_h_value[sp].data(),hist_h_value[sp].size()*sizeof(unsigned char));
+		memcpy(hist_s_matrix->imageData,hist_s_value[sp].data(),hist_s_value[sp].size()*sizeof(unsigned char));
+		memcpy(hist_v_matrix->imageData,hist_v_value[sp].data(),hist_v_value[sp].size()*sizeof(unsigned char));
+		cvCalcHist(hist_matrix,hist[sp]);
+		cvNormalizeHist(hist[sp],1.0);
+		cvReleaseImage(&hist_h_matrix);
+		cvReleaseImage(&hist_s_matrix);
+		cvReleaseImage(&hist_v_matrix);
+	}
+	/****************************************************************/
+	for(register int i = 0; i <pIMD->slic_current_num; i++ ){
+		for(register int j = i+1; j <pIMD->slic_current_num; j++ ){
+
+			if (0!=(UINT32)pIMD->Matrix_E[i*pIMD->slic_current_num+j]){	
+				//i ,j超像素相邻				
+				double B_distance=cvCompareHist(hist[i],hist[j],CV_COMP_BHATTACHARYYA);
+				B_distance=1-powl(B_distance,2);
+				B_distance=(B_distance<Color_histogram_B_Threshold)?0:B_distance;
+				Cui_Matrix_W[j*pIMD->slic_current_num+i]=Cui_Matrix_W[i*pIMD->slic_current_num+j]=B_distance;
+			}
+		}
+	}
+	//////////////////////////////////////////////////////////////
+	for (register int spi=0;spi<pIMD->slic_current_num;spi++){
+		cvReleaseHist(&hist[spi]);
+	}
+	/********************************************************/
+#if _DEBUG
+	cui_GeneralImgProcess::SaveMatrix_W(path,filename,pIMD->slic_current_num,Cui_Matrix_W);
+#endif
+	/********************************************************/
+}
+
 /*----------------------------------------------------------------------------------------------------------------*/
 /**
 *根据相似矩阵W 计算D（度矩阵）
@@ -2317,6 +2422,7 @@ void SLIC::CuiFindSaveDgeree_D_matrix(void)
 		   }	
 		  
 	 /***************************************/
+#if _DEBUG
 		   {
 			   char data_t[1024];
 			   ofstream outfile;
@@ -2331,12 +2437,14 @@ void SLIC::CuiFindSaveDgeree_D_matrix(void)
 			   } 
 			   outfile.close();
 		   }
+#endif
 	/*****************************************/
 		   CvMat D_Matrix_t;
 		   cvInitMatHeader(&D_Matrix_t,pMD->slic_current_num,pMD->slic_current_num,CV_64FC1,  Cui_Matrix_D);
 		   cvInvert(&D_Matrix_t,&D_Matrix_t,CV_SVD);
 		   cvPow(&D_Matrix_t,&D_Matrix_t,0.5);
 	 /******************************************/
+#if _DEBUG
 		   {
 			   char data_t[1024];
 			   ofstream outfile;
@@ -2351,6 +2459,8 @@ void SLIC::CuiFindSaveDgeree_D_matrix(void)
 			   } 
 			   outfile.close();
 		   }
+#endif
+
 }
 /*----------------------------------------------------------------------------------------------------------------*/
 /**
@@ -3065,6 +3175,155 @@ cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matr
 
 		this->Cui_SurroundClassification();
 		pMD->SaveColorSpectralClusteringNum();
+	return false;
+#endif
+}
+/*------------------------------------------------------------------------------------------------------------------*/
+/**
+*采用Bhattacharyya系数完成谱聚类算法
+*@param EigenvectorNumPercent (默认值百分之十)
+*@param ClusterPercent 未使用的局部变量
+*@param Threshold （未使用的阈值）参数由全局宏进行传递
+*@note 色彩空间谱聚类方法
+*/
+/*------------------------------------------------------------------------------------------------------------------*/
+bool SLIC::Cui_Spectral_Clustering_B_2016_09_26(
+	double EigenvectorNumPercent, 
+	double ClusterPercent,
+	double Threshold)
+{
+#if 0
+
+#endif
+#if 1
+	UINT EigenvectorNum=pIMD->slic_current_num*EigenvectorNumPercent;
+	UINT ClusterNum=pIMD->slic_current_num*ClusterPercent;
+	double	W_Threshold;
+	//10%作为图像聚类特征向量的维度(EigenvectorNumPercent=0.1)
+	pIMD->GetMatrixE();//this->CuiFindSaveNighbour_E_matrix();//得到相邻矩阵905ms
+	this->CuiFindSaveSimilar_W_matrix2_2016_09_26();//5.9s
+	this->CuiFindSaveDgeree_D_matrix();//5.1s
+	this->CuiFindSaveLaplace_L_matrix();//3.6s	
+	/////////////////////////////////////////////////////////////////////////////////
+#if _MSC_VER&&_DEBUG
+	LARGE_INTEGER litmp;
+	LONGLONG QPart1,QPart2;
+	double dfMinus, dfFreq, dfTim;
+	QueryPerformanceFrequency(&litmp);
+	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
+	QueryPerformanceCounter(&litmp);
+	QPart1 = litmp.QuadPart;// 获得初始值
+#endif
+	{
+		this->CuiFindSave_L_Eigenvalue();//41s
+	}
+#if _MSC_VER&&_DEBUG
+	QueryPerformanceCounter(&litmp);
+	QPart2 = litmp.QuadPart;//获得中止值
+	dfMinus = (double)(QPart2-QPart1);
+	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
+	double dftims=dfMinus/1000;	
+	/////////////////////////////////////////////////////////////////////////////
+#endif
+
+
+
+	if (0){
+		this->Cui_Kmean_Cluster(EigenvectorNum,ClusterNum);
+		W_Threshold=0.707;
+	}else if (1){
+#if OUT_DOOR
+		cui_GeneralImgProcess::CalculateAllSpPropertyRange(CuiImgLables,pMD->ImgWidth,pMD->ImgHeight,pMD->p_SpProperty,pMD->slic_current_num);
+		cui_GeneralImgProcess::CalculateAllSpBlockEnergy(pMD->slic_current_num,pMD->p_SpProperty,pMD->Src_ImgData,CuiImgLables,pMD->ImgWidth,pMD->ImgHeight);
+
+		this->Cui_B_Cluster(EigenvectorNum,ClusterNum,Threshold); 
+		cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matrix_Category_Lable,Cui_Matrix_W,pMD->slic_current_num,CuiWidth,CuiHeight,
+			Spectral_Clustering_Combine_Threshold,pMD);
+		///////////////////////////////////////////////////
+		W_Threshold=Iteration__Threshold;
+#endif
+#if IN_DOOR
+		ASSERT(sizeof(int)==sizeof(INT32));
+		cui_GeneralImgProcess::CalculateAllSpPropertyRange(CuiImgLables,pMD->ImgWidth,pMD->ImgHeight,pMD->p_SpProperty,pMD->slic_current_num);
+		cui_GeneralImgProcess::CalculateAllSpBlockEnergy(pMD->slic_current_num,pMD->p_SpProperty,pMD->Src_ImgData,CuiImgLables,pMD->ImgWidth,pMD->ImgHeight);
+
+		this->Cui_B_Cluster(EigenvectorNum,ClusterNum,Threshold); 
+		cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matrix_Category_Lable,Cui_Matrix_W,pMD->slic_current_num,CuiWidth,CuiHeight,
+			Iteration__Threshold,pMD);
+		///////////////////////////////////////////////////
+		W_Threshold=Iteration__Threshold;
+#endif
+
+	}else{
+		this->Cui_Min_Cluster();
+#if OUT_DOOR
+		cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matrix_Category_Lable,Cui_Matrix_W,pMD->slic_current_num,CuiWidth,CuiHeight,
+			Spectral_Clustering_Combine_Threshold,pMD);
+#endif
+#if IN_DOOR
+		cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matrix_Category_Lable,Cui_Matrix_W,pMD->slic_current_num,CuiWidth,CuiHeight,
+			Spectral_Clustering_Combine_Threshold,pMD);
+#endif		
+		return false;
+		//W_Threshold=0;
+	}	
+	/***********************************************************/
+	do{ 
+		double T_Similar=0;
+		this->CuiFindSaveNighbour_E_matrix();//得到相邻矩阵0.9s
+		this->CuiFindSaveSimilar_W_matrix2();//5.9s
+#ifdef InDoor
+#if ((IN_DOOR)&&(Iteration__Threshold_Vein_SkyV>0)&&(Iteration__Threshold_Vein_GND>0))
+		cui_GeneralImgProcess::CalculateAllSpPropertyRange(CuiImgLables,pMD->ImgWidth,pMD->ImgHeight,pMD->p_SpProperty,pMD->slic_current_num);
+		cui_GeneralImgProcess::CalculateAllSpBlockEnergy(pMD->slic_current_num,pMD->p_SpProperty,pMD->Src_ImgData,CuiImgLables,pMD->ImgWidth,pMD->ImgHeight);
+		cui_GeneralImgProcess::CalculateAllSpPropertyPostitonByHLine(CuiImgLables,pMD->ImgWidth,pMD->ImgHeight,pMD->p_SpProperty,pMD->slic_current_num,pMD->Seg_HorizontalLinePos);
+
+		cui_GeneralImgProcess::CuiSetNighbour_W_Vein_matrix(pMD->Matrix_W_Vein,pMD->slic_current_num,pMD->p_SpProperty,pMD);//纹理相似阵
+		cui_GeneralImgProcess::AdjustNighbour_W(Cui_Matrix_W,pMD->Matrix_W_Vein,Cui_Matrix_W,pMD->slic_current_num,Iteration__Threshold_Vein_SkyV,Iteration__Threshold_Vein_GND,Iteration__Threshold_Color_SkyV,Iteration__Threshold_Color_GND,pMD->p_SpProperty);
+#endif
+#endif
+
+#if OUT_DOOR
+		cui_GeneralImgProcess::CalculateAllSpPropertyRange(CuiImgLables,pMD->ImgWidth,pMD->ImgHeight,pMD->p_SpProperty,pMD->slic_current_num);//78ms
+		cui_GeneralImgProcess::CalculateAllSpBlockEnergy(pMD->slic_current_num,pMD->p_SpProperty,pMD->Src_ImgData,CuiImgLables,pMD->ImgWidth,pMD->ImgHeight);//1s
+
+		cui_GeneralImgProcess::CalculateAllSpPropertyPostitonByHLine(CuiImgLables,pMD->ImgWidth,pMD->ImgHeight,pMD->p_SpProperty,pMD->slic_current_num,pMD->Seg_HorizontalLinePos);//76ms
+		cui_GeneralImgProcess::CuiSetNighbour_W_Vein_matrix(pMD->Matrix_W_Vein,pMD->slic_current_num,pMD->p_SpProperty,pMD);//纹理相似阵
+		cui_GeneralImgProcess::AdjustNighbour_W(Cui_Matrix_W,pMD->Matrix_W_Vein,Cui_Matrix_W,pMD->slic_current_num,
+			Iteration__Threshold_Vein_SkyV,Iteration__Threshold_Vein_GND,Iteration__Threshold_Color_SkyV,Iteration__Threshold_Color_GND,pMD->p_SpProperty);											
+#endif
+		memset(Cui_Matrix_Category_Lable,0,sizeof(INT32)*pMD->slic_current_num);
+		T_Similar=this->Cui_Find_MaxSimilar();
+		if (T_Similar>Iteration__Threshold){				
+			cui_GeneralImgProcess::Cui_Combination_ImgLabs2(
+				CuiImgData,CuiImgLables,
+				Cui_Matrix_Category_Lable,
+				Cui_Matrix_W,pMD->slic_current_num,
+				CuiWidth,CuiHeight,
+				Iteration__Threshold,pMD);//1.4s									
+		}else{	
+#if 0
+			//	this->Cui_Combination_ImgLabs2(0.71);	//组合时依然使用相似度
+			//s*****c int i=0;
+			//if (0==++i%2){
+			//	break;
+			//}
+#else
+			if (Iteration_Complete_Combine_Threshold){
+				cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matrix_Category_Lable,Cui_Matrix_W,pMD->slic_current_num,CuiWidth,CuiHeight,
+					Spectral_Clustering_Combine_Threshold,pMD);
+				break;
+			}else{
+				break;
+			}
+#endif
+		}
+
+	}while(1);
+
+
+	this->Cui_SurroundClassification();
+	pMD->SaveColorSpectralClusteringNum();
 	return false;
 #endif
 }

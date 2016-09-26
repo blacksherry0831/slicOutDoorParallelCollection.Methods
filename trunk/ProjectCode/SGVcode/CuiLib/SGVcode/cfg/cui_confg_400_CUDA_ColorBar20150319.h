@@ -7,7 +7,8 @@
 
 #define  OUT_DOOR  TRUE
 #define  IN_DOOR   FALSE
-
+#define  OUT_DOOR_SUPERPIXEL_COLOR_BAT FALSE
+#define  OUT_DOOR_SUPERPIXEL_Spectral_Clustering_2016_09_26 TRUE
 #endif 
 /*-------------------------------------------------*/
 #ifdef InDoor

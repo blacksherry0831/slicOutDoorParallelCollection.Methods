@@ -84,6 +84,10 @@ public:
 	  double*  VerticalWeightSp_host;
 	  double*  GroundWeightSp_host;
 public:
+	IplImage *l_plane;/**<Lab格式中，L代表分量的图像文件*/
+	IplImage *a_plane;/**<Lab格式中，A代表分量的图像文件*/
+	IplImage *b_plane;/**<Lab格式中，B代表分量的图像文件*/
+public:
 	double*		m_lvec;//(0,100)
 	double*		m_avec;//(-128,127)
 	double*		m_bvec;//(-128,127)
