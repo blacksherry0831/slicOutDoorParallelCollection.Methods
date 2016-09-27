@@ -133,6 +133,9 @@ SLIC::~SLIC()
 		for( int d = 0; d < m_depth; d++ ) delete [] m_bvecvec[d];
 		delete [] m_bvecvec;
 	}
+
+
+	delete[] Cui_Matrix_W_Vein;
 	
 }
 
@@ -2999,6 +3002,136 @@ void SLIC::Cui_B_Cluster(UINT EigenvectorNum, UINT ClusterNum,double Threshold){
 }
 /*------------------------------------------------------------------------------------------------------------------*/
 /**
+*对前K个特征向量组成的特征值进行Bhattacharyya聚类
+*@param EigenvectorNum 特征向量的个数K==EigenvectorNum 
+*@param ClusterNum  （未使用的局部变量）
+*@param Threshold  两个图块之间的B式系数达到此阈值就合并，否则不合并
+*/
+/*------------------------------------------------------------------------------------------------------------------*/
+void SLIC::Cui_B_Cluster_2016_09_27(UINT EigenvectorNum, UINT ClusterNum,double Threshold){
+
+	EigenvectorNum=EigenvectorNum>2?EigenvectorNum:2;
+	Threshold=Threshold>0.5?Threshold:0.5;
+	/**********前K个特征值********************************/
+	if (Cui_Matrix_Category_Simple){
+		delete []Cui_Matrix_Category_Simple;
+		Cui_Matrix_Category_Simple=NULL;
+
+	}
+	Cui_Matrix_Category_Simple=new float[pIMD->slic_current_num*EigenvectorNum];
+	memset(Cui_Matrix_Category_Simple,0,sizeof(float)*pIMD->slic_current_num*EigenvectorNum);
+
+	for (int i=0;i<pIMD->slic_current_num;i++){  //row
+		for (UINT j=0;j<EigenvectorNum;j++){	//col
+			//N*K   //N*N
+			Cui_Matrix_Category_Simple[EigenvectorNum*i+j]=Cui_MatrixEigenVector_L[pIMD->slic_current_num*i+j+pIMD->slic_current_num-1-EigenvectorNum];
+
+		}
+	}
+
+#if _DEBUG
+	{
+		char data_t[1024];
+		memset(data_t,0,sizeof(data_t));
+		ofstream outfile;
+		outfile.open("B_Sample.dat",ios::out);
+		for (int i=0;i<pIMD->slic_current_num;i++){
+			for (UINT j=0;j<EigenvectorNum;j++){
+				//N*K						   //N*N
+
+				double value_t_t=Cui_Matrix_Category_Simple[EigenvectorNum*i+j];
+				sprintf(data_t,"%5.2f ",value_t_t);
+				outfile<<data_t;
+			}
+			outfile<<endl;
+		}
+		outfile.close();
+	}
+#endif
+	for( int i = 0; i <pIMD->slic_current_num; i++ ){
+		CvMat normalize_t;
+		cvInitMatHeader(&normalize_t,1,EigenvectorNum,CV_32FC1,&Cui_Matrix_Category_Simple[i*EigenvectorNum]);
+		cvNormalize(&normalize_t,&normalize_t,1,0,CV_L1);	//a,b无用	
+	} 
+#if _DEBUG
+
+	{
+		char data_t[1024];
+		ofstream outfile;
+		outfile.open("B_sample_Normalize.data",ios::out);
+		for( int i = 0; i <pIMD->slic_current_num; i++ ){
+			for( UINT j = 0; j <EigenvectorNum; j++ ){
+				double value_t=Cui_Matrix_Category_Simple[i*EigenvectorNum+j];
+				sprintf(data_t," %5.2f ",value_t);
+				outfile<<data_t;
+			}
+			outfile<<endl;
+		} 
+		outfile.close();
+	}
+#endif	
+	/************清空Lable****************************************/
+	if (Cui_Matrix_Category_Lable) {
+		delete[]Cui_Matrix_Category_Lable;
+		Cui_Matrix_Category_Lable=NULL;
+
+	}
+	Cui_Matrix_Category_Lable=new INT32[pIMD->slic_current_num]; 
+	memset(Cui_Matrix_Category_Lable,0xffffffff,sizeof(int)*pIMD->slic_current_num-1);
+	/****************************************************************/
+	double  B_like_t=0;
+#if _DEBUG
+
+	INT32  Cui_lable_t[MAX_SP_NUM ];
+	memset(Cui_lable_t,-1,MAX_SP_NUM *sizeof(INT32));
+
+#endif
+	for (int i=0;i<pIMD->slic_current_num;i++){
+		for (int j=i+1;j<pIMD->slic_current_num;j++){
+			/****判断超像素i,j相似度*category=i行j行相似度**/
+			if (Cui_Matrix_W[i*pIMD->slic_current_num+j]>0){
+				B_like_t=0;        	
+				for (UINT col=0;col<EigenvectorNum;col++){
+					//计算前K个特征值相似度
+					B_like_t+=sqrtl(fabsl( Cui_Matrix_Category_Simple[EigenvectorNum*i+col]*Cui_Matrix_Category_Simple[EigenvectorNum*j+col])); 	  
+				}
+				if (Cui_Matrix_Category_Lable[i]==0xffffffff){
+					Cui_Matrix_Category_Lable[i]=i;
+				}
+				if (B_like_t>Threshold){
+					//相似度大于阈值，归属同一类
+					double wenli_like=cui_GeneralImgProcess::CalculateSpSimilar(i,j,pIMD->p_SpProperty);
+					if(wenli_like>0.95){
+						Cui_Matrix_Category_Lable[j]=Cui_Matrix_Category_Lable[i];
+					}
+
+				}
+#if _DEBUG
+				memcpy(Cui_lable_t,Cui_Matrix_Category_Lable,sizeof(INT32)*pIMD->slic_current_num);     
+#endif
+				/*********************************************/
+			}
+		}
+	}
+
+#if _DEBUG
+	{
+		char data_t[1024];
+		ofstream outfile;
+		outfile.open("B_Lable.data",ios::out);
+		for( int i = 0; i <pIMD->slic_current_num; i++ ){
+
+			INT32 value_t=Cui_Matrix_Category_Lable[i];
+			sprintf(data_t,"%3d ",value_t);
+			outfile<<data_t;
+			outfile<<endl;
+		}
+
+	}
+#endif	
+}
+/*------------------------------------------------------------------------------------------------------------------*/
+/**
 *丢弃的聚类方法
 *算法中未使用
 */
@@ -3414,8 +3547,11 @@ bool SLIC::Cui_Spectral_Clustering_B_2016_09_26(
 	double Threshold)
 {
 	TRACE_FUNC();
-#if 0
-
+#if 1
+	if(Cui_Matrix_W_Vein) {
+		delete[] Cui_Matrix_W_Vein;
+	}
+	Cui_Matrix_W_Vein=new double[pIMD->slic_current_num*pIMD->slic_current_num];
 #endif
 #if 1
 	UINT EigenvectorNum=pIMD->slic_current_num*EigenvectorNumPercent;
@@ -3436,7 +3572,7 @@ bool SLIC::Cui_Spectral_Clustering_B_2016_09_26(
 	}else if (1){
 #if OUT_DOOR
 		cui_GeneralImgProcess::CalculateAllSpPropertyRange(
-			CuiImgLables,
+			pIMD->src_ImgLabels,
 			pIMD->ImgWidth,
 			pIMD->ImgHeight,
 			pIMD->p_SpProperty,
@@ -3446,20 +3582,20 @@ bool SLIC::Cui_Spectral_Clustering_B_2016_09_26(
 			pIMD->slic_current_num,
 			pIMD->p_SpProperty,
 			pIMD->src_ImgBGRA,
-			CuiImgLables,
+			pIMD->src_ImgLabels,
 			pIMD->ImgWidth,
 			pIMD->ImgHeight);
 
-		this->Cui_B_Cluster(EigenvectorNum,ClusterNum,Threshold); 
+		this->Cui_B_Cluster_2016_09_27(EigenvectorNum,ClusterNum,Threshold); 
 
 		cui_GeneralImgProcess::Cui_Combination_ImgLabs2(
 			CuiImgData,
-			CuiImgLables,
+			pIMD->src_ImgLabels,
 			Cui_Matrix_Category_Lable,
 			Cui_Matrix_W,
 			pIMD->slic_current_num,
-			CuiWidth,
-			CuiHeight,
+			pIMD->ImgWidth,
+			pIMD->ImgHeight,
 			Spectral_Clustering_Combine_Threshold,
 			pIMD);
 
@@ -3571,13 +3707,13 @@ bool SLIC::Cui_Spectral_Clustering_B_2016_09_26(
 				Iteration__Threshold,
 				pIMD);//1.4s									
 		}else{	
-#if 0
+//#if 0
 			//	this->Cui_Combination_ImgLabs2(0.71);	//组合时依然使用相似度
 			//s*****c int i=0;
 			//if (0==++i%2){
 			//	break;
 			//}
-#else
+//#else
 			/*if (Iteration_Complete_Combine_Threshold){
 				cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matrix_Category_Lable,Cui_Matrix_W,pMD->slic_current_num,CuiWidth,CuiHeight,
 					Spectral_Clustering_Combine_Threshold,pMD);
@@ -3585,7 +3721,7 @@ bool SLIC::Cui_Spectral_Clustering_B_2016_09_26(
 			}else{
 				break;
 			}*/
-#endif
+//#endif
 		}
 
 	}while(1);

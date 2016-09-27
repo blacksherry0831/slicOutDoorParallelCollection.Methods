@@ -292,7 +292,10 @@ public:
 	void CuiDoSuperpixelSegmentation_ForGivenNumberOfSuperpixels(  int& K, double&  compactness,int savelable=0); 
 	void DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy(int savelable=0); 
 	void Cui_Kmean_Cluster(UINT EigenvectorNum, UINT ClusterNum);
+	
 	void Cui_B_Cluster(UINT EigenvectorNum, UINT ClusterNum,double Threshold);
+	void Cui_B_Cluster_2016_09_27(UINT EigenvectorNum, UINT ClusterNum,double Threshold);
+	
 	bool Cui_Spectral_Clustering_KM(UINT EigenvectorNum, UINT ClusterNum,double Similar_Threshold);
 	
 	bool Cui_Spectral_Clustering_B(double EigenvectorNumPercent=0.1, double ClusterPercent=0.1,double Threshold=Spectral_Clustering_B_Threshold);
