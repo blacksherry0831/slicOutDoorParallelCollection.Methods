@@ -287,9 +287,13 @@ CUI_NEXT:	;
 	memcpy_s(labels,sizeof(int)*width*height,CuiImgLables_t,sizeof(int)*width*height);
 	delete []CuiImgLables_t;
 	delete []p_SpProperty;
+
+#if _DEBUG
 	cui_GeneralImgProcess::SaveSuperpixelLabels(labels,width,height);
-	//cui_GeneralImgProcess::CuiSaveImgWithContours(ubuff,labels,width,height,pMD->FileReadFullPath,pMD->FileWritePath,"");
+	cui_GeneralImgProcess::CuiSaveImgWithContours(ubuff,labels,width,height,pMD->FileReadFullPath,pMD->FileWritePath,"");
 	/**************************************************************/
+#endif
+	
 }
 /*---------------------------------------------------------------*/
 /**

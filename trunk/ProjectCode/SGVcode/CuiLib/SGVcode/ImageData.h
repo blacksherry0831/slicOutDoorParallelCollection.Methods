@@ -112,13 +112,14 @@ public:
 	float fai;
 public:
 	SP_PROPERTY *p_SpProperty;/**<代表超像素属性的数据结构*/
+	SpSetProperty SpSet;
 public:
 	int InitTimes;
 	int InitMemDataTimes;
 	void initSpSet(void);
 	void initLabels(int* labels);
 	void initMemData(int* labels);
-	SpSetProperty SpSet;
+	string GetSequenceString();
 private:
 	unsigned int _seq;
 public:

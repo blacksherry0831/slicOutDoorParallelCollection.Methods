@@ -928,6 +928,21 @@ void ImageData::Combination_ImgLabs(
 *
 */
 /*----------------------------------------------------------------*/
+string ImageData::GetSequenceString()
+{
+	string str_add="";
+	char buffer[1024];
+	sprintf_s(buffer,1024,"%03d",_seq++);
+	str_add.append(buffer);
+	return str_add;
+}
+/*----------------------------------------------------------------*/
+/**
+*
+*
+*
+*/
+/*----------------------------------------------------------------*/
 void ImageData::SaveImgWithPointsCompute(string str_add)
 {
 	INT32 * Matrix_Category_Lable=new INT32[slic_current_num];

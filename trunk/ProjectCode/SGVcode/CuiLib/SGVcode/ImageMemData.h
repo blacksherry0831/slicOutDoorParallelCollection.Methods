@@ -15,18 +15,21 @@ using namespace std;
 class ImageMemData
 {
 public:
+
 	ImageMemData(
 		string filename,
 		string filesavepath,
 		int spcount,
 		double compactness,
 		float horizontal_line_pos);
+
 	ImageMemData(
 		IplImage* img,
 		string filesavepath="",
 		int spcount=800,
 		double compactness=8,
 		float horizontal_line_pos=0.5);
+
 	~ImageMemData(void);
 	void ReleaseMemory(void);
 private:
