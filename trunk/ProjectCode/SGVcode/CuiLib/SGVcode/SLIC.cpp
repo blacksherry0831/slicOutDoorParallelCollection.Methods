@@ -2374,9 +2374,22 @@ void SLIC::CuiFindSaveSimilar_W_matrix2_2016_09_26(const string& filename,const 
 			int sp=pIMD->src_ImgLabels[li*pIMD->ImgWidth+lj];
 #if OUT_DOOR_SUPERPIXEL_Spectral_Clustering_2016_09_26
 			int index_t=li*pIMD->ImgWidth+lj;
-			hist_Theta_value[sp].push_back((unsigned char) (pIMD->sita_n[index_t]*256));
-			hist_M_value[sp].push_back((unsigned char) (pIMD->m_n[index_t]*256));
-			hist_L_value[sp].push_back((unsigned char) (pIMD->L_n[index_t]*256));
+			
+			{
+				hist_Theta_value[sp].push_back((unsigned char) (pIMD->sita_n[index_t]*256));
+			}
+
+			{
+					unsigned char m_t=(unsigned char) (pIMD->m_n[index_t]*256);
+					m_t=(m_t>3)?255:0;
+					hist_M_value[sp].push_back(m_t);
+			}
+
+			{
+					hist_L_value[sp].push_back((unsigned char) (pIMD->L_n[index_t]*256));	
+			}
+
+
 #endif
 		}
 	}
@@ -3120,7 +3133,7 @@ void SLIC::Cui_B_Cluster_2016_09_27(UINT EigenvectorNum, UINT ClusterNum,double 
 				if (B_like_t>Threshold){
 					//相似度大于阈值，归属同一类
 					double wenli_like=cui_GeneralImgProcess::CalculateSpSimilar(i,j,pIMD->p_SpProperty);
-					if(wenli_like>0.95){
+					if(wenli_like>Spectral_Clustering_B_Wavelet_Threshold){
 						Cui_Matrix_Category_Lable[j]=Cui_Matrix_Category_Lable[i];
 					}
 

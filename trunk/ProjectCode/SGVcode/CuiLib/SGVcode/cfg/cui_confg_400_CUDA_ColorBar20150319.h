@@ -29,13 +29,15 @@
 #define  Lab_a_Division	 (16)
 #define  Lab_b_Division	 (16)
 /**************************************************/
+/*-------------------------------------------------------------------*/
 #define  HORIZONTAL_LINE_POS   (0.5)
 //直方图B系数阈值
 #define  Color_histogram_B_Threshold   (0.71)
 //计算谱聚类的BHATTACHARYYA系数
 #define  Spectral_Clustering_B_Threshold   (0.94)
-	
+#define  Spectral_Clustering_B_Wavelet_Threshold   (0.95)	
 #define  Spectral_Clustering_Combine_Threshold (0.72)
+/*-------------------------------------------------------------------*/
 //迭代阈值
 #define  Iteration__Threshold  (0.9)
 #define  Iteration__Threshold_Color_SkyV  (0.9)
