@@ -2340,12 +2340,12 @@ void SLIC::CuiFindSaveSimilar_W_matrix2_2016_09_26(const string& filename,const 
 #endif
 	/****************************************************************/
 	CvHistogram *hist[MAX_SP_NUM ];
-	vector<unsigned char> hist_h_value[MAX_SP_NUM ];
-	vector<unsigned char> hist_s_value[MAX_SP_NUM ];
-	vector<unsigned char> hist_v_value[MAX_SP_NUM ];
-	IplImage  *hist_h_matrix=NULL;
-	IplImage  *hist_s_matrix=NULL;
-	IplImage  *hist_v_matrix=NULL;
+	vector<unsigned char> hist_Theta_value[MAX_SP_NUM ];
+	vector<unsigned char> hist_M_value[MAX_SP_NUM ];
+	vector<unsigned char> hist_L_value[MAX_SP_NUM ];
+	IplImage  *hist_Theta_matrix=NULL;
+	IplImage  *hist_M_matrix=NULL;
+	IplImage  *hist_L_matrix=NULL;
 	/****************************************************************/
 	{
 		if (Cui_Matrix_W){
@@ -2359,11 +2359,11 @@ void SLIC::CuiFindSaveSimilar_W_matrix2_2016_09_26(const string& filename,const 
 
 	for (register int spi=0;spi<pIMD->slic_current_num;spi++){
 		{
-			int	hist_size[3]={Lab_L_Division,Lab_a_Division,Lab_b_Division};
-			float h_l_ranges[]={0,256};
-			float s_a_range[]={0,256};
-			float v_b_range[]={0,256}; //亮度
-			float *ranges[]={h_l_ranges,s_a_range,v_b_range};
+			int	hist_size[3]={ThetaML_Theta_Division,ThetaML_M_Division,ThetaML_L_Division};
+			float Theta_ranges[]={0,256};
+			float M_range[]={0,256};
+			float L_range[]={0,256}; //亮度
+			float *ranges[]={Theta_ranges,M_range,L_range};
 			hist[spi]=cvCreateHist(3,hist_size,CV_HIST_ARRAY,ranges);
 
 		}  
@@ -2372,25 +2372,27 @@ void SLIC::CuiFindSaveSimilar_W_matrix2_2016_09_26(const string& filename,const 
 	for (register int li=0;li<pIMD->ImgHeight;li++) {
 		for (register int lj=0;lj<pIMD->ImgWidth;lj++){
 			int sp=pIMD->src_ImgLabels[li*pIMD->ImgWidth+lj];
-			hist_h_value[sp].push_back((unsigned char)cvGetReal2D(pIMD->l_plane,li,lj));
-			hist_s_value[sp].push_back((unsigned char)cvGetReal2D(pIMD->a_plane,li,lj));
-			hist_v_value[sp].push_back((unsigned char)cvGetReal2D(pIMD->b_plane,li,lj));
-
+#if OUT_DOOR_SUPERPIXEL_Spectral_Clustering_2016_09_26
+			int index_t=li*pIMD->ImgWidth+lj;
+			hist_Theta_value[sp].push_back((unsigned char) (pIMD->sita_n[index_t]*256));
+			hist_M_value[sp].push_back((unsigned char) (pIMD->m_n[index_t]*256));
+			hist_L_value[sp].push_back((unsigned char) (pIMD->L_n[index_t]*256));
+#endif
 		}
 	}
 	for (register int sp=0;sp<pIMD->slic_current_num;sp++){
-		hist_h_matrix=cvCreateImage(cvSize(hist_h_value[sp].size(),1),IPL_DEPTH_8U,1);
-		hist_s_matrix=cvCreateImage(cvSize(hist_s_value[sp].size(),1),IPL_DEPTH_8U,1);
-		hist_v_matrix=cvCreateImage(cvSize(hist_v_value[sp].size(),1),IPL_DEPTH_8U,1);
-		IplImage *hist_matrix[]={hist_h_matrix,hist_s_matrix,hist_v_matrix};
-		memcpy(hist_h_matrix->imageData,hist_h_value[sp].data(),hist_h_value[sp].size()*sizeof(unsigned char));
-		memcpy(hist_s_matrix->imageData,hist_s_value[sp].data(),hist_s_value[sp].size()*sizeof(unsigned char));
-		memcpy(hist_v_matrix->imageData,hist_v_value[sp].data(),hist_v_value[sp].size()*sizeof(unsigned char));
+		hist_Theta_matrix=cvCreateImage(cvSize(hist_Theta_value[sp].size(),1),IPL_DEPTH_8U,1);
+		hist_M_matrix=cvCreateImage(cvSize(hist_M_value[sp].size(),1),IPL_DEPTH_8U,1);
+		hist_L_matrix=cvCreateImage(cvSize(hist_L_value[sp].size(),1),IPL_DEPTH_8U,1);
+		IplImage *hist_matrix[]={hist_Theta_matrix,hist_M_matrix,hist_L_matrix};
+		memcpy(hist_Theta_matrix->imageData,hist_Theta_value[sp].data(),hist_Theta_value[sp].size()*sizeof(unsigned char));
+		memcpy(hist_M_matrix->imageData,hist_M_value[sp].data(),hist_M_value[sp].size()*sizeof(unsigned char));
+		memcpy(hist_L_matrix->imageData,hist_L_value[sp].data(),hist_L_value[sp].size()*sizeof(unsigned char));
 		cvCalcHist(hist_matrix,hist[sp]);
 		cvNormalizeHist(hist[sp],1.0);
-		cvReleaseImage(&hist_h_matrix);
-		cvReleaseImage(&hist_s_matrix);
-		cvReleaseImage(&hist_v_matrix);
+		cvReleaseImage(&hist_Theta_matrix);
+		cvReleaseImage(&hist_M_matrix);
+		cvReleaseImage(&hist_L_matrix);
 	}
 	/****************************************************************/
 	for(register int i = 0; i <pIMD->slic_current_num; i++ ){
@@ -2400,10 +2402,11 @@ void SLIC::CuiFindSaveSimilar_W_matrix2_2016_09_26(const string& filename,const 
 				//i ,j超像素相邻				
 				double B_distance=cvCompareHist(hist[i],hist[j],CV_COMP_BHATTACHARYYA);
 				B_distance=1-powl(B_distance,2);
-#if OUT_DOOR_SUPERPIXEL_COLOR_BAT
-				B_distance=(B_distance<Color_histogram_B_Threshold)?0:B_distance;
-#endif
+				B_distance=(B_distance<Color_histogram_B_Threshold)?0:B_distance;//<0.71 直接置0
+
 				Cui_Matrix_W[j*pIMD->slic_current_num+i]=Cui_Matrix_W[i*pIMD->slic_current_num+j]=B_distance;
+			}else{
+				Cui_Matrix_W[j*pIMD->slic_current_num+i]=Cui_Matrix_W[i*pIMD->slic_current_num+j]=0;//不相邻，直接置0
 			}
 		}
 	}
@@ -3450,9 +3453,7 @@ bool SLIC::Cui_Spectral_Clustering_B(
 	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
 	double dftims=dfMinus/1000;	
 	/////////////////////////////////////////////////////////////////////////////
-#endif
-	
-	
+#endif	
 	
 	if (0){
 		this->Cui_Kmean_Cluster(EigenvectorNum,ClusterNum);
@@ -3599,9 +3600,9 @@ bool SLIC::Cui_Spectral_Clustering_B_2016_09_26(
 		this->CuiFindSave_L_Eigenvalue_2016_09_26();//41s
 	}
 	if (0){
-		/*this->Cui_Kmean_Cluster(EigenvectorNum,ClusterNum);
-		W_Threshold=0.707;*/
+		
 	}else if (1){
+	/*--颜色&&纹理&&谱聚类--*/
 #if OUT_DOOR
 		cui_GeneralImgProcess::CalculateAllSpPropertyRange(
 			pIMD->src_ImgLabels,
@@ -3618,76 +3619,28 @@ bool SLIC::Cui_Spectral_Clustering_B_2016_09_26(
 			pIMD->ImgWidth,
 			pIMD->ImgHeight);
 
-		//谱聚类+纹理聚类 【这个算法】
+		/*--谱聚类+纹理聚类 【这个算法】--小波分析输出聚类结果--*/
 		this->Cui_B_Cluster_2016_09_27(EigenvectorNum,ClusterNum,Threshold); 
 
 		//组合聚类结果
-		cui_GeneralImgProcess::Cui_Combination_ImgLabs2(
-			CuiImgData,
-			pIMD->src_ImgLabels,
+
+		pIMD->CombineLabelsByCategory_and_WMatrix(
 			Cui_Matrix_Category_Lable,
 			Cui_Matrix_W,
-			pIMD->slic_current_num,
-			pIMD->ImgWidth,
-			pIMD->ImgHeight,
-			Spectral_Clustering_Combine_Threshold,
-			pIMD);
-
+			Spectral_Clustering_Combine_Threshold);
 		///////////////////////////////////////////////////
 		W_Threshold=Iteration__Threshold;
 #endif
-//#if IN_DOOR
-//		ASSERT(sizeof(int)==sizeof(INT32));
-//		cui_GeneralImgProcess::CalculateAllSpPropertyRange(CuiImgLables,pMD->ImgWidth,pMD->ImgHeight,pMD->p_SpProperty,pMD->slic_current_num);
-//		cui_GeneralImgProcess::CalculateAllSpBlockEnergy(pMD->slic_current_num,pMD->p_SpProperty,pMD->Src_ImgData,CuiImgLables,pMD->ImgWidth,pMD->ImgHeight);
-//
-//		this->Cui_B_Cluster(EigenvectorNum,ClusterNum,Threshold); 
-//		cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matrix_Category_Lable,Cui_Matrix_W,pMD->slic_current_num,CuiWidth,CuiHeight,
-//			Iteration__Threshold,pMD);
-//		///////////////////////////////////////////////////
-//		W_Threshold=Iteration__Threshold;
-//#endif
-
-	}else{
-		/*this->Cui_Min_Cluster();
-#if OUT_DOOR
-		cui_GeneralImgProcess::Cui_Combination_ImgLabs2(
-			CuiImgData,
-			CuiImgLables,
-			Cui_Matrix_Category_Lable,
-			Cui_Matrix_W,
-			pIMD->slic_current_num,
-			CuiWidth,
-			CuiHeight,
-			Spectral_Clustering_Combine_Threshold,
-			pIMD);
-#endif*/
-/*#if IN_DOOR
-		cui_GeneralImgProcess::Cui_Combination_ImgLabs2(CuiImgData,CuiImgLables,Cui_Matrix_Category_Lable,Cui_Matrix_W,pMD->slic_current_num,CuiWidth,CuiHeight,
-			Spectral_Clustering_Combine_Threshold,pMD);
-#endif*/		
+	}else{		
 		return false;
-		//W_Threshold=0;
 	}	
-	/***********************************************************/
+	/*************************颜色直方图迭代**********************************/
 	do{ 
 		double T_Similar=0;
 		pIMD->GetMatrixE();//this->CuiFindSaveNighbour_E_matrix();//得到相邻矩阵0.9s
 		this->CuiFindSaveSimilar_W_matrix2_2016_09_26();//颜色直方图-------5.9s
-//#ifdef InDoor
-//#if ((IN_DOOR)&&(Iteration__Threshold_Vein_SkyV>0)&&(Iteration__Threshold_Vein_GND>0))
-//		cui_GeneralImgProcess::CalculateAllSpPropertyRange(CuiImgLables,pMD->ImgWidth,pMD->ImgHeight,pMD->p_SpProperty,pMD->slic_current_num);
-//		cui_GeneralImgProcess::CalculateAllSpBlockEnergy(pMD->slic_current_num,pMD->p_SpProperty,pMD->Src_ImgData,CuiImgLables,pMD->ImgWidth,pMD->ImgHeight);
-//		cui_GeneralImgProcess::CalculateAllSpPropertyPostitonByHLine(CuiImgLables,pMD->ImgWidth,pMD->ImgHeight,pMD->p_SpProperty,pMD->slic_current_num,pMD->Seg_HorizontalLinePos);
-//
-//		cui_GeneralImgProcess::CuiSetNighbour_W_Vein_matrix(pMD->Matrix_W_Vein,pMD->slic_current_num,pMD->p_SpProperty,pMD);//纹理相似阵
-//		cui_GeneralImgProcess::AdjustNighbour_W(Cui_Matrix_W,pMD->Matrix_W_Vein,Cui_Matrix_W,pMD->slic_current_num,Iteration__Threshold_Vein_SkyV,Iteration__Threshold_Vein_GND,Iteration__Threshold_Color_SkyV,Iteration__Threshold_Color_GND,pMD->p_SpProperty);
-//#endif
-//#endif
-
-		//小波分析
+		/*小波分析*/
 #if OUT_DOOR
-
 		cui_GeneralImgProcess::CalculateAllSpPropertyRange(
 			pIMD->src_ImgLabels,
 			pIMD->ImgWidth,
@@ -3727,47 +3680,13 @@ bool SLIC::Cui_Spectral_Clustering_B_2016_09_26(
 			Iteration__Threshold_Color_SkyV,
 			Iteration__Threshold_Color_GND,
 			pIMD->p_SpProperty);											
-#endif
-		memset(Cui_Matrix_Category_Lable,0,sizeof(INT32)*pIMD->slic_current_num);
+#endif		
 		T_Similar=this->Cui_Find_MaxSimilar();
-		if (T_Similar>Iteration__Threshold){
-			//	
-			cui_GeneralImgProcess::Cui_Combination_ImgLabs2(
-				CuiImgData,
-				pIMD->src_ImgLabels,
-				Cui_Matrix_Category_Lable,
-				Cui_Matrix_W,
-				pIMD->slic_current_num,
-				CuiWidth,
-				CuiHeight,
-				Iteration__Threshold,
-				pIMD);//1.4s									
+		if (T_Similar>0.999){
+			pIMD->CombineLabelsByWMatrix(Cui_Matrix_W,0.999);//1.4s									
 		}else{	
-#if 0
-			//	this->Cui_Combination_ImgLabs2(0.71);	//组合时依然使用相似度
-			//s*****c int i=0;
-			//if (0==++i%2){
-			//	break;
-			//}
-#else
-			if (Iteration_Complete_Combine_Threshold){
-				cui_GeneralImgProcess::Cui_Combination_ImgLabs2(
-					CuiImgData,
-					CuiImgLables,
-					Cui_Matrix_Category_Lable,
-					Cui_Matrix_W,
-					pIMD->slic_current_num,
-					pIMD->ImgWidth,
-					pIMD->ImgHeight,
-					Spectral_Clustering_Combine_Threshold,
-					pIMD);
-				break;
-			}else{
-				break;
-			}
-#endif
+			break;
 		}
-
 	}while(1);
 
 	this->Cui_SurroundClassification();

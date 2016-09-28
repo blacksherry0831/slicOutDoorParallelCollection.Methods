@@ -14,8 +14,7 @@
 /*----------------------------------------------------------------*/
 SpSetProperty::SpSetProperty(void)
 {
-	this->SpPropertySet.clear();
-	this->PointSet.clear();
+	this->cleardata();
 	ImgWidth=0;
 	ImgHeight=0;
 	HorizontalLinePos=0;
@@ -202,6 +201,24 @@ inline void SpSetProperty::ParsespBorderCategory(int spi,int width_x,int height_
 	if (height_y==HorizontalLinePos){
 		SpPropertySet[spi].BorderCategory|=spBorderCategoryCrossHorz;
 	}
+}
+/*----------------------------------------------------------------*/
+/**
+*
+*/
+/*----------------------------------------------------------------*/
+void SpSetProperty::cleardata()
+{
+	{
+		int old_size=this->SpPropertySet.size();
+		this->SpPropertySet.resize(0);
+		this->SpPropertySet.resize(old_size);
+	}	
+	{
+		int old_size=this->PointSet.size();
+		this->PointSet.resize(0);
+		this->PointSet.resize(old_size);
+	}	
 }
 /*----------------------------------------------------------------*/
 /**

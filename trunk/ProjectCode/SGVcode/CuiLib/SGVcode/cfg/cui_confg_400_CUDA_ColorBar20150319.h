@@ -11,6 +11,12 @@
 #define  OUT_DOOR_SUPERPIXEL_Spectral_Clustering_2016_09_26 TRUE
 #endif 
 /*-------------------------------------------------*/
+#if OUT_DOOR_SUPERPIXEL_Spectral_Clustering_2016_09_26
+#define  ThetaML_Theta_Division	 (60)
+#define  ThetaML_M_Division	 (2)
+#define  ThetaML_L_Division	 (16)
+#endif
+/*-------------------------------------------------*/
 #ifdef InDoor
 
 #define  OUT_DOOR  FALSE

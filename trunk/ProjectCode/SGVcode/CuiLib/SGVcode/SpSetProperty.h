@@ -148,5 +148,7 @@ inline	void ParsespBorderCategory(int spi,int width_x,int height_y);
 	/**/
 	void RemoveEmptySet(void);
 	void AdjustSpSet(void);
+public:
+	void cleardata();
 };
 

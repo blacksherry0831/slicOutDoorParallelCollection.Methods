@@ -170,6 +170,8 @@ void Combination_ImgLabs(
 	bool UseMatrixE=false,
 	bool UseMaxtrxW=false,
 	bool UseEnergy=false);
+void CombineLabelsByCategory_and_WMatrix(INT32*	 category,const double*  matrix_w,double matrix_w_threshold);
+void CombineLabelsByWMatrix(const double*  matrix_w,double matrix_w_threshold);
 ///////////////////////////////////////////////
 void SaveImgWithContours(string str_add="");
 void SaveImgWithPointsFuzzy(string str_add="");

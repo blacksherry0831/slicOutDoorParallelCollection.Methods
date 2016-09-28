@@ -650,6 +650,19 @@ inline void ImageData::ConvertLab2oml(
 	assert(L_n>=0-0.1&&L_n<=1+0.1);
 	assert(X_n>=0-0.1&&X_n<=1+0.1);
 	assert(Y_n>=0-0.1&&Y_n<=1+0.1);
+#if OUT_DOOR_SUPERPIXEL_Spectral_Clustering_2016_09_26
+	if (sita_n<0)	sita_n=0;
+	if (sita_n>1)	sita_n=1;
+
+	if (m_n<0)		m_n=0;
+	if (m_n>1)		m_n=1;
+
+	if (L_n<0)		L_n=0;
+	if (L_n>1)		L_n=1;
+#endif
+
+
+
 }
 /*----------------------------------------------------------------*/
 /**
@@ -1872,19 +1885,46 @@ void ImageData::_splitpath(const char *path, char *drive, char *dir, char *fname
 	//cui_GeneralImgProcess::_splitpath(path,drive,dir,fname,ext);
 //#endif
 }
-
 /*----------------------------------------------------------------*/
 /**
-*
-*
 *
 */
 /*----------------------------------------------------------------*/
+/*----------------------------------------------------------------*/
+/**
+*依据相似度矩阵组合图块 labels
+*/
+/*----------------------------------------------------------------*/
+void ImageData::CombineLabelsByWMatrix(const double*  matrix_w,double matrix_w_threshold)
+{
 
+		INT32 *Cui_Matrix_Category_Lable=new INT32[this->slic_current_num];
+		memset(Cui_Matrix_Category_Lable,0,sizeof(INT32)*this->slic_current_num);
+		this->CombineLabelsByCategory_and_WMatrix(Cui_Matrix_Category_Lable,matrix_w,matrix_w_threshold);
+	
+}
 /*----------------------------------------------------------------*/
 /**
 *
-*
+*/
+/*----------------------------------------------------------------*/
+void ImageData::CombineLabelsByCategory_and_WMatrix(INT32*	 category,const double*  matrix_w,double matrix_w_threshold)
+{
+	cui_GeneralImgProcess::Cui_Combination_ImgLabs2(
+		src_ImgBGRA,
+		this->src_ImgLabels,
+		category,
+		matrix_w,
+		this->slic_current_num,
+		this->ImgWidth,
+		this->ImgHeight,
+		matrix_w_threshold,
+		this);
+
+	SpSet.cleardata();
+}
+/*----------------------------------------------------------------*/
+/**
 *
 */
 /*----------------------------------------------------------------*/
