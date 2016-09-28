@@ -2334,6 +2334,7 @@ void SLIC::CuiFindSaveSimilar_W_matrix2(const string& filename,const string&	pat
 /*----------------------------------------------------------------------------------------------------------------*/
 void SLIC::CuiFindSaveSimilar_W_matrix2_2016_09_26(const string& filename,const string&	path)
 {
+	TimeCountStart();
 	TRACE_FUNC();
 #if OUT_DOOR
 	assert(pIMD->slic_current_num<MAX_SP_NUM);
@@ -2432,6 +2433,7 @@ void SLIC::CuiFindSaveSimilar_W_matrix2_2016_09_26(const string& filename,const 
 	cui_GeneralImgProcess::SaveMatrix_W(path,filename,pIMD->slic_current_num,Cui_Matrix_W);
 #endif
 	/********************************************************/
+	TimeCountStop("W matrix Cost Time : ");
 }
 
 /*----------------------------------------------------------------------------------------------------------------*/
