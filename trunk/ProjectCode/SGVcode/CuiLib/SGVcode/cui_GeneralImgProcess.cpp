@@ -3514,7 +3514,7 @@ void cui_GeneralImgProcess::Draw_Kseeds_AverageImg(
 	string FileReadFullPath,
 	string FileWritePath)
 {
-#if SaveAverageImg2Disk 
+#if SaveAverageImg2Disk || _DEBUG
 //绘制用种子标定的图像
 	int vectorSize=kseedsa.size();
 	{
@@ -3535,8 +3535,21 @@ void cui_GeneralImgProcess::Draw_Kseeds_AverageImg(
 		}
 		cvCvtColor(img,img,CV_Lab2BGR);
 		FileNameSplit fns;
+#if Use_CString
 		fns.Parse(CString(FileReadFullPath.c_str()));
 		string filesaveimg_t=FileWritePath+FileNameSplit::ConvertCS2string(fns.filename)+"SpSeeds.jpg";
+#else
+		string path= string(FileReadFullPath);
+#if _MSC_VER
+		int pos = path.find_last_of('\\');
+#else
+		int pos=0;
+#endif	
+		string file_name_t(path.substr(pos + 1) );
+
+		string filesaveimg_t=FileWritePath+file_name_t+"SpSeeds.jpg";
+
+#endif
 		cvSaveImage(filesaveimg_t.c_str(),img);
 		cvReleaseImage(&img);
 	}
@@ -3847,6 +3860,9 @@ void cui_GeneralImgProcess::THreadSuperPixel_DoOneImage(string picvec,string sav
 		printf("3. Spectral Clustering \n");
 		slic.Cui_Spectral_Clustering_B_2016_09_26();
 
+		MemData.SaveImgWithContours("ColorCluster");
+		MemData.Draw_Kseeds_AverageImg();
+
 #endif
 
 #if OUT_DOOR_SUPERPIXEL_COLOR_BAT
@@ -3855,10 +3871,15 @@ void cui_GeneralImgProcess::THreadSuperPixel_DoOneImage(string picvec,string sav
 		colorBarCluster.Clustering();
 #endif
 
+#if 0
 
 		printf("4. ComputeSVG2 \n");
 		ComputeSVG2 svg(&MemData);
 		svg.separateSVG_Zlm();
+
+#endif
+
+
 
 //#if	!(SaveContours2Disk)
 //		MemData.SaveImgWithContours();			
