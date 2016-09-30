@@ -8,10 +8,10 @@
 #define  OUT_DOOR  TRUE
 #define  IN_DOOR   FALSE
 #define  OUT_DOOR_SUPERPIXEL_COLOR_BAT FALSE
-#define  OUT_DOOR_SUPERPIXEL_Spectral_Clustering_2016_09_26 TRUE
+#define  OUT_DOOR_HUMAN TRUE
 #endif 
 /*-------------------------------------------------*/
-#if OUT_DOOR_SUPERPIXEL_Spectral_Clustering_2016_09_26
+#if OUT_DOOR_HUMAN
 #define  ThetaML_Theta_Division	 (60)
 #define  ThetaML_M_Division	 (2)
 #define  ThetaML_L_Division	 (16)

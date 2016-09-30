@@ -650,7 +650,7 @@ inline void ImageData::ConvertLab2oml(
 	assert(L_n>=0-0.1&&L_n<=1+0.1);
 	assert(X_n>=0-0.1&&X_n<=1+0.1);
 	assert(Y_n>=0-0.1&&Y_n<=1+0.1);
-#if OUT_DOOR_SUPERPIXEL_Spectral_Clustering_2016_09_26
+#if OUT_DOOR_HUMAN
 	if (sita_n<0)	sita_n=0;
 	if (sita_n>1)	sita_n=1;
 

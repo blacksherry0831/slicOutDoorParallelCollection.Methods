@@ -2373,7 +2373,7 @@ void SLIC::CuiFindSaveSimilar_W_matrix2_2016_09_26(const string& filename,const 
 	for (register int li=0;li<pIMD->ImgHeight;li++) {
 		for (register int lj=0;lj<pIMD->ImgWidth;lj++){
 			int sp=pIMD->src_ImgLabels[li*pIMD->ImgWidth+lj];
-#if OUT_DOOR_SUPERPIXEL_Spectral_Clustering_2016_09_26
+#if OUT_DOOR_HUMAN
 			int index_t=li*pIMD->ImgWidth+lj;
 			
 			{
@@ -3308,7 +3308,7 @@ double SLIC::Cui_Find_MaxSimilar(void)
 	}
 #endif
 
-#if OUT_DOOR_SUPERPIXEL_Spectral_Clustering_2016_09_26
+#if OUT_DOOR_HUMAN
 	for (register int spi=0;spi<pIMD->slic_current_num;spi++){
 		for (register int spj=spi+1;spj<pIMD->slic_current_num;spj++){
 			if ( Cui_Matrix_W[spi*pIMD->slic_current_num+spj]>=Max_Similar){
@@ -3655,7 +3655,7 @@ bool SLIC::Cui_Spectral_Clustering_B_2016_09_26(
 		pIMD->GetMatrixE();//this->CuiFindSaveNighbour_E_matrix();//得到相邻矩阵0.9s
 		this->CuiFindSaveSimilar_W_matrix2_2016_09_26();//颜色直方图-------5.9s
 		/*小波分析*/
-#if OUT_DOOR
+#if OUT_DOOR&&0
 		cui_GeneralImgProcess::CalculateAllSpPropertyRange(
 			pIMD->src_ImgLabels,
 			pIMD->ImgWidth,
@@ -3697,8 +3697,8 @@ bool SLIC::Cui_Spectral_Clustering_B_2016_09_26(
 			pIMD->p_SpProperty);											
 #endif		
 		T_Similar=this->Cui_Find_MaxSimilar();
-		if (T_Similar>0.999){
-			pIMD->CombineLabelsByWMatrix(Cui_Matrix_W,0.999);//1.4s									
+		if (T_Similar>0.9){
+			pIMD->CombineLabelsByWMatrix(Cui_Matrix_W,0.9);//1.4s									
 		}else{	
 			break;
 		}
@@ -3737,7 +3737,7 @@ void SLIC::Cui_SurroundClassification(void){
 	   pMD->FileReadFullPath,
 	   pMD->FileWritePath);
 #endif
-#if OUT_DOOR_SUPERPIXEL_Spectral_Clustering_2016_09_26
+#if OUT_DOOR_HUMAN
    pIMD->SurroundClassification();
 #endif
 }
