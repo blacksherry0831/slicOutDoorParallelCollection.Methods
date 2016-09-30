@@ -1028,8 +1028,8 @@ __global__ void SetMinimumOnLab_9Seeds(
 			assert(labels_ind>=-1&&labels_ind<kseedsSize);
 #if 1
 			if (labels_ind==-1){
-				int x_step=m_width/SeedWH;
-				int y_step=m_height/SeedWH;
+				float x_step=1.0*m_width/SeedWH;
+				float y_step=1.0*m_height/SeedWH;
 				int labelsX=x/x_step;
 				int labelsY=y/y_step;
 				SetPixelLables(x_offset,y_offset,offsetSize,
@@ -1130,8 +1130,8 @@ __global__ void SetMinimumOnThetaMLXY_9Seeds(
 			assert(labels_ind>=-1&&labels_ind<kseedsSize);
 #if 1
 			if (labels_ind==-1){
-				int x_step=m_width/SeedWH;
-				int y_step=m_height/SeedWH;
+				float x_step=1.0*m_width/SeedWH;
+				float y_step=1.0*m_height/SeedWH;
 				int labelsX=x/x_step;
 				int labelsY=y/y_step;
 				SetPixelLables(x_offset,y_offset,offsetSize,
