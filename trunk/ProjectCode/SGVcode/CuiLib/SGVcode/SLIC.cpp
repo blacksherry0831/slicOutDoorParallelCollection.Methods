@@ -3703,8 +3703,9 @@ bool SLIC::Cui_Spectral_Clustering_B_2016_09_26(
 			break;
 		}
 	}while(1);
-
+#if 0
 	this->Cui_SurroundClassification();
+#endif
 
 //#if _DEBUG
 //	pIMD->SaveColorSpectralClusteringNum();
