@@ -414,14 +414,14 @@ void CuiHarrTransformLet::Trans_cpu(
 	int imageHeight = inputHeight;
 	int imageWidth = inputWidth;
 	
-	unsigned char *temp1 = new unsigned char[imageWidth * (int)(imageHeight/2)];
-	unsigned char *temp2 = new unsigned char[imageWidth * (int)(imageHeight/2)];
+	unsigned char *temp1 = new unsigned char[imageWidth * (int)(imageHeight/2)];//奇数行
+	unsigned char *temp2 = new unsigned char[imageWidth * (int)(imageHeight/2)];//偶数行
 	//对图像矩阵进行行采样
 	this->MatrixSampleRow(inputData, temp1, temp2, (imageHeight/2), imageWidth, lineByte);
 	//行差分，得到高频与低频数据
-	this->MatrixSub(temp1, temp2, (imageHeight/2), imageWidth, temp1);
-	unsigned char *temp00 = new unsigned char[(imageWidth/2) * (imageHeight/2)];
-	unsigned char *temp01 = new unsigned char[(imageWidth/2) * (imageHeight/2)];
+	this->MatrixSub(temp1, temp2, (imageHeight/2), imageWidth, temp1);//奇数-偶数
+	unsigned char *temp00 = new unsigned char[(imageWidth/2) * (imageHeight/2)];//奇数
+	unsigned char *temp01 = new unsigned char[(imageWidth/2) * (imageHeight/2)];//偶数
 	//对低频数据进行列采样
 	this->MatrixSampleLine(temp2, temp01, temp00, (imageHeight/2), (imageWidth/2), imageWidth);
 	//列差分得到LL和LH
