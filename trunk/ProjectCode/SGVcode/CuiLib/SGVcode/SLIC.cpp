@@ -2771,6 +2771,8 @@ void SLIC::CuiFindSave_L_Eigenvalue(void)
 /*----------------------------------------------------------------------------------------------------------------*/
 void SLIC::CuiFindSave_L_Eigenvalue_2016_09_26(void)
 {
+	TRACE_FUNC();
+	TimeCountStart();
 	/////////////特征向量///////////////////////////////////////////////////////////////////
 	if (Cui_MatrixEigenVector_L){
 		delete []Cui_MatrixEigenVector_L;
@@ -2797,7 +2799,7 @@ void SLIC::CuiFindSave_L_Eigenvalue_2016_09_26(void)
 	cui_GeneralImgProcess::SaveMatrix_Float("","Matrix_L_Vector.data",pMD->slic_current_num,Cui_MatrixEigenVector_L);
 	cui_GeneralImgProcess::SaveMatrix_W("","Matrix_L_Value.data",pMD->slic_current_num,CUi_MatrixEigenValue_L);
 #endif
-
+	TimeCountStop("解特征值、特征向量：");
 }
 /*------------------------------------------------------------------------------------------------------------------*/
 /**
