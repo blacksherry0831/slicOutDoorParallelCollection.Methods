@@ -1931,15 +1931,20 @@ void ImageData::CombineLabelsByCategory_and_WMatrix(INT32*	 category,const doubl
 void ImageData::Draw_Kseeds_AverageImg()
 {
 #if  _DEBUG
-	this->ImageGetSeedsLabxy_cuda();
+	if (cui_GeneralImgProcess::SAVE_DEBUG_2DISK){
 
-	cui_GeneralImgProcess::Draw_Kseeds_AverageImg(
-		kseedsl,kseedsa,kseedsb,
-		this->src_ImgLabels,
-		this->ImgWidth,
-		this->ImgHeight,
-		FileReadFullPath,
-		FileWritePath);
+		this->ImageGetSeedsLabxy_cuda();
+
+		cui_GeneralImgProcess::Draw_Kseeds_AverageImg(
+			kseedsl,kseedsa,kseedsb,
+			this->src_ImgLabels,
+			this->ImgWidth,
+			this->ImgHeight,
+			FileReadFullPath,
+			FileWritePath);
+
+	}
+
 #endif
 }
 /*----------------------------------------------------------------*/
