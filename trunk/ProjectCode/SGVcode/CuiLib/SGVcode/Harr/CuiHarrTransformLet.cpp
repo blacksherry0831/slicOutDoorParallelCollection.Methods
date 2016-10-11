@@ -1763,7 +1763,10 @@ void CuiHarrTransformLet::CalculateBoderImg(int scale)
 		//--------------≤È’“¬÷¿™----------------
 		mode=CV_RETR_LIST;
 		contoursNum=cvFindContours(pImg,storage,&  pcontour,sizeof(CvContour),mode,CV_CHAIN_APPROX_NONE);
+#if 0
 		cout<<contoursNum<<" "<<endl;
+#endif
+		
 #if 0
 		//--------------ª≠¬÷¿™----------------
 		if (contoursNum>0){

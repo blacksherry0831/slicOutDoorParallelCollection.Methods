@@ -985,7 +985,7 @@ void cui_GeneralImgProcess::CuiSaveImgWithContours(
 	string        filewritepath,
 	string fileadd)
 {
-#if _MSC_VER
+#if _MSC_VER&&_DEBUG
 LARGE_INTEGER litmp;
 	LONGLONG QPart1,QPart2;
 	double dfMinus, dfFreq, dfTim;
@@ -1011,7 +1011,7 @@ LARGE_INTEGER litmp;
 	CuiSaveImageData(imgbuf_t,width,height,filereadfullpath,filewritepath, 1,fileadd);
 	delete []imgbuf_t;
 	}
-#if _MSC_VER
+#if _MSC_VER&&_DEBUG
     QueryPerformanceCounter(&litmp);
 	QPart2 = litmp.QuadPart;//获得中止值
 	dfMinus = (double)(QPart2-QPart1);
