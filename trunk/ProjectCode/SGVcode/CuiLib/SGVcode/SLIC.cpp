@@ -2461,7 +2461,7 @@ void SLIC::CuiFindSaveDgeree_D_matrix(void)
 		  
 	 /***************************************/
 #if _DEBUG
-		   {
+		   if(cui_GeneralImgProcess::SAVE_DEBUG_2DISK){
 			   char data_t[1024];
 			   ofstream outfile;
 			   outfile.open("Matrix_D.data",ios::out);
@@ -2483,7 +2483,7 @@ void SLIC::CuiFindSaveDgeree_D_matrix(void)
 		   cvPow(&D_Matrix_t,&D_Matrix_t,0.5);
 	 /******************************************/
 #if _DEBUG
-		   {
+		   if(cui_GeneralImgProcess::SAVE_DEBUG_2DISK){
 			   char data_t[1024];
 			   ofstream outfile;
 			   outfile.open("Matrix_D-sqrt.data",ios::out);
@@ -2525,7 +2525,7 @@ void SLIC::CuiFindSaveDgeree_D_matrix2016_09_26(void)
 
 	/***************************************/
 #if _DEBUG
-	{
+	if(cui_GeneralImgProcess::SAVE_DEBUG_2DISK){
 		char data_t[1024];
 		ofstream outfile;
 		outfile.open("Matrix_D.data",ios::out);
@@ -2547,7 +2547,7 @@ void SLIC::CuiFindSaveDgeree_D_matrix2016_09_26(void)
 	cvPow(&D_Matrix_t,&D_Matrix_t,0.5);
 	/******************************************/
 #if _DEBUG
-	{
+	if(cui_GeneralImgProcess::SAVE_DEBUG_2DISK){
 		char data_t[1024];
 		ofstream outfile;
 		outfile.open("Matrix_D-sqrt.data",ios::out);
@@ -2601,7 +2601,7 @@ void SLIC::CuiFindSaveLaplace_L_matrix(void)
 #endif
 /*************************/
 #if _DEBUG
-   {
+   if(cui_GeneralImgProcess::SAVE_DEBUG_2DISK){
 	   char data_t[1024];
 	   ofstream outfile;
 	   outfile.open("Matrix_L.data",ios::out);
@@ -2709,7 +2709,7 @@ void SLIC::CuiFindSaveLaplace_L_matrix_2016_09_26(void)
 #endif
 	/*************************/
 #if _DEBUG
-	{
+	if(cui_GeneralImgProcess::SAVE_DEBUG_2DISK){
 		char data_t[1024];
 		ofstream outfile;
 		outfile.open("Matrix_L.data",ios::out);
@@ -2892,7 +2892,7 @@ void SLIC::Cui_Kmean_Cluster(UINT EigenvectorNum, UINT ClusterNum){
 		
 	}
 #if 1
-	{
+	if(cui_GeneralImgProcess::SAVE_DEBUG_2DISK){
 		char data_t[1024];
 		ofstream outfile;
 		outfile.open("K_mean_Lable.data",ios::out);
@@ -2964,7 +2964,7 @@ void SLIC::Cui_B_Cluster(UINT EigenvectorNum, UINT ClusterNum,double Threshold){
 	} 
 #if 1
 	
-	{
+	if(cui_GeneralImgProcess::SAVE_DEBUG_2DISK){
 		char data_t[1024];
 		ofstream outfile;
 		outfile.open("B_sample_Normalize.data",ios::out);
@@ -3019,7 +3019,7 @@ void SLIC::Cui_B_Cluster(UINT EigenvectorNum, UINT ClusterNum,double Threshold){
 	}
 
 #if 1
-	{
+	if(cui_GeneralImgProcess::SAVE_DEBUG_2DISK){
 		char data_t[1024];
 		ofstream outfile;
 		outfile.open("B_Lable.data",ios::out);
@@ -3064,7 +3064,7 @@ void SLIC::Cui_B_Cluster_2016_09_27(UINT EigenvectorNum, UINT ClusterNum,double 
 	}
 
 #if _DEBUG
-	{
+	if (cui_GeneralImgProcess::SAVE_DEBUG_2DISK){
 		char data_t[1024];
 		memset(data_t,0,sizeof(data_t));
 		ofstream outfile;
@@ -3089,7 +3089,7 @@ void SLIC::Cui_B_Cluster_2016_09_27(UINT EigenvectorNum, UINT ClusterNum,double 
 	} 
 #if _DEBUG
 
-	{
+	if(cui_GeneralImgProcess::SAVE_DEBUG_2DISK){
 		char data_t[1024];
 		ofstream outfile;
 		outfile.open("B_sample_Normalize.data",ios::out);
@@ -3149,7 +3149,7 @@ void SLIC::Cui_B_Cluster_2016_09_27(UINT EigenvectorNum, UINT ClusterNum,double 
 	}
 
 #if _DEBUG
-	{
+	if(cui_GeneralImgProcess::SAVE_DEBUG_2DISK){
 		char data_t[1024];
 		ofstream outfile;
 		outfile.open("B_Lable.data",ios::out);
@@ -3273,7 +3273,7 @@ void SLIC::Cui_Min_Cluster(void)
 	}
 
 #if _DEBUG
-	{
+	if(cui_GeneralImgProcess::SAVE_DEBUG_2DISK){
 		char data_t[1024];
 		ofstream outfile;
 		outfile.open("Min_mean_Lable.data",ios::out);

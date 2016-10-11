@@ -107,20 +107,22 @@ void cui_GeneralImgProcess::Cui_Combination_ImgLabs2(
 	bool IS_Force_CombineLabs;
 	if (cui_Matrix_W){ 
 #if _DEBUG
-		char data_t[1024];
-		ofstream outfile;
-		outfile.open("Matrix_W_Combin.data",ios::out);
-		for(register int i = 0; i <numlabels; i++ ){
-			for(register int j = 0; j <numlabels; j++ ){
-				double value_t=cui_Matrix_W[i*numlabels+j];
-				
-				sprintf(data_t," %0.2f ",value_t);
-			
-				outfile<<data_t;
-			}
-			outfile<<endl;
-		} 
-		outfile.close();
+		if(cui_GeneralImgProcess::SAVE_DEBUG_2DISK){
+			char data_t[1024];
+			ofstream outfile;
+			outfile.open("Matrix_W_Combin.data",ios::out);
+			for(register int i = 0; i <numlabels; i++ ){
+				for(register int j = 0; j <numlabels; j++ ){
+					double value_t=cui_Matrix_W[i*numlabels+j];
+
+					sprintf(data_t," %0.2f ",value_t);
+
+					outfile<<data_t;
+				}
+				outfile<<endl;
+			} 
+			outfile.close();
+		}
 #endif	
 		IS_Force_CombineLabs=false;
 	}else{
@@ -210,18 +212,20 @@ void cui_GeneralImgProcess::Cui_Combination_ImgLabs2(
 	bool IS_Force_CombineLabs;
 	if (cui_Matrix_W){ 
 #if _DEBUG
-		char data_t[1024];
-		ofstream outfile;
-		outfile.open("Matrix_W_Combin.data",ios::out);
-		for(register int i = 0; i <numlabels; i++ ){
-			for(register int j = 0; j <numlabels; j++ ){
-				double value_t=cui_Matrix_W[i*numlabels+j];
-				sprintf(data_t," %0.2f ",value_t);
-				outfile<<data_t;
-			}
-			outfile<<endl;
-		} 
-		outfile.close();
+		if(cui_GeneralImgProcess::SAVE_DEBUG_2DISK){
+					char data_t[1024];
+					ofstream outfile;
+					outfile.open("Matrix_W_Combin.data",ios::out);
+					for(register int i = 0; i <numlabels; i++ ){
+						for(register int j = 0; j <numlabels; j++ ){
+							double value_t=cui_Matrix_W[i*numlabels+j];
+							sprintf(data_t," %0.2f ",value_t);
+							outfile<<data_t;
+						}
+						outfile<<endl;
+					} 
+					outfile.close();
+		}
 #endif
 		IS_Force_CombineLabs=false;
 	}else{
@@ -360,18 +364,21 @@ void cui_GeneralImgProcess::Cui_Combination_ImgLabsWithTextureInColor(
 	/*************************************************************/
 	bool IS_Force_CombineLabs;
 	if (cui_Matrix_W){ 
-		char data_t[1024];
-		ofstream outfile;
-		outfile.open("Matrix_W_Combin.data",ios::out);
-		for(register int i = 0; i <numlabels; i++ ){
-			for(register int j = 0; j <numlabels; j++ ){
-				double value_t=cui_Matrix_W[i*numlabels+j];
-				sprintf(data_t," %0.2f ",value_t);
-				outfile<<data_t;
-			}
-			outfile<<endl;
-		} 
-		outfile.close();
+		if(cui_GeneralImgProcess::SAVE_DEBUG_2DISK){
+			char data_t[1024];
+			ofstream outfile;
+			outfile.open("Matrix_W_Combin.data",ios::out);
+			for(register int i = 0; i <numlabels; i++ ){
+				for(register int j = 0; j <numlabels; j++ ){
+					double value_t=cui_Matrix_W[i*numlabels+j];
+					sprintf(data_t," %0.2f ",value_t);
+					outfile<<data_t;
+				}
+				outfile<<endl;
+			} 
+			outfile.close();
+		}
+		
 		IS_Force_CombineLabs=false;
 	}else{
 		IS_Force_CombineLabs=true;
@@ -1348,7 +1355,7 @@ void cui_GeneralImgProcess::CuiSetNighbour_D_matrix(
 
 	/***************************************/
 #if _DEBUG
-	{
+	if(cui_GeneralImgProcess::SAVE_DEBUG_2DISK){
 		char data_t[1024];
 		ofstream outfile;
 		outfile.open("Matrix_D.data",ios::out);
@@ -1408,7 +1415,7 @@ void cui_GeneralImgProcess::LinkSurroundClassification(
 	delete[] Matrix_D;
 	delete[] Matrix_E;
 	/*******************************************/
-	{
+	if(cui_GeneralImgProcess::SAVE_DEBUG_2DISK){
 		char data_t[1024];
 		ofstream outfile;
 		outfile.open("CategoryMatrix_Surround.data",ios::out);
@@ -3088,6 +3095,9 @@ float mstime=dfTim*1000;
 /*-------------------------------------------------------------------*/
  void cui_GeneralImgProcess::SaveMatrix_W(string path,string filename,int slic_current_num,double* Matrix_W)
 {
+
+	if (SAVE_DEBUG_2DISK)
+	{
 	/********************************************************/
 		#ifdef WINDOWS
 			char fname[256];
@@ -3119,6 +3129,8 @@ float mstime=dfTim*1000;
 			} 
 			outfile.close();
 /********************************************************/
+	}
+
 }
 /*-------------------------------------------------------------------*/
 /**
