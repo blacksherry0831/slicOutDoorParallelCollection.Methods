@@ -2792,9 +2792,27 @@ void SLIC::CuiFindSave_L_Eigenvalue_2016_09_26(void)
 	cvInitMatHeader(&E_vector_t,pIMD->slic_current_num,pIMD->slic_current_num,CV_32FC1,Cui_MatrixEigenVector_L);
 	cvInitMatHeader(&E_value_t,pIMD->slic_current_num,1,CV_64FC1,CUi_MatrixEigenValue_L);
 	cvInitMatHeader(&L_t,pIMD->slic_current_num,pIMD->slic_current_num,CV_64FC1,Cui_Matrix_L); 
+#if 0
 	cvEigenVV(&L_t,&E_vector_t,&E_value_t);//C是A的特征值(降序排列)，而B则是A的特征向量(每行)
+#else
+	cvEigenVV(&L_t,&E_vector_t,&E_value_t,DBL_EPSILON);//C是A的特征值(降序排列)，而B则是A的特征向量(每行)
+#endif
+	//cvEigenVV(&L_t,&E_vector_t,&E_value_t,DBL_EPSILON);//C是A的特征值(降序排列)，而B则是A的特征向量(每行)
 	cvInvert(&E_vector_t,&E_vector_t);
 	/******************************************/
+	/*
+	
+	拉普拉斯矩阵=对称半正定矩阵
+
+	特征向量特征值
+	void cvEigenVV(CvArr* mat, CvArr* evects, CvArr* evals, double eps=0);//计算对称矩阵的特征值和特征向量，evects输出特征向量，evals输出特征值，eps雅可比方法停止参数
+	要求三个矩阵都是浮点类型，10×10以下该方法有效，20×20以上的矩阵不能计算出结果，为节约计算量，eps通常设为DBL_EPSILON(10^-15)
+	
+	
+	如果给定的矩阵是对称正定矩阵，那么考虑使用cvSVD();
+
+	*/
+
 #if 0
 	cui_GeneralImgProcess::SaveMatrix_Float("","Matrix_L_Vector.data",pMD->slic_current_num,Cui_MatrixEigenVector_L);
 	cui_GeneralImgProcess::SaveMatrix_W("","Matrix_L_Value.data",pMD->slic_current_num,CUi_MatrixEigenValue_L);
