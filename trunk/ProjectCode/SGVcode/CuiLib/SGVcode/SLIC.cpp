@@ -3094,7 +3094,7 @@ void SLIC::Cui_B_Cluster_2016_09_27(UINT EigenvectorNum, UINT ClusterNum,double 
 				//N*K						   //N*N
 
 				double value_t_t=Cui_Matrix_Category_Simple[EigenvectorNum*i+j];
-				sprintf(data_t,"%5.2f ",value_t_t);
+				sprintf(data_t,"%e ",value_t_t);
 				outfile<<data_t;
 			}
 			outfile<<endl;
@@ -3116,7 +3116,7 @@ void SLIC::Cui_B_Cluster_2016_09_27(UINT EigenvectorNum, UINT ClusterNum,double 
 		for( int i = 0; i <pIMD->slic_current_num; i++ ){
 			for( UINT j = 0; j <EigenvectorNum; j++ ){
 				double value_t=Cui_Matrix_Category_Simple[i*EigenvectorNum+j];
-				sprintf(data_t," %5.2f ",value_t);
+				sprintf(data_t," %e ",value_t);
 				outfile<<data_t;
 			}
 			outfile<<endl;
