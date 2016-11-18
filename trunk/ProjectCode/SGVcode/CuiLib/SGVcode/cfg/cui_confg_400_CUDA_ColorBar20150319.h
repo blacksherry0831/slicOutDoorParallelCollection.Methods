@@ -7,11 +7,25 @@
 
 #define  OUT_DOOR  TRUE
 #define  IN_DOOR   FALSE
-#define  OUT_DOOR_SUPERPIXEL_COLOR_BAT FALSE
-#define  OUT_DOOR_HUMAN TRUE
+
+/////////////////////////////////////////
+#define  OUT_DOOR_HUMAN FALSE
+
+#define  OUT_DOOR_400_IMAGE_STABLE  TRUE
+/////////////////////////////////////////
+
 #endif 
 /*-------------------------------------------------*/
+#if OUT_DOOR_400_IMAGE_STABLE
+
+#define  OUT_DOOR_SUPERPIXEL_COLOR_BAT TRUE
+
+#endif
+/*-------------------------------------------------*/
 #if OUT_DOOR_HUMAN
+
+#define  OUT_DOOR_SUPERPIXEL_COLOR_BAT FALSE
+
 #define  ThetaML_Theta_Division	 (60)
 #define  ThetaML_M_Division	 (2)
 #define  ThetaML_L_Division	 (16)

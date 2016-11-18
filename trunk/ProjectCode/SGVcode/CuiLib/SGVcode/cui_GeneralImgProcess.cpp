@@ -3858,6 +3858,7 @@ void cui_GeneralImgProcess::THreadSuperPixel_DoOneImage(string picvec,string sav
 	/////////////////////////////////////////////
 #endif
 
+
 	
 	TimeCountStart();
 	{
@@ -3871,28 +3872,19 @@ void cui_GeneralImgProcess::THreadSuperPixel_DoOneImage(string picvec,string sav
 #if OUT_DOOR_HUMAN
 		printf("3. Spectral Clustering \n");
 		slic.Cui_Spectral_Clustering_B_2016_09_26();
-#endif
 
-#if 0
-		printf("4. ColorBarCluster \n");
-		ColorBarCluster colorBarCluster(&MemData);
-		colorBarCluster.Clustering();
-#endif
-
-
-#if OUT_DOOR_HUMAN
 		MemData.SaveImgWithContours("ColorCluster");
 		MemData.Draw_Kseeds_AverageImg();
 #endif
-
-#if 0
+#if OUT_DOOR_400_IMAGE_STABLE
+		printf("3. ColorBarCluster \n");
+		ColorBarCluster colorBarCluster(&MemData);
+		colorBarCluster.Clustering();
 
 		printf("4. ComputeSVG2 \n");
 		ComputeSVG2 svg(&MemData);
 		svg.separateSVG_Zlm();
-
 #endif
-
 
 
 //#if	!(SaveContours2Disk)

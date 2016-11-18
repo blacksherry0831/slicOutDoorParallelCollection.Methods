@@ -2360,12 +2360,17 @@ void SLIC::CuiFindSaveSimilar_W_matrix2_2016_09_26(const string& filename,const 
 
 	for (register int spi=0;spi<pIMD->slic_current_num;spi++){
 		{
+#if OUT_DOOR_HUMAN
 			int	hist_size[3]={ThetaML_Theta_Division,ThetaML_M_Division,ThetaML_L_Division};
 			float Theta_ranges[]={0,256};
 			float M_range[]={0,256};
 			float L_range[]={0,256}; //亮度
 			float *ranges[]={Theta_ranges,M_range,L_range};
 			hist[spi]=cvCreateHist(3,hist_size,CV_HIST_ARRAY,ranges);
+#else
+			assert(FALSE);
+#endif
+
 
 		}  
 	}
