@@ -232,12 +232,22 @@ void ComputeSVG2::CalculateSpClassification(int* Matrix_Category_Lable_host)
 void ComputeSVG2::separateSVG_Zlm(void)
 {
 	TRACE_FUNC();
+
+	if (pIMD->SpSet.SpPropertySet[0].SpIndex!=0)
+	{
+		pIMD->initSpSet();
+	}
+
+
 #if 0
 this->FillWeightArrayZlmParallel();
 #else
 this->FillWeightArrayZlm();
 #endif
-		
+	
+
+	
+
 
 	this->ForceSkyGroundVertical();
 
@@ -407,6 +417,8 @@ int  ComputeSVG2::CalculateMostEffectiveSky(double sky_Light_Threshold,double sk
 	/**************************************************************************************/
 
 	for (register int sp=pIMD->slic_current_num-1;sp>=0;sp--){
+
+		assert(pIMD->SpSet.SpPropertySet[sp].fuzzyCategory>=0);
 
 		if (((pIMD->SpSet.SpPropertySet[sp].BorderCategory&spBorderCategoryTop)==spBorderCategoryTop)
 				&&(pIMD->SpSet.SpPropertySet[sp].fuzzyCategory==Sky)){

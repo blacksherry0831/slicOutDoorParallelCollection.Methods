@@ -3873,6 +3873,9 @@ void cui_GeneralImgProcess::THreadSuperPixel_DoOneImage(string picvec,string sav
 		printf("3. Spectral Clustering \n");
 		slic.Cui_Spectral_Clustering_B_2016_09_26();
 
+		ComputeSVG2 svg(&MemData);
+		svg.separateSVG_Zlm();
+
 		MemData.SaveImgWithContours("ColorCluster");
 		MemData.Draw_Kseeds_AverageImg();
 #endif
