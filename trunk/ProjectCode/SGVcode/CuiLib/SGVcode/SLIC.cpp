@@ -2777,6 +2777,16 @@ void SLIC::CuiFindSave_L_Eigenvalue(void)
 void SLIC::CuiFindSave_L_Eigenvalue_2016_09_26(void)
 {
 	TRACE_FUNC();
+#if _MSC_VER&&_DEBUG
+	LARGE_INTEGER litmp;
+	LONGLONG QPart1,QPart2;
+	double dfMinus, dfFreq, dfTim;
+	QueryPerformanceFrequency(&litmp);
+	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
+	QueryPerformanceCounter(&litmp);
+	QPart1 = litmp.QuadPart;// 获得初始值
+	TRACE("\n开始求解矩阵特征值、特征向量");
+#endif
 	TimeCountStart();
 	/////////////特征向量///////////////////////////////////////////////////////////////////
 	if (Cui_MatrixEigenVector_L){
@@ -2823,6 +2833,14 @@ void SLIC::CuiFindSave_L_Eigenvalue_2016_09_26(void)
 	cui_GeneralImgProcess::SaveMatrix_W("","Matrix_L_Value.data",pMD->slic_current_num,CUi_MatrixEigenValue_L);
 #endif
 	TimeCountStop("解特征值、特征向量：");
+#if _MSC_VER&&_DEBUG
+	QueryPerformanceCounter(&litmp);
+	QPart2 = litmp.QuadPart;//获得中止值
+	dfMinus = (double)(QPart2-QPart1);
+	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
+	
+	TRACE("\n解特征值、特征向量： %f (s)",dfTim);
+#endif
 }
 /*------------------------------------------------------------------------------------------------------------------*/
 /**
