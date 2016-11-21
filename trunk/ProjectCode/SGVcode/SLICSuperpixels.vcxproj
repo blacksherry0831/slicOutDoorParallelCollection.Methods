@@ -287,6 +287,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="CuiLib\SVMcode\TrainImgUseSvm.cpp" />
     <ClCompile Include="CuiLib\SVMcode\TrainTreeBuilding.cpp" />
     <ClCompile Include="CuiLib\tinyxml2\tinyxml2.cpp" />
+    <ClCompile Include="imagedata.cpp" />
     <ClCompile Include="SLICSuperpixels.cpp" />
     <ClCompile Include="SLICSuperpixelsDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
