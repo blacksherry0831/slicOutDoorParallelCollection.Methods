@@ -2018,12 +2018,15 @@ void ImageData::SeparateSp(void)
 			IplImage  Img;
 			string category_sp;
 			cvInitImageHeader(&Img,cvSize(img_width,img_height),8,4);
+
 			if (Matrix_Category_Lable[spi]==Sky){
 				category_sp="_sky_";
 			}
+			
 			if (Matrix_Category_Lable[spi]==Ground){
 				category_sp="_ground_";
 			}
+			
 			if ((Matrix_Category_Lable[spi]==Vertical)
 				||(Matrix_Category_Lable[spi]==Vertical_Tree)
 				||(Matrix_Category_Lable[spi]==Vertical_Building)){
@@ -2031,14 +2034,20 @@ void ImageData::SeparateSp(void)
 			}
 #if 1		
 			sprintf(buff,"_SPa_%d.png",spi);
-			filename=this->FileWritePath+base_name+category_sp+buff;		
+			filename=this->FileWritePath+"\\SPA\\"+base_name+category_sp+buff;		
 			Img.imageData=(char *)Origin_img;
 			cvSaveImage(filename.c_str(),&Img);
 #endif
-
+#if 1
+			//留给-人体风使用
+			sprintf(buff,"_Human_SP_%d.png",spi);
+			filename=this->FileWritePath+"\\Human\\"+base_name+buff;		
+			Img.imageData=(char *)Origin_img;
+			cvSaveImage(filename.c_str(),&Img);
+#endif
 #if 1		
 			sprintf(buff,"_SPb_%d.png",spi);
-			filename=this->FileWritePath+base_name+category_sp+buff;		
+			filename=this->FileWritePath+"\\SPB\\"+base_name+category_sp+buff;		
 			Img.imageData=(char *)Origin_img_NoBoder;
 			cvSaveImage(filename.c_str(),&Img);
 #endif
