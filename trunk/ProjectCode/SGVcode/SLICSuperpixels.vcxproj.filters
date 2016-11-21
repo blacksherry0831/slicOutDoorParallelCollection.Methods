@@ -171,9 +171,6 @@
     <ClCompile Include="CuiLib\cudaLib\CUDA_Code.cpp">
       <Filter>CUDA_CU</Filter>
     </ClCompile>
-    <ClCompile Include="imagedata.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SLICSuperpixels.h">

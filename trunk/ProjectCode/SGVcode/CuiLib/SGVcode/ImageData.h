@@ -208,5 +208,9 @@ void _splitpath(const char *path, char *drive, char *dir, char *fname, char *ext
 
 void Draw_Kseeds_AverageImg();
 
+void SlpitTreeBuilding(void);
+
+void SeparateSp(void);
+
 };
 

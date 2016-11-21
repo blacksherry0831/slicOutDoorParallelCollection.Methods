@@ -1952,7 +1952,104 @@ void ImageData::Draw_Kseeds_AverageImg()
 *
 */
 /*----------------------------------------------------------------*/
+void ImageData::SlpitTreeBuilding(void)
+{
 
+}
+/*----------------------------------------------------------------*/
+/**
+*
+*/
+/*----------------------------------------------------------------*/
+void ImageData::SeparateSp(void)
+{
+	//Matrix_Category_Lable[i]=SpSet.SpPropertySet[i].ComputeCategory;
+
+	vector<INT32> Matrix_Category_Lable_V(slic_current_num);
+	for (int i=0;i<slic_current_num;i++){
+		Matrix_Category_Lable_V[i]=SpSet.SpPropertySet[i].ComputeCategory;
+	}
+
+
+	string file_add="ReBuild";
+	string base_name=this->FileReadFullPath.substr(this->FileReadFullPath.find_last_of("/\\") + 1);
+
+	SP_PROPERTY* p_SpProperty=this->p_SpProperty;
+	INT32* Matrix_Category_Lable=Matrix_Category_Lable_V.data();
+	int ImgWidth=this->ImgWidth;
+	int ImgHeight=this->ImgHeight;
+
+	
+#if TRUE
+	cui_GeneralImgProcess::CalculateAllSpPropertyRange(
+		this->src_ImgLabels,
+		this->ImgWidth,
+		this->ImgHeight,
+		this->p_SpProperty,
+		this->slic_current_num);
+#endif
+
+	for (int spi=0;spi<this->slic_current_num;spi++){
+		{
+			int img_width=p_SpProperty[spi].max_x-p_SpProperty[spi].min_x;
+			int img_height=p_SpProperty[spi].max_y-p_SpProperty[spi].min_y;
+			std::shared_ptr<UINT32> Origin_imgMEM=std::shared_ptr<UINT32>(new UINT32[img_width*img_height]);
+			std::shared_ptr<UINT32> Origin_img_NoBoderMEM=std::shared_ptr<UINT32>(new UINT32[img_width*img_height]);
+			UINT32 *Origin_img=Origin_imgMEM.get();
+			UINT32 *Origin_img_NoBoder=Origin_img_NoBoderMEM.get();
+			for(register int x=p_SpProperty[spi].min_x;x<p_SpProperty[spi].max_x;x++){
+				for (register int y=p_SpProperty[spi].min_y;y<p_SpProperty[spi].max_y;y++){
+					int x_t=x-p_SpProperty[spi].min_x;
+					int y_t=y-p_SpProperty[spi].min_y;
+					ASSERT(x>=0&&x<ImgWidth);
+					ASSERT(y>=0&&y<ImgHeight);
+					Origin_img[y_t*img_width+x_t]=this->src_ImgBGRA[y*ImgWidth+x];
+					if (this->src_ImgLabels[y*ImgWidth+x]==spi){
+						Origin_img_NoBoder[y_t*img_width+x_t]=this->src_ImgBGRA[y*ImgWidth+x];
+					}else{
+						Origin_img_NoBoder[y_t*img_width+x_t]=BlackColorPNG;
+					}
+
+				}
+			}
+
+			char buff[1024];
+			string filename;
+			IplImage  Img;
+			string category_sp;
+			cvInitImageHeader(&Img,cvSize(img_width,img_height),8,4);
+			if (Matrix_Category_Lable[spi]==Sky){
+				category_sp="_sky_";
+			}
+			if (Matrix_Category_Lable[spi]==Ground){
+				category_sp="_ground_";
+			}
+			if ((Matrix_Category_Lable[spi]==Vertical)
+				||(Matrix_Category_Lable[spi]==Vertical_Tree)
+				||(Matrix_Category_Lable[spi]==Vertical_Building)){
+					category_sp="_vertical_";
+			}
+#if 1		
+			sprintf(buff,"_SPa_%d.png",spi);
+			filename=this->FileWritePath+base_name+category_sp+buff;		
+			Img.imageData=(char *)Origin_img;
+			cvSaveImage(filename.c_str(),&Img);
+#endif
+
+#if 1		
+			sprintf(buff,"_SPb_%d.png",spi);
+			filename=this->FileWritePath+base_name+category_sp+buff;		
+			Img.imageData=(char *)Origin_img_NoBoder;
+			cvSaveImage(filename.c_str(),&Img);
+#endif
+		}
+
+
+
+	}
+
+	
+}
 /*----------------------------------------------------------------*/
 /**
 *

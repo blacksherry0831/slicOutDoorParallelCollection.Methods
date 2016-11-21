@@ -3889,8 +3889,9 @@ void cui_GeneralImgProcess::THreadSuperPixel_DoOneImage(string picvec,string sav
 		svg.separateSVG_Zlm();
 #endif
 
-		/*SplitTreeandBuilding  STB(hough.cui_ImgLables_SVG,hough.cui_ImgLables,&MemData);
-		STB.ReBuildingImgLab();*/
+		MemData.SeparateSp();
+
+		
 
 //#if	!(SaveContours2Disk)
 //		MemData.SaveImgWithContours();			
