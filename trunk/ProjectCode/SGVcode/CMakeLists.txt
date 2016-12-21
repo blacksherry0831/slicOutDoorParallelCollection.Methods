@@ -14,6 +14,7 @@ INCLUDE_DIRECTORIES( #相关头文件的目录
 	${SGV_cmake_SOURCE_DIR}
 )
 ADD_SUBDIRECTORY(CuiLib)
+#ADD_SUBDIRECTORY(arpackpp-master)
 ###############################################################################
 MESSAGE(STATUS "operation system is ${CMAKE_SYSTEM}")  
 ############配置OPENCV#########################################################

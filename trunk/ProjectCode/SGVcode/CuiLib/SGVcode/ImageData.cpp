@@ -1096,7 +1096,7 @@ void ImageData::SurroundClassification()
 	Combination_ImgLabs(simlarSp);
 #endif
 	
-#if SaveContours2Disk &&_DEBUG
+#if SaveContours2Disk
 this->SaveImgWithContours();
 #endif	
 #if _MSC_VER &&_DEBUG
@@ -2032,20 +2032,20 @@ void ImageData::SeparateSp(void)
 				||(Matrix_Category_Lable[spi]==Vertical_Building)){
 					category_sp="_vertical_";
 			}
-#if 1		
+#if _MSC_VER		
 			sprintf(buff,"_SPa_%d.png",spi);
 			filename=this->FileWritePath+"\\SPA\\"+base_name+category_sp+buff;		
 			Img.imageData=(char *)Origin_img;
 			cvSaveImage(filename.c_str(),&Img);
 #endif
-#if 1
+#if _MSC_VER
 			//留给-人体风使用
 			sprintf(buff,"_Human_SP_%d.png",spi);
 			filename=this->FileWritePath+"\\Human\\"+base_name+buff;		
 			Img.imageData=(char *)Origin_img;
 			cvSaveImage(filename.c_str(),&Img);
 #endif
-#if 1		
+#if _MSC_VER		
 			sprintf(buff,"_SPb_%d.png",spi);
 			filename=this->FileWritePath+"\\SPB\\"+base_name+category_sp+buff;		
 			Img.imageData=(char *)Origin_img_NoBoder;

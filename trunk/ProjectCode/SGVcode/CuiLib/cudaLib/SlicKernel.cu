@@ -2961,11 +2961,11 @@ void PerformSuperpixelSLIC_gpu(
 	double* dev_distvec;
 	///////////////////////////////////////////
 	assert(cudaInit_CUI()==true);
-#ifdef _DEBUG
+
 	cudaDeviceProp prop;
 	cudaGetDeviceProperties(&prop,0);
 	int blocks=prop.multiProcessorCount;
-#endif	
+
 	{
 		cudaStatus = cudaMalloc((void**)&dev_kseedsl, kseedsSize * sizeof(double));
 		cudaStatus = cudaMalloc((void**)&dev_kseedsa, kseedsSize * sizeof(double));
@@ -3766,11 +3766,11 @@ void PerformSuperpixelSLIC_gpu_simplify2(
 	double* dev_distvec;
 	///////////////////////////////////////////
 	assert(cudaInit_CUI()==true);
-#ifdef _DEBUG
+
 	cudaDeviceProp prop;
 	cudaGetDeviceProperties(&prop,0);
 	int blocks=prop.multiProcessorCount;
-#endif
+
 	{
 		cudaStatus = cudaMalloc((void**)&dev_kseedsl, kseedsSize * sizeof(double));
 		cudaStatus = cudaMalloc((void**)&dev_kseedsa, kseedsSize * sizeof(double));

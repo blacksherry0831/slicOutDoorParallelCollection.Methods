@@ -8,11 +8,19 @@
 *
 */
 /*----------------------------------------------------------------*/
+
+#ifdef _DEBUG
+ int cui_GeneralImgProcess::SAVE_DEBUG_2DISK=TRUE;
+#else
+ int cui_GeneralImgProcess::SAVE_DEBUG_2DISK=FALSE;
+#endif
+
  int cui_GeneralImgProcess::SAVE_IMAGE_2DISK=TRUE;
- int cui_GeneralImgProcess::SAVE_DEBUG_2DISK=TRUE&&_DEBUG;
  //struct pt_sem cui_GeneralImgProcess::SEM_CPU_NUMS;
-#if _MSC_VER &&_DEBUG
+#if _MSC_VER
+
  HANDLE cui_GeneralImgProcess::H_SEM_CPU_NUMS = NULL;  
+
 #endif
 /*----------------------------------------------------------------*/
 /**
@@ -3122,7 +3130,7 @@ float mstime=dfTim*1000;
 			for(register int i = 0; i <slic_current_num; i++ ){
 				for(register int j = 0; j <slic_current_num; j++ ){
 					double value_t=Matrix_W[i*slic_current_num+j];
-					sprintf(data_t," %0.2f ",value_t);
+					sprintf(data_t,"%+20.12e ",value_t);
 					outfile<<data_t;
 				}
 				outfile<<endl;
@@ -3167,7 +3175,50 @@ void cui_GeneralImgProcess::SaveMatrix_Float(string path,string filename,int sli
 	for(register int i = 0; i <slic_current_num; i++ ){
 		for(register int j = 0; j <slic_current_num; j++ ){
 			double value_t=Matrix_W[i*slic_current_num+j];
-			sprintf(data_t," %0.2f ",value_t);
+			sprintf(data_t,"%+e ",value_t);
+			outfile<<data_t;
+		}
+		outfile<<endl;
+	} 
+	outfile.close();
+	/********************************************************/
+}
+/*-------------------------------------------------------------------*/
+/**
+*保存相似矩阵到硬盘
+*@param path				保存到硬盘的路径
+*@param filename			文件名
+*@param slic_current-num	相似矩阵的维度 （长==宽）
+*@param Matrix_W			相似矩阵
+*/
+/*-------------------------------------------------------------------*/
+void cui_GeneralImgProcess::SaveVector_Double(string path,string filename,int slic_current_num,double* Matrix_W)
+{
+	/********************************************************/
+#ifdef WINDOWS
+	char fname[256];
+	char extn[256];
+	_splitpath(filename.c_str(), NULL, NULL, fname, extn);
+	string temp = fname;
+	string finalpath = path + temp + string(".dat");
+#else
+
+	string nameandextension =filename;
+	size_t pos = filename.find_last_of("/");
+	if(pos != string::npos)//if a slash is found, then take the filename with extension
+	{
+		nameandextension = filename.substr(pos+1);
+	}
+	string newname = nameandextension.replace(nameandextension.rfind(".")+1, 3, "dat");//find the position of the dot and replace the 3 characters following it.
+	string finalpath = path+newname;
+#endif
+	char data_t[1024];
+	ofstream outfile;
+	outfile.open(finalpath.c_str(),ios::out);
+	for(register int i = 0; i <slic_current_num; i++ ){
+		{
+			double value_t=Matrix_W[i];
+			sprintf(data_t,"%+20.12e ",value_t);
 			outfile<<data_t;
 		}
 		outfile<<endl;
@@ -3810,7 +3861,7 @@ int cui_GeneralImgProcess::get_CPU_core_num()
 #if defined(WIN32) 
 	SYSTEM_INFO info; 
 	GetSystemInfo(&info); 
-	return info.dwNumberOfProcessors; 
+	return info.dwNumberOfProcessors/2; 
 #elif defined(LINUX) || defined(SOLARIS) || defined(AIX) || defined(linux) || defined(__linux__)
 	return get_nprocs();   //GNU fuction 
 #else 
@@ -3879,6 +3930,7 @@ void cui_GeneralImgProcess::THreadSuperPixel_DoOneImage(string picvec,string sav
 		MemData.SaveImgWithContours("ColorCluster");
 		MemData.Draw_Kseeds_AverageImg();
 #endif
+
 #if OUT_DOOR_400_IMAGE_STABLE
 		printf("3. ColorBarCluster \n");
 		ColorBarCluster colorBarCluster(&MemData);

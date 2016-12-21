@@ -75,7 +75,7 @@ int main(int argc,char *argv[])
 #if linux||__linux||__linux__||__GNUC__			  
 			  !access(argv[i], F_OK)
 #endif	
-#if _WIN64 ||_WIN32 ||_MSC_VER ||WIN32
+#if _WIN64 ||_WIN32 ||_MSC_VER
 			  access(argv[i], 0) == 0			
 #endif
 			  ){
@@ -104,8 +104,8 @@ int main(int argc,char *argv[])
   }else{
 
   }
-#if _WIN64 ||_WIN32 ||_MSC_VER ||WIN32
-if (file.size()==0){
+#if _WIN64 ||_WIN32 ||_MSC_VER
+  if (file.size()==0){
 	file.push_back("D:\\ImageDataBase\\400img\\img-op39-p-015t000.jpg");
 	//file.push_back("D:\\ImageDataBase\\400img\\img-10.21op7-p-046t000.jpg");
 }

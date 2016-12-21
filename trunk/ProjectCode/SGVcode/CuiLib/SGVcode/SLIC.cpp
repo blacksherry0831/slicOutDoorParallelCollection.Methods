@@ -2208,7 +2208,7 @@ void SLIC::DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy(int sav
 		ss>>str_add;		
 	}	
 #endif
-#if	SaveContours2Disk&&_DEBUG
+#if	SaveContours2Disk
 	pIMD->SaveImgWithContours(str_add);
 #endif
 	/////////////////////////////////////////////////////
@@ -2828,9 +2828,10 @@ void SLIC::CuiFindSave_L_Eigenvalue_2016_09_26(void)
 
 	*/
 
-#if 0
-	cui_GeneralImgProcess::SaveMatrix_Float("","Matrix_L_Vector.data",pMD->slic_current_num,Cui_MatrixEigenVector_L);
-	cui_GeneralImgProcess::SaveMatrix_W("","Matrix_L_Value.data",pMD->slic_current_num,CUi_MatrixEigenValue_L);
+#if _DEBUG
+	cui_GeneralImgProcess::SaveMatrix_W("","Matrix_L_Laplace.matrix",pIMD->slic_current_num,Cui_Matrix_L);//矩阵
+	cui_GeneralImgProcess::SaveMatrix_Float("","Matrix_L_Eigen_Vector.matrix",pIMD->slic_current_num,Cui_MatrixEigenVector_L);//矩阵
+	cui_GeneralImgProcess::SaveVector_Double("","Matrix_L_Eigen_Value.matrix",pIMD->slic_current_num,CUi_MatrixEigenValue_L);//特征值
 #endif
 	TimeCountStop("解特征值、特征向量：");
 #if _MSC_VER&&_DEBUG

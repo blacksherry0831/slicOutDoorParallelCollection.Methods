@@ -300,8 +300,12 @@ static void GetVGPoint(vector<CvPoint>& Points,ImageMemData* pMD);
 
 static bool IsLabClorGroundNear(LabColor ci,LabColor cj,float DThreshold,float AThreshold);
 static bool IsLabClorGround_Insurance(LabColor ci,LabColor cj);
+
 static void SaveMatrix_W(string path,string filename,int slic_current_num,double* Matrix_W);
+
 static void SaveMatrix_Float(string path,string filename,int slic_current_num,float* Matrix_W);
+static void SaveVector_Double(string path,string filename,int slic_current_num,double* Matrix_W);
+
 static void FillHoleOnSVGLables(ImageMemData*,bool sky,bool vertical,bool ground,bool BorderSky);
 static void DrawS_V_G_Lables_BorderLine(IplImage *img,UINT32 category);
 

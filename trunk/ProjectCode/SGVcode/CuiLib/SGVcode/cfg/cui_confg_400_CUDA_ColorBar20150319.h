@@ -9,9 +9,9 @@
 #define  IN_DOOR   FALSE
 
 /////////////////////////////////////////
-#define  OUT_DOOR_HUMAN TRUE
+#define  OUT_DOOR_HUMAN FALSE
 
-#define  OUT_DOOR_400_IMAGE_STABLE  FALSE
+#define  OUT_DOOR_400_IMAGE_STABLE  TRUE
 /////////////////////////////////////////
 
 #endif 

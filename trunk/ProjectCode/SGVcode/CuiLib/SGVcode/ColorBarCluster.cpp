@@ -186,7 +186,7 @@ void ColorBarCluster::Clustering_ByHistogramOneColorGray(void)
 		
 		}
 
-#if	SaveContours2Disk &&_DEBUG
+#if	SaveContours2Disk
 		pIMD->SaveImgWithContours();
 #endif
 		
@@ -312,7 +312,7 @@ void ColorBarCluster::Clustering_ByHistogramMaxHist_NoIterationColor(int Coloran
 		
 #endif
 		pIMD->Combination_ImgLabs(SameLink,true,false,true);
-#if SaveContours2Disk && _DEBUG
+#if SaveContours2Disk
 		pIMD->SaveImgWithContours();
 #endif
 	/*	cui_GeneralImgProcess::Cui_Combination_ImgLabs2(

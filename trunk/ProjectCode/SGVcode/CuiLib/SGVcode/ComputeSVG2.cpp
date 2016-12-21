@@ -134,7 +134,7 @@ void ComputeSVG2::FillWeightArrayZlm(void)
 		pIMD->SpSet.SpPropertySet[spi].fuzzyCategory=fuzzyCategory[spi];
 		pIMD->SpSet.SpPropertySet[spi].ComputeCategory=fuzzyCategory[spi];
 	}
-#if SaveContours2Disk && _DEBUG
+#if SaveContours2Disk
 	pIMD->SaveImgWithPointsCompute("fuzzy");
 #endif
 #if _DEBUG
@@ -253,7 +253,7 @@ this->FillWeightArrayZlm();
 
 	pIMD->CombinationImgSVG();
 
-#if SaveContours2Disk && _DEBUG
+#if SaveContours2Disk
 	pIMD->SaveImgSVGCompute("_BT_unknow");
 	pIMD->SaveSuperpixelLabelsImagePNG();
 #endif
@@ -269,7 +269,7 @@ void ComputeSVG2::ForceSkyGroundVertical(void)
 	TRACE_FUNC();
 	this->zlm_ForceSky();
 	
-#if _DEBUG
+#if SaveContours2Disk
 	pIMD->SaveImgWithPointsCompute();
 #endif
 
@@ -280,7 +280,7 @@ this->zlm_ForceGround();
 	this->RemoveSomeUnreasonableClassification();
 #endif
 
-#if SaveContours2Disk &&_DEBUG
+#if SaveContours2Disk
 	pIMD->SaveImgWithPointsCompute("_FinalCompute_");
 #endif
 }
