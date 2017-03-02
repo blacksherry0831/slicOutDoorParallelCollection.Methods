@@ -10,12 +10,12 @@
 /*----------------------------------------------------------------*/
 
 #ifdef _DEBUG
- int cui_GeneralImgProcess::SAVE_DEBUG_2DISK=TRUE;
+ int cui_GeneralImgProcess::SAVE_DEBUG_2DISK=FALSE;
 #else
  int cui_GeneralImgProcess::SAVE_DEBUG_2DISK=FALSE;
 #endif
 
- int cui_GeneralImgProcess::SAVE_IMAGE_2DISK=TRUE;
+ int cui_GeneralImgProcess::SAVE_IMAGE_2DISK=FALSE;
  //struct pt_sem cui_GeneralImgProcess::SEM_CPU_NUMS;
 #if _MSC_VER
 
@@ -3577,6 +3577,11 @@ void cui_GeneralImgProcess::Draw_Kseeds_AverageImg(
 	string FileReadFullPath,
 	string FileWritePath)
 {
+
+if (cui_GeneralImgProcess::SAVE_DEBUG_2DISK==FALSE){
+	return;
+}
+
 #if SaveAverageImg2Disk || _DEBUG
 //绘制用种子标定的图像
 	int vectorSize=kseedsa.size();

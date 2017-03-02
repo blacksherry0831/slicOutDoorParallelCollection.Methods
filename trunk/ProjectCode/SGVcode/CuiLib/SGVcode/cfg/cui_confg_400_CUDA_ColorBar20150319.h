@@ -72,7 +72,7 @@
 /**************************************************/
 #define  CUI_SAVE_LABLES  FALSE
 #define  CUI_DRAW_SC_INDEX  FALSE
-#define  CUI_SAVE_HARR_IMG  TRUE
+#define  CUI_SAVE_HARR_IMG  FALSE
 /***************************************************
 天空分类，能量+位置+色彩。
 色彩距离D（lab）能量距离（HL LH HH）

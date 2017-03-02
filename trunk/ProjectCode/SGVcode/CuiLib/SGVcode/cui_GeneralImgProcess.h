@@ -14,7 +14,7 @@
 
 
 
-#define SaveImg2Disk  TRUE
+//#define SaveImg2Disk  TRUE
 #define SaveHistgram2Disk       FALSE
 #define SaveAverageImg2Disk     FALSE
 /*----------------------------------------------------------------*/
