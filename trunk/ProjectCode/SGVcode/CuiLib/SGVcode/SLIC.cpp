@@ -2210,6 +2210,7 @@ void SLIC::DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy(int sav
 #endif
 #if	SaveContours2Disk
 	pIMD->SaveImgWithContours(str_add);
+	pIMD->DrawContours();
 #endif
 	/////////////////////////////////////////////////////
 #if _MSC_VER&&_DEBUG

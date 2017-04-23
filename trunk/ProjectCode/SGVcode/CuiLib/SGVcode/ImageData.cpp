@@ -1022,6 +1022,42 @@ void ImageData::SaveImgWithPointsFuzzy(string str_add)
 	delete[] Matrix_Category_Lable;
 
 }
+/*------------------------------------------------------------------------------------------------------------*/
+/**
+*将轮廓绘制到轮廓图上并保存
+*
+*
+*/
+/*------------------------------------------------------------------------------------------------------------*/
+void ImageData::DrawContours(void)
+{
+
+	 UINT32* Contour_Split=new UINT32[this->ImgWidth*this->ImgHeight]; 
+
+	cui_GeneralImgProcess::InitPNGData(
+		Contour_Split,
+		ImgWidth,
+		ImgHeight,
+		BlackColorPNG);
+	cui_GeneralImgProcess::DrawContoursAroundSegments(
+		Contour_Split,
+		src_ImgLabels,
+		ImgWidth,
+		ImgHeight,
+		WhiteColorPNG);
+	/**/
+	cui_GeneralImgProcess::CuiSaveImageData(
+		Contour_Split,
+		ImgWidth,
+		ImgHeight,
+		this->FileReadFullPath,
+		this->FileWritePath,
+		1,
+		"Contours");
+
+	delete [] Contour_Split;
+
+}
 /*----------------------------------------------------------------*/
 /**
 *

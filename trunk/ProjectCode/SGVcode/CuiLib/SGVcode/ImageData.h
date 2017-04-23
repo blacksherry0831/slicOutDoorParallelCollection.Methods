@@ -55,6 +55,7 @@ public:
 		string filesavepath,
 		int spcount,
 		double compactness);
+
 public:
 	string FileReadFullPath;
 	string FileWritePath;
@@ -202,7 +203,9 @@ void SaveSuperpixelLabelsImagePNG(
 	const int					height,
 	const string				filename,
 	const string				path);
+
 void SaveSuperpixelLabelsImagePNG();
+void DrawContours(void);
 
 void _splitpath(const char *path, char *drive, char *dir, char *fname, char *ext);
 

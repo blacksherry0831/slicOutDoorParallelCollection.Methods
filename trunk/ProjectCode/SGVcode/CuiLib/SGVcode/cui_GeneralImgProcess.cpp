@@ -3441,7 +3441,7 @@ void cui_GeneralImgProcess::Get_Kseeds_Histogram(
 	int HistDimSPLAB=seeddata.histDimSPLAB;
 	//绘制用种子标定的图像
 	int vectorSize=kseedsa.size();
-#if SaveAverageImg2Disk
+#if SaveAverageImg2Disk && Use_CString
 	
 	{
 		int negcount;
