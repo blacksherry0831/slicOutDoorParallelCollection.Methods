@@ -2,9 +2,10 @@
 #include <platform_cui.h>
 #include "tinyxml2/tinyxml2.h"
 using namespace tinyxml2;
-
 /*---------------------------------------------------*/
-#define  Use_CString FALSE
+
+
+
 /*---------------------------------------------------*/
 /**
 *FileNameSplit 分解全路径字符串

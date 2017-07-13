@@ -225,10 +225,10 @@ void ColorBarCluster::Clustering_ByHistogramMaxHist_NoIterationColor(int Coloran
 
 	TimeCountStart();
 
-	int HistDimSPLABColor=45;
+	const int HistDimSPLABColor=45;
 	int old_slic_num;
 	int new_slic_num;
-	int IterationTimes=2-1;
+	const int IterationTimes=2-1;
 	KseedsHistColorGray seeddata;
 	seeddata.ColorHist.resize(HistDimSPLABColor);
 	vector<vector<int>> SameLink;
@@ -650,10 +650,10 @@ void ColorBarCluster::HistogramRange2Matrix_Category_Lable_SameLink(
 	int ColorangleSpan)
 {
 	int HistDimSPLAB=seeddata.histDimSPLAB;
-	int PieceNum=9;
+	const int PieceNum=9;
 	int cut_step=HistDimSPLAB/PieceNum;
 	int range=ColorangleSpan/2;
-	int stepLR=1.0*range/360*HistDimSPLAB;
+	const int stepLR=1.0*range/360*HistDimSPLAB;
 	vector<HistRangeData> histrangedata_t(PieceNum);
 	int sort_t[2];
 	/*-----获取9个分组的最大值---------------------------------------------------------------------*/

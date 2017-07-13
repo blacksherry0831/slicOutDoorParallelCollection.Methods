@@ -10,13 +10,6 @@
 #ifdef __GNUC__
 #include "ImageData.h"
 #endif
-
-
-
-
-//#define SaveImg2Disk  TRUE
-#define SaveHistgram2Disk       FALSE
-#define SaveAverageImg2Disk     FALSE
 /*----------------------------------------------------------------*/
 /**
 *本类实现图像分割，与小波能量计算中，相对独立的一些算法

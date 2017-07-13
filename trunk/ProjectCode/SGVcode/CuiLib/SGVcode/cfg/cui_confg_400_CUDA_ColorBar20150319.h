@@ -107,6 +107,30 @@
 #define Gray_Sky FALSE
 #define   OUT_NOGROUND_IMG FALSE
 /*********************************************/
+//#define SaveImg2Disk  TRUE
+
+#if _MSC_VER
+
+#define SaveHistgram2Disk       FALSE
+#define SaveAverageImg2Disk     FALSE
+
+#ifdef SaveHistgram2Disk
+#if SaveHistgram2Disk
+#define  Use_CString TRUE
+#endif
+#endif
+
+#ifndef Use_CString
+#define  Use_CString FALSE
+#endif
+
+#endif
+
+
+
+
+
+/*********************************************/
 #endif
 
 

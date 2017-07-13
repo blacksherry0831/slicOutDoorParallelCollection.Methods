@@ -234,8 +234,9 @@ cui_t.append(title);
 
 #ifdef Use_CString&&_MSC_VER
 #if Use_CString	&&_MSC_VER
-  CString strName,Time;
-  GetSystemTime(&systime);
+	SYSTEMTIME systime; 
+	CString strName,Time;
+	GetSystemTime(&systime);
 #if 1
   Time.Format(_T("%u_%u_%u_%u_%u_%u_%u"),
 	  systime.wYear, 

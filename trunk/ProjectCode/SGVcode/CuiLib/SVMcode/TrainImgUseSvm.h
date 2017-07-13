@@ -183,8 +183,10 @@ public:
 		static UINT ThreadPickUpFeature(LPVOID lpParam);	
 		static void Read2MemFromXML(vector<float>& data,vector<INT32>& res,int& Dim,unsigned long& Num);
 public:
-#if USE_CSTRING
+#ifdef Use_CString
+#if Use_CString
 	static string ConvertCS2string(CString cstring);
+#endif
 #endif
 	static UINT GetFileNameFromPath(void);
 	static void PickUpFeature(const string& imageFilename,HistData180 *histdata,int *Dim);

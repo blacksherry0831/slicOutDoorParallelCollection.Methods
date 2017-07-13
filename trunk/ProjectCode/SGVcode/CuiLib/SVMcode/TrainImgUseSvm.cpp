@@ -683,6 +683,7 @@ int TrainImgUseSvm::EndProcess(void)
 */
 /*-------------------------------------------------------------------------------------*/
 #if Use_CString
+#if Use_CString
 string TrainImgUseSvm::ConvertCS2string(CString cstring)
 {
 	CStringA stra(cstring.GetBuffer(0));
@@ -691,6 +692,7 @@ string TrainImgUseSvm::ConvertCS2string(CString cstring)
 	stra.ReleaseBuffer();
 	return cui_t;
 }
+#endif
 #endif
 /*-------------------------------------------------------------------------------------*/
 /**
