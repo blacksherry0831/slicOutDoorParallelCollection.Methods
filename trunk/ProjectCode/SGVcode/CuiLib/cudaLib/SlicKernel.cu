@@ -303,22 +303,7 @@ __device__ int a;
 *
 */
 /*------------------------------------------------------------------------------------------*/
-struct Lock {
-	int *mutex;
-	Lock( void ) {
-		( cudaMalloc( (void**)&mutex, sizeof(int) ) );
-		( cudaMemset( mutex, 0, sizeof(int) ) );
-	}
-	~Lock( void ) {
-		cudaFree( mutex );
-	}
-	__device__ void lock( void ) {
-		while( atomicCAS( mutex, 0, 1 ) != 0 );
-	}
-	__device__ void unlock( void ) {
-		atomicExch( mutex, 0 );
-	}
-};
+
 /*------------------------------------------------------------------------------------------*/
 /**
 *
@@ -1595,6 +1580,9 @@ __global__ void SetMatrix_Efficient(double *matrix,int width,int height,double v
 *
 */
 /*------------------------------------------------------------------------------------------*/
+#if !defined(__CUDA_ARCH__) || __CUDA_ARCH__ >= 600 
+
+#else 
 __device__ double atomicAdd(double* address, double val)
 {
 	unsigned long long int* address_as_ull =
@@ -1605,7 +1593,7 @@ __device__ double atomicAdd(double* address, double val)
 		assumed = old;
 		old = atomicCAS(address_as_ull, assumed,
 			__double_as_longlong(val +
-			__longlong_as_double(assumed)));
+				__longlong_as_double(assumed)));
 
 		// Note: uses integer comparison to avoid hang in case of NaN (since NaN != NaN)
 	} while (assumed != old);
@@ -1614,6 +1602,7 @@ __device__ double atomicAdd(double* address, double val)
 }
 //Read more at: http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#ixzz3HQ3voVZ1 
 //Follow us: @GPUComputing on Twitter | NVIDIA on Facebook
+#endif
 /*------------------------------------------------------------------------------------------*/
 /**
 *              1*1            

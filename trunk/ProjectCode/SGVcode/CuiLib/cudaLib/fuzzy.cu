@@ -195,9 +195,9 @@ int i = blockIdx.x * blockDim.x + threadIdx.x;
 	/**************************************************/
 	if (y>=0&&y<Height){
 		if (x<0){
-			WeightArray_dev[y]=-1*C_1*pow(-x,1.0/(2*n+1))*WeightZoom;
+			WeightArray_dev[y]=-1*C_1*pow(-x*1.0,1.0/(2*n+1))*WeightZoom;
 		}else if (x>=0){
-			WeightArray_dev[y]=C_2*pow(x,1.0/(2*n+1))*WeightZoom;
+			WeightArray_dev[y]=C_2*pow(x*1.0,1.0/(2*n+1))*WeightZoom;
 		}else{
 			assert(0);
 		}
@@ -231,9 +231,9 @@ __global__ void	FillWeightArrayG_out_Kernel(double horizontal_line, double n,dou
 		if (y>=0&&y<Height){
 			if (x<0){
 				//Ææº¯Êý
-				WeightArray_dev[y]=-1*(-1*C_1*pow(-1*x,1.0/(2*n+1)))*WeightZoom;
+				WeightArray_dev[y]=-1*(-1*C_1*pow(-1.0*x,1.0/(2*n+1)))*WeightZoom;
 			}else{
-				WeightArray_dev[y]=-1*C_2*pow(x,1.0/(2*n+1))*WeightZoom;
+				WeightArray_dev[y]=-1*C_2*pow(x*1.0,1.0/(2*n+1))*WeightZoom;
 			}
 			/*if (WeightArray_dev[y]<0){
 				WeightArray_dev[y]=0;

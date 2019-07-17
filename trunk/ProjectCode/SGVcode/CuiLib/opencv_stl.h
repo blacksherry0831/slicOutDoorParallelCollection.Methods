@@ -55,6 +55,7 @@ using namespace cv;
 #include <vector>
 #include <string>
 #include <algorithm>
+#include<functional>
 #include <cfloat>
 #include <cmath>
 #include <ios>
