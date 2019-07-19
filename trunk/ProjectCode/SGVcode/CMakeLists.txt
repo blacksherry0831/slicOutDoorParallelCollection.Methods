@@ -1,10 +1,16 @@
 #cmake最低版本需求，不加入此行会受到警告信息
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 #项目名称
 PROJECT(SGV_cmake)
 ###############################################################################
+option (BUILDING_OPENCV_LIB
+        "" ON)
+###############################################################################
+if(BUILDING_OPENCV_LIB)
+	SET(NEED_OPENCV		ON)
+endif()
+###############################################################################
 INCLUDE(cmake/LinuxPrepare.cmake)
-
 INCLUDE(cmake/SetMFC.cmake)
 INCLUDE(cmake/FindOpencv.cmake)
 INCLUDE(cmake/setCUDA.cmake)
@@ -14,7 +20,6 @@ INCLUDE_DIRECTORIES( #相关头文件的目录
 	${SGV_cmake_SOURCE_DIR}
 )
 ADD_SUBDIRECTORY(CuiLib)
-#ADD_SUBDIRECTORY(arpackpp-master)
 ###############################################################################
 MESSAGE(STATUS "operation system is ${CMAKE_SYSTEM}")  
 ############配置OPENCV#########################################################
@@ -29,7 +34,7 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
  
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")   
 	 ConfigMFC_2()
-	 MESSAGE(STATUS "MFC配置")   
+	 MESSAGE(STATUS "MFC config")   
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
    
 ELSE ()  

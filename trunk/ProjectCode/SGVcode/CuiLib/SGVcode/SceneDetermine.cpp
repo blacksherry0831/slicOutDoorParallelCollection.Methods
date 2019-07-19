@@ -271,7 +271,8 @@ bool SceneDetermine::IsManhattanPeak(double pos_weight,HistData hist_data)
 
 	}
 
-	
+	ASSERT(0);
+	return false;
 }
 /*----------------------------------------------------------------*/
 /**
