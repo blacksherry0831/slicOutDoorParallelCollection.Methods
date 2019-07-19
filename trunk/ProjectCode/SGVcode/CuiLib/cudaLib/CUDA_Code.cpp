@@ -215,17 +215,11 @@ void PerformSuperpixelSLIC_cuda(
 		double duration_ms = (double)(finish - start)*1000 / CLOCKS_PER_SEC;
 		double duration_s = duration_ms/1000;
 		double duration_min =duration_s/60;
-#if _MSC_VER
-       //TRACE("\n Ê®´Îµü´ú: %f£¨Ãë£©",duration_s);
 
-		//printf("gpu time is %f s \n",duration_s);
-#endif	
 		printf( "gpu time is %0.1f ms \n", duration_ms );
 }
 #else
-	for (int i=0;i<m_width*m_height*10;i++){
-		double a=atan2((double)10,(double)10);
-	}	
+	
 #endif
 
 #if _MSC_VER &&  USE_CUDA_MUTEX
