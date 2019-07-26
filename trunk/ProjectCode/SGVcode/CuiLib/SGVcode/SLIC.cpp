@@ -6,13 +6,9 @@
 //////////////////////////////////////////////////////////////////////
 #include "stdafx.h"
 #include "module_all_cui.h"
-
-//#include "SLIC.h"
-//#include "cui_GeneralImgProcess.h"
-
-//using namespace std;
-//#define UINT32_MAX 0xffffffff
-
+/*----------------------------------------------------------------------------------------------------------------*/
+#include "ColorSpace/ImageColorSpaceLAB.h"
+#include "ColorSpace/ImageColorSpaceThetaML.h"
 /*----------------------------------------------------------------------------------------------------------------*/
 /** 
 *构造函数
@@ -271,78 +267,6 @@ cui_t.append(title);
 /**********************************/
 	return cui_t;
 }
-
-
-
-
-//===========================================================================
-///	DoRGBtoLABConversion
-///
-///	For whole image: overlaoded floating point version
-//===========================================================================
-void SLIC::DoRGBtoLABConversion(
-	const unsigned int*&		ubuff,
-	double*&					lvec,
-	double*&					avec,
-	double*&					bvec)
-{
-
-	ImageData::DoRGBtoLABConversion(ubuff,lvec,avec,bvec,m_width,m_height);
-
-	//int sz = m_width*m_height;
-	//lvec = new double[sz];
-	//avec = new double[sz];
-	//bvec = new double[sz];
-	///*r:0--255*/
-	///*g:0--255*/
-	///*b:0--255*/
-	//for( int j = 0; j < sz; j++ )
-	//{
-	//	int r = (ubuff[j] >> 16) & 0xFF;
-	//	int g = (ubuff[j] >>  8) & 0xFF;
-	//	int b = (ubuff[j]      ) & 0xFF;
-	//	//////////////////////////////////
-	//	  // a  r      g      b
-	//	//////////////////////////////////
-	//	RGB2LAB( r, g, b, lvec[j], avec[j], bvec[j] );
-	//	/*assert();*/
-	//}
-}
-
-//===========================================================================
-///	DoRGBtoLABConversion
-///
-/// For whole volume
-//===========================================================================
-void SLIC::DoRGBtoLABConversion(
-	unsigned int**&		ubuff,
-	double**&					lvec,
-	double**&					avec,
-	double**&					bvec)
-{
-	int sz = m_width*m_height;
-	for( int d = 0; d < m_depth; d++ )
-	{
-		for( int j = 0; j < sz; j++ )
-		{
-			int r = (ubuff[d][j] >> 16) & 0xFF;
-			int g = (ubuff[d][j] >>  8) & 0xFF;
-			int b = (ubuff[d][j]      ) & 0xFF;
-
-			ImageData::RGB2LAB( r, g, b, lvec[d][j], avec[d][j], bvec[d][j] );
-		}
-	}
-}
-
-//=================================================================================
-/// DrawContoursAroundSegments
-///
-/// Internal contour drawing option exists. One only needs to comment the if
-/// statement inside the loop that looks at neighbourhood.
-//=================================================================================
-
-
-
 //===========================================================================
 ///	PerturbSeeds
 //===========================================================================
@@ -1816,85 +1740,6 @@ void SLIC::DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels(
 	const int superpixelsize = 0.5+double(width*height)/double(K);
 	m_K=K;
 	DoSuperpixelSegmentation_ForGivenSuperpixelSize(ubuff,width,height,klabels,numlabels,superpixelsize,compactness);
-}
-//===========================================================================
-//	DoSupervoxelSegmentation
-//
-// There is option to save the labels if needed.
-//
-// The input parameter ubuffvec holds all the video frames. It is a
-// 2-dimensional array. The first dimension is depth and the second dimension
-// is pixel location in a frame. For example, to access a pixel in the 3rd
-// frame (i.e. depth index 2), in the 4th row (i.e. height index 3) on the
-// 37th column (i.e. width index 36), you would write:
-//
-// unsigned int the_pixel_i_want = ubuffvec[2][3*width + 36]
-//
-// In addition, here is how the RGB values are contained in a 32-bit unsigned
-// integer:
-//
-// [1 1 1 1 1 1 1 1]  [1 1 1 1 1 1 1 1]  [1 1 1 1 1 1 1 1]  [1 1 1 1 1 1 1 1]
-//
-//        Nothing              R                 G                  B
-//
-// The RGB values are accessed from (and packed into) the unsigned integers
-// using bitwise operators as can be seen in the function DoRGBtoLABConversion().
-//
-// compactness value depends on the input pixels values. For instance, if
-// the input is greyscale with values ranging from 0-100, then a compactness
-// value of 20.0 would give good results. A greater value will make the
-// supervoxels more compact while a smaller value would make them more uneven.
-//===========================================================================
-void SLIC::DoSupervoxelSegmentation(
-	unsigned int**&				ubuffvec,
-	const int&					width,
-	const int&					height,
-	const int&					depth,
-	int**&						klabels,
-	int&						numlabels,
-    const int&					supervoxelsize,
-    const double&               compactness)
-{
-    //---------------------------------------------------------
-    const int STEP = 0.5 + pow(double(supervoxelsize),1.0/3.0);
-    //---------------------------------------------------------
-	vector<double> kseedsl(0);
-	vector<double> kseedsa(0);
-	vector<double> kseedsb(0);
-	vector<double> kseedsx(0);
-	vector<double> kseedsy(0);
-	vector<double> kseedsz(0);
-
-	//--------------------------------------------------
-	m_width  = width;
-	m_height = height;
-	m_depth  = depth;
-	int sz = m_width*m_height;
-	
-	//--------------------------------------------------
-        //klabels = new int*[depth];
-	m_lvecvec = new double*[depth];
-	m_avecvec = new double*[depth];
-	m_bvecvec = new double*[depth];
-	for( int d = 0; d < depth; d++ )
-	{
-                //klabels[d] = new int[sz];
-		m_lvecvec[d] = new double[sz];
-		m_avecvec[d] = new double[sz];
-		m_bvecvec[d] = new double[sz];
-		for( int s = 0; s < sz; s++ )
-		{
-			klabels[d][s] = -1;
-		}
-	}
-	
-	DoRGBtoLABConversion(ubuffvec, m_lvecvec, m_avecvec, m_bvecvec);
-
-	GetKValues_LABXYZ(kseedsl, kseedsa, kseedsb, kseedsx, kseedsy, kseedsz, STEP);
-
-	PerformSupervoxelSLIC(kseedsl, kseedsa, kseedsb, kseedsx, kseedsy, kseedsz, klabels, STEP, compactness);
-
-	EnforceSupervoxelLabelConnectivity(klabels, width, height, depth, numlabels, STEP);
 }
 /*----------------------------------------------------------------------------------------------------------------*/
 /**
@@ -3917,8 +3762,15 @@ void SLIC::PerformSuperpixelSLIC_CUINEW(
 #if TRUE
 					double sita_n, m_n, L_n, X_n, Y_n;
 					double Ksita_n, Km_n, KL_n, KX_n, KY_n;
-					ConvertLab2oml(l,a,b,x,y,sita_n,m_n,L_n,X_n,Y_n);
-					ConvertLab2oml(kseedsl[n],kseedsa[n],kseedsb[n],kseedsx[n],kseedsy[n],Ksita_n,Km_n,KL_n,KX_n,KY_n);
+
+					ImageColorSpaceThetaML::ConvertLab2ThetaML(l, a, b, x, y,
+						m_width, m_height,
+						sita_n, m_n, L_n, X_n, Y_n);
+
+					ImageColorSpaceThetaML::ConvertLab2ThetaML(kseedsl[n], kseedsa[n], kseedsb[n], kseedsx[n], kseedsy[n],
+						m_width, m_height,
+						Ksita_n, Km_n, KL_n, KX_n, KY_n);
+					
 					dist=CalculateNewDistance(sita_n,m_n,L_n,X_n,Y_n,Ksita_n,Km_n,KL_n,KX_n,KY_n);
 #endif
 					if( dist < distvec[i] )
@@ -3997,64 +3849,6 @@ void SLIC::PerformSuperpixelSLIC_CUINEW(
 	double duration_min =duration_s/60;
 	printf( "gpu time is %f ms/n", duration_ms );
 
-}
-/*---------------------------------------------------------------------------------*/
-/**
-*转换LAB色彩空间成角度、模长、亮度表示法
-*
-*@param m_width 图像宽度
-*@param m_height 图像高度
-*@param L 像素点的L分量
-*@param A 像素点的A分量
-*@param B 像素点的B分量
-*@param X 像素点的X坐标
-*@param Y 像素点的Y坐标
-*@param sita_n 像素点的角度（归一化到[0,1]）
-*@param m_n    像素点的模长（归一化到[0,1]）
-*@param L_n    像素点的亮度（归一化到[0,1]）
-*@param X_n    像素点的X坐标（归一化到[0,1]）
-*@param Y_n    像素点的Y坐标（归一化到[0,1]）
-*
-*/
-/*---------------------------------------------------------------------------------*/
-void SLIC::ConvertLab2oml(
-	double L,
-	double A,
-	double B,
-	double X,
-	double Y,
-	double& sita_n,
-	double& m_n,
-	double& L_n,
-	double& X_n,
-	double& Y_n)
-{
-	assert(L>=0&&L<=100+1);
-	assert(A>=-128&&A<=128+1);
-	assert(B>=-128&&B<=128+1);
-	assert(X>=0&&X<=m_width+1);
-	assert(Y>=0&&Y<=m_height+1);
-#if 1
-	///////////////////////////////////////
-	sita_n=atan2(B,A);
-	sita_n=sita_n/(2*3.1415927)+0.5;
-	///////////////////////////////////////
-	m_n=sqrt(A*A+B*B);
-	m_n=m_n/(128*1.415);
-	///////////////////////////////////////
-	L_n=L/100;
-	assert(L_n>=0&&L_n<=1+1E-1);
-	///////////////////////////////////////
-	X_n=X/m_width;
-	assert(X_n>=0&&X_n<=1+1E-1);
-	Y_n=Y/m_height;
-	assert(Y_n>=0&&Y_n<=1+1E-1);
-#endif
-	assert(sita_n>=0-0.1&&sita_n<=1+0.1);
-	assert(m_n>=0-0.1&&m_n<=1+0.1);
-	assert(L_n>=0-0.1&&L_n<=1+0.1);
-	assert(X_n>=0-0.1&&X_n<=1+0.1);
-	assert(Y_n>=0-0.1&&Y_n<=1+0.1);
 }
 /*---------------------------------------------------------------------------------*/
 /**

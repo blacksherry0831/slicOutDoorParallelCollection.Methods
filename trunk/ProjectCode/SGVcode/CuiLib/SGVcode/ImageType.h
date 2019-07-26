@@ -1,12 +1,10 @@
 #pragma once
 #ifndef ImageTypeCui
 #define ImageTypeCui
-//#include <memory>
-//#include "cv.h"
-#ifndef ASSERT
-#include <assert.h>
-#define ASSERT(x) assert(x)
-#endif
+
+#include "cpp_def.h"
+
+#include <cv.h>
 
 /*------------------------------------------------------------------------------------------------------------*/
 /**天空分类，能量+位置+色彩。
@@ -16,18 +14,14 @@
 *12%
 */
 /*------------------------------------------------------------------------------------------------------------*/
-#ifndef TRUE
-#define TRUE 1
-#endif
-#ifndef  FALSE
-#define FALSE 0
-#endif
+
 /*----------------------------------------------------------------------*/
 #define MAX_SP_NUM    (3000)
 #define  MAXLINEDATA (2000) 
 /*----------------------------------------------------------------------*/
-#define Unclassify (-2)
-#define  Remove (-1)
+#define  Unclassify		(-2)
+#define  CLASSIFY_REMOVE			(-1)
+/*----------------------------------------------------------------------*/
 #if 1
 #define  Unknow (0)   
 #endif
@@ -60,9 +54,6 @@
 *建筑类型
 */
 /*------------------------------------------------------------------------------------------------------------*/
-#ifndef M_PI
-#define M_PI (3.14159265358979323846)
-#endif
 /************************************************************************/
 #ifndef BuildingType_Enum
 #define BuildingType_Enum
@@ -249,7 +240,7 @@ public:
 		{
 			return Ground;
 		}
-		ASSERT(FALSE);
+		C_STD_LIB_ASSERT(FALSE);
 		return -1;
 	}
 };
@@ -348,12 +339,12 @@ public:
 	}
 public:
 	int histDimSPLAB;
-	vector<double> LAvg;//0-100
-	vector<double> hist_AB_Count;//-127--128
-	vector<double> hist_AB_CountRemove;
-	vector<double> hist_AB_CountOrg;//count
-	vector<double> AB_lengthAvg;//128*1.414
-	vector< vector<int> > hist_AB_detail;
+	std::vector<double> LAvg;//0-100
+	std::vector<double> hist_AB_Count;//-127--128
+	std::vector<double> hist_AB_CountRemove;
+	std::vector<double> hist_AB_CountOrg;//count
+	std::vector<double> AB_lengthAvg;//128*1.414
+	std::vector<std::vector<int> > hist_AB_detail;
 };
 
 class KseedsHistColorGray{
@@ -384,13 +375,13 @@ typedef struct  histRangeData{
 /*----------------------------------------------------------------------*/
 class ThreadDoOneImageData{
 public:
-	vector<string> picvec;
-	string saveLocation;
+	std::vector<std::string> picvec;
+	std::string saveLocation;
 	int m_spcount;
 	int start;
 	int step;
-	ThreadDoOneImageData(vector<string> picvec,
-							string saveLocation,
+	ThreadDoOneImageData(std::vector<std::string> picvec,
+							std::string saveLocation,
 							int m_spcount,
 							int start,
 							int step){

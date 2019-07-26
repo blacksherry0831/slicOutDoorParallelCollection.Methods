@@ -13,13 +13,18 @@ endif()
 INCLUDE(cmake/LinuxPrepare.cmake)
 INCLUDE(cmake/SetMFC.cmake)
 INCLUDE(cmake/FindOpencv.cmake)
+INCLUDE(cmake/FindQT.cmake)
 INCLUDE(cmake/setCUDA.cmake)
 ###############################################################################
 INCLUDE_DIRECTORIES( #相关头文件的目录
 	${SGV_cmake_SOURCE_DIR}/CuiLib
 	${SGV_cmake_SOURCE_DIR}
 )
+###############################################################################
 ADD_SUBDIRECTORY(CuiLib)
+###############################################################################
+ADD_SUBDIRECTORY(main.nav)
+ADD_SUBDIRECTORY(main.unit.test)
 ###############################################################################
 MESSAGE(STATUS "operation system is ${CMAKE_SYSTEM}")  
 ############配置OPENCV#########################################################

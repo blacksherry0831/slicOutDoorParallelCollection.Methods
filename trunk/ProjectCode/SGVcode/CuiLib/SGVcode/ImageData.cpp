@@ -2,9 +2,8 @@
 //#include "ImageData.h"
 #include "module_all_cui.h"
 /*-------------------------------------------------------------------*/
-#if _MSC_VER
-#pragma warning(disable: 4101)
-#endif
+#include <ColorSpace/ImageColorSpaceLAB.h>
+#include <ColorSpace/ImageColorSpaceThetaML.h>
 /*----------------------------------------------------------------*/
 /**
 *¹¹Ôìº¯Êý\n
@@ -289,7 +288,7 @@ void ImageData::ReleaseMemory(void)
 	   m_lvec=new double[sz];
 	   m_avec=new double[sz];
 	   m_bvec=new double[sz];
-	   DoRGBtoLABConversion(src_ImgBGRA, m_lvec, m_avec, m_bvec,ImgWidth,ImgHeight);
+	   ImageColorSpaceLAB::DoRGBtoLABConversion(src_ImgBGRA, m_lvec, m_avec, m_bvec,ImgWidth,ImgHeight);
 	 /*********************************************************************/
 	   sita_n=new double[sz];
 	   m_n=new double[sz];
@@ -488,198 +487,17 @@ void ImageData::GetMatrixE(void)
 *
 */
 /*----------------------------------------------------------------*/
-void ImageData::Combine2SPto1(void)
-{
-	;
-}
-/*----------------------------------------------------------------*/
-/**
-*
-*
-*
-*/
-/*----------------------------------------------------------------*/
-//===========================================================================
-///	DoRGBtoLABConversion
-///
-///	For whole image: overlaoded floating point version
-//===========================================================================
-void ImageData::DoRGBtoLABConversion(
-	const unsigned int*		ubuff,
-	double*					lvec,
-	double*					avec,
-	double*					bvec,
-	int                     width,
-	int                     height)
-{
-	TRACE_FUNC();
-	TimeCountStart();
-	int sz=width*height;
-	//int sz = ImgWidth*ImgHeight;
-	/*lvec = new double[sz];
-	avec = new double[sz];
-	bvec = new double[sz];*/
-	/*r:0--255*/
-	/*g:0--255*/
-	/*b:0--255*/
-	int r,g,b;
-	for(register int j = 0; j < sz; j++ )
-	{
-		r = (ubuff[j] >> 16) & 0xFF;
-		g = (ubuff[j] >>  8) & 0xFF;
-		b = (ubuff[j]      ) & 0xFF;
-		//////////////////////////////////
-		// a  r      g      b
-		//////////////////////////////////
-		RGB2LAB( r, g, b, lvec[j], avec[j], bvec[j] );
-		/*assert();*/
-	}
-	TimeCountStop("######RGB2LAB Cost Time :");
-}
-//===========================================================================
-///	RGB2LAB
-//===========================================================================
-inline void ImageData::RGB2LAB(const int& sR, const int& sG, const int& sB, double& lval, double& aval, double& bval)
-{
-	//TRACE_FUNC();
-	//------------------------
-	// sRGB to XYZ conversion
-	//------------------------
-	double X, Y, Z;
-	RGB2XYZ(sR, sG, sB, X, Y, Z);
-
-	//------------------------
-	// XYZ to LAB conversion
-	//------------------------
-	const double epsilon = 0.008856;	//actual CIE standard
-	const double kappa   = 903.3;		//actual CIE standard
-
-	const double Xr = 0.950456;	//reference white
-	const double Yr = 1.0;		//reference white
-	const double Zr = 1.088754;	//reference white
-
-	double xr = X/Xr;
-	double yr = Y/Yr;
-	double zr = Z/Zr;
-
-	double fx, fy, fz;
-	if(xr > epsilon)	fx = pow(xr, 1.0/3.0);
-	else				fx = (kappa*xr + 16.0)/116.0;
-	if(yr > epsilon)	fy = pow(yr, 1.0/3.0);
-	else				fy = (kappa*yr + 16.0)/116.0;
-	if(zr > epsilon)	fz = pow(zr, 1.0/3.0);
-	else				fz = (kappa*zr + 16.0)/116.0;
-
-	lval = 116.0*fy-16.0;
-	aval = 500.0*(fx-fy);
-	bval = 200.0*(fy-fz);
-}
-//==============================================================================
-///	RGB2XYZ
-///
-/// sRGB (D65 illuninant assumption) to XYZ conversion
-//==============================================================================
-inline void ImageData::RGB2XYZ(
-	const int&		sR,
-	const int&		sG,
-	const int&		sB,
-	double&			X,
-	double&			Y,
-	double&			Z)
-{
-	//TRACE_FUNC();
-	double R = sR/255.0;
-	double G = sG/255.0;
-	double B = sB/255.0;
-
-	double r, g, b;
-
-	if(R <= 0.04045)	r = R/12.92;
-	else				r = pow((R+0.055)/1.055,2.4);
-	if(G <= 0.04045)	g = G/12.92;
-	else				g = pow((G+0.055)/1.055,2.4);
-	if(B <= 0.04045)	b = B/12.92;
-	else				b = pow((B+0.055)/1.055,2.4);
-
-	X = r*0.4124564 + g*0.3575761 + b*0.1804375;
-	Y = r*0.2126729 + g*0.7151522 + b*0.0721750;
-	Z = r*0.0193339 + g*0.1191920 + b*0.9503041;
-}
-/*----------------------------------------------------------------*/
-/**
-*
-*
-*
-*/
-/*----------------------------------------------------------------*/
-inline void ImageData::ConvertLab2oml(
-	double L,
-	double A,
-	double B,
-	double X,
-	double Y,
-	double& sita_n,
-	double& m_n,
-	double& L_n,
-	double& X_n,
-	double& Y_n)
-{
-	assert(L>=0&&L<=100+1);
-	assert(A>=-128&&A<=128+1);
-	assert(B>=-128&&B<=128+1);
-	assert(X>=0&&X<=ImgWidth+1);
-	assert(Y>=0&&Y<=ImgHeight+1);
-#if 1
-	///////////////////////////////////////
-	sita_n=atan2(B,A);
-	sita_n=sita_n/(2*3.1415927)+0.5;
-	///////////////////////////////////////
-	m_n=sqrt(A*A+B*B);
-	m_n=m_n/(128*1.415);
-	///////////////////////////////////////
-	L_n=L/100;
-	assert(L_n>=0&&L_n<=1+1E-1);
-	///////////////////////////////////////
-	X_n=X/ImgWidth;
-	assert(X_n>=0&&X_n<=1+1E-1);
-	Y_n=Y/ImgHeight;
-	assert(Y_n>=0&&Y_n<=1+1E-1);
-#endif
-	assert(sita_n>=0-0.1&&sita_n<=1+0.1);
-	assert(m_n>=0-0.1&&m_n<=1+0.1);
-	assert(L_n>=0-0.1&&L_n<=1+0.1);
-	assert(X_n>=0-0.1&&X_n<=1+0.1);
-	assert(Y_n>=0-0.1&&Y_n<=1+0.1);
-#if OUT_DOOR_HUMAN
-	if (sita_n<0)	sita_n=0;
-	if (sita_n>1)	sita_n=1;
-
-	if (m_n<0)		m_n=0;
-	if (m_n>1)		m_n=1;
-
-	if (L_n<0)		L_n=0;
-	if (L_n>1)		L_n=1;
-#endif
-
-
-
-}
-/*----------------------------------------------------------------*/
-/**
-*
-*
-*
-*/
-/*----------------------------------------------------------------*/
 void ImageData::initThetaMLXY(void)
 {
 	TRACE_FUNC();
 	TimeCountStart();
-	for (register int x=0;x<ImgWidth;x++){
-		for (int register y=0;y<ImgHeight;y++){
-			register int Idx=y*ImgWidth+x;
-			ConvertLab2oml(m_lvec[Idx],m_avec[Idx],m_bvec[Idx],x,y,
-				sita_n[Idx],m_n[Idx],L_n[Idx],X_n[Idx],Y_n[Idx]);
+	for (int x=0;x<ImgWidth;x++){
+		for (int  y=0;y<ImgHeight;y++){
+			const int Idx=y*ImgWidth+x;
+			ImageColorSpaceThetaML::ConvertLab2ThetaML(m_lvec[Idx],	m_avec[Idx],	m_bvec[Idx],	x,	y,
+				ImgWidth,
+				ImgHeight,
+														sita_n[Idx],	m_n[Idx],	L_n[Idx],	X_n[Idx],	Y_n[Idx]);
 		}
 	}
 	TimeCountStop("######(¦È,m,l,x,y) Cost Time :");

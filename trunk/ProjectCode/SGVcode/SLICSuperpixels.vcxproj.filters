@@ -171,6 +171,18 @@
     <ClCompile Include="CuiLib\cudaLib\CUDA_Code.cpp">
       <Filter>CUDA_CU</Filter>
     </ClCompile>
+    <ClCompile Include="CuiLib\ColorSpace\DbgRangeCheck.cpp">
+      <Filter>modules</Filter>
+    </ClCompile>
+    <ClCompile Include="CuiLib\ColorSpace\DistanceColorSpace.cpp">
+      <Filter>modules</Filter>
+    </ClCompile>
+    <ClCompile Include="CuiLib\ColorSpace\ImageColorSpaceLAB.cpp">
+      <Filter>modules</Filter>
+    </ClCompile>
+    <ClCompile Include="CuiLib\ColorSpace\ImageColorSpaceThetaML.cpp">
+      <Filter>modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SLICSuperpixels.h">
@@ -350,6 +362,18 @@
     </ClInclude>
     <ClInclude Include="CuiLib\cudaLib\CUDA_Code.h">
       <Filter>CUDA_CU</Filter>
+    </ClInclude>
+    <ClInclude Include="CuiLib\ColorSpace\DbgRangeCheck.h">
+      <Filter>modules</Filter>
+    </ClInclude>
+    <ClInclude Include="CuiLib\ColorSpace\DistanceColorSpace.h">
+      <Filter>modules</Filter>
+    </ClInclude>
+    <ClInclude Include="CuiLib\ColorSpace\ImageColorSpaceLAB.h">
+      <Filter>modules</Filter>
+    </ClInclude>
+    <ClInclude Include="CuiLib\ColorSpace\ImageColorSpaceThetaML.h">
+      <Filter>modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

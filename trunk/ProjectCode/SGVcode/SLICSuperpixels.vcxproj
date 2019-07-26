@@ -249,6 +249,18 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CuiLib\ColorSpace\DbgRangeCheck.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="CuiLib\ColorSpace\DistanceColorSpace.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="CuiLib\ColorSpace\ImageColorSpaceLAB.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="CuiLib\ColorSpace\ImageColorSpaceThetaML.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="CuiLib\cudaLib\CUDA_Code.cpp" />
     <ClCompile Include="CuiLib\FilePathName\FileNameSplit.cpp" />
     <ClCompile Include="CuiLib\FilePathName\PointWithDistance.cpp" />
@@ -296,6 +308,10 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CuiLib\ColorSpace\DbgRangeCheck.h" />
+    <ClInclude Include="CuiLib\ColorSpace\DistanceColorSpace.h" />
+    <ClInclude Include="CuiLib\ColorSpace\ImageColorSpaceLAB.h" />
+    <ClInclude Include="CuiLib\ColorSpace\ImageColorSpaceThetaML.h" />
     <ClInclude Include="CuiLib\cudaLib\CUDA_Code.h" />
     <ClInclude Include="CuiLib\FilePathName\FileNameSplit.h" />
     <ClInclude Include="CuiLib\FilePathName\PointWithDistance.h" />

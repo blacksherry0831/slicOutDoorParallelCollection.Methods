@@ -1,16 +1,7 @@
 #pragma once
 #include <platform_cui.h>
-//#include <string>
-//#include <iostream>
-//using namespace std;
-//
-//#ifndef UINT32
-//typedef  unsigned int UINT32;
-//#endif
-//
-//#ifndef INT32
-//typedef signed int INT32;
-//#endif
+
+
 
 #if __GNUC__ || _MSC_VER
 #include "SpSetProperty.h"
@@ -127,37 +118,6 @@ public:
 	void ImageGetSeedsLabxy_cuda();
 	void ImageGetSeedsThetaML_cuda();
 
-static		void DoRGBtoLABConversion(
-			const unsigned int*		ubuff,
-			double*					lvec,
-			double*					avec,
-			double*					bvec,
-			int                     width,
-			int                     height);
-
-static	void RGB2LAB(
-		const int& sR, const int& sG, const int& sB, 
-		double& lval, double& aval, double& bval);
-
-static	void RGB2XYZ(
-		const int&		sR,
-		const int&		sG,
-		const int&		sB,
-		double&			X,
-		double&			Y,
-		double&			Z);
-
-inline	void ConvertLab2oml(
-		double L,
-		double A,
-		double B,
-		double X,
-		double Y,
-		double& sita_n,
-		double& m_n,
-		double& L_n,
-		double& X_n,
-		double& Y_n);
 void initThetaMLXY(void);
 void GetMatrixE(void);
 void SetImgLabels(void);
@@ -165,7 +125,7 @@ unsigned int GetGCD(unsigned int a, unsigned int b);
 void GetThetaMLXYSeeds_ForGivenStepSize_Rectangle(
 	const bool&					perturbseeds,
 	const vector<double>&		edgemag);
-void Combine2SPto1(void);
+
 void Combination_ImgLabs(
 	vector<vector<int>> simlarSp,
 	bool UseMatrixE=false,

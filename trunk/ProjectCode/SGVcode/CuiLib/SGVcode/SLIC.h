@@ -181,42 +181,6 @@ private:
 		const int&					height,
 		vector<double>&				edges);
 	//============================================================================
-	// sRGB to XYZ conversion; helper for RGB2LAB()
-	//============================================================================
-	/*void RGB2XYZ(
-		const int&					sR,
-		const int&					sG,
-		const int&					sB,
-		double&						X,
-		double&						Y,
-		double&						Z);*/
-	//============================================================================
-	// sRGB to CIELAB conversion (uses RGB2XYZ function)
-	//============================================================================
-	/*void RGB2LAB(
-		const int&					sR,
-		const int&					sG,
-		const int&					sB,
-		double&						lval,
-		double&						aval,
-		double&						bval);*/
-	//============================================================================
-	// sRGB to CIELAB conversion for 2-D images
-	//============================================================================
-	void DoRGBtoLABConversion(
-		const unsigned int*&		ubuff,
-		double*&					lvec,
-		double*&					avec,
-		double*&					bvec);
-	//============================================================================
-	// sRGB to CIELAB conversion for 3-D volumes
-	//============================================================================
-	void DoRGBtoLABConversion(
-		unsigned int**&				ubuff,
-		double**&					lvec,
-		double**&					avec,
-		double**&					bvec);
-	//============================================================================
 	// Post-processing of SLIC segmentation, to avoid stray labels.
 	//============================================================================
 	void EnforceLabelConnectivity(

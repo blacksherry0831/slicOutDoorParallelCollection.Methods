@@ -33,13 +33,14 @@ SET(DIR_SRCS    ManhattanHistogram.cpp
 				###
 				Harr/CuiHarrTransformLet.cpp
 				Harr/HarrWaveletTransImg.cpp)  
- #ImageType.h
+
 SET(LINK_LIB 
 	         FilePathName
 	         cudaLib
 	         Kmean
 	         SVMcode
 	         SGVBaseCode
+			 ColorSpace
 	)
 ###############################################################################
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")  
@@ -98,35 +99,8 @@ SET(BASE_LINK_LIB
 	         Kmean
 	         SVMcode
 	         SGVcode
+			 ColorSpace
 	)
 ADD_LIBRARY(SGVBaseCode  STATIC     ${BASE_SRCS}  )
 TARGET_LINK_LIBRARIES(SGVBaseCode ${BASE_LINK_LIB})
 ###############################################################################
-#CuiLib/SGVcode/ImageType.h
-#CuiLib/SGVcode/ManhattanHistogram.cpp
-#CuiLib/SGVcode/SeparateSpBlock.cpp
-#CuiLib/SGVcode/SpectralClustering.cpp
-#CuiLib/SGVcode/SpAnalyze.cpp
-#CuiLib/SGVcode/HsHg.cpp
-#CuiLib/SGVcode/SpSetProperty.cpp
-#CuiLib/SGVcode/ImageMemData.cpp
-#CuiLib/SGVcode/ImageData.cpp
-#CuiLib/SGVcode/SLIC.cpp
-#CuiLib/SGVcode/cui_GeneralImgProcess.h
-#CuiLib/SGVcode/cui_GeneralImgProcess.cpp
-#CuiLib/SGVcode/Cui_DrawDepth.cpp
-#CuiLib/SGVcode/ComputeSVG.cpp
-#CuiLib/SGVcode/ComputeSVG2.cpp
-#CuiLib/SGVcode/SpectralClusterInDoor.cpp
-#CuiLib/SGVcode/SplitTreeandBuilding.cpp
-#CuiLib/SGVcode/LabColorAnalyzeCluster.cpp
-#CuiLib/SGVcode/CuiHough/CuiHough3.cpp
-#CuiLib/SGVcode/CuiHough/HoughAnalyze.cpp
-#CuiLib/SGVcode/CuiHough/HoughAnalyze.cpp
-#CuiLib/SGVcode/Harr/CuiHarrTransformLet.cpp
-#CuiLib/SGVcode/Harr/HarrWaveletTransImg.cpp				
-#CuiLib/SGVcode/ColorAnalyzeOnLab.cpp
-#CuiLib/SGVcode/rtthread.cpp
-#CuiLib/SGVcode/MallocCui.cpp
-#CuiLib/SGVcode/LabColorAnalyzeCluster_veins.cpp
-#CuiLib/SGVcode/ColorBarCluster.cpp
