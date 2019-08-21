@@ -2,35 +2,9 @@
 //#include "ImageData.h"
 #include "module_all_cui.h"
 /*-------------------------------------------------------------------*/
+#include <ColorSpace/ColorSpaceLabTable.h>
 #include <ColorSpace/ImageColorSpaceLAB.h>
 #include <ColorSpace/ImageColorSpaceThetaML.h>
-/*----------------------------------------------------------------*/
-/**
-*构造函数\n
-*在做超像素运算之前，设置基本的参数
-*
-*@param  filename  图像的文件名
-*@param  filesavepath   中间结果输出路径
-*@param  spcount 期望的超像素个数
-*@param  compactness 做超像素时的密度因子
-*@param  horizontal_line_pos  视平线的位置
-*/
-/*----------------------------------------------------------------*/
-ImageData::ImageData(
-	string filename,
-	string filesavepath,
-	int spcount,
-	double compactness,
-	float horizontal_line_pos)
-{
-	this->initParam();
-	ASSERT(filename!="");
-	SetImageData(filename,filesavepath);
-	SetSlicParameter(spcount,compactness);	
-	InitMemoryData(nullptr,filename,filesavepath,spcount,compactness);
-	this->Seg_HorizontalLinePos=horizontal_line_pos*this->ImgHeight;
-	this->Seg_HorizontalLinePosScale=horizontal_line_pos;
-}
 /*----------------------------------------------------------------*/
 /**
 *
@@ -40,14 +14,13 @@ ImageData::ImageData(
 	IplImage* img,
 	string filesavepath,
 	int spcount,
-	double compactness,
 	float horizontal_line_pos)
 {
 	string filename="MemoryIMG";
 	this->initParam();
 	SetImageData(filename,filesavepath);
-	SetSlicParameter(spcount,compactness);	
-	InitMemoryData(img,filename,filesavepath,spcount,compactness);
+	SetSlicParameter(spcount,10);	
+	InitMemoryData(img,filename,filesavepath,spcount,10);
 	this->Seg_HorizontalLinePos=horizontal_line_pos*this->ImgHeight;
 	this->Seg_HorizontalLinePosScale=horizontal_line_pos;
 }
@@ -66,7 +39,7 @@ ImageData::ImageData(
 	this->initParam();
 	ASSERT(filename!="");
 	SetImageData(filename,filesavepath);
-	SetSlicParameter(spcount,0);	
+	SetSlicParameter(spcount,10);	
 	InitMemoryData(nullptr,filename,filesavepath,spcount,0);
 	this->Seg_HorizontalLinePos=horizontal_line_pos*this->ImgHeight;
 	this->Seg_HorizontalLinePosScale=horizontal_line_pos;
@@ -105,11 +78,13 @@ void ImageData::initParam(void)
 	m_lvec=NULL;
 	m_avec=NULL;
 	m_bvec=NULL;
+#if COLOR_ThetaML_PROC
 	sita_n=NULL;
 	m_n=NULL;
 	L_n=NULL;
 	X_n=NULL;
 	Y_n=NULL;
+#endif // COLOR_ThetaML_PROC
 	this->Matrix_E=NULL;
 	this->InitTimes=0;
 	src_ImgLabelsSVG=NULL;
@@ -179,13 +154,13 @@ void ImageData::ReleaseMemory(void)
 	delete[]  m_lvec;
 	delete[]  m_avec;
 	delete[]  m_bvec;
-	//////////////////////
+#if COLOR_ThetaML_PROC
 	delete[]    sita_n;
 	delete[]    m_n;
 	delete[]    L_n;
 	delete[]    X_n;
 	delete[]    Y_n;
-	///////////////////////
+#endif // COLOR_ThetaML_PROC
 	delete[]  src_ImgLabels;
 	delete[]  src_ImgLabelsSVG;
 	delete[]  src_ImgBGRA;
@@ -235,16 +210,15 @@ void ImageData::ReleaseMemory(void)
 	 TRACE_FUNC();
 	 ReleaseMemory();
 	 /*************************************************************************************************/ 
-	
-	 IplImage *src_img_t;
-	if (img==nullptr){
-		 printf("cvLoadImage: %s \n",filename.c_str());
+	 printf("cvLoadImage: %s \n", filename.c_str());
+	 IplImage *src_img_t=nullptr;
+
+	if (img==nullptr){		
 		 src_img_t=cvLoadImage(filename.c_str(),CV_LOAD_IMAGE_UNCHANGED); 
 		 if (src_img_t==NULL){
 			printf("cvLoadImage: Fail %s \n",filename.c_str());
 		 }
-	}else{
-		printf("cvCreateImage: %s \n");
+	}else{		
 		src_img_t=cvCreateImage(cvGetSize(img),img->depth,4);
 		if (img->nChannels==4){
 			 cvCopyImage(img,src_img_t);
@@ -288,18 +262,17 @@ void ImageData::ReleaseMemory(void)
 	   m_lvec=new double[sz];
 	   m_avec=new double[sz];
 	   m_bvec=new double[sz];
-	   ImageColorSpaceLAB::DoRGBtoLABConversion(src_ImgBGRA, m_lvec, m_avec, m_bvec,ImgWidth,ImgHeight);
+	   ColorSpaceLabTable::DoRGBtoLABConversion(src_ImgBGRA, m_lvec, m_avec, m_bvec,ImgWidth,ImgHeight);
 	 /*********************************************************************/
+#if COLOR_ThetaML_PROC
 	   sita_n=new double[sz];
 	   m_n=new double[sz];
 	   L_n=new double[sz];
 	   X_n=new double[sz];
 	   Y_n=new double[sz];
-	   initThetaMLXY();
-	   /*********************************************************************/
-	   //Matrix_E=new UINT32[sz];
-	   /*********************************************************************/
-	   //this->FillWeightArrayZlmParallel();
+#endif // COLOR_ThetaML_PROC
+
+		/*********************************************************************/
 	   this->pYweight_G=new double[ImgHeight];
 	   this->pYweight_S=new double[ImgHeight];
 	   this->pYweight_V=new double[ImgHeight];
@@ -491,16 +464,44 @@ void ImageData::initThetaMLXY(void)
 {
 	TRACE_FUNC();
 	TimeCountStart();
+	
 	for (int x=0;x<ImgWidth;x++){
 		for (int  y=0;y<ImgHeight;y++){
 			const int Idx=y*ImgWidth+x;
-			ImageColorSpaceThetaML::ConvertLab2ThetaML(m_lvec[Idx],	m_avec[Idx],	m_bvec[Idx],	x,	y,
+
+#if COLOR_ThetaML_PROC
+			ImageColorSpaceThetaML::ConvertLab2ThetaML(
+				m_lvec[Idx],	m_avec[Idx],	m_bvec[Idx],	x,	y,
 				ImgWidth,
 				ImgHeight,
-														sita_n[Idx],	m_n[Idx],	L_n[Idx],	X_n[Idx],	Y_n[Idx]);
+				sita_n[Idx],	m_n[Idx],	L_n[Idx],	X_n[Idx],	Y_n[Idx]);
+#endif // COLOR_ThetaML_PROC
+
 		}
 	}
+	
 	TimeCountStop("######(θ,m,l,x,y) Cost Time :");
+}
+/*----------------------------------------------------------------*/
+/**
+*
+*
+*
+*/
+/*----------------------------------------------------------------*/
+void ImageData::initLABXY(void)
+{
+
+	for (int x = 0; x<ImgWidth; x++) {
+		for (int y = 0; y<ImgHeight; y++) {
+
+				const int Idx = y*ImgWidth + x;				
+				X_n[Idx]=x;
+				Y_n[Idx]=y;
+
+		}
+	}
+	
 }
 /*---------------------------------------------------------------------------------*/
 /**
@@ -591,12 +592,15 @@ void ImageData::GetThetaMLXYSeeds_ForGivenStepSize_Rectangle(
 	kseedsy.resize(numseeds);
 #endif
 	
-	
+#if COLOR_ThetaML_PROC
 		kseedsTheta.resize(numseeds);
 		kseedsM.resize(numseeds);
 		kseedsL.resize(numseeds);
 		kseedsX.resize(numseeds);
 		kseedsY.resize(numseeds);
+#endif // COLOR_ThetaML_PROC
+
+
 
 	
 	for( int y = 0; y < ystrips; y++ )
@@ -617,12 +621,14 @@ void ImageData::GetThetaMLXYSeeds_ForGivenStepSize_Rectangle(
 				kseedsx[n] = seedx;
 				kseedsy[n] = seedy;	
 #endif				
-				///////////////////////
+			
+#if				COLOR_ThetaML_PROC
 				kseedsTheta[n]=sita_n[i];
 				kseedsM[n]=m_n[i];
 				kseedsL[n]=L_n[i];
 				kseedsX[n]=X_n[i];
 				kseedsY[n]=Y_n[i];
+#endif
 				n++;
 			}
 			
@@ -1535,7 +1541,7 @@ void ImageData::FillHoleOnSVGLables(
 			for (int y=0;y<this->ImgHeight;y++){
 				unsigned long index=y*this->ImgWidth+x;
 				ASSERT(index<this->ImgWidth*this->ImgHeight);
-				if (Lables_SVG[index]==Vertical){
+				if (Lables_SVG[index]== CLASSIFY_SVG_VERTICAL){
 					Lables_V[index]=WhiteColorPNG;
 				}else{
 					Lables_V[index]=BlackColorPNG;
@@ -1881,7 +1887,7 @@ void ImageData::SeparateSp(void)
 				category_sp="_ground_";
 			}
 			
-			if ((Matrix_Category_Lable[spi]==Vertical)
+			if ((Matrix_Category_Lable[spi]== CLASSIFY_SVG_VERTICAL)
 				||(Matrix_Category_Lable[spi]==Vertical_Tree)
 				||(Matrix_Category_Lable[spi]==Vertical_Building)){
 					category_sp="_vertical_";

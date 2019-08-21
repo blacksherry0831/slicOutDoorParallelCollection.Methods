@@ -9,6 +9,9 @@
 /*----------------------------------------------------------------*/
 #define SaveContours2Disk TRUE
 /*----------------------------------------------------------------*/
+#define  COLOR_ThetaML_PROC			TRUE
+#define  COLOR_LAB_PROC				TRUE
+/*----------------------------------------------------------------*/
 /**
 *本类包含了图像处理算法中一些通用的数据结构\n
 *和运算用到的中间变量
@@ -22,18 +25,11 @@ public:
 		string filename,
 		string filesavepath,
 		int spcount,
-		double compactness,
-		float horizontal_line_pos);
-	ImageData(
-		string filename,
-		string filesavepath,
-		int spcount,
 		float horizontal_line_pos);
 	ImageData(
 		IplImage* img,
 		string filesavepath="",
 		int spcount=800,
-		double compactness=8,
 		float horizontal_line_pos=0.5);
 	~ImageData(void);
 	void ReleaseMemory(void);
@@ -83,25 +79,38 @@ public:
 	double*		m_lvec;//(0,100)
 	double*		m_avec;//(-128,127)
 	double*		m_bvec;//(-128,127)
-	double*     sita_n;
-	double*     m_n;
-	double*     L_n;
-	double*     X_n;
-	double*     Y_n;
+
 	vector<double> kseedsl;
 	vector<double> kseedsa;
 	vector<double> kseedsb;
 	vector<double> kseedsx;
 	vector<double> kseedsy;
+
+#if COLOR_ThetaML_PROC
+
+	double*     sita_n;
+	double*     m_n;
+	double*     L_n;
+	double*     X_n;
+	double*     Y_n;
+
 	vector<double> kseedsTheta;
 	vector<double> kseedsM;
 	vector<double> kseedsL;
 	vector<double> kseedsX;
 	vector<double> kseedsY;
+
 	float alpha;
 	float betta;
 	float gama;
 	float fai;
+
+#endif // COLOR_ThetaML_PROC
+
+	void initThetaMLXY(void);
+	
+	void initLABXY(void);
+	
 public:
 	SP_PROPERTY *p_SpProperty;/**<代表超像素属性的数据结构*/
 	SpSetProperty SpSet;
@@ -118,7 +127,9 @@ public:
 	void ImageGetSeedsLabxy_cuda();
 	void ImageGetSeedsThetaML_cuda();
 
-void initThetaMLXY(void);
+
+
+
 void GetMatrixE(void);
 void SetImgLabels(void);
 unsigned int GetGCD(unsigned int a, unsigned int b);

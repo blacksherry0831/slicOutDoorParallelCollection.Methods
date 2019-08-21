@@ -215,7 +215,7 @@ void ComputeSVG2::CalculateSpClassification(int* Matrix_Category_Lable_host)
 		//////////////////////////////////////////////////////////////
 		if ((VerticalWeightSp_host[spi]>=SkyWeightSp_host[spi])
 			&&(VerticalWeightSp_host[spi]>=GroundWeightSp_host[spi])){
-				Matrix_Category_Lable_host[spi]=Vertical;
+				Matrix_Category_Lable_host[spi]= CLASSIFY_SVG_VERTICAL;
 		}	
 		////////////////////////////////////////////////////////////
 #endif
@@ -539,7 +539,7 @@ void ComputeSVG2::DivideSkyV(
 
 				pIMD->SpSet.SpPropertySet[sp].ComputeCategory=Sky;
 			}else{
-				pIMD->SpSet.SpPropertySet[sp].ComputeCategory=Vertical;			
+				pIMD->SpSet.SpPropertySet[sp].ComputeCategory= CLASSIFY_SVG_VERTICAL;
 			}
 			/////////////////
 		}
@@ -699,7 +699,7 @@ void ComputeSVG2::RemoveSkyBySquareMeter(void)
 	for (int smi=0;smi<squareMeter.size();smi++){
 		if ((squareMeter[smi]<ThresholdSquareMetercurrent)&&(SkyBlocks[smi].size()>0)){
 			for (int si=0;si<SkyBlocks[smi].size();si++){
-				pIMD->SpSet.SpPropertySet[SkyBlocks[smi][si]].ComputeCategory=Vertical;
+				pIMD->SpSet.SpPropertySet[SkyBlocks[smi][si]].ComputeCategory= CLASSIFY_SVG_VERTICAL;
 			}
 		}		
 	}
@@ -727,7 +727,7 @@ void ComputeSVG2::zlm_ForceVertical_SG(void)
 						double DeVG=CalculateVGDifference(sp);
 						if (DeVG<0.47){
 							//分割上边沿大于0.1设为立面
-							pIMD->SpSet.SpPropertySet[sp].ComputeCategory=Vertical;
+							pIMD->SpSet.SpPropertySet[sp].ComputeCategory= CLASSIFY_SVG_VERTICAL;
 						}
 					}
 
@@ -749,7 +749,7 @@ void ComputeSVG2::zlm_ForceVertical_WidthHeight(void)
 		if (pIMD->SpSet.SpPropertySet[spi].ComputeCategory==Ground){
 			HeightWidthScale[spi]=1.0*pIMD->SpSet.SpPropertySet[spi].height/pIMD->SpSet.SpPropertySet[spi].width;
 			if (HeightWidthScale[spi]>2){
-				pIMD->SpSet.SpPropertySet[spi].ComputeCategory=Vertical;
+				pIMD->SpSet.SpPropertySet[spi].ComputeCategory= CLASSIFY_SVG_VERTICAL;
 			}
 		}
 	}
@@ -774,7 +774,7 @@ void ComputeSVG2::zlm_ForceVertical_De(void)
 				double DeVG=CalculateVGDifference(sp);
 				if (DeVG<0.15){
 					//分割上边沿大于0.1设为立面
-					pIMD->SpSet.SpPropertySet[sp].ComputeCategory=Vertical;
+					pIMD->SpSet.SpPropertySet[sp].ComputeCategory= CLASSIFY_SVG_VERTICAL;
 				}
 			}
 
@@ -817,7 +817,7 @@ void ComputeSVG2::RemoveGroundByPosition2(void)
 			if (pIMD->SpSet.SpPropertySet[spi].Gnd_Candidate==true){
 				pIMD->SpSet.SpPropertySet[spi].ComputeCategory=Ground;
 			}else{
-				pIMD->SpSet.SpPropertySet[spi].ComputeCategory=Vertical;
+				pIMD->SpSet.SpPropertySet[spi].ComputeCategory= CLASSIFY_SVG_VERTICAL;
 			}
 		}
 	}

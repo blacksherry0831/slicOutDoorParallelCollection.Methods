@@ -1,10 +1,9 @@
 #ifndef CPP_DEF_H
 #define CPP_DEF_H
 /*-----------------------------------------*/
-/**
-*
-*
-*/
+#include <cpp_def_type.h>
+/*-----------------------------------------*/
+#include <cpp_linux_def.h>
 /*-----------------------------------------*/
 #ifndef  C_STD_LIB_ASSERT
 #include <assert.h>
@@ -23,71 +22,15 @@
 #define FALSE 0
 #endif
 /*-----------------------------------------*/
-#if linux||__linux||__linux__||__GNUC__
-#ifndef nullptr
-#define nullptr 0
-#endif
-#endif
-/*-----------------------------------------*/
-#ifndef DWORD
-typedef unsigned long       DWORD;
-#endif
-/*-----------------------------------------*/
-#ifndef BOOL
-typedef int                 BOOL;
-#endif
-/*-----------------------------------------*/
-#ifndef BYTE
-typedef unsigned char       BYTE;
-#endif
-/*-----------------------------------------*/
-#ifndef UINT32
-typedef unsigned int UINT32;
-#endif
-/*-----------------------------------------*/
-#ifndef BOOL
-typedef int BOOL;
-#endif
-/*-----------------------------------------*/
-#ifndef INT32
-typedef signed int INT32;
-#endif
-/*-----------------------------------------*/
-#ifndef ULONGLONG
-typedef unsigned long long ULONGLONG;
-#endif
-/*-----------------------------------------*/
-#ifndef LPVOID
+#ifndef TimeCountClockTest
+#define TimeCountClockTest
 
-#if __GNUC__
-#define LPVOID  void *
-#endif
+#define TimeCountStart()	double dur=0;clock_t start,end;start = clock();
+
+#define TimeCountStop(MESSAGE_TIME_END)		end = clock();dur = (double)(end - start);printf("%s(S):%0.3f\n",MESSAGE_TIME_END,(dur/CLOCKS_PER_SEC));
+
 
 #endif
-/*-----------------------------------------*/
-#ifndef PVOID
-typedef void *PVOID;
-#endif
-/*-----------------------------------------*/
-#ifndef HANDLE
-typedef PVOID HANDLE;
-#endif
-/*-----------------------------------------*/
-#ifndef UINT
-typedef unsigned int UINT;
-#endif // !UINT
-/*-----------------------------------------*/
-#ifndef PUINT
-typedef unsigned int        *PUINT;
-#endif // !1
-/*-----------------------------------------*/
-#ifndef boolean
-typedef unsigned char boolean;
-#endif // !boolean
-/*-----------------------------------------*/
-
-/*-----------------------------------------*/
-
 /*-----------------------------------------*/
 #endif
 

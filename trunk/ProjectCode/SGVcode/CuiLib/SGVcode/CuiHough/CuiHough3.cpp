@@ -264,7 +264,7 @@ void CuiHough3::SetGVsegmentPoint(void)
 		 for (register int x=0;x<cui_Width;x++){
 			 for (register int y=0;y<cui_Height;y++){
 				 if (cui_ImgLables_SVG_t[y*cui_Width+x]==Sky){
-					 cui_ImgLables_SVG_t[y*cui_Width+x]=Vertical;
+					 cui_ImgLables_SVG_t[y*cui_Width+x]= CLASSIFY_SVG_VERTICAL;
 				 }
 			 }
 		 }
@@ -745,11 +745,11 @@ int  CuiHough3::Getthickness(int category_t){
 #endif
 	if (category_t==Ground){
 		return 1;
-	 }else if (category_t==Vertical){
+	 }else if (category_t== CLASSIFY_SVG_VERTICAL){
 		 return 1;
 	 }else if (category_t==Sky){
 		 return -1;		 
-	 }else if(category_t==Remove){
+	 }else if(category_t== CLASSIFY_SVG_REMOVE){
 	 	 return -1;
 	 }else if (category_t==Unclassify){
 		 return 1;
@@ -890,7 +890,7 @@ int  CuiHough3::Getthickness(int category_t){
 		 return position1;
 	 }else{
 
-		 return Remove;
+		 return CLASSIFY_SVG_REMOVE;
 	 }
  }
 /*------------------------------------------------------------------------------------------------------------*/
@@ -1168,7 +1168,7 @@ int  CuiHough3::Getthickness(int category_t){
  {
 	 for (register int li=0;li<line_len;li++){
 		 if (line_data[li].alpha_angle==90){
-				 line_data[li].Category=Remove;
+				 line_data[li].Category= CLASSIFY_SVG_REMOVE;
 		 }
 	 }
  }
@@ -2720,7 +2720,7 @@ void CuiHough3::HoughLineClassifyGV(void)
 		Y_SegPosition=GetSegmentPoint(x);
 	   for (register  int y=cui_Height-1;y>=0;y--){
 			 if (y>=Y_SegPosition){
-				 if (Vertical==cui_Matrix_Category_Lable[cui_ImgLables[y*cui_Width+x]]){
+				 if (CLASSIFY_SVG_VERTICAL ==cui_Matrix_Category_Lable[cui_ImgLables[y*cui_Width+x]]){
 						 this->cui_ImgLables_SVG[y*cui_Width+x]=Ground;
 				 }
 				
@@ -2728,7 +2728,7 @@ void CuiHough3::HoughLineClassifyGV(void)
 			 }else{
 				  
 				 if (Ground==cui_Matrix_Category_Lable[cui_ImgLables[y*cui_Width+x]]){
-						 this->cui_ImgLables_SVG[y*cui_Width+x]=Vertical;
+						 this->cui_ImgLables_SVG[y*cui_Width+x]= CLASSIFY_SVG_VERTICAL;
 				   }
 				
 			 
@@ -2779,11 +2779,11 @@ void CuiHough3::HoughLineClassifyGV2(void)
 		Y_SegPosition=std::max((GndSegment.GndSegLine[1].a*x+GndSegment.GndSegLine[1].b),max_vpy);
 		for (register  int y=cui_Height-1;y>=0;y--){
 			if (this->cui_ImgLables_SVG[y*cui_Width+x]==Ground){
-				this->cui_ImgLables_SVG[y*cui_Width+x]=Vertical;
+				this->cui_ImgLables_SVG[y*cui_Width+x]= CLASSIFY_SVG_VERTICAL;
 			}
 			if (y<Y_SegPosition){
 				if (this->cui_ImgLables_SVG[y*cui_Width+x]<0){
-					this->cui_ImgLables_SVG[y*cui_Width+x]=Vertical;
+					this->cui_ImgLables_SVG[y*cui_Width+x]= CLASSIFY_SVG_VERTICAL;
 				}
 			}
 		}
@@ -3590,7 +3590,7 @@ void CuiHough3::UseEyeLevel2AdjustSVG(
 			if (y<Y_SegPosition){
 				//视平线之上的地为立面
 				if (cui_ImgLables_SVG[y*Width+x]==Ground){
-					cui_ImgLables_SVG[y*Width+x]=Vertical;
+					cui_ImgLables_SVG[y*Width+x]= CLASSIFY_SVG_VERTICAL;
 				}
 			}
 #if 0
@@ -3704,7 +3704,7 @@ void CuiHough3::Use1HorizontalLine2CutGV(LINEDATA line){
 		if (y<Y_SegPosition){
 				//视平线之上的地为立面
 				if (cui_ImgLables_SVG[y*cui_Width+x]==Ground){
-					cui_ImgLables_SVG[y*cui_Width+x]=Vertical;
+					cui_ImgLables_SVG[y*cui_Width+x]= CLASSIFY_SVG_VERTICAL;
 				}
 			}
 #endif	

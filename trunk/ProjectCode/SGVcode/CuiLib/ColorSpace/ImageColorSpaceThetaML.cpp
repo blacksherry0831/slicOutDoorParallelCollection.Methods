@@ -25,12 +25,12 @@ ImageColorSpaceThetaML::~ImageColorSpaceThetaML()
 */
 /*----------------------------------------------------------------*/
 void ImageColorSpaceThetaML::ColorSpaceLab2ThetaML(
-	const double L,
-	const double A,
-	const double B,
-	double & _theta,
-	double & _m,
-	double & _l)
+		const double L,
+		const double A,
+		const double B,
+		double & _theta,
+		double & _m,
+		double & _l)
 {
 	const float LAB_M_MAX = 128 * 1.4142135623731;
 	const float X2_PI = 2 * CV_PI;
@@ -56,7 +56,7 @@ void ImageColorSpaceThetaML::ColorSpaceLab2ThetaML(
 *
 */
 /*----------------------------------------------------------------*/
-inline void ImageColorSpaceThetaML::ConvertLab2ThetaML(
+void ImageColorSpaceThetaML::ConvertLab2ThetaML(
 	const double L,
 	const double A,
 	const double B,
@@ -70,18 +70,22 @@ inline void ImageColorSpaceThetaML::ConvertLab2ThetaML(
 	double& X_n,
 	double& Y_n)
 {		
+#if _DEBUG
 	CheckXY(X, Y, WIDTH, HEIGHT);		
 	CheckLab(L, A, B);
-
+#endif // _DEBUG
+	
 	X_n = X / WIDTH;
 	Y_n = Y / HEIGHT;
 	ColorSpaceLab2ThetaML(L, A, B, sita_n, m_n, L_n);
 
+#if _DEBUG
 	DbgRangeCheck::Check01(X_n);
 	DbgRangeCheck::Check01(Y_n);
 	DbgRangeCheck::Check01(sita_n);
 	DbgRangeCheck::Check01(m_n);
 	DbgRangeCheck::Check01(L_n);
+#endif // _DEBUG
 }
 /*----------------------------------------------------------------*/
 /**
@@ -90,7 +94,7 @@ inline void ImageColorSpaceThetaML::ConvertLab2ThetaML(
 *
 */
 /*----------------------------------------------------------------*/
-inline void ImageColorSpaceThetaML::CheckXY(const double X, const double Y, const int WIDTH, const int HEIGHT)
+void ImageColorSpaceThetaML::CheckXY(const double X, const double Y, const int WIDTH, const int HEIGHT)
 {
 	const float EPS = 1E-3;
 	ASSERT(X >= 0 - EPS && X <= WIDTH + EPS);
@@ -103,7 +107,7 @@ inline void ImageColorSpaceThetaML::CheckXY(const double X, const double Y, cons
 *
 */
 /*----------------------------------------------------------------*/
-inline void ImageColorSpaceThetaML::CheckLab(const double L, const double A, const double B)
+void ImageColorSpaceThetaML::CheckLab(const double L, const double A, const double B)
 {
 	const float EPS = 0.5;
 

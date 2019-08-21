@@ -41,6 +41,7 @@ SET(LINK_LIB
 	         SVMcode
 	         SGVBaseCode
 			 ColorSpace
+			 MY_SDK_LIB
 	)
 ###############################################################################
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")  
@@ -90,8 +91,13 @@ SET(BASE_SRCS
 		SpectralClusterInDoor.cpp
 		SpectralClustering.cpp
 		ImageMemData.cpp
+		
 		ImageData.cpp
+		ImageDataBasic.cpp
+		ImageDataLABXY.cpp
+		
 		cui_GeneralImgProcess.cpp
+		ImageSaveProc.cpp
 	)  
 SET(BASE_LINK_LIB 
 	         FilePathName
@@ -100,6 +106,7 @@ SET(BASE_LINK_LIB
 	         SVMcode
 	         SGVcode
 			 ColorSpace
+			 MY_SDK_LIB
 	)
 ADD_LIBRARY(SGVBaseCode  STATIC     ${BASE_SRCS}  )
 TARGET_LINK_LIBRARIES(SGVBaseCode ${BASE_LINK_LIB})

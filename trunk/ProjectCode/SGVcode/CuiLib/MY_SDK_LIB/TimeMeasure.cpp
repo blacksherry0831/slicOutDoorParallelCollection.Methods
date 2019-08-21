@@ -1,6 +1,9 @@
 #include "StdAfx.h"
 #include "TimeMeasure.hpp"
 /*-----------------------------------------*/
+const std::string	TimeMeasure::mFile="TimeMweasure.dbg.txt";
+int					TimeMeasure::mUsed=1;
+/*-----------------------------------------*/
 /**
 *
 *
@@ -8,7 +11,9 @@
 /*-----------------------------------------*/
 TimeMeasure::TimeMeasure(std::string _event)
 {
-	this->start(_event);
+	if (mUsed) {
+		this->start(_event);	
+	}
 }
 /*-----------------------------------------*/
 /**
@@ -28,10 +33,33 @@ TimeMeasure::TimeMeasure(void)
 /*-----------------------------------------*/
 TimeMeasure::~TimeMeasure(void)
 {
-	if (this->IsTimeMeasure)
-	{
-		this->stop();
+	if (mUsed) {
+		if (this->IsTimeMeasure)
+		{
+			this->stop();
+		}
 	}
+
+}
+/*-----------------------------------------*/
+/**
+*
+*
+*/
+/*-----------------------------------------*/
+void TimeMeasure::Write2File(std::string _msg)
+{
+	ofstream outfile;
+
+	outfile.open(mFile,ios::app);
+	
+	if (outfile.is_open()){
+		
+		outfile << _msg << endl;
+		outfile.close();
+
+	}
+
 }
 /*-----------------------------------------*/
 /**
@@ -92,8 +120,20 @@ std::string TimeMeasure::stop()
 
 	this->IsTimeMeasure = FALSE;
 
+	Write2File(msg_t);
+
 	return msg_t;
 	
+}
+/*-----------------------------------------*/
+/**
+*
+*
+*/
+/*-----------------------------------------*/
+void TimeMeasure::SetTimeMeasure(const int _u)
+{
+	mUsed = _u;
 }
 /*-----------------------------------------*/
 /**

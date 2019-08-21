@@ -4,6 +4,8 @@
 #include "cpp_def.h"
 #include "cpp_def_debug.h"
 /*----------------------------------------------------------------*/
+#include "ColorSpaceLAB.h"
+/*----------------------------------------------------------------*/
 /**
 *
 *
@@ -35,26 +37,6 @@ public:
 private:
 			void initParam();
 public:
-
-static		void DoRGBtoLABConversion(
-			const unsigned int*		ubuff,
-			double*					lvec,
-			double*					avec,
-			double*					bvec,
-			int                     width,
-			int                     height);
-
-static		void RGB2LAB(
-			const int& sR, const int& sG, const int& sB, 
-			double& lval, double& aval, double& bval);
-
-static		void RGB2XYZ(
-			const int&		sR,
-			const int&		sG,
-			const int&		sB,
-			double&			X,
-			double&			Y,
-			double&			Z);
 
 static		void ConvertImg2Eighth4Ch(IplImage **src);
 static		void ConvertImg3ChTo4Ch(IplImage **src);

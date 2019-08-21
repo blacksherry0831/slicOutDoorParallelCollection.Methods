@@ -10,6 +10,8 @@
 #include "ColorSpace/ImageColorSpaceLAB.h"
 #include "ColorSpace/ImageColorSpaceThetaML.h"
 /*----------------------------------------------------------------------------------------------------------------*/
+#include "MY_SDK_LIB/TimeMeasure.hpp"
+/*----------------------------------------------------------------------------------------------------------------*/
 /** 
 *构造函数
 *完成变量初始化
@@ -1544,7 +1546,7 @@ if(perturbseeds)
 #if TRUE
     pIMD->GetThetaMLXYSeeds_ForGivenStepSize_Rectangle(perturbseeds,edgemag);
 #endif	
-#if 1
+#if COLOR_ThetaML_PROC
 	PerformSuperpixelSLIC_ThetaMLXY_cuda(
 		alpha,betta,gama,fai,
 		 numlabels,
@@ -1640,7 +1642,6 @@ void SLIC::DoSuperpixelSegmentation_ForGivenSuperpixelSize_sitaMLxyIncompletion(
 		STEP,
 		nullptr,
 		0);
-	//	FillImgWithSeeds(kseedsl,kseedsa,kseedsb,kseedsx,kseedsy);
 #endif
 	
 
@@ -1653,7 +1654,6 @@ void SLIC::DoSuperpixelSegmentation_ForGivenSuperpixelSize_sitaMLxyIncompletion(
 		nlabels, 
 		numlabels,
 		double(sz)/double(STEP*STEP));
-
 	{
 		for(register int i = 0; i < sz; i++ )
 			klabels[i] = nlabels[i];
@@ -2006,15 +2006,9 @@ void SLIC::CuiDoSuperpixelSegmentation_ForGivenNumberOfSuperpixels( int& K, doub
 void SLIC::DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy(int savelable)
 {
 	TRACE_FUNC();
-#if _MSC_VER&&_DEBUG
-	LARGE_INTEGER litmp;
-	LONGLONG QPart1,QPart2;
-	double dfMinus, dfFreq, dfTim;
-	QueryPerformanceFrequency(&litmp);
-	dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
-	QueryPerformanceCounter(&litmp);
-	QPart1 = litmp.QuadPart;// 获得初始值
-	/*double compactness=8;*/
+#if _DEBUG
+	TimeMeasure tm;
+	tm.start("超像素计算时间");
 #endif
 	{
 		ASSERT(pIMD->ImgHeight==this->CuiHeight);
@@ -2059,12 +2053,8 @@ void SLIC::DoSuperpixelSegmentation_ForGivenNumberOfSuperpixels_sitaMLxy(int sav
 	pIMD->DrawContours();
 #endif
 	/////////////////////////////////////////////////////
-#if _MSC_VER&&_DEBUG
-    QueryPerformanceCounter(&litmp);
-	QPart2 = litmp.QuadPart;//获得中止值
-	dfMinus = (double)(QPart2-QPart1);
-	dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
-	TRACE("\n 超像素计算时间: %f（秒）",dfTim);
+#if _DEBUG
+	tm.stop();
 #endif	
 	/*************************************************************/
 	pIMD->initMemData(pIMD->src_ImgLabels);
@@ -3920,7 +3910,6 @@ unsigned int SLIC::GetGCD(unsigned int a, unsigned int b)
 	}
 	return a;
 }
-
 /*---------------------------------------------------------------------------------*/
 /**
 *显示距离图像

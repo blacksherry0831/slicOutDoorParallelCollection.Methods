@@ -134,3 +134,55 @@ double DistanceColorSpace::CalDistLThetaMXY_Basic(
 *
 */
 /*----------------------------------------------------------------*/
+double DistanceColorSpace::CalDistLAB_Basic_Square(
+	const double & L0,
+	const double & A0,
+	const double & B0,
+	const double & X0,
+	const double & Y0,
+	const double & L1,
+	const double & A1,
+	const double & B1,
+	const double & X1,
+	const double & Y1,
+	const double & INVWT)
+{
+	const double dst = (L1 - L0)*(L1 - L0)+(B1 - B0)*(B1 - B0) + (A1 - A0)*(A1 - A0);
+	const double dst_xy = (X1 - X0)*(X1 - X0) + (Y1 - Y0)*(Y1 - Y0);
+	const double dist_labxy = dst + dst_xy;
+	return dist_labxy;
+}
+/*----------------------------------------------------------------*/
+/**
+*
+*/
+/*----------------------------------------------------------------*/
+double DistanceColorSpace::CalDistLAB_Basic_Square_INVWT(
+	const int WIDTH,
+	const int HEIGHT,
+	const double & K,
+	const double &M)
+{
+	const double STEP = CalDistLAB_Basic_Square_STEP(WIDTH,HEIGHT,K);
+	const double invwt = 1.0 / ((STEP / M)*(STEP / M));
+	return	invwt;
+}
+/*----------------------------------------------------------------*/
+/**
+*
+*/
+/*----------------------------------------------------------------*/
+double DistanceColorSpace::CalDistLAB_Basic_Square_STEP(
+	const int WIDTH,
+	const int HEIGHT,
+	const double  K)
+{
+	const double SizeSuperPixel = 0.5 + (WIDTH*HEIGHT) / K;
+	const double STEP = sqrt(SizeSuperPixel) + 0.5;
+	return	STEP;
+}
+/*----------------------------------------------------------------*/
+/**
+*
+*/
+/*----------------------------------------------------------------*/

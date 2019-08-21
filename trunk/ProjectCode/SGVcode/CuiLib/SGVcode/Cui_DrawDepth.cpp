@@ -366,7 +366,7 @@ void Cui_DrawDepth::DrawVerticalDepth(void)
 	for (register int x=0;x<cui_Width;x++){
 		 bool is_color_get=false;
 		for (register int y=cui_Height-1;y>=0;y--){
-			if (cui_ImgLables_SVG[y*cui_Width+x]==Vertical){
+			if (cui_ImgLables_SVG[y*cui_Width+x]== CLASSIFY_SVG_VERTICAL){
 				if (is_color_get==false){
 					color_t=this->GetGroundColor(this->GetPointAngleD0(x,y));
 					is_color_get=true;
@@ -392,7 +392,7 @@ void Cui_DrawDepth::DrawVerticalDepth_forZlm(void)
 	for (register int x=0;x<cui_Width;x++){
 		bool is_color_get=false;
 		for (register int y=cui_Height-1;y>=0;y--){
-			if (cui_ImgLables_SVG[y*cui_Width+x]==Vertical){
+			if (cui_ImgLables_SVG[y*cui_Width+x]== CLASSIFY_SVG_VERTICAL){
 				
 					color_t=this->GetGroundColor(this->GetPointAngleD0_forZlm(x,y));
 
@@ -609,7 +609,7 @@ void Cui_DrawDepth::SetSpProperty(void)
 				}
 			     
 
-			}else if (cui_ImgLables_SVG[y*cui_Width+x]==Vertical){
+			}else if (cui_ImgLables_SVG[y*cui_Width+x]== CLASSIFY_SVG_VERTICAL){
 			
 				if (sp_preperty[1].IsInit_SquareMeter==0){
 					sp_preperty[1].IsInit_SquareMeter=1;

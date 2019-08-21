@@ -25,9 +25,6 @@ ImageMemData::ImageMemData(
 	double compactness,
 	float horizontal_line_pos)
 {
-	//IplImage* a=cvCreateImage(cvSize(100,100),IPL_DEPTH_8U,3);
-//	new int[10];
-	//malloc(100);
 	this->initParam();
 	ASSERT(filename!="");
 	SetImageData(filename,filesavepath);

@@ -18,7 +18,11 @@ add_executable(EXE_NAV
 				)
 
 TARGET_LINK_LIBRARIES(EXE_NAV
+							cudaLib
+							ColorSpace
+							MY_SDK_LIB
 							SGV
-							SGVBaseCode)
+							SGVBaseCode
+							SLIC_EX)
 				
 ######################################

@@ -249,6 +249,9 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CuiLib\ColorSpace\ColorSpaceLAB.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="CuiLib\ColorSpace\DbgRangeCheck.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -265,6 +268,8 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="CuiLib\FilePathName\FileNameSplit.cpp" />
     <ClCompile Include="CuiLib\FilePathName\PointWithDistance.cpp" />
     <ClCompile Include="CuiLib\ML\Kmean\Kmean.cpp" />
+    <ClCompile Include="CuiLib\MY_SDK_LIB\Base.cpp" />
+    <ClCompile Include="CuiLib\MY_SDK_LIB\TimeMeasure.cpp" />
     <ClCompile Include="CuiLib\SGVcode\ColorAnalyzeOnLab.cpp" />
     <ClCompile Include="CuiLib\SGVcode\ColorBarCluster.cpp" />
     <ClCompile Include="CuiLib\SGVcode\ComputeSVG.cpp" />
@@ -308,6 +313,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CuiLib\ColorSpace\ColorSpaceLAB.h" />
     <ClInclude Include="CuiLib\ColorSpace\DbgRangeCheck.h" />
     <ClInclude Include="CuiLib\ColorSpace\DistanceColorSpace.h" />
     <ClInclude Include="CuiLib\ColorSpace\ImageColorSpaceLAB.h" />
@@ -317,6 +323,8 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="CuiLib\FilePathName\PointWithDistance.h" />
     <ClInclude Include="CuiLib\ML\Kmean\Kmean.h" />
     <ClInclude Include="CuiLib\modules.h" />
+    <ClInclude Include="CuiLib\MY_SDK_LIB\Base.h" />
+    <ClInclude Include="CuiLib\MY_SDK_LIB\TimeMeasure.hpp" />
     <ClInclude Include="CuiLib\opencv_stl.h" />
     <ClInclude Include="CuiLib\SGVcode\cfg\cui_confg_400_CUDA_ColorBar20150319.h" />
     <ClInclude Include="CuiLib\SGVcode\ColorAnalyzeOnLab.h" />

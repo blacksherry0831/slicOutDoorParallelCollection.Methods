@@ -532,7 +532,7 @@ INT32* cui_GeneralImgProcess::InitSP2SVGcategory(INT32* category,const int size)
 	INT32* Matrix_Category_Lable_SVG=new INT32[size+10];
 	Matrix_Category_Lable_SVG[0]=0;
 	Matrix_Category_Lable_SVG[1]=Ground;
-	Matrix_Category_Lable_SVG[2]=Vertical;
+	Matrix_Category_Lable_SVG[2]= CLASSIFY_SVG_VERTICAL;
 	Matrix_Category_Lable_SVG[3]=Sky;
 	
 #endif
@@ -544,7 +544,7 @@ INT32* cui_GeneralImgProcess::InitSP2SVGcategory(INT32* category,const int size)
 	memset(category,0,sizeof(INT32)*(size+10));
 	category[Sky]=Sky;
 	category[Ground]=Ground;
-	category[Vertical]=Vertical;
+	category[CLASSIFY_SVG_VERTICAL]= CLASSIFY_SVG_VERTICAL;
 	category[Vertical_Tree]=Vertical_Tree;
 	category[Vertical_Building]=Vertical_Building;
 	return category;
@@ -574,7 +574,7 @@ UINT32* cui_GeneralImgProcess::InitColorTable(UINT32* tab, int size)
 	 }
 	 tab[Unknow]=UnknowColorPNG;
 	 tab[Sky]=SkyColorPNG;
-	 tab[Vertical]=VerticalColorPNG;
+	 tab[CLASSIFY_SVG_VERTICAL]=VerticalColorPNG;
 	 tab[Ground]=GroundColorPNG;
 	 tab[Vertical_Tree]=VerticalTreeColorPNG;
 	 tab[Vertical_Building]=VerticalBuildingColorPNG;
@@ -2961,7 +2961,7 @@ float mstime=dfTim*1000;
 	 for (register int x=0;x<pMD->ImgWidth;x++){
 		 for (register int y=0;y<pMD->ImgHeight;y++){
 			 if (cui_ImgLables_SVG_t[y*pMD->ImgWidth+x]==Sky){
-				 cui_ImgLables_SVG_t[y*pMD->ImgWidth+x]=Vertical;
+				 cui_ImgLables_SVG_t[y*pMD->ImgWidth+x]= CLASSIFY_SVG_VERTICAL;
 			 }
 		 }
 	 }
@@ -3017,7 +3017,7 @@ float mstime=dfTim*1000;
 	 for (register int x=0;x<pMD->ImgWidth;x++){
 		 for (register int y=0;y<pMD->ImgHeight;y++){
 			 if (cui_ImgLables_SVG_t[y*pMD->ImgWidth+x]==Ground){
-				 cui_ImgLables_SVG_t[y*pMD->ImgWidth+x]=Vertical;
+				 cui_ImgLables_SVG_t[y*pMD->ImgWidth+x]= CLASSIFY_SVG_VERTICAL;
 			 }
 		 }
 	 }
@@ -3272,7 +3272,7 @@ void cui_GeneralImgProcess::SaveVector_Double(string path,string filename,int sl
 			 for (int y=0;y<pMD->ImgHeight;y++){
 				 unsigned long index=y*pMD->ImgWidth+x;
 				 ASSERT(index<pMD->ImgWidth*pMD->ImgHeight);
-				 if (Lables_SVG[index]==Vertical){
+				 if (Lables_SVG[index]== CLASSIFY_SVG_VERTICAL){
 					 Lables_V[index]=WhiteColorPNG;
 				 }else{
 					 Lables_V[index]=BlackColorPNG;

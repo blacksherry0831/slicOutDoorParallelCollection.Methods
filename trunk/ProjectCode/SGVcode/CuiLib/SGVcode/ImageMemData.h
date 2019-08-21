@@ -1,7 +1,7 @@
 #pragma once
-#include "../../platform_cui.h"
-#include <string>
-#include <iostream>
+/*----------------------------------------------------------------*/
+#include "cpp_basic.h"
+/*----------------------------------------------------------------*/
 using namespace std;
 #include "ImageType.h"
 #include "ManhattanHistogram.h"

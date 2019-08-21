@@ -288,7 +288,7 @@ double ComputeSVG::classifyOneSuperpixel(int sp)
 		  classify_t=Ground;
 	  }else if (max_wi==1){
 		  //V
-		  classify_t=Vertical;
+		  classify_t= CLASSIFY_SVG_VERTICAL;
 	  }else if (max_wi==2){
 		  //S
 		  classify_t=Sky;
@@ -2225,7 +2225,7 @@ int ComputeSVG::ClassifyOneSPlCategory(int *lables,int width,int height,int sp)
 		return Ground;
 
 	}else if (gnd_w<=vertical_w){
-		return Vertical;
+		return CLASSIFY_SVG_VERTICAL;
 	}else{
 		ASSERT(FALSE);
 		return -1;
@@ -2638,7 +2638,7 @@ void ComputeSVG::ForceSky_InDoor(void)
 #endif
 #if 1
 			if (SceneDetermine::IsVerticalEnergyFocus(hist[spi],AngLeDivided180)){
-				Matrix_Category_Lable[spi]=Vertical;
+				Matrix_Category_Lable[spi]= CLASSIFY_SVG_VERTICAL;
 			}
 #endif
 
@@ -2672,7 +2672,7 @@ void ComputeSVG::ForceGround_InDoor(void)
 #endif
 #if 1
 			if (SceneDetermine::IsVerticalEnergyFocus(hist[spi],AngLeDivided180)){
-				Matrix_Category_Lable[spi]=Vertical;
+				Matrix_Category_Lable[spi]= CLASSIFY_SVG_VERTICAL;
 			}
 #endif
 
@@ -2704,19 +2704,19 @@ void ComputeSVG::DFS_4Vertical2UporDown(int spi)
 	INT32 * Matrix_Category_Lable=pMD->Matrix_Category_Lable_InDoor.get();
 	HistData180 *hist=pMD->Histogram180.get();
 	if(DFS_Depth==1){
-		Matrix_Category_Lable[spi]=Vertical;
+		Matrix_Category_Lable[spi]= CLASSIFY_SVG_VERTICAL;
 	}else{
 		//在天空和立面之间深序遍历
 		if ((Matrix_Category_Lable[spi]==Sky)
 			&&(SceneDetermine::IsVerticalEnergyFocus(hist[spi],AngLeDivided180)==TRUE)){
-				Matrix_Category_Lable[spi]=Vertical;
+				Matrix_Category_Lable[spi]= CLASSIFY_SVG_VERTICAL;
 		}else{
 			//保持原来属性
 		}
 	}
 
 #endif
-	if(Matrix_Category_Lable[spi]==Vertical){
+	if(Matrix_Category_Lable[spi]== CLASSIFY_SVG_VERTICAL){
 		for (int spj=0;spj<pMD->slic_current_num;spj++){
 			if((V[spj]==FALSE)
 				&&(spi!=spj)
@@ -2762,7 +2762,7 @@ void ComputeSVG::DFS_4Vertical2UporDown_ByColor(int spi)
 		;
 	}
 #endif
-	if(Matrix_Category_Lable[spi]==Vertical){
+	if(Matrix_Category_Lable[spi]== CLASSIFY_SVG_VERTICAL){
 		for (int spj=0;spj<pMD->slic_current_num;spj++){
 			if((V[spj]==FALSE)
 				&&(spi!=spj)
@@ -2771,7 +2771,7 @@ void ComputeSVG::DFS_4Vertical2UporDown_ByColor(int spi)
 				TRACE(" %d&&%dAB_LIKKE:  ",spi,spj);
 				bool IsNear=cui_GeneralImgProcess::IsLabClorGroundNear(SpProperty[spj].lab_color,rootColor,1.2,0.95);
 				if (IsNear)	{
-					Matrix_Category_Lable[spj]=Vertical;
+					Matrix_Category_Lable[spj]= CLASSIFY_SVG_VERTICAL;
 					DFS_4Vertical2UporDown(spj);
 					//对访问的邻接顶点递归调用
 				}
@@ -2947,8 +2947,8 @@ void ComputeSVG::InitDFSLinkConnection_Vertical(void)
 		for (int spj=0;spj<pMD->slic_current_num;spj++){
 			if (  (spi!=spj)
 				&&(Matrix_E[spi*pMD->slic_current_num+spj]!=0)
-				&&(Matrix_Category_Lable[spi]==Vertical)
-				&&(Matrix_Category_Lable[spj]!=Vertical)){
+				&&(Matrix_Category_Lable[spi]== CLASSIFY_SVG_VERTICAL)
+				&&(Matrix_Category_Lable[spj]!= CLASSIFY_SVG_VERTICAL)){
 					/*相邻块 一个是 立面另一个不是*/
 					LinkConn[spi]=TRUE;
 					break;
@@ -3213,7 +3213,7 @@ void  ComputeSVG::DFS_RemoveVonG(int spi){
 			&&(spi!=spj)
 			&&(Matrix_E[spi*pMD->slic_current_num+spj]==TRUE))
 		{
-			if ((Matrix_Category_Lable[spj]==Vertical))
+			if ((Matrix_Category_Lable[spj]== CLASSIFY_SVG_VERTICAL))
 			{
 				//Matrix_Category_Lable[spj]=VerticalPending;
 				DFS_RemoveVonG(spj);
@@ -3245,13 +3245,13 @@ void  ComputeSVG::RemoveSunpendVonG_MustHaveS(void){
 	}
 	/********************************************************************************/
 	for (register int spi=0;spi<pMD->slic_current_num;spi++){		 
-		if (Matrix_Category_Lable[spi]==Vertical){
+		if (Matrix_Category_Lable[spi]== CLASSIFY_SVG_VERTICAL){
 			for (register int spj=0;spj<pMD->slic_current_num;spj++){
 
 				if ((0!=Matrix_E[spi*pMD->slic_current_num+spj])&&(spi!=spj)){
 					if (Matrix_Category_Lable[spj]==Sky){
 						LinkConn[spi]=TRUE;
-					}else if(Matrix_Category_Lable[spj]==Vertical){
+					}else if(Matrix_Category_Lable[spj]== CLASSIFY_SVG_VERTICAL){
 						;
 
 					}else if (Matrix_Category_Lable[spj]==Ground){
@@ -3281,8 +3281,8 @@ void  ComputeSVG::RemoveSunpendVonG_MustHaveS(void){
 	/********************************************************************/
 	for (int spj=0;spj<pMD->slic_current_num;spj++){
 		if (Matrix_Category_Lable[spj]==VerticalPending){
-			Matrix_Category_Lable[spj]=Vertical;
-		}else if(Matrix_Category_Lable[spj]==Vertical){
+			Matrix_Category_Lable[spj]= CLASSIFY_SVG_VERTICAL;
+		}else if(Matrix_Category_Lable[spj]== CLASSIFY_SVG_VERTICAL){
 			Matrix_Category_Lable[spj]=Ground;
 		}else{
 			;
@@ -3441,11 +3441,11 @@ void ComputeSVG::VerticalMustHaveSupport_Pixel(void)
 		for (int y=0;y<pMD->Seg_HorizontalLinePos;y++){
 			int index=y*pMD->ImgWidth+x;
 			if (index<pMD->ImgWidth*pMD->ImgHeight){
-				if (ImgLables[index]==Vertical){
+				if (ImgLables[index]== CLASSIFY_SVG_VERTICAL){
 					findV=true;
 				}
 				if (findV==true){
-					ImgLables[index]=Vertical;
+					ImgLables[index]= CLASSIFY_SVG_VERTICAL;
 				}
 			}
 				
@@ -3502,7 +3502,7 @@ void ComputeSVG::VerticalMustHaveSupport_SpPixel(void)
 			int index=y*pMD->ImgWidth+x;
 			ASSERT(index<pMD->ImgWidth*pMD->ImgHeight);
 			int SpCategory=Matrix_Category_Lable[Lables[index]];
-				if (SpCategory==Vertical){
+				if (SpCategory== CLASSIFY_SVG_VERTICAL){
 					findV=true;
 					VerticalYpos=(SpProperty[Lables[index]].max_y+SpProperty[Lables[index]].min_y)/2;
 				}
@@ -3510,7 +3510,7 @@ void ComputeSVG::VerticalMustHaveSupport_SpPixel(void)
 					&&(Matrix_Category_Lable[Lables[index]]==Sky)){
 						int TempVerticalPos=(SpProperty[Lables[index]].max_y+SpProperty[Lables[index]].min_y)/2;
 						if (TempVerticalPos>VerticalYpos){
-							  Matrix_Category_Lable[Lables[index]]=Vertical;
+							  Matrix_Category_Lable[Lables[index]]= CLASSIFY_SVG_VERTICAL;
 						}
 					
 				}
@@ -3533,7 +3533,7 @@ void ComputeSVG::OverHorLineMustVertical(void)
 			int index=y*pMD->ImgWidth+x;
 			if (index<pMD->ImgWidth*pMD->ImgHeight){
 				if (ImgLables[index]==Ground){
-				ImgLables[index]=Vertical;	
+				ImgLables[index]= CLASSIFY_SVG_VERTICAL;
 				}				
 			}
 
@@ -3564,7 +3564,7 @@ void ComputeSVG::DecideFloatingSkySP2V_Init(void)
 			&&(SceneDetermine::IsSpRectangle(hist[spi],AngLeDivided180)==true)
 			&&(SpProperty[spi].IsInit_SquareMeter>=1.5*SpSize)
 			){
-				Matrix_Category_Lable[spi]=Vertical;
+				Matrix_Category_Lable[spi]= CLASSIFY_SVG_VERTICAL;
 #if IN_DOOR
 				LinkConn[spi]=TRUE;
 #endif
@@ -3626,7 +3626,7 @@ void ComputeSVG::DFS_4FloatingSky2Down(int spi)
 	V[spi] = TRUE;
 
 	if (DFS_Depth==1){
-		ASSERT(Matrix_Category_Lable[spi]==Vertical);
+		ASSERT(Matrix_Category_Lable[spi]== CLASSIFY_SVG_VERTICAL);
 	}
 
 	int HeihtPos_I=SpProperty[spi].max_y;
@@ -3640,7 +3640,7 @@ void ComputeSVG::DFS_4FloatingSky2Down(int spi)
 				&&(HeihtPos_J>=HeihtPos_I)
 				&&(TRUE))
 			{
-				Matrix_Category_Lable[spj]=Vertical;
+				Matrix_Category_Lable[spj]= CLASSIFY_SVG_VERTICAL;
 				DFS_4FloatingSky2Down(spj); //对访问的邻接顶点递归调用
 			}
 		}
@@ -3665,7 +3665,7 @@ void ComputeSVG::CrossEyeLineIsVertical(void)
 		for (register int j=0;j<ImgWidth;j++){
 			int sp=cui_ImgLables[hi*ImgWidth+j];//行号就是超像素标号
 			if (hi==pMD->Seg_HorizontalLinePos){
-				Matrix_Category_Lable[sp]=Vertical;
+				Matrix_Category_Lable[sp]= CLASSIFY_SVG_VERTICAL;
 			}
 
 		}
@@ -3733,7 +3733,7 @@ if ((SpProperty[i].IS_UnderHorizontalLine==SpPos_UpHorizontalLine)
 			{
 				ManhattanHistogram mht(hist[i],180);
 				if (mht.IsContourstrip()){
-					Matrix_Category_Lable[i]=Vertical;
+					Matrix_Category_Lable[i]= CLASSIFY_SVG_VERTICAL;
 					StripVerticalNum++;
 				}
 				

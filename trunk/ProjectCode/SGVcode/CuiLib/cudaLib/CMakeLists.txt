@@ -15,11 +15,20 @@ ConfigMFC_2()
 ConfigCUDA()
 
 SET(DIR_SRCS   
-	     fuzzy.cu
-	     HarrWaveletKernel.cu
-	     SlicKernel.cu
-		 CUDA_Code.cpp		 
-		 ) 
+		cuda_base.cu
+		fuzzy.cu
+	    HarrWaveletKernel.cu
+	    SlicKernel.cu
+		
+		slicLab.cu
+		slicLabInt.cu
+		
+		ColorSpace.cu
+		
+		CUDA_Code.cpp		
+		CUDA_Code_LAB.cpp	
+		CUDA_Code_LAB_Int.cpp			
+		) 
 
 
 CUDA_ADD_LIBRARY(cudaLib   STATIC    ${DIR_SRCS}  )

@@ -582,7 +582,7 @@ HistData180 HoughAnalyze::GetHist180VerticalAll(void)
 #endif
 
 	 for (int spi=0;spi<pMD->slic_current_num;spi++){
-		 if (Matrix_Category_Lable[spi]==Vertical){
+		 if (Matrix_Category_Lable[spi]== CLASSIFY_SVG_VERTICAL){
 			 //Í¼¿éÎªÁ¢Ãæ
 			 for(int ai=0;ai<HistDimension;ai++){
 
@@ -905,10 +905,10 @@ void HoughAnalyze::StatisticsHistogramByLine(
 		    hist_data->hist_ground[angle_index]+=linedata[i].LineLength;
 		 }else if (linedata[i].Category==Sky){
 			hist_data->hist_sky[angle_index]+=linedata[i].LineLength;
-		 }else if (linedata[i].Category==Vertical){
+		 }else if (linedata[i].Category== CLASSIFY_SVG_VERTICAL){
 		   	hist_data->hist_vertical[angle_index]+=linedata[i].LineLength;
 		 } 
-		 if (linedata[i].Category!=Remove){
+		 if (linedata[i].Category!= CLASSIFY_SVG_REMOVE){
 		    hist_data->hist_all[angle_index]+=linedata[i].LineLength;
 			hist_data->hist_all_count[angle_index]++;
 		 }
@@ -965,10 +965,10 @@ void  HoughAnalyze::StatisticsHistogram180ByLine(
 			hist_data->hist_ground[angle_index]+=linedata[i].LineLength;
 		}else if (linedata[i].Category==Sky){
 			hist_data->hist_sky[angle_index]+=linedata[i].LineLength;
-		}else if (linedata[i].Category==Vertical){
+		}else if (linedata[i].Category==CLASSIFY_SVG_VERTICAL){
 			hist_data->hist_vertical[angle_index]+=linedata[i].LineLength;
 		} 
-		if (linedata[i].Category!=Remove){
+		if (linedata[i].Category!= CLASSIFY_SVG_REMOVE){
 			hist_data->hist_all[angle_index]+=linedata[i].LineLength;
 			hist_data->hist_all_count[angle_index]++;
 		}

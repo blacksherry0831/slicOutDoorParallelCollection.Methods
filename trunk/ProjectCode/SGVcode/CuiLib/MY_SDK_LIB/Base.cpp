@@ -585,7 +585,7 @@ int Base::FS_copyFile(const std::string src, const std::string dst)
 #endif
 
 #if defined(_WIN32) || defined(_WIN64) || defined( _MSC_VER)
-	copy_result_t = CopyFile(src.c_str(), dst.c_str(), false);
+	copy_result_t = CopyFileA(src.c_str(), dst.c_str(), false);
 	
 	DWORD ERROR_CODE;
 	if (copy_result_t == 0)
@@ -1018,7 +1018,7 @@ std::string Base::FS_createPath(std::string path_base, std::string path_sub, boo
 std::string Base::FS_createDir(std::string _path)
 {
 #if defined(_WIN32) || defined(_WIN64) || defined( _MSC_VER)
-	CreateDirectory(_path.c_str(), NULL);
+	CreateDirectoryA(_path.c_str(), NULL);
 #endif
 #if defined(linux) || defined(__linux) || defined(__linux__) ||defined( __GNUC__)
 	mode_t mode = 0755;

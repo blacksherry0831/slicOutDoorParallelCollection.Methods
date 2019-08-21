@@ -10,6 +10,10 @@ SET(BASE_SRCS
 		ImageColorSpaceLAB.cpp
 		ImageColorSpaceThetaML.cpp
 		DistanceColorSpace.cpp
+		
+		ColorSpaceLabTable.cpp
+		ColorSpaceLAB.cpp
+		
 		)  
 SET(BASE_LINK_LIB 
 	         

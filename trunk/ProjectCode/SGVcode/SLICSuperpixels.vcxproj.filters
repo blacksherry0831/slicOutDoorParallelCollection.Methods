@@ -183,6 +183,15 @@
     <ClCompile Include="CuiLib\ColorSpace\ImageColorSpaceThetaML.cpp">
       <Filter>modules</Filter>
     </ClCompile>
+    <ClCompile Include="CuiLib\ColorSpace\ColorSpaceLAB.cpp">
+      <Filter>modules</Filter>
+    </ClCompile>
+    <ClCompile Include="CuiLib\MY_SDK_LIB\TimeMeasure.cpp">
+      <Filter>modules</Filter>
+    </ClCompile>
+    <ClCompile Include="CuiLib\MY_SDK_LIB\Base.cpp">
+      <Filter>modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SLICSuperpixels.h">
@@ -373,6 +382,15 @@
       <Filter>modules</Filter>
     </ClInclude>
     <ClInclude Include="CuiLib\ColorSpace\ImageColorSpaceThetaML.h">
+      <Filter>modules</Filter>
+    </ClInclude>
+    <ClInclude Include="CuiLib\ColorSpace\ColorSpaceLAB.h">
+      <Filter>modules</Filter>
+    </ClInclude>
+    <ClInclude Include="CuiLib\MY_SDK_LIB\TimeMeasure.hpp">
+      <Filter>modules</Filter>
+    </ClInclude>
+    <ClInclude Include="CuiLib\MY_SDK_LIB\Base.h">
       <Filter>modules</Filter>
     </ClInclude>
   </ItemGroup>

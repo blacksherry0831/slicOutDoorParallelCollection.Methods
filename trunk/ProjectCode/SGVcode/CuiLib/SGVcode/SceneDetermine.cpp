@@ -821,7 +821,7 @@ bool SceneDetermine::IsManhattan(ManhattanHistogram hist)
 	}else{
 		ASSERT(0);
 	}
-	
-	
+	ASSERT(0);
+	return false;
 }
 /*-----------------------------------------------------------------------------------------*/

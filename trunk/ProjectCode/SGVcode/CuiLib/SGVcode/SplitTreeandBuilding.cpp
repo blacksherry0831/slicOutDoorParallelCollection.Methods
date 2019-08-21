@@ -53,7 +53,7 @@ void SplitTreeandBuilding::SlpitTreeBuilding(void)
 	ha.GetHist180All();
 
 	for (int spi=0;spi<pMD->slic_current_num;spi++){
-		if (Matrix_Category_Lable[spi]==Vertical){
+		if (Matrix_Category_Lable[spi]== CLASSIFY_SVG_VERTICAL){
 			if (IsTree(spi)){
 				Matrix_Category_Lable[spi]=Vertical_Tree;
 			}else if(IsBuilding(spi)){
@@ -157,7 +157,7 @@ INT32* Matrix_Category_Lable=pMD->Matrix_Category_Lable.get();
 						
 						if(ImgLables_SVG[x+y*pMD->ImgWidth]==Sky){
 							svgCount[spi].SkyCount++;
-						}else if(ImgLables_SVG[x+y*pMD->ImgWidth]==Vertical){
+						}else if(ImgLables_SVG[x+y*pMD->ImgWidth]== CLASSIFY_SVG_VERTICAL){
 							svgCount[spi].VerticalCount++;
 						}else if(ImgLables_SVG[x+y*pMD->ImgWidth]==Ground){
 							svgCount[spi].GroundCount++;

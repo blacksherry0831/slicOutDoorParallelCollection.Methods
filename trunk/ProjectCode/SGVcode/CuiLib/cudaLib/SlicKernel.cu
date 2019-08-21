@@ -1,9 +1,11 @@
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 #include "device_functions.h"
+#include "math.h"
+/*------------------------------------------------------------------------------------------*/
 #include <stdio.h>
-//#include<stdio.h>
 #include<assert.h>
+/*------------------------------------------------------------------------------------------*/
 #ifndef UINT32
 typedef unsigned int UINT32;
 #endif
@@ -22,15 +24,16 @@ typedef unsigned int UINT32;
 #include <pthread.h>
 
 #endif
-
-
-
+/*------------------------------------------------------------------------------------------*/
 #ifdef _MSC_VER
 
 #include <windows.h>
 
 #endif
-
+/*------------------------------------------------------------------------------------------*/
+extern "C" void Fill_Matrix_Int(int* _dev_m, const int _sz, const int _v);
+extern "C" void Fill_Matrix_Float(float* _dev_m, const int _sz, const float _v);
+extern "C" void Fill_Matrix_Db(double* _dev_m, const int _sz, const double _v);
 /*------------------------------------------------------------------------------------------*/
 /**
 *Ê±¼ä2014- 11-4

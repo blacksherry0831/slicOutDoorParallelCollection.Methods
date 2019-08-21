@@ -710,7 +710,7 @@ float  HsHg::GetHg_Nogeometry(void)
 		"InDoor","InDoor");
 	/*----------------------------------------------*/
 	for (int spi=0;spi<pMD->slic_current_num;spi++){
-		if (Matrix_Category_Lable[spi]==Vertical){
+		if (Matrix_Category_Lable[spi]== CLASSIFY_SVG_VERTICAL){
 			for (int spj=0;spj<pMD->slic_current_num;spj++){
 				if ((Matrix_E[spi*pMD->slic_current_num+spj]==TRUE)
 					&&(Matrix_Category_Lable[spj]==Ground)){
@@ -780,7 +780,7 @@ float  HsHg::GetHs_Nogeometry(void)
 		"InDoor","InDoor");
 	/*----------------------------------------------*/
 	for (int spi=0;spi<pMD->slic_current_num;spi++){
-		if (Matrix_Category_Lable[spi]==Vertical){
+		if (Matrix_Category_Lable[spi]== CLASSIFY_SVG_VERTICAL){
 			for (int spj=0;spj<pMD->slic_current_num;spj++){
 				if ((Matrix_E[spi*pMD->slic_current_num+spj]==TRUE)
 					&&(Matrix_Category_Lable[spj]==Sky)){

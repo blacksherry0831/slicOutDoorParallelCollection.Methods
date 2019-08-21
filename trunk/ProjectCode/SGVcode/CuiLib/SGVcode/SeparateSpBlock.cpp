@@ -103,7 +103,7 @@ fns.Parse(FileNameSplit::Convertstring2CS(pMD->FileReadFullPath));
 			if (Matrix_Category_Lable[spi]==Ground){
 				category_sp="_ground_";
 			}
-			if ((Matrix_Category_Lable[spi]==Vertical)
+			if ((Matrix_Category_Lable[spi]== CLASSIFY_SVG_VERTICAL)
 				||(Matrix_Category_Lable[spi]==Vertical_Tree)
 				||(Matrix_Category_Lable[spi]==Vertical_Building)){
 					category_sp="_vertical_";
@@ -197,7 +197,7 @@ void SeparateSpBlock::SeparateSp_SvmPredict(void)
 			if (Matrix_Category_Lable[spi]==Ground){
 				category_sp="_ground_";
 			}
-			if ((Matrix_Category_Lable[spi]==Vertical)
+			if ((Matrix_Category_Lable[spi]== CLASSIFY_SVG_VERTICAL)
 				||(Matrix_Category_Lable[spi]==Vertical_Tree)
 				||(Matrix_Category_Lable[spi]==Vertical_Building)){
 					category_sp="_vertical_";
@@ -227,7 +227,7 @@ void SeparateSpBlock::SeparateSp_SvmPredict(void)
 			CvMat m;
 			cvInitMatHeader(&m, 1,feature.size(), CV_32FC1,feature.data()); 
 			int catagory=SvmTest.predict(&m);
-			if (Matrix_Category_Lable[spi]==Vertical){
+			if (Matrix_Category_Lable[spi]== CLASSIFY_SVG_VERTICAL){
 				if (catagory==SvmCategoryBuilding){
 					Matrix_Category_Lable[spi]=Vertical_Building;
 				}else  if (catagory==SvmCategoryTree){
